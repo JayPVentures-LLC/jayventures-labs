@@ -1,6 +1,6 @@
 # jayventures-labs
 Private workspace for JayVentures experiments, prototypes, and internal tooling.
-# jayventures-labs
+
 
 Internal laboratory for JayVentures.
 
