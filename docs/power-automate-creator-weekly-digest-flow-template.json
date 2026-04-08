@@ -1,0 +1,186 @@
+{
+  "name": "Creator Weekly Digest",
+  "type": "Microsoft.Logic/workflows",
+  "location": "REPLACE_WITH_LOCATION",
+  "properties": {
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "triggers": {
+        "Recurrence": {
+          "type": "Recurrence",
+          "recurrence": {
+            "frequency": "Week",
+            "interval": 1,
+            "schedule": {
+              "weekDays": ["Monday"],
+              "hours": [9],
+              "minutes": [0]
+            },
+            "timeZone": "REPLACE_WITH_TIMEZONE"
+          }
+        }
+      },
+      "actions": {
+        "HTTP_Get_Creator_Metrics": {
+          "type": "Http",
+          "inputs": {
+            "method": "GET",
+            "uri": "https://your-worker-domain/creator/metrics",
+            "headers": {
+              "Authorization": "Bearer ADMIN_UPLOAD_TOKEN"
+            }
+          }
+        },
+        "Parse_JSON": {
+          "type": "ParseJson",
+          "runAfter": {
+            "HTTP_Get_Creator_Metrics": ["Succeeded"]
+          },
+          "inputs": {
+            "content": "@body('HTTP_Get_Creator_Metrics')",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "summary": {
+                  "type": "object",
+                  "properties": {
+                    "windowDays": { "type": "number" },
+                    "totalViews": { "type": "number" },
+                    "totalProfileViews": { "type": "number" },
+                    "totalLikes": { "type": "number" },
+                    "totalComments": { "type": "number" },
+                    "totalShares": { "type": "number" },
+                    "avgEngagementRate": { "type": "number" },
+                    "spikesDetected": { "type": "number" },
+                    "topCTA": { "type": "string" }
+                  }
+                },
+                "spikes": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "dayIndex": { "type": "number" },
+                      "dateLabel": { "type": "string" },
+                      "views": { "type": "number" },
+                      "profileViews": { "type": "number" },
+                      "likes": { "type": "number" },
+                      "comments": { "type": "number" },
+                      "shares": { "type": "number" },
+                      "engagementRate": { "type": "number" },
+                      "rollingAvg": { "type": "number" },
+                      "spikeMultiplier": { "type": "number" },
+                      "recommendedCTA": { "type": "string" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "Initialize_SpikeRowsHtml": {
+          "type": "InitializeVariable",
+          "runAfter": {
+            "Parse_JSON": ["Succeeded"]
+          },
+          "inputs": {
+            "variables": [
+              {
+                "name": "SpikeRowsHtml",
+                "type": "String",
+                "value": ""
+              }
+            ]
+          }
+        },
+        "Initialize_SpikeCount": {
+          "type": "InitializeVariable",
+          "runAfter": {
+            "Initialize_SpikeRowsHtml": ["Succeeded"]
+          },
+          "inputs": {
+            "variables": [
+              {
+                "name": "SpikeCount",
+                "type": "Integer",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "Apply_to_each_spike": {
+          "type": "Foreach",
+          "runAfter": {
+            "Initialize_SpikeCount": ["Succeeded"]
+          },
+          "foreach": "@body('Parse_JSON')?['spikes']",
+          "actions": {
+            "Increment_SpikeCount": {
+              "type": "IncrementVariable",
+              "inputs": {
+                "name": "SpikeCount",
+                "value": 1
+              }
+            },
+            "Condition_Top8": {
+              "type": "If",
+              "runAfter": {
+                "Increment_SpikeCount": ["Succeeded"]
+              },
+              "expression": {
+                "and": [
+                  {
+                    "lessOrEquals": [
+                      "@variables('SpikeCount')",
+                      8
+                    ]
+                  }
+                ]
+              },
+              "actions": {
+                "Append_SpikeRowsHtml": {
+                  "type": "AppendToStringVariable",
+                  "inputs": {
+                    "name": "SpikeRowsHtml",
+                    "value": "<div style=\"display:flex; gap:10px; padding:12px 14px; border-top:1px solid rgba(255,255,255,.06); background:rgba(12,14,18,.15); font-size:12px\">\n  <div style=\"width:120px; font-weight:600\">x@{formatNumber(item()?['spikeMultiplier'],'0.0')}</div>\n  <div style=\"width:220px; opacity:.75\">@{item()?['dateLabel']}</div>\n  <div style=\"flex:1; opacity:.9\">@{item()?['recommendedCTA']}</div>\n</div>"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "Compose_Email": {
+          "type": "Compose",
+          "runAfter": {
+            "Apply_to_each_spike": ["Succeeded"]
+          },
+          "inputs": "<div style=\"font-family:Segoe UI,Arial; background:#0b0d10; color:#fff; padding:26px; border-radius:16px; max-width:860px\">\n  <div style=\"font-size:13px; text-transform:uppercase; letter-spacing:1px; opacity:.7\">\n    Creator Command Center Weekly Digest\n  </div>\n\n  <div style=\"margin-top:10px; font-size:20px; font-weight:600\">\n    jaypventures creator\n  </div>\n\n  <div style=\"margin-top:8px; font-size:13px; opacity:.7; line-height:1.45\">\n    Premium transparency snapshot based on your last @{body('Parse_JSON')?['summary']?['windowDays']} days of creator activity.\n  </div>\n\n  <div style=\"display:flex; gap:12px; flex-wrap:wrap; margin-top:18px\">\n    <div style=\"flex:1; min-width:200px; background:rgba(25,28,34,.85); border:1px solid rgba(255,255,255,.06); border-radius:14px; padding:14px\">\n      <div style=\"font-size:11px; opacity:.6; text-transform:uppercase\">Spike events detected</div>\n      <div style=\"font-size:18px; font-weight:600; margin-top:6px\">@{body('Parse_JSON')?['summary']?['spikesDetected']}</div>\n    </div>\n\n    <div style=\"flex:1; min-width:200px; background:rgba(25,28,34,.85); border:1px solid rgba(255,255,255,.06); border-radius:14px; padding:14px\">\n      <div style=\"font-size:11px; opacity:.6; text-transform:uppercase\">Top recommended CTA</div>\n      <div style=\"font-size:14px; font-weight:600; margin-top:6px\">@{body('Parse_JSON')?['summary']?['topCTA']}</div>\n    </div>\n\n    <div style=\"flex:1; min-width:200px; background:rgba(25,28,34,.85); border:1px solid rgba(255,255,255,.06); border-radius:14px; padding:14px\">\n      <div style=\"font-size:11px; opacity:.6; text-transform:uppercase\">Engagement efficiency</div>\n      <div style=\"font-size:18px; font-weight:600; margin-top:6px\">\n        @{mul(body('Parse_JSON')?['summary']?['avgEngagementRate'],100)}%\n      </div>\n    </div>\n  </div>\n\n  <div style=\"margin-top:22px; font-size:12px; text-transform:uppercase; opacity:.6; letter-spacing:1px\">\n    Top spikes and actions\n  </div>\n\n  <div style=\"margin-top:10px; border:1px solid rgba(255,255,255,.06); border-radius:14px; overflow:hidden\">\n    <div style=\"display:flex; gap:10px; padding:12px 14px; background:rgba(255,255,255,.03); font-size:12px; opacity:.7\">\n      <div style=\"width:120px\">Spike</div>\n      <div style=\"width:220px\">Date label</div>\n      <div style=\"flex:1\">Recommended action</div>\n    </div>\n\n    @{variables('SpikeRowsHtml')}\n  </div>\n\n  <div style=\"margin-top:18px; font-size:12px; opacity:.75; line-height:1.55\">\n    Operating rule: spikes drive conversion. When momentum hits, push the CTA immediately and route outcomes through bookings and All Ventures Access.\n  </div>\n</div>"
+        },
+        "Send_Email_V2": {
+          "type": "ApiConnection",
+          "runAfter": {
+            "Compose_Email": ["Succeeded"]
+          },
+          "inputs": {
+            "host": {
+              "connection": {
+                "name": "REPLACE_WITH_OUTLOOK_CONNECTION"
+              }
+            },
+            "method": "post",
+            "path": "/v2/Mail",
+            "body": {
+              "To": "REPLACE_WITH_ADMIN_EMAIL",
+              "Subject": "Creator Weekly Digest - Top CTA: @{body('Parse_JSON')?['summary']?['topCTA']}",
+              "Body": "@outputs('Compose_Email')",
+              "IsHtml": true
+            }
+          }
+        }
+      },
+      "parameters": {}
+    },
+    "state": "Enabled"
+  }
+}

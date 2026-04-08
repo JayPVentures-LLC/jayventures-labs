@@ -1,14 +1,23 @@
 # jayventures-labs
-Private workspace for JayVentures experiments, prototypes, and internal tooling.
 
+Enterprise-grade workspace for JayVentures LLC experiments, prototypes, and internal tooling.
 
-Internal laboratory for JayVentures.
+## Overview
 
-This repository is used for:
+This repository is dedicated to rapid experimentation, proofs of concept, and internal automation. All content is subject to review, audit, and governance. Production readiness is not assumed.
+
+## Trust & Governance
+
+- [SECURITY.md](SECURITY.md): Security policies, threat response, and responsible disclosure
+- [GOVERNANCE.md](GOVERNANCE.md): Governance framework, oversight, and auditability
+
+## Usage
+
 - Rapid experiments
-- Prototypes and proofs of concept
-- Internal tools and automation
-- AI-assisted development tests
+- Prototyping
+- Internal automation
+- AI-assisted development
 
-Nothing here is assumed to be production-ready.
-Ideas may be promoted to standalone repositories when mature.
+## Promotion
+
+Ideas and code may be promoted to standalone repositories when mature and validated.
