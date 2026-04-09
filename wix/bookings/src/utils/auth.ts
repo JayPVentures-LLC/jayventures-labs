@@ -1,5 +1,6 @@
 import type { Env } from "../types/env";
 import { verifyMemberstackJwtRS256 } from "./jwt";
+import { getMemberstackPublicKey } from "./runtimeSecrets";
 
 function getCookie(request: Request, name: string): string | null {
   const cookie = request.headers.get("Cookie");
@@ -45,12 +46,15 @@ export async function requireInnerCircle(
   const token = getAuthToken(request);
   if (!token) return { ok: false, status: 401, body: { error: "Unauthorized" } };
 
-  if (!env.MEMBERSTACK_JWT_PUBLIC_KEY) {
+  let publicKey: string;
+  try {
+    publicKey = await getMemberstackPublicKey(env);
+  } catch {
     return { ok: false, status: 500, body: { error: "Server misconfigured" } };
   }
 
   try {
-    const claims = await verifyMemberstackJwtRS256(token, env.MEMBERSTACK_JWT_PUBLIC_KEY);
+    const claims = await verifyMemberstackJwtRS256(token, publicKey);
     const tier = tierFromClaims(claims);
 
     const isInnerCircle = tier === "Inner Circle" || tier === "inner_circle" || tier === "InnerCircle";

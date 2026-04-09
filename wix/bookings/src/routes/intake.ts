@@ -6,6 +6,8 @@ import { ensureIdempotent } from "../core/idempotency";
 import { planIntegrations } from "../core/router";
 import { buildCrmRecord } from "../core/crm";
 import { getOrCreateInnerCircleMemberFromRecord } from "../core/innerCircleMembers";
+import { getIntakeSecret } from "../utils/runtimeSecrets";
+import { enqueueArchive, sendTelemetry } from "../core/azure/observability";
 
 import { normalizeBookingsEvent } from "../core/normalize/bookings";
 import { normalizeStripeEvent } from "../core/normalize/stripe";
@@ -31,9 +33,10 @@ export async function handleIntake(request: Request, env: Env): Promise<Response
   }
 
   const raw = await request.text();
+  const intakeSecret = await getIntakeSecret(env);
 
   const ok = await verifyIntakeHmac(
-    env.INTAKE_HMAC_SECRET,
+    intakeSecret,
     raw,
     request.headers.get("x-jvp-signature")
   );
@@ -82,6 +85,24 @@ export async function handleIntake(request: Request, env: Env): Promise<Response
   }
 
   const metrics = await updateMetrics(env, record);
+  await enqueueArchive(env, {
+    source: "bookings-worker",
+    event: event.eventType,
+    timestamp: new Date().toISOString(),
+    data: {
+      idempotencyKey: event.idempotencyKey,
+      lane: record.lane,
+      tier: record.tier ?? "none",
+      revenue: record.expectedRevenue ?? 0,
+      results,
+    },
+  });
+  await sendTelemetry(env, "intake_processed", {
+    eventType: event.eventType,
+    source: event.source,
+    lane: record.lane,
+    tier: record.tier ?? "none",
+  });
 
   return json({ record, plan, results, metrics }, 200);
 }

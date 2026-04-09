@@ -2,15 +2,17 @@ import type { CRMRecord } from "../../types/crm";
 import type { Env } from "../../types/env";
 import type { IntegrationResult } from "../../types/integration";
 import { postJson } from "../../utils/http";
+import { getDataLakeToken } from "../../utils/runtimeSecrets";
 
 export async function pushToDataLake(env: Env, record: CRMRecord): Promise<IntegrationResult> {
   if (!env.DATALAKE_ENDPOINT) {
     return { name: "data_lake", status: "skipped", detail: "missing_env" };
   }
 
+  const token = await getDataLakeToken(env);
   const headers: Record<string, string> = {};
-  if (env.DATALAKE_TOKEN) {
-    headers.Authorization = `Bearer ${env.DATALAKE_TOKEN}`;
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
   }
 
   const response = await postJson(

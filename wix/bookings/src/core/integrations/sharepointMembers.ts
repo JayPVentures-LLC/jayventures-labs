@@ -1,12 +1,14 @@
 import type { Env } from "../../types/env";
 import type { IntegrationResult } from "../../types/integration";
 import type { InnerCircleMemberProfile } from "../innerCircleMembers";
+import { getSharePointAccessToken } from "../../utils/runtimeSecrets";
 
 export async function pushInnerCircleMember(
   env: Env,
   profile: InnerCircleMemberProfile
 ): Promise<IntegrationResult> {
-  if (!env.SHAREPOINT_SITE_ID || !env.SHAREPOINT_MEMBERS_LIST_ID || !env.SHAREPOINT_ACCESS_TOKEN) {
+  const accessToken = await getSharePointAccessToken(env);
+  if (!env.SHAREPOINT_SITE_ID || !env.SHAREPOINT_MEMBERS_LIST_ID || !accessToken) {
     return { name: "sharepoint_members", status: "skipped", detail: "missing_env" };
   }
 
@@ -15,7 +17,7 @@ export async function pushInnerCircleMember(
     {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${env.SHAREPOINT_ACCESS_TOKEN}`,
+        Authorization: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
