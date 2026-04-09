@@ -1,0 +1,10 @@
+Type,Name,Value
+TXT,www,"stripe-verification=44f52cca760bb887b1f879d2d42963ac3e4fb2870f1a2a6c70d0ddc4286f854c"
+TXT,_dmarc.www,"v=DMARC1; p=none; rua=mailto:postmaster@yourdomain.com"
+CNAME,cgftia5loz5rrrseowvfcbbvapfcfwll._domainkey.www,"cgftia5loz5rrrseowvfcbbvapfcfwll.dkim.custom-email-domain.stripe.com."
+CNAME,r7f6xewuyflbp5cnyfttfhs2nypetqqrr._domainkey.www,"r7f6xewuyflbp5cnyfttfhs2nypetqqrr.dkim.custom-email-domain.stripe.com."
+CNAME,w3k4jzkmzsrp5zvuxiey5eepou3sfl6p._domainkey.www,"w3k4jzkmzsrp5zvuxiey5eepou3sfl6p.dkim.custom-email-domain.stripe.com."
+CNAME,vy2asankpamkc6nrks7rit4bj6bpggpp._domainkey.www,"vy2asankpamkc6nrks7rit4bj6bpggpp.dkim.custom-email-domain.stripe.com."
+CNAME,o4zang5cwgzck7cvc3y7epfrf67tfuqd._domainkey.www,"o4zang5cwgzck7cvc3y7epfrf67tfuqd.dkim.custom-email-domain.stripe.com."
+CNAME,ave5s3eexdzd6jtu7jjopobmyahuzpbp._domainkey.www,"ave5s3eexdzd6jtu7jjopobmyahuzpbp.dkim.custom-email-domain.stripe.com."
+CNAME,bounce.www,"custom-email-domain.stripe.com."
