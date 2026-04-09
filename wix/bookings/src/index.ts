@@ -3,6 +3,7 @@ import { handleIntake } from "./routes/intake";
 import { getMetricsSnapshot } from "./core/metrics";
 import { handleInnerCircleBackfill, handleInnerCircleMetrics, handleInnerCirclePortal } from "./routes/innerCircle";
 import { handleCreatorMetrics, handleCreatorPortal, handleCreatorUpload } from "./routes/creatorPortal";
+import { archiveEvent, sendTelemetry, type WorkerEventMessage } from "./core/azure/observability";
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
@@ -49,5 +50,21 @@ export default {
     }
 
     return new Response("Not Found", { status: 404 });
+  },
+
+  async queue(batch: MessageBatch<WorkerEventMessage>, env: Env, ctx: ExecutionContext): Promise<void> {
+    for (const message of batch.messages) {
+      try {
+        await archiveEvent(env, message.body);
+        await sendTelemetry(env, `${message.body.payload.source}_${message.body.payload.event}`, message.body.payload.data);
+        message.ack();
+      } catch (error) {
+        ctx.waitUntil(sendTelemetry(env, "bookings_queue_failure", {
+          type: message.body.type,
+          error: error instanceof Error ? error.message : String(error),
+        }));
+        message.retry();
+      }
+    }
   },
 };
