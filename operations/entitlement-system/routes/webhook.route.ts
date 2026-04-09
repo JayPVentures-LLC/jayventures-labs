@@ -3,6 +3,7 @@ import type { StripeWebhookEvent } from "../types/stripe.types";
 import { verifyStripeSignature } from "../utils/verify-signature";
 import { logger } from "../utils/logger";
 import { processStripeEvent } from "../services/stripe.service";
+import { getStripeWebhookSecret } from "../services/runtimeSecrets.service";
 
 function json(body: unknown, status = 200): Response {
   return new Response(JSON.stringify(body, null, 2), {
@@ -22,7 +23,8 @@ export async function handleStripeWebhook(request: Request, env: Env): Promise<R
   }
 
   const rawBody = await request.text();
-  const valid = await verifyStripeSignature(rawBody, signature, env.STRIPE_WEBHOOK_SECRET);
+  const webhookSecret = await getStripeWebhookSecret(env);
+  const valid = await verifyStripeSignature(rawBody, signature, webhookSecret);
   if (!valid) {
     logger.log("warn", "Invalid Stripe signature");
     return json({ error: "Invalid signature" }, 400);

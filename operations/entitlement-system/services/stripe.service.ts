@@ -6,6 +6,7 @@ import { getRoleIdsForBrandTier } from "./discordRoleMapping.service";
 import { syncDiscordRoles } from "./discordSync.service";
 import { upsertBrandEntitlement } from "./entitlement.service";
 import { logger } from "../utils/logger";
+import { enqueueWorkerEvent, sendTelemetry } from "./azure/observability.service";
 
 function normalizeBrand(value: string | undefined): Brand | null {
   if (!value) return null;
@@ -107,6 +108,29 @@ export async function processStripeEvent(
 
   const syncResults = await syncDiscordRoles(entitlement, env, { brand: payload.brand });
   await env.IDEMPOTENCY_KV.put(idempotencyKey, "1", { expirationTtl: 60 * 60 * 24 * 14 });
+  await enqueueWorkerEvent(env, {
+    type: "archive",
+    payload: {
+      source: "entitlement-system",
+      event: event.type,
+      timestamp: new Date().toISOString(),
+      data: {
+        eventId: event.id,
+        userId: payload.userId,
+        brand: payload.brand,
+        tier: payload.tier,
+        status: payload.status,
+        syncResults,
+      },
+    },
+  });
+  await sendTelemetry(env, "entitlement_webhook_processed", {
+    eventId: event.id,
+    eventType: event.type,
+    brand: payload.brand,
+    tier: payload.tier,
+    status: payload.status,
+  });
   logger.log("info", "Stripe event processed", { eventId: event.id, userId: payload.userId, brand: payload.brand, tier: payload.tier });
 
   return { status: "processed", entitlement, syncResults };

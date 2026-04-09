@@ -1,6 +1,8 @@
 import type { Env } from "../config/env";
 import type { RetryTask } from "../types/discord.types";
 import { logger } from "./logger";
+import type { WorkerEventMessage } from "../services/azure/observability.service";
+import { enqueueWorkerEvent } from "../services/azure/observability.service";
 
 function keyFor(taskId: string): string {
   return `retry:${taskId}`;
@@ -19,8 +21,17 @@ export async function enqueueRetryTask(
     payload: task.payload,
   };
 
+  if (env.WORKER_EVENTS_QUEUE) {
+    const message: WorkerEventMessage = {
+      type: "discord-retry",
+      payload: retryTask.payload,
+    };
+    await enqueueWorkerEvent(env, message);
+    return retryTask;
+  }
+
   if (!env.RETRY_QUEUE_KV) {
-    logger.log("warn", "Retry queue binding missing; task not persisted", { task: retryTask });
+    logger.log("warn", "Retry persistence missing; task not persisted", { task: retryTask });
     return retryTask;
   }
 

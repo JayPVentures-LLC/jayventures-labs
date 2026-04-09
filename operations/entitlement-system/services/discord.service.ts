@@ -1,4 +1,5 @@
 import type { Env } from "../config/env";
+import { getDiscordBotToken } from "./runtimeSecrets.service";
 import type { DiscordRoleUpdate } from "../types/discord.types";
 import type { BrandEntitlement, Entitlement } from "../types/entitlement.types";
 import { reconcileRoles } from "./discordRoleMapping.service";
@@ -13,10 +14,11 @@ class DiscordApiError extends Error {
 }
 
 async function discordRequest(env: Env, method: string, url: string): Promise<unknown> {
+  const botToken = await getDiscordBotToken(env);
   const response = await fetch(`${DISCORD_API}${url}`, {
     method,
     headers: {
-      Authorization: `Bot ${env.DISCORD_BOT_TOKEN}`,
+      Authorization: `Bot ${botToken}`,
       "Content-Type": "application/json",
     },
   });

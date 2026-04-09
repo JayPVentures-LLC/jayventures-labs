@@ -1,11 +1,13 @@
 import type { Env } from "../config/env";
-import type { Brand, Tier } from "../types/entitlement.types";
+import { getAdminOverrideKey } from "../services/runtimeSecrets.service";
 import { getEntitlementByLookup, hasRequiredTier, normalizeExpiredEntitlement } from "../services/entitlement.service";
+import type { Brand, Tier } from "../types/entitlement.types";
 
-function isAdmin(request: Request, env: Env): boolean {
+async function isAdmin(request: Request, env: Env): Promise<boolean> {
   const auth = request.headers.get("Authorization");
   const override = request.headers.get("x-admin-key");
-  return auth === `Bearer ${env.ADMIN_OVERRIDE_KEY}` || override === env.ADMIN_OVERRIDE_KEY;
+  const key = await getAdminOverrideKey(env);
+  return auth === `Bearer ${key}` || override === key;
 }
 
 function lookupFromRequest(request: Request): { userId?: string; discordId?: string } {
@@ -16,7 +18,7 @@ function lookupFromRequest(request: Request): { userId?: string; discordId?: str
 
 export function entitlementCheck(requiredBrand: Brand, requiredTier: Tier) {
   return async (request: Request, env: Env): Promise<Response | void> => {
-    if (isAdmin(request, env)) {
+    if (await isAdmin(request, env)) {
       return;
     }
 

@@ -1,11 +1,13 @@
 import type { Env } from "../config/env";
+import { getAdminOverrideKey } from "../services/runtimeSecrets.service";
 import { getEntitlementByLookup } from "../services/entitlement.service";
 import { processQueuedDiscordSync, syncDiscordRoles } from "../services/discordSync.service";
 
-function isAdmin(request: Request, env: Env): boolean {
+async function isAdmin(request: Request, env: Env): Promise<boolean> {
   const auth = request.headers.get("Authorization");
   const override = request.headers.get("x-admin-key");
-  return auth === `Bearer ${env.ADMIN_OVERRIDE_KEY}` || override === env.ADMIN_OVERRIDE_KEY;
+  const key = await getAdminOverrideKey(env);
+  return auth === `Bearer ${key}` || override === key;
 }
 
 function json(body: unknown, status = 200): Response {
@@ -16,7 +18,7 @@ function json(body: unknown, status = 200): Response {
 }
 
 export async function handleDiscordSync(request: Request, env: Env): Promise<Response> {
-  if (!isAdmin(request, env)) {
+  if (!(await isAdmin(request, env))) {
     return json({ error: "Unauthorized" }, 401);
   }
 
@@ -51,4 +53,3 @@ export async function handleDiscordSync(request: Request, env: Env): Promise<Res
 
   return json({ status: "discord_sync_completed", syncResults }, 200);
 }
-

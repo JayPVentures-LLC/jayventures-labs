@@ -4,11 +4,13 @@ import { getRoleIdsForBrandTier } from "../services/discordRoleMapping.service";
 import { syncDiscordRoles } from "../services/discordSync.service";
 import { updateEntitlement } from "../services/entitlement.service";
 import { logger } from "../utils/logger";
+import { getAdminOverrideKey } from "../services/runtimeSecrets.service";
 
-function isAdmin(request: Request, env: Env): boolean {
+async function isAdmin(request: Request, env: Env): Promise<boolean> {
   const auth = request.headers.get("Authorization");
   const override = request.headers.get("x-admin-key");
-  return auth === `Bearer ${env.ADMIN_OVERRIDE_KEY}` || override === env.ADMIN_OVERRIDE_KEY;
+  const key = await getAdminOverrideKey(env);
+  return auth === `Bearer ${key}` || override === key;
 }
 
 function json(body: unknown, status = 200): Response {
@@ -31,7 +33,7 @@ function normalizeStatus(value: unknown): EntitlementStatus | null {
 }
 
 export async function handleAdminOverride(request: Request, env: Env): Promise<Response> {
-  if (!isAdmin(request, env)) {
+  if (!(await isAdmin(request, env))) {
     return json({ error: "Unauthorized" }, 401);
   }
 
