@@ -1,5 +1,10 @@
 # Launch Checklist for jaypventuresllc.com
 
+Repo status as of 2026-04-09:
+- Website preview trust links are wired to `GOVERNANCE.md`, and booking placeholders have been replaced with the live Microsoft Bookings URL.
+- The homepage draft export has been corrected for broken anchors, contact email, and current Next `Image` usage.
+- The items below still require staging or production validation before the site should be treated as launch-ready.
+
 ## Accessibility Audit (Black/Red/White Scheme)
 - [ ] Run automated contrast checks on all pages (minimum WCAG AA).
 - [ ] Manually verify black/red/white contrast for headings, buttons, links, and callouts.
@@ -16,9 +21,9 @@
 - [ ] Document monitoring endpoints and escalation contacts.
 
 ## Trust Signals and Contact Verification
-- [ ] Ensure working links to SECURITY.md and GOVERNANCE.md on Trust page and footer.
-- [ ] Confirm venture@jaypventuresllc.com is visible on Contact and Footer.
-- [ ] Verify mailto link opens correctly and routes to the correct mailbox.
+- [ ] Ensure working links to `SECURITY.md` and `GOVERNANCE.md` on the Trust page and footer of the deployed site.
+- [ ] Confirm `venture@jaypventuresllc.com` is visible on Contact and Footer in the deployed site.
+- [ ] Verify the mailto link opens correctly and routes to the correct mailbox.
 - [ ] Validate any trust badges or certifications are accurate and current.
 
 ## Branding Consistency (All Pages)
@@ -47,7 +52,7 @@
 - [ ] Final content review for accuracy, tone, and spelling.
 - [ ] Backup site before publishing.
 - [ ] Confirm staging and production environments are configured correctly.
-- [ ] Publish site and verify live status on jaypventuresllc.com.
+- [ ] Publish site and verify live status on `jaypventuresllc.com`.
 
 ## Post-Launch Monitoring (First 24 Hours)
 - [ ] Review analytics dashboards hourly for anomalies.
@@ -61,8 +66,4 @@
 - [ ] Audit CTA performance and adjust copy if needed.
 - [ ] Review form submissions, sales, and support requests.
 - [ ] Run an accessibility spot-check on key pages.
-- [ ] Confirm SECURITY.md and GOVERNANCE.md links remain live.
-
----
-
-Complete all items before launch for a secure, trusted, accessible, and enterprise-grade site.
+- [ ] Confirm `SECURITY.md` and `GOVERNANCE.md` links remain live.
