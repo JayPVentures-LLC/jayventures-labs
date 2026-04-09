@@ -44,6 +44,7 @@ Enterprise workspace for JayPVentures LLC experiments, internal tooling, worker 
 
 ## Deployment and Automation
 - [docs/github-setup.md](docs/github-setup.md)
+- [docs/github-settings-checklist.md](docs/github-settings-checklist.md)
 
 ## Trust and Governance
 - [GOVERNANCE.md](GOVERNANCE.md)
@@ -51,4 +52,5 @@ Enterprise workspace for JayPVentures LLC experiments, internal tooling, worker 
 
 ## Promotion Policy
 Code and documentation in this repository remain experimental until they are deployed, verified, and promoted into a dedicated production repository or platform environment.
+
 
