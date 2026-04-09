@@ -42,9 +42,13 @@ Enterprise workspace for JayPVentures LLC experiments, internal tooling, worker 
    - `npm run deploy:dryrun:entitlement`
    - `npm run deploy:dryrun:bookings`
 
+## Deployment and Automation
+- [docs/github-setup.md](docs/github-setup.md)
+
 ## Trust and Governance
 - [GOVERNANCE.md](GOVERNANCE.md)
 - [SECURITY.md](SECURITY.md)
 
 ## Promotion Policy
 Code and documentation in this repository remain experimental until they are deployed, verified, and promoted into a dedicated production repository or platform environment.
+
