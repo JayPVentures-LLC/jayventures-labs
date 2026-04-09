@@ -10,6 +10,10 @@ function base64UrlToUint8Array(b64url: string): Uint8Array {
   return bytes;
 }
 
+function toArrayBuffer(bytes: Uint8Array): ArrayBuffer {
+  return bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength) as ArrayBuffer;
+}
+
 function base64UrlToString(b64url: string): string {
   const bytes = base64UrlToUint8Array(b64url);
   return new TextDecoder().decode(bytes);
@@ -37,7 +41,7 @@ function pemToSpkiDer(pem: string): ArrayBuffer {
     .replace(/-----END PUBLIC KEY-----/g, "")
     .replace(/\s+/g, "");
   const bytes = base64UrlToUint8Array(clean.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, ""));
-  return bytes.buffer;
+  return toArrayBuffer(bytes);
 }
 
 export async function verifyMemberstackJwtRS256(token: string, publicKeyPem: string): Promise<JwtPayload> {
@@ -57,8 +61,8 @@ export async function verifyMemberstackJwtRS256(token: string, publicKeyPem: str
   const ok = await crypto.subtle.verify(
     "RSASSA-PKCS1-v1_5",
     key,
-    signature,
-    new TextEncoder().encode(signingInput)
+    toArrayBuffer(signature),
+    toArrayBuffer(new TextEncoder().encode(signingInput))
   );
 
   if (!ok) throw new Error("JWT signature invalid");

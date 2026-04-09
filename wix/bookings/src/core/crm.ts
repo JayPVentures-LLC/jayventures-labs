@@ -69,10 +69,7 @@ export function buildCrmRecord(input: CRMRecord): CRMRecord & {
   const isRecurring = lane === "All Ventures Access" && expectedRevenue > 0;
   const mrr = isRecurring ? expectedRevenue : 0;
 
-  const enriched: CRMRecord & {
-    leadScore: number;
-    revenueChannel: string;
-  } = {
+  const enriched: CRMRecord & {`n    leadScore: number;`n    revenueChannel: string;`n    revenueConfidence: "direct" | "catalog" | "unknown";`n    isRecurring: boolean;`n    mrr: number;`n  } = {
     ...input,
 
     lane,
@@ -116,3 +113,4 @@ export function buildCrmRecord(input: CRMRecord): CRMRecord & {
 
   return enriched;
 }
+

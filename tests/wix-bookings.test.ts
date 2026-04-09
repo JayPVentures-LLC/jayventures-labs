@@ -53,7 +53,7 @@ describe("wix bookings worker", () => {
         method: "POST",
         body: rawBody,
         headers: { "x-jvp-signature": "bad" },
-      }),
+      }) as never,
       env as never
     );
     expect(invalid.status).toBe(401);
@@ -65,7 +65,7 @@ describe("wix bookings worker", () => {
       headers: { "x-jvp-signature": signature },
     });
 
-    const first = await handleIntake(validRequest.clone(), env as never);
+    const first = await handleIntake(validRequest.clone() as never, env as never);
     expect(first.status).toBe(200);
     await expect(first.json()).resolves.toMatchObject({
       record: {
@@ -74,7 +74,7 @@ describe("wix bookings worker", () => {
       },
     });
 
-    const duplicate = await handleIntake(validRequest.clone(), env as never);
+    const duplicate = await handleIntake(validRequest.clone() as never, env as never);
     await expect(duplicate.json()).resolves.toMatchObject({ status: "duplicate_ignored", idempotencyKey: "bookings:1" });
   });
 
@@ -164,7 +164,7 @@ describe("wix bookings worker", () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(payload),
-      }),
+      }) as never,
       env as never
     );
     await expect(dryRun.json()).resolves.toMatchObject({ dryRun: true, created: 1, errors: 0 });
@@ -177,7 +177,7 @@ describe("wix bookings worker", () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(payload),
-      }),
+      }) as never,
       env as never
     );
     await expect(write.json()).resolves.toMatchObject({ dryRun: false, created: 1, errors: 0 });

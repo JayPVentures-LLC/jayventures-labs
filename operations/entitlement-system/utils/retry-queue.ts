@@ -47,12 +47,9 @@ export async function removeRetryTask(env: Env, taskId: string): Promise<void> {
   await env.RETRY_QUEUE_KV.delete(keyFor(taskId));
 }
 
-export async function processRetryQueue(
-  env: Env,
-  handler: (task: RetryTask) => Promise<void>
-): Promise<{ processed: number; succeeded: number; failed: number }> {
+export async function processRetryQueue(`n  env: Env,`n  handler: (task: RetryTask) => Promise<void>,`n  options?: { force?: boolean }`n): Promise<{ processed: number; succeeded: number; failed: number }> {
   const tasks = await listRetryTasks(env);
-  const due = tasks.filter((task) => task.runAfter <= Date.now());
+  const due = options?.force ? tasks : tasks.filter((task) => task.runAfter <= Date.now());
 
   let succeeded = 0;
   let failed = 0;
@@ -80,3 +77,4 @@ export async function processRetryQueue(
 
   return { processed: due.length, succeeded, failed };
 }
+

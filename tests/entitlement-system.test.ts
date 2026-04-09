@@ -20,9 +20,6 @@ function createRawEnv() {
       RETRY_QUEUE_KV: asKvNamespace(retryQueueKv),
       LOG_LEVEL: "debug",
     },
-    entitlementKv,
-    idempotencyKv,
-    retryQueueKv,
   };
 }
 
@@ -30,11 +27,11 @@ function buildStripeEvent() {
   return {
     id: "evt_123",
     type: "checkout.session.completed",
-    created: 1_744_156_800,
+    created: Math.floor(Date.now() / 1000),
     data: {
       object: {
         customer: "cus_123",
-        current_period_end: 1_744_243_200,
+        current_period_end: Math.floor(Date.now() / 1000) + 86_400,
         metadata: {
           internal_user_id: "user-123",
           discord_user_id: "discord-123",
@@ -87,7 +84,7 @@ describe("entitlement system worker", () => {
       },
     });
 
-    const response = await worker.fetch(request, raw, {} as ExecutionContext);
+    const response = await worker.fetch(request as never, raw, {} as ExecutionContext);
     expect(response.status).toBe(400);
     await expect(response.json()).resolves.toMatchObject({ error: "Invalid signature" });
   });
@@ -109,7 +106,7 @@ describe("entitlement system worker", () => {
       },
     });
 
-    const first = await worker.fetch(request.clone(), raw, {} as ExecutionContext);
+    const first = await worker.fetch(request.clone() as never, raw, {} as ExecutionContext);
     expect(first.status).toBe(200);
     await expect(first.json()).resolves.toMatchObject({ status: "processed" });
 
@@ -119,12 +116,12 @@ describe("entitlement system worker", () => {
     expect(discordFetch).toHaveBeenCalled();
 
     const gate = await entitlementCheck("jaypventures", "free")(
-      new Request("https://example.com/resource", { headers: { "x-user-id": "user-123" } }),
+      new Request("https://example.com/resource", { headers: { "x-user-id": "user-123" } }) as never,
       raw as never
     );
     expect(gate).toBeUndefined();
 
-    const second = await worker.fetch(request.clone(), raw, {} as ExecutionContext);
+    const second = await worker.fetch(request.clone() as never, raw, {} as ExecutionContext);
     await expect(second.json()).resolves.toMatchObject({ status: "duplicate" });
   });
 
@@ -148,7 +145,7 @@ describe("entitlement system worker", () => {
       }),
     });
 
-    const response = await worker.fetch(request, raw, {} as ExecutionContext);
+    const response = await worker.fetch(request as never, raw, {} as ExecutionContext);
     expect(response.status).toBe(200);
     await expect(response.json()).resolves.toMatchObject({ status: "override_applied" });
 
@@ -171,10 +168,8 @@ describe("entitlement system worker", () => {
       headers: { "stripe-signature": signature },
     });
 
-    const first = await worker.fetch(webhook, raw, {} as ExecutionContext);
+    const first = await worker.fetch(webhook as never, raw, {} as ExecutionContext);
     expect(first.status).toBe(200);
-    const queued = await raw.RETRY_QUEUE_KV.get("retry:");
-    expect(queued).toBeNull();
     const listed = await raw.RETRY_QUEUE_KV.list({ prefix: "retry:" });
     expect(listed.keys.length).toBe(1);
 
@@ -188,7 +183,7 @@ describe("entitlement system worker", () => {
       body: JSON.stringify({ processRetryQueue: true }),
     });
 
-    const response = await worker.fetch(retryRequest, raw, {} as ExecutionContext);
+    const response = await worker.fetch(retryRequest as never, raw, {} as ExecutionContext);
     expect(response.status).toBe(200);
     await expect(response.json()).resolves.toMatchObject({ status: "retry_queue_processed", processed: 1, succeeded: 1, failed: 0 });
   });

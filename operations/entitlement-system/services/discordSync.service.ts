@@ -69,12 +69,10 @@ export async function syncDiscordRoles(
   return results;
 }
 
-export async function processQueuedDiscordSync(env: Env): Promise<{ processed: number; succeeded: number; failed: number }> {
-  return processRetryQueue(env, async (task: RetryTask) => {
+export async function processQueuedDiscordSync(env: Env, options?: { force?: boolean }): Promise<{ processed: number; succeeded: number; failed: number }> {`n  return processRetryQueue(env, async (task: RetryTask) => {
     const entitlement = await getEntitlement(task.payload.userId, env);
     if (!entitlement) {
       throw new Error(`Entitlement not found for retry task ${task.id}`);
     }
-    await syncDiscordRoles(entitlement, env, { brand: task.payload.brand });
-  });
-}
+    await syncDiscordRoles(entitlement, env, { brand: task.payload.brand });`n  }, options);`n}
+

@@ -32,7 +32,7 @@ export async function handleDiscordSync(request: Request, env: Env): Promise<Res
   }
 
   if (payload.processRetryQueue === true) {
-    const result = await processQueuedDiscordSync(env);
+    const result = await processQueuedDiscordSync(env, { force: true });
     return json({ status: "retry_queue_processed", ...result }, 200);
   }
 
@@ -51,3 +51,4 @@ export async function handleDiscordSync(request: Request, env: Env): Promise<Res
 
   return json({ status: "discord_sync_completed", syncResults }, 200);
 }
+

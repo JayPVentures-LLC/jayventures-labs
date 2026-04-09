@@ -115,7 +115,7 @@ export async function updateMetrics(
   return snapshot;
 }
 
-export async function getCurrentMonthSnapshot(env: Env): Promise<MetricsSnapshot> {
+export async function getMetricsSnapshot(env: Env): Promise<MetricsSnapshot> {
   if (!env.METRICS_KV) {
     throw new Error("METRICS_KV not configured");
   }
@@ -132,6 +132,8 @@ export async function getCurrentMonthSnapshot(env: Env): Promise<MetricsSnapshot
 
   return JSON.parse(raw) as MetricsSnapshot;
 }
+
+export const getCurrentMonthSnapshot = getMetricsSnapshot;
 
 export async function getBookingLaneTrends(env: Env): Promise<Record<string, BookingTrend>> {
   if (!env.METRICS_KV) {
