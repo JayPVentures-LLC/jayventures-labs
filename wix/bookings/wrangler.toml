@@ -4,6 +4,11 @@ compatibility_date = "2026-04-09"
 
 [vars]
 ENVIRONMENT = "dev"
+AZURE_KEY_VAULT_URL = "https://replace-me.vault.azure.net"
+AZURE_TENANT_ID = "replace-me"
+AZURE_CLIENT_ID = "replace-me"
+APPINSIGHTS_CONNECTION_STRING = "InstrumentationKey=replace-me;IngestionEndpoint=https://eastus-0.in.applicationinsights.azure.com/"
+AZURE_ARCHIVE_ENDPOINT = "https://replace-me.example/archive/bookings"
 
 [[kv_namespaces]]
 binding = "IDEMPOTENCY_KV"
@@ -24,3 +29,12 @@ preview_id = "REPLACE_WITH_CREATOR_DATA_KV_PREVIEW_ID"
 binding = "INNER_CIRCLE_MEMBER_KV"
 id = "REPLACE_WITH_INNER_CIRCLE_MEMBER_KV_ID"
 preview_id = "REPLACE_WITH_INNER_CIRCLE_MEMBER_KV_PREVIEW_ID"
+
+[[queues.producers]]
+binding = "WORKER_EVENTS_QUEUE"
+queue = "REPLACE_WITH_BOOKINGS_EVENTS_QUEUE"
+
+[[queues.consumers]]
+queue = "REPLACE_WITH_BOOKINGS_EVENTS_QUEUE"
+max_batch_size = 20
+max_batch_timeout = 5

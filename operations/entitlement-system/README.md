@@ -5,73 +5,60 @@ Cloudflare Worker that receives Stripe subscription/payment events, updates enti
 ## Runtime Surface
 - `POST /webhook/stripe`: verifies Stripe signature, enforces idempotency, updates entitlement state, and attempts Discord sync.
 - `POST /admin/override`: admin-only route for manual grants, revocations, or tier changes.
-- `POST /admin/discord-sync`: admin-only route for on-demand sync or retry-queue drainage.
+- `POST /admin/discord-sync`: admin-only route for on-demand sync or fallback KV retry drainage.
 - `GET /health`: lightweight health endpoint.
+- Queue consumer: handles Cloudflare Queue messages for Discord retries and Azure archive/telemetry fan-out.
 
-## Data Model
-Each user record stores:
-- top-level status and expiry across all brand entitlements
-- optional Discord identity and last sync timestamp
-- one entitlement entry per brand with tier, role IDs, status, source, expiry, and last Stripe event ID
-- admin override metadata when changes are made manually
+## Delegation Model
+- Cloudflare Workers: transaction path, webhook ingress, entitlement decisions, Discord sync orchestration.
+- Cloudflare KV: entitlement state and idempotency.
+- Cloudflare Queues: retry and archive fan-out.
+- Azure Key Vault: optional secret source when direct worker secrets are omitted.
+- Azure App Insights: telemetry sink.
+- Azure archive endpoint: durable downstream event sink.
 
 ## Environment
-Required bindings and vars are declared in `wrangler.toml` and `.dev.vars.example`.
-
-Required secrets:
-- `STRIPE_WEBHOOK_SECRET`
-- `DISCORD_BOT_TOKEN`
-- `ADMIN_OVERRIDE_KEY`
-
-Required KV bindings:
+Required Cloudflare bindings:
 - `ENTITLEMENT_KV`
 - `IDEMPOTENCY_KV`
+- `WORKER_EVENTS_QUEUE`
 
-Optional KV binding:
+Optional fallback binding:
 - `RETRY_QUEUE_KV`
+
+Direct or Key Vault-backed secrets:
+- `STRIPE_WEBHOOK_SECRET` or `STRIPE_WEBHOOK_SECRET_SECRET_NAME`
+- `DISCORD_BOT_TOKEN` or `DISCORD_BOT_TOKEN_SECRET_NAME`
+- `ADMIN_OVERRIDE_KEY` or `ADMIN_OVERRIDE_KEY_SECRET_NAME`
+
+Azure wiring:
+- `AZURE_KEY_VAULT_URL`
+- `AZURE_TENANT_ID`
+- `AZURE_CLIENT_ID`
+- `AZURE_CLIENT_SECRET`
+- `APPINSIGHTS_CONNECTION_STRING`
+- `AZURE_ARCHIVE_ENDPOINT`
+- `AZURE_ARCHIVE_TOKEN` or `AZURE_ARCHIVE_TOKEN_SECRET_NAME`
 
 ## Event Flow
 1. Stripe posts an event to `/webhook/stripe`.
-2. The worker validates the `stripe-signature` header against the raw body.
-3. Supported Stripe events are mapped to a normalized entitlement payload.
-4. The worker writes the user entitlement record and idempotency marker to KV.
-5. Discord roles are reconciled for the affected brand.
-6. If Discord sync fails, a retry task is stored in `RETRY_QUEUE_KV`.
-7. Admins can drain the retry queue with `POST /admin/discord-sync` and `{ "processRetryQueue": true }`.
-
-## Admin Override Payload
-Example:
-
-```json
-{
-  "userId": "user-123",
-  "discordId": "discord-123",
-  "brand": "jaypventures",
-  "tier": "member",
-  "status": "active",
-  "reason": "manual grant",
-  "syncDiscord": true
-}
-```
-
-Headers:
-- `Authorization: Bearer <ADMIN_OVERRIDE_KEY>`
-or
-- `x-admin-key: <ADMIN_OVERRIDE_KEY>`
+2. The worker verifies the signature and writes idempotent entitlement state to KV.
+3. Discord sync runs inline for the first attempt.
+4. Failed Discord work is pushed to the worker event queue.
+5. Archive envelopes are also pushed to the queue.
+6. The queue consumer forwards archive/telemetry events to Azure and retries Discord sync asynchronously.
 
 ## Local Development
 1. Copy `.dev.vars.example` to `.dev.vars`.
-2. Replace the placeholder KV IDs in `wrangler.toml`.
-3. Run `npm install` at the repo root.
-4. Start the worker with:
+2. Replace placeholder KV IDs and queue names in `wrangler.toml`.
+3. Supply either direct secrets or Key Vault secret names plus Azure credentials.
+4. Run from the repo root:
 
 ```bash
-npx wrangler dev operations/entitlement-system/workers/stripeWebhook.ts --config operations/entitlement-system/wrangler.toml
+npm run dev:entitlement
 ```
 
 ## Verification
-Run the targeted tests:
-
 ```bash
 npm run test:entitlement
 ```

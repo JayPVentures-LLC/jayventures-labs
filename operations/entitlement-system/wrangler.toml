@@ -4,6 +4,11 @@ compatibility_date = "2026-04-09"
 
 [vars]
 LOG_LEVEL = "info"
+AZURE_KEY_VAULT_URL = "https://replace-me.vault.azure.net"
+AZURE_TENANT_ID = "replace-me"
+AZURE_CLIENT_ID = "replace-me"
+APPINSIGHTS_CONNECTION_STRING = "InstrumentationKey=replace-me;IngestionEndpoint=https://eastus-0.in.applicationinsights.azure.com/"
+AZURE_ARCHIVE_ENDPOINT = "https://replace-me.example/archive/entitlements"
 
 [[kv_namespaces]]
 binding = "ENTITLEMENT_KV"
@@ -19,3 +24,12 @@ preview_id = "REPLACE_WITH_IDEMPOTENCY_KV_PREVIEW_ID"
 binding = "RETRY_QUEUE_KV"
 id = "REPLACE_WITH_RETRY_QUEUE_KV_ID"
 preview_id = "REPLACE_WITH_RETRY_QUEUE_KV_PREVIEW_ID"
+
+[[queues.producers]]
+binding = "WORKER_EVENTS_QUEUE"
+queue = "REPLACE_WITH_ENTITLEMENT_EVENTS_QUEUE"
+
+[[queues.consumers]]
+queue = "REPLACE_WITH_ENTITLEMENT_EVENTS_QUEUE"
+max_batch_size = 10
+max_batch_timeout = 5
