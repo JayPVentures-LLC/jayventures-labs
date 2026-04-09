@@ -31,7 +31,7 @@ export default function Home() {
             <a href="#services" className="hover:text-white transition-colors">Monetization</a>
             <a href="#outcomes" className="hover:text-white transition-colors">Execution</a>
             <a href="#about" className="hover:text-white transition-colors">About</a>
-            <a href="#insights" className="hover:text-white transition-colors">Insights</a>
+            <a href="#bridge" className="hover:text-white transition-colors">Insights</a>
             <a href="#contact" className="hover:text-white transition-colors">Contact</a>
           </nav>
           {/* CTA button */}
@@ -306,3 +306,4 @@ export default function Home() {
     </main>
   );
 }
+
