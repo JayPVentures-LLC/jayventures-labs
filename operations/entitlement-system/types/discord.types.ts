@@ -4,3 +4,15 @@ export interface DiscordRoleUpdate {
   addRoles: string[];
   removeRoles: string[];
 }
+  guildId: string;
+}
+
+export interface DiscordSyncPayload {
+  discordId: string;
+  entitlements: Array<{
+    brand: string;
+    tier: string;
+    guildId: string;
+    roleIds: string[];
+  }>;
+}
