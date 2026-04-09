@@ -1,4 +1,4 @@
-# JayVentures Automation Architecture
+# JayPVentures Automation Architecture
 
 ## Purpose
 This workspace supports a dual-brand operating model:

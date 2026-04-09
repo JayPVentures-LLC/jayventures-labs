@@ -1,4 +1,4 @@
-# jayventures-labs
+# jaypventures-labs
 
 Enterprise workspace for JayPVentures LLC experiments, internal tooling, worker prototypes, website drafts, and operating documentation.
 
