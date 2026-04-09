@@ -1,95 +1,108 @@
-// Discord Service: Role assignment/removal, retry logic, admin override
-import { Entitlement, BrandEntitlement } from '../types/entitlement.types';
-import { reconcileRoles, getGuildIdForBrand } from './discordRoleMapping.service';
-import { logger } from '../utils/logger';
+import type { Env } from "../config/env";
+import type { DiscordRoleUpdate } from "../types/discord.types";
+import type { BrandEntitlement, Entitlement } from "../types/entitlement.types";
+import { reconcileRoles } from "./discordRoleMapping.service";
+import { logger } from "../utils/logger";
 
-const DISCORD_API = 'https://discord.com/api/v10';
+const DISCORD_API = "https://discord.com/api/v10";
 
-async function discordRequest(env: any, method: string, url: string, body?: any) {
-  const headers: Record<string, string> = {
-    'Authorization': `Bot ${env.DISCORD_BOT_TOKEN}`,
-    'Content-Type': 'application/json'
-  };
-  const res = await fetch(`${DISCORD_API}${url}`, {
+class DiscordApiError extends Error {
+  constructor(message: string, readonly status: number) {
+    super(message);
+  }
+}
+
+async function discordRequest(env: Env, method: string, url: string): Promise<unknown> {
+  const response = await fetch(`${DISCORD_API}${url}`, {
     method,
-    headers,
-    body: body ? JSON.stringify(body) : undefined
+    headers: {
+      Authorization: `Bot ${env.DISCORD_BOT_TOKEN}`,
+      "Content-Type": "application/json",
+    },
   });
-  if (res.status === 429) {
-    logger.log('warn', 'Discord rate limited', { url });
-    throw new Error('Rate limited');
+
+  if (!response.ok) {
+    const message = await response.text();
+    throw new DiscordApiError(message || `Discord request failed with status ${response.status}`, response.status);
   }
-  if (!res.ok) {
-    const err = await res.text();
-    logger.log('error', 'Discord API error', { url, err });
-    throw new Error(`Discord API error: ${err}`);
-  }
-  return res.json();
+
+  if (response.status === 204) return null;
+  return response.json();
 }
 
-export async function getGuildMember(env: any, guildId: string, discordId: string) {
+export async function getGuildMember(env: Env, guildId: string, discordId: string): Promise<{ roles?: string[] } | null> {
   try {
-    const member = await discordRequest(env, 'GET', `/guilds/${guildId}/members/${discordId}`);
-    return member;
-  } catch (e: any) {
-    if (e.message && e.message.includes('404')) return null;
-    throw e;
+    return (await discordRequest(env, "GET", `/guilds/${guildId}/members/${discordId}`)) as { roles?: string[] };
+  } catch (error) {
+    if (error instanceof DiscordApiError && error.status === 404) {
+      return null;
+    }
+    throw error;
   }
 }
 
-export async function addMemberRole(env: any, guildId: string, discordId: string, roleId: string) {
-  return discordRequest(env, 'PUT', `/guilds/${guildId}/members/${discordId}/roles/${roleId}`);
+export async function addMemberRole(env: Env, guildId: string, discordId: string, roleId: string): Promise<void> {
+  await discordRequest(env, "PUT", `/guilds/${guildId}/members/${discordId}/roles/${roleId}`);
 }
 
-export async function removeMemberRole(env: any, guildId: string, discordId: string, roleId: string) {
-  return discordRequest(env, 'DELETE', `/guilds/${guildId}/members/${discordId}/roles/${roleId}`);
+export async function removeMemberRole(env: Env, guildId: string, discordId: string, roleId: string): Promise<void> {
+  await discordRequest(env, "DELETE", `/guilds/${guildId}/members/${discordId}/roles/${roleId}`);
 }
 
-// Syncs all brand entitlements for a user across all guilds
-export async function syncDiscord(entitlement: Entitlement, env: any) {
-  if (!entitlement.discord?.discordId) return;
-  for (const brandEnt of entitlement.entitlements) {
-    await syncDiscordRoles(entitlement, brandEnt, env);
+export async function syncDiscordRoles(
+  entitlement: Entitlement,
+  brandEntitlement: BrandEntitlement,
+  env: Env
+): Promise<DiscordRoleUpdate & { success: boolean; skipped: boolean; error?: string }> {
+  const discordId = entitlement.discord?.discordId;
+  if (!discordId) {
+    return {
+      discordId: "",
+      guildId: brandEntitlement.guildId,
+      addRoles: [],
+      removeRoles: [],
+      success: false,
+      skipped: true,
+      error: "No Discord ID",
+    };
   }
-}
 
-// Syncs roles for a single brand entitlement
-export async function syncDiscordRoles(ent: Entitlement, brandEnt: BrandEntitlement, env: any) {
-  const { discord } = ent;
-  const { brand, tier, guildId } = brandEnt;
-  if (!discord?.discordId) return { success: false, error: 'No Discord ID', skipped: true };
-  // Get current member roles
-  const member = await getGuildMember(env, guildId, discord.discordId);
+  const member = await getGuildMember(env, brandEntitlement.guildId, discordId);
   if (!member) {
-    logger.log('warn', 'Discord member not found', { discordId: discord.discordId, guildId });
-    return { success: false, error: 'Member not found', skipped: true };
+    logger.log("warn", "Discord member not found", { userId: entitlement.userId, discordId, guildId: brandEntitlement.guildId });
+    return {
+      discordId,
+      guildId: brandEntitlement.guildId,
+      addRoles: [],
+      removeRoles: [],
+      success: false,
+      skipped: true,
+      error: "Discord member not found",
+    };
   }
-  const currentRoles: string[] = member.roles || [];
-  const { add, remove } = reconcileRoles({ brand, tier, currentRoles });
-  // Remove conflicting roles
+
+  const currentRoles = Array.isArray(member.roles) ? member.roles : [];
+  const { add, remove } = reconcileRoles({
+    brand: brandEntitlement.brand,
+    tier: brandEntitlement.tier,
+    status: brandEntitlement.status,
+    currentRoles,
+  });
+
   for (const roleId of remove) {
-    try {
-      await removeMemberRole(env, guildId, discord.discordId, roleId);
-      logger.log('info', 'Removed Discord role', { discordId: discord.discordId, guildId, roleId });
-    } catch (e) {
-      logger.log('error', 'Failed to remove Discord role', { discordId: discord.discordId, guildId, roleId, error: e.message });
-    }
+    await removeMemberRole(env, brandEntitlement.guildId, discordId, roleId);
   }
-  // Add expected roles
+
   for (const roleId of add) {
-    try {
-      await addMemberRole(env, guildId, discord.discordId, roleId);
-      logger.log('info', 'Added Discord role', { discordId: discord.discordId, guildId, roleId });
-    } catch (e) {
-      logger.log('error', 'Failed to add Discord role', { discordId: discord.discordId, guildId, roleId, error: e.message });
-    }
+    await addMemberRole(env, brandEntitlement.guildId, discordId, roleId);
   }
+
   return {
+    discordId,
+    guildId: brandEntitlement.guildId,
+    addRoles: add,
+    removeRoles: remove,
     success: true,
-    brand,
-    guildId,
-    addedRoles: add,
-    removedRoles: remove,
-    skipped: false
+    skipped: false,
   };
 }

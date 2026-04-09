@@ -1,7 +1,6 @@
-// Discord Role Mapping: brand/tier → Discord role ID
-import { Brand, Tier } from '../types/entitlement.types';
+import type { Brand, Tier } from "../types/entitlement.types";
+import { DISCORD_GUILD_CONFIG } from "./discordGuilds";
 
-export function getDiscordRoleId(brand: Brand, tier: Tier, roleMap: Record<string, string>): string | undefined {
-  // TODO: Return role ID for brand/tier
-  return roleMap[`${brand}:${tier}`];
+export function getDiscordRoleId(brand: Brand, tier: Tier): string | undefined {
+  return DISCORD_GUILD_CONFIG[brand]?.tierRoles[tier]?.[0];
 }
