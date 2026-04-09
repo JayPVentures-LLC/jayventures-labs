@@ -1,18 +1,26 @@
-// Discord Types: API requests/responses
+import type { Brand, Entitlement } from "./entitlement.types";
+
 export interface DiscordRoleUpdate {
   discordId: string;
+  guildId: string;
   addRoles: string[];
   removeRoles: string[];
-}
-  guildId: string;
 }
 
 export interface DiscordSyncPayload {
   discordId: string;
-  entitlements: Array<{
-    brand: string;
-    tier: string;
-    guildId: string;
-    roleIds: string[];
-  }>;
+  entitlements: Entitlement["entitlements"];
+}
+
+export interface RetryTask {
+  id: string;
+  type: "discord-sync";
+  attempts: number;
+  runAfter: number;
+  createdAt: string;
+  payload: {
+    userId: string;
+    brand?: Brand;
+    reason: string;
+  };
 }
