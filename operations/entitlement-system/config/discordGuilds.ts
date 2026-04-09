@@ -6,7 +6,7 @@ export const DISCORD_GUILD_CONFIG: Record<Brand, {
   tierRoles: Record<Tier, string[]>;
 }> = {
   jaypventuresllc: {
-    guildId: 'YOUR_LLC_GUILD_ID',
+    guildId: '1491229650142105621',
     tierRoles: {
       free: ['llc_guest'],
       member: ['llc_lead'],
@@ -15,7 +15,7 @@ export const DISCORD_GUILD_CONFIG: Record<Brand, {
     }
   },
   jaypventures: {
-    guildId: 'YOUR_CREATOR_GUILD_ID',
+    guildId: '1467930335290462357',
     tierRoles: {
       free: ['community_free'],
       member: ['community_supporter'],
