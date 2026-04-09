@@ -1,36 +1,40 @@
 // Discord Sync Service: Multi-guild, brand-aware role sync
-import { Entitlement, Brand, Tier } from '../types/entitlement.types';
-import { getGuildIdForBrand, getRoleIdsForBrandTier } from './discordRoleMapping.service';
+import { Entitlement, Brand, Tier, BrandEntitlement } from '../types/entitlement.types';
 import { logger } from '../utils/logger';
+import { syncDiscordRoles as syncRoles } from './discord.service';
 
 export interface DiscordSyncResult {
-  success: boolean;
   brand: Brand;
   guildId: string;
   addedRoles: string[];
   removedRoles: string[];
   skipped: boolean;
   error?: string;
+  success: boolean;
 }
 
-export async function syncDiscordRoles(entitlement: Entitlement): Promise<DiscordSyncResult> {
-  const { brand, tier, discord } = entitlement;
-  if (!discord?.discordId) {
-    logger.log('warn', 'No Discord ID for entitlement', { brand, tier });
-    return { success: false, brand, guildId: '', addedRoles: [], removedRoles: [], skipped: true };
+// Syncs all entitlements for a user, returns results per guild
+export async function syncDiscordRoles(entitlement: Entitlement, env: any): Promise<DiscordSyncResult[]> {
+  if (!entitlement.discord?.discordId) {
+    logger.log('warn', 'No Discord ID for entitlement', { userId: entitlement.userId });
+    return [{ brand: 'jaypventures', guildId: '', addedRoles: [], removedRoles: [], skipped: true, error: 'No Discord ID', success: false }];
   }
-  const guildId = getGuildIdForBrand(brand);
-  const targetRoles = getRoleIdsForBrandTier(brand, tier);
-  // TODO: Fetch current roles from Discord API, compute add/remove
-  // TODO: Call Discord API to update roles
-  // For now, stubbed:
-  logger.log('info', 'Syncing Discord roles', { discordId: discord.discordId, guildId, add: targetRoles });
-  return {
-    success: true,
-    brand,
-    guildId,
-    addedRoles: targetRoles,
-    removedRoles: [],
-    skipped: false
-  };
+  const results: DiscordSyncResult[] = [];
+  for (const brandEnt of entitlement.entitlements) {
+    try {
+      const res = await syncRoles(entitlement, brandEnt, env);
+      results.push(res);
+    } catch (e: any) {
+      results.push({
+        brand: brandEnt.brand,
+        guildId: brandEnt.guildId,
+        addedRoles: [],
+        removedRoles: [],
+        skipped: false,
+        error: e.message,
+        success: false
+      });
+    }
+  }
+  return results;
 }

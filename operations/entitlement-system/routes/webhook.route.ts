@@ -1,9 +1,11 @@
 // Webhook Route: Stripe event ingestion
 import { verifyStripeSignature } from '../utils/verify-signature';
-import { processStripeEvent } from '../services/stripe.service';
+import { upsertBrandEntitlement } from '../services/entitlement.service';
+import { syncDiscordRoles } from '../services/discordSync.service';
 import { logger } from '../utils/logger';
 import { getEnv, Env } from '../config/env';
 import { SUPPORTED_STRIPE_EVENTS } from '../config/stripeEvents';
+import { getRoleIdsForBrandTier } from '../services/discordRoleMapping.service';
 
 // Helper: Read raw body for signature verification
 async function readRawBody(request: Request): Promise<Uint8Array> {
@@ -52,17 +54,57 @@ export async function handleStripeWebhook(request: Request, env: Env, ctx: Execu
       logger.log('info', 'Duplicate Stripe event', { id: event.id });
       return new Response('Duplicate event', { status: 200 });
     }
-    // Process event
-    try {
-      await processStripeEvent(event, env);
-      await env.KV_NAMESPACE.put(idempotencyKey, '1', { expirationTtl: 86400 });
-      logger.log('info', 'Stripe event processed', { id: event.id, type: event.type });
-      return new Response('OK', { status: 200 });
-    } catch (err: any) {
-      logger.log('error', 'Stripe event processing failed', { id: event.id, error: err?.message });
-      // Fail closed: Stripe will retry
-      return new Response('Processing failed', { status: 500 });
+    // Extract user/brand/tier from event (example assumes metadata)
+    const userId = event.data.object.metadata?.internal_user_id;
+    const discordId = event.data.object.metadata?.discord_user_id;
+    const brand = event.data.object.metadata?.brand;
+    const tier = event.data.object.metadata?.tier;
+    if (!userId || !discordId || !brand || !tier) {
+      logger.log('error', 'Missing required metadata', { eventId: event.id });
+      return new Response('Missing metadata', { status: 400 });
     }
+    // Determine status and expiry
+    let status = 'active';
+    let expiresAt = 0;
+    if (event.type === 'customer.subscription.deleted') {
+      status = 'inactive';
+      expiresAt = Date.now();
+    } else {
+      // Set expiry from subscription period if available
+      expiresAt = event.data.object.current_period_end ? event.data.object.current_period_end * 1000 : 0;
+    }
+    // Get roles for this brand/tier
+    const roleIds = getRoleIdsForBrandTier(brand, tier);
+    // Update entitlement (fail closed on error)
+    let ent;
+    try {
+      ent = await upsertBrandEntitlement({
+        userId,
+        brand,
+        tier,
+        status,
+        expiresAt,
+        source: 'stripe',
+        discordId,
+        roleIds,
+        env
+      });
+      logger.log('info', 'Entitlement updated', { userId, brand, tier, status, expiresAt });
+    } catch (err: any) {
+      logger.log('error', 'Entitlement update failed', { userId, brand, error: err?.message });
+      return new Response('Entitlement update failed', { status: 500 });
+    }
+    // Sync Discord roles
+    try {
+      const syncResults = await syncDiscordRoles(ent, env);
+      logger.log('info', 'Discord sync results', { userId, brand, results: syncResults });
+    } catch (err: any) {
+      logger.log('error', 'Discord sync failed', { userId, brand, error: err?.message });
+      // Optionally: queue for retry
+    }
+    await env.KV_NAMESPACE.put(idempotencyKey, '1', { expirationTtl: 86400 });
+    logger.log('info', 'Stripe event processed', { id: event.id, type: event.type });
+    return new Response('OK', { status: 200 });
   } catch (err: any) {
     logger.log('error', 'Stripe webhook error', { error: err?.message });
     // Fail closed: Stripe will retry
