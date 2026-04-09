@@ -34,10 +34,12 @@ export async function listRetryTasks(env: Env): Promise<RetryTask[]> {
   }
 
   const listed = await env.RETRY_QUEUE_KV.list({ prefix: "retry:" });
-  const tasks = await Promise.all(listed.keys.map(async (entry) => {
-    const raw = await env.RETRY_QUEUE_KV?.get(entry.name);
-    return raw ? (JSON.parse(raw) as RetryTask) : null;
-  }));
+  const tasks = await Promise.all(
+    listed.keys.map(async (entry) => {
+      const raw = await env.RETRY_QUEUE_KV?.get(entry.name);
+      return raw ? (JSON.parse(raw) as RetryTask) : null;
+    })
+  );
 
   return tasks.filter((task): task is RetryTask => Boolean(task));
 }
@@ -47,7 +49,11 @@ export async function removeRetryTask(env: Env, taskId: string): Promise<void> {
   await env.RETRY_QUEUE_KV.delete(keyFor(taskId));
 }
 
-export async function processRetryQueue(`n  env: Env,`n  handler: (task: RetryTask) => Promise<void>,`n  options?: { force?: boolean }`n): Promise<{ processed: number; succeeded: number; failed: number }> {
+export async function processRetryQueue(
+  env: Env,
+  handler: (task: RetryTask) => Promise<void>,
+  options?: { force?: boolean }
+): Promise<{ processed: number; succeeded: number; failed: number }> {
   const tasks = await listRetryTasks(env);
   const due = options?.force ? tasks : tasks.filter((task) => task.runAfter <= Date.now());
 
@@ -71,10 +77,13 @@ export async function processRetryQueue(`n  env: Env,`n  handler: (task: RetryTa
         runAfter: Date.now() + Math.min(2 ** attempts * 60_000, 60 * 60 * 1000),
       };
       await env.RETRY_QUEUE_KV.put(keyFor(task.id), JSON.stringify(next), { expirationTtl: 60 * 60 * 24 * 7 });
-      logger.log("warn", "Retry task rescheduled", { taskId: task.id, attempts, error: error instanceof Error ? error.message : String(error) });
+      logger.log("warn", "Retry task rescheduled", {
+        taskId: task.id,
+        attempts,
+        error: error instanceof Error ? error.message : String(error),
+      });
     }
   }
 
   return { processed: due.length, succeeded, failed };
 }
-
