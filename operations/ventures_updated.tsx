@@ -222,7 +222,7 @@ export default function VenturesPage() {
             </p>
 
             <div className="rounded-2xl border border-[#2A2230] bg-[#11141a] p-8 text-center text-[#A0A4AB]">
-              Booking calendar / livestream embed coming soon
+              Booking calendar / livestream embed ready for final platform wiring
             </div>
           </div>
         </section>
@@ -249,3 +249,4 @@ export default function VenturesPage() {
     </>
   );
 }
+

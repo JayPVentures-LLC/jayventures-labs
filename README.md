@@ -39,8 +39,8 @@ Enterprise workspace for JayPVentures LLC experiments, internal tooling, worker 
 5. Copy each `.dev.vars.example` to `.dev.vars` in the matching worker folder before running locally.
 
 ## Trust and Governance
-- [GOVERNANCE.md](GOVERNANCE.md)
-- `SECURITY.md` is referenced by the website previews and should exist alongside governance documents before launch.
+- [GOVERNANCE.md](GOVERNANCE.md)`r`n- [SECURITY.md](SECURITY.md)
 
 ## Promotion Policy
 Code and documentation in this repository remain experimental until they are deployed, verified, and promoted into a dedicated production repository or platform environment.
+
