@@ -31,16 +31,20 @@ Enterprise workspace for JayPVentures LLC experiments, internal tooling, worker 
 ## Local Tooling
 
 1. Install dependencies with `npm install` from the repo root.
-2. Run tests with `npm test`.
-3. Type-check with `npm run typecheck`.
-4. Use the worker-specific Wrangler configs in:
-   - `operations/entitlement-system/wrangler.toml`
-   - `wix/bookings/wrangler.toml`
-5. Copy each `.dev.vars.example` to `.dev.vars` in the matching worker folder before running locally.
+2. Create local secret files with `npm run setup:devvars`.
+3. Fill in real secrets and KV IDs in the generated `.dev.vars` files and both Wrangler configs.
+4. Run tests with `npm test`.
+5. Type-check with `npm run typecheck`.
+6. Start a worker locally with:
+   - `npm run dev:entitlement`
+   - `npm run dev:bookings`
+7. Validate deployment packaging without pushing with:
+   - `npm run deploy:dryrun:entitlement`
+   - `npm run deploy:dryrun:bookings`
 
 ## Trust and Governance
-- [GOVERNANCE.md](GOVERNANCE.md)`r`n- [SECURITY.md](SECURITY.md)
+- [GOVERNANCE.md](GOVERNANCE.md)
+- [SECURITY.md](SECURITY.md)
 
 ## Promotion Policy
 Code and documentation in this repository remain experimental until they are deployed, verified, and promoted into a dedicated production repository or platform environment.
-

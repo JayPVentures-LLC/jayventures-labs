@@ -1,0 +1,25 @@
+# Node
+node_modules/
+coverage/
+*.log
+npm-debug.log*
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Cloudflare / Wrangler
+.wrangler/
+**/.wrangler/
+.dev.vars
+**/.dev.vars
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Local test artifacts
+*.local
