@@ -47,7 +47,7 @@ Incidents are managed through a resilient response protocol:
 
 ## Responsible Disclosure
 
-Vulnerabilities and incidents may be disclosed responsibly. Contact [venture@jaypventuresllc.com](mailto:venture@jaypventuresllc.com) for confidential reporting.
+Vulnerabilities and incidents may be disclosed responsibly. Contact [jayhere@jaypventuresllc.com](mailto:jayhere@jaypventuresllc.com) for confidential reporting.
 
 ---
 

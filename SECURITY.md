@@ -12,7 +12,7 @@ Security review and responsible disclosure apply to:
 
 ## Reporting a Vulnerability
 Report suspected vulnerabilities privately to:
-- `venture@jaypventuresllc.com`
+- `jayhere@jaypventuresllc.com`
 
 Include:
 - affected file, route, or workflow
@@ -61,3 +61,4 @@ Before deployment or launch, verify:
 - Stripe webhook secrets are environment-specific
 - admin override keys are rotated and stored outside source control
 - trust pages link to both `GOVERNANCE.md` and this file
+
