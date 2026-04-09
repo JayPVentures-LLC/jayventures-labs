@@ -31,7 +31,7 @@ function overallStatus(entitlements: BrandEntitlement[]): EntitlementStatus {
   if (entitlements.some((entry) => entry.status === "revoked")) {
     return "revoked";
   }
-  if (entitlements.every((entry) => entry.status === "expired" || entry.expiresAt <= Date.now())) {
+  if (entitlements.length > 0 && entitlements.every((entry) => entry.status === "expired" || entry.expiresAt <= Date.now())) {
     return "expired";
   }
   return "inactive";
@@ -126,62 +126,62 @@ export async function upsertBrandEntitlement(
       ? {
           ...(existing.discord ?? {}),
           discordId: input.discordId,
-+        }
-+      : existing.discord,
-+    entitlements,
-+  };
-+
-+  await persistEntitlement(entitlement, env);
-+  return entitlement;
-+}
-+
-+export async function updateEntitlement(
-+  input: BrandEntitlementInput,
-+  env: { ENTITLEMENT_KV: KVNamespace }
-+): Promise<Entitlement> {
-+  return upsertBrandEntitlement(input, env);
-+}
-+
-+export async function setDiscordSyncTimestamp(
-+  userId: string,
-+  syncedAt: string,
-+  env: { ENTITLEMENT_KV: KVNamespace }
-+): Promise<Entitlement | null> {
-+  const entitlement = await getEntitlement(userId, env);
-+  if (!entitlement || !entitlement.discord) return entitlement;
-+  entitlement.discord.lastSyncedAt = syncedAt;
-+  entitlement.updatedAt = syncedAt;
-+  await persistEntitlement(entitlement, env);
-+  return entitlement;
-+}
-+
-+export async function revokeBrandEntitlement(
-+  userId: string,
-+  brand: Brand,
-+  env: { ENTITLEMENT_KV: KVNamespace }
-+): Promise<Entitlement | null> {
-+  const entitlement = await getEntitlement(userId, env);
-+  if (!entitlement) return null;
-+
-+  entitlement.entitlements = entitlement.entitlements.map((entry) => {
-+    if (entry.brand !== brand) return entry;
-+    return { ...entry, status: "revoked", updatedAt: new Date().toISOString() };
-+  });
-+
-+  entitlement.status = overallStatus(entitlement.entitlements);
-+  entitlement.expiresAt = overallExpiry(entitlement.entitlements);
-+  entitlement.updatedAt = new Date().toISOString();
-+  await persistEntitlement(entitlement, env);
-+  return entitlement;
-+}
-+
-+export async function expireEntitlements(userId: string, env: { ENTITLEMENT_KV: KVNamespace }): Promise<Entitlement | null> {
-+  const entitlement = await getEntitlement(userId, env);
-+  if (!entitlement) return null;
-+  entitlement.entitlements = entitlement.entitlements.map(normalizeExpiredEntitlement);
-+  entitlement.status = overallStatus(entitlement.entitlements);
-+  entitlement.expiresAt = overallExpiry(entitlement.entitlements);
-+  entitlement.updatedAt = new Date().toISOString();
-+  await persistEntitlement(entitlement, env);
-+  return entitlement;
-+}
+        }
+      : existing.discord,
+    entitlements,
+  };
+
+  await persistEntitlement(entitlement, env);
+  return entitlement;
+}
+
+export async function updateEntitlement(
+  input: BrandEntitlementInput,
+  env: { ENTITLEMENT_KV: KVNamespace }
+): Promise<Entitlement> {
+  return upsertBrandEntitlement(input, env);
+}
+
+export async function setDiscordSyncTimestamp(
+  userId: string,
+  syncedAt: string,
+  env: { ENTITLEMENT_KV: KVNamespace }
+): Promise<Entitlement | null> {
+  const entitlement = await getEntitlement(userId, env);
+  if (!entitlement || !entitlement.discord) return entitlement;
+  entitlement.discord.lastSyncedAt = syncedAt;
+  entitlement.updatedAt = syncedAt;
+  await persistEntitlement(entitlement, env);
+  return entitlement;
+}
+
+export async function revokeBrandEntitlement(
+  userId: string,
+  brand: Brand,
+  env: { ENTITLEMENT_KV: KVNamespace }
+): Promise<Entitlement | null> {
+  const entitlement = await getEntitlement(userId, env);
+  if (!entitlement) return null;
+
+  entitlement.entitlements = entitlement.entitlements.map((entry) => {
+    if (entry.brand !== brand) return entry;
+    return { ...entry, status: "revoked", updatedAt: new Date().toISOString() };
+  });
+
+  entitlement.status = overallStatus(entitlement.entitlements);
+  entitlement.expiresAt = overallExpiry(entitlement.entitlements);
+  entitlement.updatedAt = new Date().toISOString();
+  await persistEntitlement(entitlement, env);
+  return entitlement;
+}
+
+export async function expireEntitlements(userId: string, env: { ENTITLEMENT_KV: KVNamespace }): Promise<Entitlement | null> {
+  const entitlement = await getEntitlement(userId, env);
+  if (!entitlement) return null;
+  entitlement.entitlements = entitlement.entitlements.map(normalizeExpiredEntitlement);
+  entitlement.status = overallStatus(entitlement.entitlements);
+  entitlement.expiresAt = overallExpiry(entitlement.entitlements);
+  entitlement.updatedAt = new Date().toISOString();
+  await persistEntitlement(entitlement, env);
+  return entitlement;
+}
