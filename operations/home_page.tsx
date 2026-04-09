@@ -7,7 +7,7 @@ import Image from 'next/image';
  * neon accents. Each section follows the structure outlined in the
  * implementation plan and includes the final copy provided by the user.
  *
- * Note: Image assets referenced in this file (e.g. `/logo.png`,
+ * Note: This is a draft export, not a wired Next.js page in this repository. Image assets referenced in this file (e.g. `/logo.png`,
  * `/founder-hero.png`, `/dualbrand-logo.png`) should be placed in the
  * `public/` directory of your Next.js project. Replace the filenames
  * accordingly if you choose different names or locations.
@@ -27,9 +27,9 @@ export default function Home() {
           {/* Navigation */}
           <nav className="hidden md:flex items-center space-x-8 text-sm uppercase tracking-wide text-[#A0A4AB]">
             <a href="#infrastructure" className="hover:text-white transition-colors">Infrastructure</a>
-            <a href="#automation" className="hover:text-white transition-colors">Automation</a>
-            <a href="#monetization" className="hover:text-white transition-colors">Monetization</a>
-            <a href="#execution" className="hover:text-white transition-colors">Execution</a>
+            <a href="#systems" className="hover:text-white transition-colors">Automation</a>
+            <a href="#services" className="hover:text-white transition-colors">Monetization</a>
+            <a href="#outcomes" className="hover:text-white transition-colors">Execution</a>
             <a href="#about" className="hover:text-white transition-colors">About</a>
             <a href="#insights" className="hover:text-white transition-colors">Insights</a>
             <a href="#contact" className="hover:text-white transition-colors">Contact</a>
@@ -81,8 +81,7 @@ export default function Home() {
             <Image
               src="/founder-hero.png"
               alt="Founder portrait"
-              layout="fill"
-              objectFit="cover"
+              fill`r`n              style={{ objectFit: "cover" }}
               className="rounded-lg shadow-lg"
             />
           </div>
@@ -199,8 +198,7 @@ export default function Home() {
             <Image
               src="/founder-secondary.png"
               alt="Founder secondary portrait"
-              layout="fill"
-              objectFit="cover"
+              fill`r`n              style={{ objectFit: "cover" }}
               className="rounded-lg shadow-lg"
             />
           </div>
@@ -252,9 +250,7 @@ export default function Home() {
             <Image
               src="/dualbrand-logo.png"
               alt="Dual brand logo"
-              layout="responsive"
-              width={256}
-              height={256}
+              width={256}`r`n              height={256}
             />
           </div>
         </div>
@@ -268,12 +264,12 @@ export default function Home() {
             For consulting, partnerships, infrastructure builds, or venture-related inquiries, reach out directly.
           </p>
           <a
-            href="mailto:venture@jaypventures"
+            href="mailto:venture@jaypventuresllc.com"
             className="inline-block px-6 py-3 rounded-md bg-[#1A1D23] hover:bg-[#2A2230] transition-colors text-sm font-medium"
           >
             Start a Project
           </a>
-          <p className="mt-4 text-sm text-[#6B6F76]">venture@jaypventures</p>
+          <p className="mt-4 text-sm text-[#6B6F76]">venture@jaypventuresllc.com</p>
         </div>
       </section>
 
@@ -292,9 +288,9 @@ export default function Home() {
             <h4 className="text-lg font-semibold">Navigation</h4>
             <ul className="text-sm space-y-1 text-[#A0A4AB]">
               <li><a href="#infrastructure" className="hover:text-white transition-colors">Infrastructure</a></li>
-              <li><a href="#automation" className="hover:text-white transition-colors">Automation</a></li>
-              <li><a href="#monetization" className="hover:text-white transition-colors">Monetization</a></li>
-              <li><a href="#execution" className="hover:text-white transition-colors">Execution</a></li>
+              <li><a href="#systems" className="hover:text-white transition-colors">Automation</a></li>
+              <li><a href="#services" className="hover:text-white transition-colors">Monetization</a></li>
+              <li><a href="#outcomes" className="hover:text-white transition-colors">Execution</a></li>
               <li><a href="#about" className="hover:text-white transition-colors">About</a></li>
               <li><a href="#contact" className="hover:text-white transition-colors">Contact</a></li>
             </ul>
@@ -302,7 +298,7 @@ export default function Home() {
           {/* Contact */}
           <div className="space-y-2">
             <h4 className="text-lg font-semibold">Contact</h4>
-            <p className="text-sm text-[#A0A4AB]">venture@jaypventures</p>
+            <p className="text-sm text-[#A0A4AB]">venture@jaypventuresllc.com</p>
             <p className="text-xs text-[#6B6F76]">© JAYPVENTURES LLC. All rights reserved.</p>
           </div>
         </div>
