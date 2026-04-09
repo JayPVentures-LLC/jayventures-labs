@@ -1,0 +1,21 @@
+name = "jayventures-entitlement-system"
+main = "workers/stripeWebhook.ts"
+compatibility_date = "2026-04-09"
+
+[vars]
+LOG_LEVEL = "info"
+
+[[kv_namespaces]]
+binding = "ENTITLEMENT_KV"
+id = "REPLACE_WITH_ENTITLEMENT_KV_ID"
+preview_id = "REPLACE_WITH_ENTITLEMENT_KV_PREVIEW_ID"
+
+[[kv_namespaces]]
+binding = "IDEMPOTENCY_KV"
+id = "REPLACE_WITH_IDEMPOTENCY_KV_ID"
+preview_id = "REPLACE_WITH_IDEMPOTENCY_KV_PREVIEW_ID"
+
+[[kv_namespaces]]
+binding = "RETRY_QUEUE_KV"
+id = "REPLACE_WITH_RETRY_QUEUE_KV_ID"
+preview_id = "REPLACE_WITH_RETRY_QUEUE_KV_PREVIEW_ID"

@@ -1,0 +1,26 @@
+name = "jayventures-bookings-worker"
+main = "src/index.ts"
+compatibility_date = "2026-04-09"
+
+[vars]
+ENVIRONMENT = "dev"
+
+[[kv_namespaces]]
+binding = "IDEMPOTENCY_KV"
+id = "REPLACE_WITH_IDEMPOTENCY_KV_ID"
+preview_id = "REPLACE_WITH_IDEMPOTENCY_KV_PREVIEW_ID"
+
+[[kv_namespaces]]
+binding = "METRICS_KV"
+id = "REPLACE_WITH_METRICS_KV_ID"
+preview_id = "REPLACE_WITH_METRICS_KV_PREVIEW_ID"
+
+[[kv_namespaces]]
+binding = "CREATOR_DATA_KV"
+id = "REPLACE_WITH_CREATOR_DATA_KV_ID"
+preview_id = "REPLACE_WITH_CREATOR_DATA_KV_PREVIEW_ID"
+
+[[kv_namespaces]]
+binding = "INNER_CIRCLE_MEMBER_KV"
+id = "REPLACE_WITH_INNER_CIRCLE_MEMBER_KV_ID"
+preview_id = "REPLACE_WITH_INNER_CIRCLE_MEMBER_KV_PREVIEW_ID"

@@ -1,0 +1,4 @@
+STRIPE_WEBHOOK_SECRET="whsec_replace_me"
+DISCORD_BOT_TOKEN="replace_me"
+ADMIN_OVERRIDE_KEY="replace_me"
+LOG_LEVEL="info"
