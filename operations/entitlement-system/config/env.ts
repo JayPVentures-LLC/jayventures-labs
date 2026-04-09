@@ -1,5 +1,3 @@
-import type { Env as WorkerEnv } from "../config/env";
-
 export interface Env {
   STRIPE_WEBHOOK_SECRET: string;
   DISCORD_BOT_TOKEN: string;
@@ -24,7 +22,7 @@ function assertKv(value: unknown, key: keyof Env): KVNamespace {
   return value as KVNamespace;
 }
 
-export function getEnv(env: Record<string, unknown>): WorkerEnv {
+export function getEnv(env: Record<string, unknown>): Env {
   return {
     STRIPE_WEBHOOK_SECRET: assertString(env.STRIPE_WEBHOOK_SECRET, "STRIPE_WEBHOOK_SECRET"),
     DISCORD_BOT_TOKEN: assertString(env.DISCORD_BOT_TOKEN, "DISCORD_BOT_TOKEN"),
