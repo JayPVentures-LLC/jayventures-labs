@@ -35,11 +35,9 @@ This repository is ready for CI and manual Cloudflare deployments once the requi
 Patch these placeholder values in the Wrangler files before using deployment workflows:
 
 ### apps/flagship-site/wrangler.toml
-- `STRIPE_ALL_VENTURES_CORE_URL`
-- `STRIPE_ALL_VENTURES_PLUS_URL`
-- `STRIPE_ALL_VENTURES_INNER_CIRCLE_URL`
-- `CREATOR_PORTAL_URL`
-- `INNER_CIRCLE_PORTAL_URL`
+- `SITE_ORIGIN` if deploying to a non-production hostname
+- `MICROSOFT_BOOKINGS_URL` if the consultation calendar changes
+- Optional overrides for `STRIPE_ALL_VENTURES_*` and `*_PORTAL_URL` only when live checkout and gated destinations are ready
 
 ### operations/entitlement-system/wrangler.toml
 - `ENTITLEMENT_KV`
@@ -74,7 +72,7 @@ Patch these placeholder values in the Wrangler files before using deployment wor
   - Uses the `cloudflare-production` GitHub environment
   - Validates the flagship site Wrangler config before deploying
   - Deploys the public flagship site to Cloudflare
-  - Requires real Stripe checkout URLs and portal destinations in `apps/flagship-site/wrangler.toml`
+  - Works with the internal routing defaults in `apps/flagship-site/wrangler.toml`, but production secrets and Cloudflare access still need to be configured
 
 ## Recommended Branch Protection
 

@@ -76,10 +76,26 @@ describe("flagship site worker", () => {
 
     expect(contact).toContain('id="apply-enterprise"');
     expect(contact).toContain('id="apply-creator"');
+    expect(contact).toContain('id="apply-membership-core"');
+    expect(contact).toContain('id="apply-membership-plus"');
+    expect(contact).toContain('id="apply-membership-inner-circle"');
     expect(contact).toContain('id="apply-music"');
     expect(contact).toContain('id="apply-travel"');
   });
 
+  it("serves machine-readable trust and SEO files", async () => {
+    const robots = await fetchRoute("/robots.txt");
+    expect(robots.status).toBe(200);
+    await expect(robots.text()).resolves.toContain("Sitemap:");
+
+    const sitemap = await fetchRoute("/sitemap.xml");
+    expect(sitemap.status).toBe(200);
+    await expect(sitemap.text()).resolves.toContain("/all-ventures-access");
+
+    const securityText = await fetchRoute("/.well-known/security.txt");
+    expect(securityText.status).toBe(200);
+    await expect(securityText.text()).resolves.toContain("mailto:jayhere@jaypventuresllc.com");
+  });
   it("redirects trailing slashes and rejects unsupported methods", async () => {
     const redirect = await fetchRoute("/services/");
     expect(redirect.status).toBe(301);

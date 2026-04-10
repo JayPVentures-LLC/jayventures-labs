@@ -21,6 +21,7 @@ export type PublicRoute =
   | "/trust"
   | "/contact"
   | "/privacy"
+  | "/cookies"
   | "/terms"
   | "/GOVERNANCE.md"
   | "/SECURITY.md";

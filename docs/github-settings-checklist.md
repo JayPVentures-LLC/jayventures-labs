@@ -86,7 +86,7 @@ Update these Wrangler files with real values before running deploy workflows:
 - [operations/entitlement-system/wrangler.toml](/c:/dev/jayventures-labs/operations/entitlement-system/wrangler.toml)
 - [wix/bookings/wrangler.toml](/c:/dev/jayventures-labs/wix/bookings/wrangler.toml)
 
-For the flagship site, replace the placeholder Stripe checkout URLs and gated portal URLs before using `deploy-website`.
+For the flagship site, only override the default membership and portal URLs if you are ready to replace the publish-safe internal routing with live checkout or gated destinations.
 
 ## Recommended First GitHub Workflow Validation
 1. Push the current branch.

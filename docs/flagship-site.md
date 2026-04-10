@@ -25,9 +25,13 @@ The flagship site is the enterprise-first public website for `jaypventuresllc.co
 - `/trust`
 - `/contact`
 - `/privacy`
+- `/cookies`
 - `/terms`
 - `/GOVERNANCE.md`
 - `/SECURITY.md`
+- `/robots.txt`
+- `/sitemap.xml`
+- `/.well-known/security.txt`
 
 ## Content Modules
 - `src/content/brands.ts`: shared dual-entity brand definitions
@@ -58,7 +62,7 @@ The site Worker uses these variables in `apps/flagship-site/wrangler.toml`:
 - `CREATOR_PORTAL_URL`
 - `INNER_CIRCLE_PORTAL_URL`
 
-The Stripe and portal URLs are intentionally placeholder values until the live checkout and gated destinations are finalized.
+The site now ships with publish-safe defaults for membership and portal routing. Override those values only when live checkout and gated destinations are ready to replace the internal contact and access routes.
 
 ## Commands
 - Local dev: `npm run dev:website`

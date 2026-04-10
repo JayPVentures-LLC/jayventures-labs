@@ -50,6 +50,7 @@ export const publicRoutes: readonly PublicRoute[] = [
   "/trust",
   "/contact",
   "/privacy",
+  "/cookies",
   "/terms",
   "/GOVERNANCE.md",
   "/SECURITY.md",
@@ -354,7 +355,7 @@ function pageLayout(env: Env, page: PageDefinition): string {
     <div class="shell footer-grid">
       <div><div class="eyebrow">JayPVentures LLC</div><h3>Enterprise services with associated public portfolio lines.</h3><p class="muted">The firm leads with governance, automation, and commercial infrastructure. Adjacent brands remain visible, but they do not override the primary enterprise posture.</p></div>
       <div class="footer-links"><a href="/services">Services</a><a href="/ventures">Ventures</a><a href="/all-ventures-access">All Ventures Access</a><a href="/trust">Trust Center</a><a href="/GOVERNANCE.md">GOVERNANCE.md</a><a href="/SECURITY.md">SECURITY.md</a></div>
-      <div class="footer-links"><a href="mailto:${escapeHtml(siteMeta.contactEmail)}">${escapeHtml(siteMeta.contactEmail)}</a><a href="${escapeHtml(siteMeta.linkedInUrl)}" target="_blank" rel="noopener noreferrer">LinkedIn</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><span>Security: ${escapeHtml(siteMeta.securityEmail)}</span></div>
+      <div class="footer-links"><a href="mailto:${escapeHtml(siteMeta.contactEmail)}">${escapeHtml(siteMeta.contactEmail)}</a><a href="${escapeHtml(siteMeta.linkedInUrl)}" target="_blank" rel="noopener noreferrer">LinkedIn</a><a href="/privacy">Privacy</a><a href="/cookies">Cookies</a><a href="/terms">Terms</a><span>Security: ${escapeHtml(siteMeta.securityEmail)}</span></div>
     </div>
   </footer>
 </body>
@@ -605,7 +606,7 @@ function renderCreator(env: Env): PageDefinition {
       </section>
       <section class="section shell">
         <div class="band-grid">
-          <article class="band-panel"><div class="eyebrow">Portal access</div><h3>Creator surfaces remain separate and gated.</h3><p class="muted">The public site explains the creator and member experience, then routes approved users into the worker-hosted portal.</p>${renderLinks([ctaMap.creatorPortal, { label: "Review Membership", type: "stripe_checkout", destination: "/all-ventures-access" }])}</article>
+          <article class="band-panel" id="creator-portal"><div class="eyebrow">Portal access</div><h3>Creator surfaces remain separate and gated.</h3><p class="muted">The public site explains the creator and member experience, then routes approved users into the worker-hosted portal or the public access guidance route.</p>${renderLinks([ctaMap.creatorPortal, { label: "Review Membership", type: "stripe_checkout", destination: "/all-ventures-access" }])}</article>
           <article class="band-panel"><div class="eyebrow">Scope review</div><h3>Higher-touch creator work still requires qualification.</h3><p class="muted">If the request is a full build, creator sprint, or recurring operating support, the next step is application and scope review rather than instant checkout.</p>${renderLinks([ctaMap.creatorApplication, ctaMap.contactRouting])}</article>
         </div>
       </section>`,
@@ -641,8 +642,8 @@ function renderAllVenturesAccess(env: Env): PageDefinition {
       </section>
       <section class="section shell">
         <div class="band-grid">
-          <article class="band-panel"><div class="eyebrow">Creator Portal</div><h3>Member and creator routing surface</h3><p class="muted">Use the public site to understand the logic, then move into the gated creator surface when your entitlement and access level allow it.</p>${renderLinks([ctaMap.creatorPortal])}</article>
-          <article class="band-panel"><div class="eyebrow">Inner Circle</div><h3>Premium transparency and command-center style access</h3><p class="muted">The Inner Circle layer is for higher-trust members who want deeper visibility, better routing, and more privileged access to the system.</p>${renderLinks([ctaMap.innerCirclePortal])}</article>
+          <article class="band-panel" id="creator-portal"><div class="eyebrow">Creator Portal</div><h3>Member and creator routing surface</h3><p class="muted">Use the public site to understand the logic, then move into the gated creator surface when your entitlement and access level allow it.</p>${renderLinks([ctaMap.creatorPortal])}</article>
+          <article class="band-panel" id="inner-circle-portal"><div class="eyebrow">Inner Circle</div><h3>Premium transparency and command-center style access</h3><p class="muted">The Inner Circle layer is for higher-trust members who want deeper visibility, better routing, and more privileged access to the system.</p>${renderLinks([ctaMap.innerCirclePortal])}</article>
         </div>
       </section>
       <section class="section shell">
@@ -854,7 +855,7 @@ function renderContact(env: Env): PageDefinition {
           </aside>
         </div>
       </section>
-      <section class="section shell"><div class="section-heading"><div class="eyebrow">Route by lane</div><h2>Choose the right path before asking for a build.</h2></div><div class="route-grid"><article class="route-panel" id="apply-enterprise"><div class="eyebrow">Enterprise</div><h3>JayPVentures LLC</h3><p class="muted">Governance, automation, monetization architecture, and higher-trust implementation work.</p>${renderLinks([ctaMap.enterpriseDiscovery, ctaMap.enterpriseApplication])}</article><article class="route-panel" id="apply-creator"><div class="eyebrow">Creator</div><h3>jaypventures creator</h3><p class="muted">Creator monetization, offer architecture, and recurring support for public-facing growth.</p>${renderLinks([{ label: "Book Creator Fit Call", type: "booking", destination: env.MICROSOFT_BOOKINGS_URL }, ctaMap.creatorApplication])}</article><article class="route-panel" id="apply-music"><div class="eyebrow">Music</div><h3>JayPVentures Music</h3><p class="muted">Production strategy, collaboration, and recurring creative direction.</p>${renderLinks([{ label: "Book Music Call", type: "booking", destination: env.MICROSOFT_BOOKINGS_URL }, ctaMap.musicApplication])}</article><article class="route-panel" id="apply-travel"><div class="eyebrow">Travel</div><h3>JayPVentures Travel</h3><p class="muted">Travel planning, custom itineraries, and higher-touch travel operations.</p>${renderLinks([{ label: "Book Travel Inquiry", type: "booking", destination: env.MICROSOFT_BOOKINGS_URL }, ctaMap.travelApplication])}</article></div></section>
+      <section class="section shell"><div class="section-heading"><div class="eyebrow">Route by lane</div><h2>Choose the right path before asking for a build.</h2></div><div class="route-grid"><article class="route-panel" id="apply-enterprise"><div class="eyebrow">Enterprise</div><h3>JayPVentures LLC</h3><p class="muted">Governance, automation, monetization architecture, and higher-trust implementation work.</p>${renderLinks([ctaMap.enterpriseDiscovery, ctaMap.enterpriseApplication])}</article><article class="route-panel" id="apply-creator"><div class="eyebrow">Creator</div><h3>jaypventures creator</h3><p class="muted">Creator monetization, offer architecture, and recurring support for public-facing growth.</p>${renderLinks([{ label: "Book Creator Fit Call", type: "booking", destination: env.MICROSOFT_BOOKINGS_URL }, ctaMap.creatorApplication])}</article><article class="route-panel" id="apply-membership-core"><div class="eyebrow">Membership</div><h3>All Ventures Access Core</h3><p class="muted">Request the Core tier if you want the lightest ongoing access path and a guided onboarding handoff.</p>${renderLinks([{ label: "Book Core Access Call", type: "booking", destination: env.MICROSOFT_BOOKINGS_URL }, { label: "Email Core Access", type: "application", destination: `mailto:${siteMeta.contactEmail}?subject=All%20Ventures%20Access%20Core` }])}</article><article class="route-panel" id="apply-membership-plus"><div class="eyebrow">Membership</div><h3>All Ventures Access Plus</h3><p class="muted">Use this route for deeper member access, stronger routing, and recurring support expectations.</p>${renderLinks([{ label: "Book Plus Access Call", type: "booking", destination: env.MICROSOFT_BOOKINGS_URL }, { label: "Email Plus Access", type: "application", destination: `mailto:${siteMeta.contactEmail}?subject=All%20Ventures%20Access%20Plus` }])}</article><article class="route-panel" id="apply-membership-inner-circle"><div class="eyebrow">Membership</div><h3>All Ventures Access Inner Circle</h3><p class="muted">Use this route for premium membership review, higher-trust access, and command-center style visibility.</p>${renderLinks([{ label: "Book Inner Circle Review", type: "booking", destination: env.MICROSOFT_BOOKINGS_URL }, { label: "Email Inner Circle Review", type: "application", destination: `mailto:${siteMeta.contactEmail}?subject=All%20Ventures%20Access%20Inner%20Circle` }])}</article><article class="route-panel" id="apply-music"><div class="eyebrow">Music</div><h3>JayPVentures Music</h3><p class="muted">Production strategy, collaboration, and recurring creative direction.</p>${renderLinks([{ label: "Book Music Call", type: "booking", destination: env.MICROSOFT_BOOKINGS_URL }, ctaMap.musicApplication])}</article><article class="route-panel" id="apply-travel"><div class="eyebrow">Travel</div><h3>JayPVentures Travel</h3><p class="muted">Travel planning, custom itineraries, and higher-touch travel operations.</p>${renderLinks([{ label: "Book Travel Inquiry", type: "booking", destination: env.MICROSOFT_BOOKINGS_URL }, ctaMap.travelApplication])}</article></div></section>
     `,
   };
 }
@@ -872,6 +873,18 @@ function renderPrivacy(): PageDefinition {
   };
 }
 
+function renderCookies(): PageDefinition {
+  return {
+    canonicalPath: "/cookies",
+    description: "Cookie notice for the flagship website and associated public JayPVentures routes.",
+    mode: "llc",
+    title: "Cookies",
+    body: `
+      <section class="hero-stage shell"><div class="hero-grid"><section class="poster"><div class="hero-kicker">Cookies</div><h1 class="hero-title">Cookie use is kept intentionally narrow.</h1><p class="hero-copy">The flagship site is designed to avoid unnecessary tracking. Essential technical behavior may be used for routing, security, and service continuity. Non-essential analytics should not be enabled without updating this notice and the related consent flow.</p></section><aside class="support-panel"><div><div class="eyebrow">Current posture</div><h2>No non-essential cookie banner is required until non-essential analytics or tracking are enabled.</h2></div><a class="button button-secondary" href="/privacy">Review privacy notice</a></aside></div></section>
+      <section class="section shell"><div class="section-heading"><div class="eyebrow">Summary</div><h2>How cookies and local storage should be handled.</h2></div><article class="doc-panel"><ul class="bullet-list"><li>Essential technical storage may be used for security, routing, and session integrity.</li><li>Non-essential analytics and advertising cookies should remain disabled until an explicit consent flow is added.</li><li>If analytics is enabled later, update this notice and implement consent-aware loading before deployment.</li></ul></article></section>
+    `,
+  };
+}
 function renderTerms(): PageDefinition {
   return {
     canonicalPath: "/terms",
@@ -896,7 +909,40 @@ function getMarkdownDocument(pathname: string): string | null {
   }
 }
 
+function renderPlainText(pathname: string, env: Env): RenderedRoute | null {
+  if (pathname === "/robots.txt") {
+    return {
+      body: `User-agent: *\nAllow: /\nSitemap: ${env.SITE_ORIGIN}/sitemap.xml\n`,
+      contentType: "text/plain; charset=UTF-8",
+      status: 200,
+    };
+  }
+
+  if (pathname === "/sitemap.xml") {
+    const routes = [...publicRoutes, ...insightArticles.map((article) => `/insights/${article.slug}`)];
+    return {
+      body: `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${routes.map((route) => `<url><loc>${env.SITE_ORIGIN}${route}</loc></url>`).join("")}</urlset>`,
+      contentType: "application/xml; charset=UTF-8",
+      status: 200,
+    };
+  }
+
+  if (pathname === "/.well-known/security.txt") {
+    return {
+      body: `Contact: mailto:${siteMeta.securityEmail}\nExpires: 2027-04-10T00:00:00.000Z\nPreferred-Languages: en\nCanonical: ${env.SITE_ORIGIN}/.well-known/security.txt\nPolicy: ${env.SITE_ORIGIN}/SECURITY.md\n`,
+      contentType: "text/plain; charset=UTF-8",
+      status: 200,
+    };
+  }
+
+  return null;
+}
 export function renderRoute(pathname: string, env: Env): RenderedRoute | null {
+  const plainText = renderPlainText(pathname, env);
+  if (plainText) {
+    return plainText;
+  }
+
   const markdown = getMarkdownDocument(pathname);
   if (markdown) {
     return {
@@ -947,6 +993,9 @@ export function renderRoute(pathname: string, env: Env): RenderedRoute | null {
       break;
     case "/privacy":
       page = renderPrivacy();
+      break;
+    case "/cookies":
+      page = renderCookies();
       break;
     case "/terms":
       page = renderTerms();
