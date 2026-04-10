@@ -657,3 +657,308 @@ function renderAllVenturesAccess(env: Env): PageDefinition {
       </section>`,
   };
 }
+function renderMusic(env: Env): PageDefinition {
+  const ctaMap = buildCtaMap(env);
+  const offers = getMusicOffers(env);
+
+  return {
+    canonicalPath: "/music",
+    description: "JayPVentures Music public offer page for strategy, collaboration, release systems, and recurring creative direction.",
+    mode: "creator",
+    title: "Music",
+    body: `
+      <section class="hero-stage shell">
+        <div class="hero-grid">
+          <section class="poster">
+            <div class="hero-kicker">JayPVentures Music</div>
+            <h1 class="hero-title">Creative systems, release rhythm, and collaboration infrastructure.</h1>
+            <p class="hero-copy">The music lane packages output, creative identity, and collaboration into something commercially usable instead of leaving it as disconnected artistic effort.</p>
+            ${renderLinks([
+              { label: "Book Music Fit Call", type: "booking", destination: env.MICROSOFT_BOOKINGS_URL },
+              ctaMap.musicApplication,
+            ], true)}
+          </section>
+          <aside class="support-panel">
+            <div><div class="eyebrow">What this lane covers</div><h2>Releases, collaborations, and ecosystem-aware music strategy.</h2></div>
+            <ul class="plain-list"><li>Production strategy and release planning</li><li>Creative systems for consistency and output</li><li>Collaboration sessions and campaign packaging</li><li>Recurring direction when the music lane needs stronger cadence</li></ul>
+          </aside>
+        </div>
+      </section>
+      <section class="section shell"><div class="section-heading"><div class="eyebrow">Music offers</div><h2>Sessions and build paths for artists and collaborators.</h2></div>${renderOfferRows(offers)}</section>
+      <section class="section shell"><div class="section-heading"><div class="eyebrow">Programming influence</div><h2>Music also benefits from the broader creator rhythm.</h2></div>${renderLivestreamFormats()}</section>
+    `,
+  };
+}
+
+function renderTravel(env: Env): PageDefinition {
+  const ctaMap = buildCtaMap(env);
+  const offers = getTravelOffers(env);
+
+  return {
+    canonicalPath: "/travel",
+    description: "JayPVentures Travel public offer page for inquiries, planning sessions, itinerary builds, and higher-touch travel operations.",
+    mode: "creator",
+    title: "Travel",
+    body: `
+      <section class="hero-stage shell">
+        <div class="hero-grid">
+          <section class="poster">
+            <div class="hero-kicker">JayPVentures Travel</div>
+            <h1 class="hero-title">Planning, itinerary, and experience design with better operational control.</h1>
+            <p class="hero-copy">The travel lane takes story, intention, and coordination pressure and turns them into clearer planning, better logistics, and a more usable client experience.</p>
+            ${renderLinks([
+              { label: "Book Travel Inquiry", type: "booking", destination: env.MICROSOFT_BOOKINGS_URL },
+              ctaMap.travelApplication,
+            ], true)}
+          </section>
+          <aside class="support-panel">
+            <div><div class="eyebrow">Travel structure</div><h2>Built for custom plans, not generic booking widgets.</h2></div>
+            <ul class="plain-list"><li>Trip inquiry and route clarity</li><li>Custom planning and itinerary design</li><li>Group strategy and expectation alignment</li><li>High-touch travel operations for more complex work</li></ul>
+          </aside>
+        </div>
+      </section>
+      <section class="section shell"><div class="section-heading"><div class="eyebrow">Travel offers</div><h2>Planning support and higher-touch travel operations.</h2></div>${renderOfferRows(offers)}</section>
+      <section class="section shell"><div class="section-heading"><div class="eyebrow">Why it fits</div><h2>Travel is another public proof lane for routing, clarity, and controlled execution.</h2></div><div class="two-col"><article class="doc-panel"><h3>Public promise</h3><ul class="bullet-list"><li>Cleaner planning and expectations</li><li>Higher-quality itinerary structure</li><li>Better handling of group complexity</li></ul></article><article class="doc-panel"><h3>Operational promise</h3><ul class="bullet-list"><li>Intentional intake instead of vague requests</li><li>Application routing for heavier operational work</li><li>Consistent flagship shell across all lanes</li></ul></article></div></section>
+    `,
+  };
+}
+
+function renderPartnerships(env: Env): PageDefinition {
+  const ctaMap = buildCtaMap(env);
+
+  return {
+    canonicalPath: "/partnerships",
+    description: "Collaborative brands, affiliate and performance partners, and partnership intake across the JayPVentures ecosystem.",
+    mode: "creator",
+    title: "Partnerships",
+    body: `
+      <section class="hero-stage shell">
+        <div class="hero-grid">
+          <section class="poster">
+            <div class="hero-kicker">Partnerships and collaborative brands</div>
+            <h1 class="hero-title">Brand relationships that can fit the operating system.</h1>
+            <p class="hero-copy">Partnerships should reinforce the flagship ecosystem, not dilute it. The public site makes that expectation visible from the start.</p>
+            ${renderLinks([ctaMap.contactRouting, ctaMap.creatorApplication], true)}
+          </section>
+          <aside class="support-panel">
+            <div><div class="eyebrow">Intake standard</div><h2>Partnerships are evaluated for fit, leverage, and ecosystem coherence.</h2></div>
+            <ul class="plain-list"><li>Brand fit with the public identity</li><li>Operational clarity and realistic deliverables</li><li>Member, creator, or venture leverage</li><li>Potential for repeatable proof rather than one-off noise</li></ul>
+          </aside>
+        </div>
+      </section>
+      <section class="section shell"><div class="section-heading"><div class="eyebrow">Current lanes</div><h2>Partnership depth across premium, growth, and volume categories.</h2></div>${renderPartnershipGroups()}</section>
+    `,
+  };
+}
+
+function renderInsightsIndex(): PageDefinition {
+  return {
+    canonicalPath: "/insights",
+    description: "Code-managed insights and operating notes across governance, conversion, memberships, and the dual-entity ecosystem.",
+    mode: "llc",
+    title: "Insights",
+    body: `
+      <section class="hero-stage shell">
+        <div class="hero-grid">
+          <section class="poster">
+            <div class="hero-kicker">Insights and operating notes</div>
+            <h1 class="hero-title">Authority content that explains how the system actually works.</h1>
+            <p class="hero-copy">The insights surface exists to deepen trust, explain the architecture, and make the commercial and governance logic legible to serious buyers and members.</p>
+          </section>
+          <aside class="support-panel">
+            <div><div class="eyebrow">Editorial posture</div><h2>Plain language, operational logic, and visible standards.</h2></div>
+            <p class="muted">This content is written as part of the flagship system architecture, not as filler.</p>
+          </aside>
+        </div>
+      </section>
+      <section class="section shell"><div class="section-heading"><div class="eyebrow">Published</div><h2>Current insights</h2></div>${renderInsightsList()}</section>
+    `,
+  };
+}
+
+function renderInsightArticle(slug: string): PageDefinition | null {
+  const article = insightArticles.find((item) => item.slug === slug);
+  if (!article) return null;
+
+  return {
+    canonicalPath: `/insights/${article.slug}`,
+    description: article.summary,
+    mode: article.slug === "operating-a-dual-entity-ecosystem" || article.slug === "all-ventures-access-is-a-system" ? "creator" : "llc",
+    title: article.title,
+    body: `
+      <section class="hero-stage shell">
+        <div class="hero-grid">
+          <section class="poster">
+            <div class="hero-kicker">${escapeHtml(article.kicker)}</div>
+            <h1 class="hero-title">${escapeHtml(article.title)}</h1>
+            <p class="hero-copy">${escapeHtml(article.summary)}</p>
+            <div class="article-meta"><span>${escapeHtml(article.publishedAt)}</span><span>${escapeHtml(article.readingTime)}</span></div>
+          </section>
+          <aside class="support-panel">
+            <div><div class="eyebrow">Return path</div><h2>Authority content should route back into the system.</h2></div>
+            ${renderLinks([{ label: "Back to Insights", type: "application", destination: "/insights" }, { label: "Open Contact Routing", type: "application", destination: "/contact" }])}
+          </aside>
+        </div>
+      </section>
+      <section class="section shell article-prose">${article.sections.map((section) => `<section class="article-section"><div class="eyebrow">Section</div><h2>${escapeHtml(section.heading)}</h2>${section.body.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("")}</section>`).join("")}</section>
+    `,
+  };
+}
+
+function renderTrust(env: Env): PageDefinition {
+  const ctaMap = buildCtaMap(env);
+
+  return {
+    canonicalPath: "/trust",
+    description: "JayPVentures LLC trust center covering governance, security, disclosure, and operational standards.",
+    mode: "llc",
+    title: "Trust Center",
+    body: `
+      <section class="hero-stage shell">
+        <div class="hero-grid">
+          <section class="poster">
+            <div class="hero-kicker">Trust center</div>
+            <h1 class="hero-title">Governance, security, and disclosure are part of the product.</h1>
+            <p class="hero-copy">Trust language is not decorative here. Public standards, review paths, and disclosure routes exist to improve conversion and keep operations legible.</p>
+            ${renderLinks([ctaMap.governanceDoc, ctaMap.securityDoc], true)}
+          </section>
+          <aside class="support-panel">
+            <div><div class="eyebrow">Public standards</div><h2>Serious buyers should be able to see how the system is governed.</h2></div>
+            <p class="muted">The trust layer should feel operational, plain to read, and directly tied to the way offers and premium surfaces are routed.</p>
+          </aside>
+        </div>
+      </section>
+      <section class="section shell"><div class="section-heading"><div class="eyebrow">Pillars</div><h2>Core standards behind the flagship ecosystem.</h2></div><div class="trust-strip">${trustPillars.map((pillar) => `<article class="feature-block"><h3>${escapeHtml(pillar.title)}</h3><p class="muted">${escapeHtml(pillar.summary)}</p></article>`).join("")}</div></section>
+      <section class="section shell"><div class="section-heading"><div class="eyebrow">Trust routes</div><h2>Direct links to public governance and security documentation.</h2></div><div class="two-col"><article class="doc-panel"><h3>Governance</h3><p class="muted">Principles, risk tiers, and disclosure expectations that keep the system reviewable over time.</p><a class="button button-secondary" href="/GOVERNANCE.md">Read GOVERNANCE.md</a></article><article class="doc-panel"><h3>Security</h3><p class="muted">Security expectations across the flagship site, bookings worker, entitlement worker, and related automation surfaces.</p><a class="button button-secondary" href="/SECURITY.md">Read SECURITY.md</a></article></div></section>
+    `,
+  };
+}
+
+function renderContact(env: Env): PageDefinition {
+  const ctaMap = buildCtaMap(env);
+
+  return {
+    canonicalPath: "/contact",
+    description: "Unified contact and routing page for enterprise inquiries, creator builds, memberships, partnerships, and responsible disclosure.",
+    mode: "llc",
+    title: "Contact",
+    body: `
+      <section class="hero-stage shell">
+        <div class="hero-grid">
+          <section class="poster">
+            <div class="hero-kicker">Contact and routing</div>
+            <h1 class="hero-title">One contact page. Clear next steps by lane.</h1>
+            <p class="hero-copy">Use this page to route into enterprise, creator, music, travel, partnership, or trust-related conversations without collapsing everything into one vague inbox.</p>
+            ${renderLinks([ctaMap.enterpriseDiscovery, { label: "Email Venture Team", type: "application", destination: `mailto:${siteMeta.contactEmail}` }], true)}
+          </section>
+          <aside class="support-panel">
+            <div><div class="eyebrow">Primary contacts</div><h2>Enterprise inquiries, partnerships, and disclosure routes.</h2></div>
+            <ul class="plain-list"><li><a href="mailto:${escapeHtml(siteMeta.contactEmail)}">${escapeHtml(siteMeta.contactEmail)}</a></li><li><a href="mailto:${escapeHtml(siteMeta.securityEmail)}">${escapeHtml(siteMeta.securityEmail)}</a></li><li><a href="${escapeHtml(siteMeta.linkedInUrl)}" target="_blank" rel="noopener noreferrer">LinkedIn company page</a></li></ul>
+          </aside>
+        </div>
+      </section>
+      <section class="section shell"><div class="section-heading"><div class="eyebrow">Route by lane</div><h2>Choose the right path before asking for a build.</h2></div><div class="route-grid"><article class="route-panel" id="apply-enterprise"><div class="eyebrow">Enterprise</div><h3>JayPVentures LLC</h3><p class="muted">Governance, automation, monetization architecture, and higher-trust implementation work.</p>${renderLinks([ctaMap.enterpriseDiscovery, ctaMap.enterpriseApplication])}</article><article class="route-panel" id="apply-creator"><div class="eyebrow">Creator</div><h3>jaypventures creator</h3><p class="muted">Creator monetization, offer architecture, and recurring support for public-facing growth.</p>${renderLinks([{ label: "Book Creator Fit Call", type: "booking", destination: env.MICROSOFT_BOOKINGS_URL }, ctaMap.creatorApplication])}</article><article class="route-panel" id="apply-music"><div class="eyebrow">Music</div><h3>JayPVentures Music</h3><p class="muted">Production strategy, collaboration, and recurring creative direction.</p>${renderLinks([{ label: "Book Music Call", type: "booking", destination: env.MICROSOFT_BOOKINGS_URL }, ctaMap.musicApplication])}</article><article class="route-panel" id="apply-travel"><div class="eyebrow">Travel</div><h3>JayPVentures Travel</h3><p class="muted">Travel planning, custom itineraries, and higher-touch travel operations.</p>${renderLinks([{ label: "Book Travel Inquiry", type: "booking", destination: env.MICROSOFT_BOOKINGS_URL }, ctaMap.travelApplication])}</article></div></section>
+    `,
+  };
+}
+
+function renderPrivacy(): PageDefinition {
+  return {
+    canonicalPath: "/privacy",
+    description: "Privacy summary for bookings, memberships, inquiries, and related digital services in the JayPVentures ecosystem.",
+    mode: "llc",
+    title: "Privacy",
+    body: `
+      <section class="hero-stage shell"><div class="hero-grid"><section class="poster"><div class="hero-kicker">Privacy</div><h1 class="hero-title">Operational data stays tied to service delivery, trust, and review needs.</h1><p class="hero-copy">This summary explains the baseline privacy posture for the flagship website, bookings flows, memberships, and related platform services.</p></section><aside class="support-panel"><div><div class="eyebrow">Questions</div><h2>For privacy requests or questions, use the venture inbox.</h2></div><a class="button button-secondary" href="mailto:${escapeHtml(siteMeta.contactEmail)}">${escapeHtml(siteMeta.contactEmail)}</a></aside></div></section>
+      <section class="section shell"><div class="section-heading"><div class="eyebrow">Summary</div><h2>How privacy is handled at a practical level.</h2></div><article class="doc-panel"><ul class="bullet-list">${privacySummary.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul></article></section>
+    `,
+  };
+}
+
+function renderTerms(): PageDefinition {
+  return {
+    canonicalPath: "/terms",
+    description: "Public terms summary for informational site content, consultative engagements, memberships, and gated access surfaces.",
+    mode: "llc",
+    title: "Terms",
+    body: `
+      <section class="hero-stage shell"><div class="hero-grid"><section class="poster"><div class="hero-kicker">Terms</div><h1 class="hero-title">Public content is informational. Paid access and services may add more specific terms.</h1><p class="hero-copy">This page sets the baseline expectations for using the public site, paid offers, and restricted portal surfaces.</p></section><aside class="support-panel"><div><div class="eyebrow">Questions</div><h2>Ask before you buy if the route or scope is unclear.</h2></div><a class="button button-secondary" href="/contact">Open contact routing</a></aside></div></section>
+      <section class="section shell"><div class="section-heading"><div class="eyebrow">Summary</div><h2>Terms that shape the public flagship experience.</h2></div><article class="doc-panel"><ul class="bullet-list">${termsSummary.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul></article></section>
+    `,
+  };
+}
+
+function getMarkdownDocument(pathname: string): string | null {
+  switch (pathname) {
+    case "/GOVERNANCE.md":
+      return governanceMarkdown;
+    case "/SECURITY.md":
+      return securityMarkdown;
+    default:
+      return null;
+  }
+}
+
+export function renderRoute(pathname: string, env: Env): RenderedRoute | null {
+  const markdown = getMarkdownDocument(pathname);
+  if (markdown) {
+    return {
+      body: markdown,
+      contentType: "text/markdown; charset=UTF-8",
+      status: 200,
+    };
+  }
+
+  let page: PageDefinition | null = null;
+
+  switch (pathname) {
+    case "/":
+      page = renderHome(env);
+      break;
+    case "/services":
+      page = renderServices(env);
+      break;
+    case "/pricing":
+      page = renderPricing(env);
+      break;
+    case "/ventures":
+      page = renderVentures(env);
+      break;
+    case "/creator":
+      page = renderCreator(env);
+      break;
+    case "/all-ventures-access":
+      page = renderAllVenturesAccess(env);
+      break;
+    case "/music":
+      page = renderMusic(env);
+      break;
+    case "/travel":
+      page = renderTravel(env);
+      break;
+    case "/partnerships":
+      page = renderPartnerships(env);
+      break;
+    case "/insights":
+      page = renderInsightsIndex();
+      break;
+    case "/trust":
+      page = renderTrust(env);
+      break;
+    case "/contact":
+      page = renderContact(env);
+      break;
+    case "/privacy":
+      page = renderPrivacy();
+      break;
+    case "/terms":
+      page = renderTerms();
+      break;
+    default:
+      if (pathname.startsWith("/insights/")) {
+        page = renderInsightArticle(pathname.slice("/insights/".length));
+      }
+  }
+
+  return page ? renderPage(env, page) : null;
+}

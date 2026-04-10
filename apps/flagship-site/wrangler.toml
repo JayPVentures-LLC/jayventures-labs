@@ -1,0 +1,13 @@
+name = "jaypventures-flagship-site"
+main = "src/index.ts"
+compatibility_date = "2026-04-09"
+workers_dev = true
+
+[vars]
+SITE_ORIGIN = "https://jaypventuresllc.com"
+MICROSOFT_BOOKINGS_URL = "https://outlook.office.com/book/JAYPVENTURESLLCConsultations1@jaypventuresllc.com/?ismsaljsauthenabled"
+STRIPE_ALL_VENTURES_CORE_URL = "https://replace-me.example/stripe/core"
+STRIPE_ALL_VENTURES_PLUS_URL = "https://replace-me.example/stripe/plus"
+STRIPE_ALL_VENTURES_INNER_CIRCLE_URL = "https://replace-me.example/stripe/inner-circle"
+CREATOR_PORTAL_URL = "https://replace-me.example/creator"
+INNER_CIRCLE_PORTAL_URL = "https://replace-me.example/inner-circle"
