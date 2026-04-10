@@ -202,7 +202,7 @@ function renderBrandProfiles(): string {
     .map(
       (profile) => `
       <article class="route-panel">
-        <div class="eyebrow">${escapeHtml(profile.mode === "llc" ? "Authority layer" : "Proof layer")}</div>
+        <div class="eyebrow">${escapeHtml(profile.mode === "llc" ? "Primary firm" : "Associated brand")}</div>
         <h3>${escapeHtml(profile.label)}</h3>
         <p class="muted">${escapeHtml(profile.promise)}</p>
         <div class="small-copy"><strong>Audience:</strong> ${escapeHtml(profile.audience)}</div>
@@ -254,55 +254,53 @@ function pageLayout(env: Env, page: PageDefinition): string {
   <meta property="og:description" content="${escapeHtml(page.description)}">
   <meta property="og:type" content="website">
   <meta property="og:url" content="${escapeHtml(canonical)}">
-  <meta name="theme-color" content="#0a0c0f">
+  <meta name="theme-color" content="#f3efe8">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root { --bg:#07090c; --surface:rgba(13,16,22,.92); --line:rgba(255,255,255,.1); --ink:#f4f4f1; --muted:rgba(244,244,241,.74); --soft:rgba(244,244,241,.56); --enterprise:#b11226; --enterprise-deep:#5b0812; --creator:#4f7bd0; --creator-deep:#1d3156; --gold:#e6d0a0; --max:1180px; --radius-xl:28px; --shadow:0 30px 80px rgba(0,0,0,.35); }
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+    :root { --bg:#f3efe8; --surface:#ffffff; --surface-alt:#f7f3ee; --line:rgba(17,24,39,.10); --ink:#111827; --muted:#4b5563; --soft:#6b7280; --enterprise:#7a1f2a; --enterprise-deep:#5f1720; --creator:#1d4c8f; --creator-deep:#153962; --gold:#8a6a3b; --max:1180px; --radius-xl:18px; --radius-sm:10px; --shadow:0 18px 42px rgba(17,24,39,.06); }
     * { box-sizing:border-box; }
     html { scroll-behavior:smooth; }
-    body { margin:0; background:radial-gradient(circle at top left, rgba(177,18,38,.22), transparent 30%), radial-gradient(circle at 80% 20%, rgba(134,184,255,.12), transparent 28%), linear-gradient(180deg, #0d1016 0%, #07090c 45%, #050608 100%); color:var(--ink); font-family:"IBM Plex Sans","Segoe UI",sans-serif; line-height:1.6; min-height:100vh; }
-    body.mode-creator { background:radial-gradient(circle at top right, rgba(134,184,255,.24), transparent 28%), radial-gradient(circle at 15% 10%, rgba(177,18,38,.18), transparent 22%), linear-gradient(180deg, #0b0f15 0%, #06080b 42%, #050608 100%); }
+    body { margin:0; background:linear-gradient(180deg, #f8f5f0 0%, #f3efe8 55%, #ede6dc 100%); color:var(--ink); font-family:"IBM Plex Sans","Segoe UI",sans-serif; line-height:1.65; min-height:100vh; }
+    body.mode-creator { background:linear-gradient(180deg, #faf7f2 0%, #f3efe8 58%, #ebe5db 100%); }
     a { color:inherit; text-decoration:none; }
-    .skip-link { position:absolute; left:-9999px; top:12px; padding:12px 16px; border-radius:999px; background:#fff; color:#111; z-index:999; }
+    .skip-link { position:absolute; left:-9999px; top:12px; padding:12px 16px; border-radius:999px; background:#111827; color:#fff; z-index:999; }
     .skip-link:focus { left:12px; }
-    .site-header { position:sticky; top:0; z-index:50; backdrop-filter:blur(18px); background:rgba(5,7,10,.82); border-bottom:1px solid var(--line); }
-    .header-inner,.shell { max-width:var(--max); margin:0 auto; padding-left:24px; padding-right:24px; }
-    .header-inner { display:flex; align-items:center; justify-content:space-between; gap:18px; min-height:78px; }
+    .site-header { position:sticky; top:0; z-index:50; backdrop-filter:blur(12px); background:rgba(248,245,240,.92); border-bottom:1px solid var(--line); }
+    .header-inner,.shell { max-width:var(--max); margin:0 auto; padding-left:28px; padding-right:28px; }
+    .header-inner { display:flex; align-items:center; justify-content:space-between; gap:20px; min-height:80px; }
     .brand-lockup { display:flex; flex-direction:column; gap:4px; }
-    .brand-title { font-family:"DM Serif Display",serif; font-size:26px; }
-    .brand-subtitle { font-size:11px; letter-spacing:.26em; text-transform:uppercase; color:var(--soft); }
-    .nav { display:flex; gap:14px; flex-wrap:wrap; justify-content:flex-end; font-size:13px; color:var(--muted); }
+    .brand-title { font-family:"Fraunces", Georgia, serif; font-size:24px; letter-spacing:-.02em; }
+    .brand-subtitle { font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--soft); }
+    .nav { display:flex; gap:18px; flex-wrap:wrap; justify-content:flex-end; font-size:14px; color:var(--muted); }
     .nav a { padding:8px 0; border-bottom:1px solid transparent; }
-    .nav a.active,.nav a:hover { color:var(--ink); border-color:rgba(255,255,255,.4); }
-    .hero-stage { padding:72px 0 28px; }
-    .hero-grid { display:grid; grid-template-columns:minmax(0,1.35fr) minmax(280px,.9fr); gap:28px; }
-    .poster,.support-panel,.offer-row,.tier-panel,.insight-card,.feature-block,.route-panel,.doc-panel,.band-panel,.metric-rail,.timeline-panel { background:linear-gradient(180deg, rgba(18,22,29,.92), rgba(11,14,19,.94)); border:1px solid var(--line); border-radius:var(--radius-xl); box-shadow:var(--shadow); }
-    .poster { padding:34px; min-height:520px; position:relative; overflow:hidden; }
-    .poster::before { content:""; position:absolute; inset:0; background:linear-gradient(135deg, rgba(177,18,38,.18), transparent 42%), radial-gradient(circle at 80% 22%, rgba(134,184,255,.13), transparent 28%); pointer-events:none; animation:drift 10s ease-in-out infinite alternate; }
-    body.mode-creator .poster::before { background:linear-gradient(135deg, rgba(79,123,208,.22), transparent 42%), radial-gradient(circle at 70% 20%, rgba(177,18,38,.14), transparent 30%); }
-    .hero-kicker,.eyebrow { display:inline-block; margin-bottom:12px; text-transform:uppercase; letter-spacing:.2em; font-size:11px; color:var(--gold); }
-    .hero-title,h1,h2,h3 { font-family:"DM Serif Display",serif; font-weight:400; line-height:1.04; margin:0; }
-    .hero-title { max-width:8ch; font-size:clamp(3rem,7vw,6.2rem); letter-spacing:-.03em; }
+    .nav a.active,.nav a:hover { color:var(--enterprise); border-color:rgba(122,31,42,.35); }
+    .hero-stage { padding:76px 0 28px; }
+    .hero-grid { display:grid; grid-template-columns:minmax(0,1.3fr) minmax(280px,.85fr); gap:24px; }
+    .poster,.support-panel,.offer-row,.tier-panel,.insight-card,.feature-block,.route-panel,.doc-panel,.band-panel,.metric-rail,.timeline-panel { background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-xl); box-shadow:var(--shadow); }
+    .poster { padding:40px; min-height:460px; }
+    .hero-kicker,.eyebrow { display:inline-block; margin-bottom:12px; text-transform:uppercase; letter-spacing:.18em; font-size:11px; color:var(--gold); }
+    .hero-title,h1,h2,h3 { font-family:"Fraunces", Georgia, serif; font-weight:500; line-height:1.05; margin:0; color:var(--ink); }
+    .hero-title { max-width:12ch; font-size:clamp(2.8rem,5vw,4.8rem); letter-spacing:-.03em; }
     .hero-copy,.muted,p,li,.small-copy { color:var(--muted); }
     .hero-copy { font-size:18px; max-width:48rem; margin:18px 0 0; }
     .cta-row { display:flex; gap:14px; flex-wrap:wrap; margin-top:28px; align-items:center; }
     .cta-note { font-size:12px; color:var(--soft); width:100%; }
-    .button { display:inline-flex; align-items:center; justify-content:center; min-height:46px; padding:0 18px; border-radius:999px; border:1px solid transparent; font-size:13px; font-weight:600; letter-spacing:.04em; text-transform:uppercase; }
-    .button-primary { background:linear-gradient(180deg, var(--enterprise), var(--enterprise-deep)); color:#fff9f7; }
-    .button-secondary { background:rgba(255,255,255,.02); border-color:rgba(255,255,255,.18); color:var(--ink); }
-    body.mode-creator .button-primary { background:linear-gradient(180deg, var(--creator), var(--creator-deep)); }
-    .support-panel,.feature-block,.route-panel,.band-panel,.doc-panel,.timeline-panel,.insight-card,.tier-panel { padding:24px; }
+    .button { display:inline-flex; align-items:center; justify-content:center; min-height:44px; padding:0 18px; border-radius:var(--radius-sm); border:1px solid transparent; font-size:14px; font-weight:600; }
+    .button-primary { background:var(--enterprise); color:#fff; }
+    .button-secondary { background:var(--surface); border-color:rgba(17,24,39,.14); color:var(--ink); }
+    body.mode-creator .button-primary { background:var(--creator); }
+    .support-panel,.feature-block,.route-panel,.band-panel,.doc-panel,.timeline-panel,.insight-card,.tier-panel { padding:26px; }
     .support-panel { display:grid; gap:18px; align-content:start; }
-    .support-panel h2 { font-size:clamp(1.8rem,3vw,2.5rem); }
-    .metric-rail { display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:1px; overflow:hidden; margin-top:26px; }
-    .metric-cell { padding:18px; background:rgba(255,255,255,.02); min-height:118px; }
-    .metric-label { display:block; text-transform:uppercase; letter-spacing:.18em; font-size:10px; color:var(--soft); }
-    .metric-value { display:block; margin-top:10px; font-size:18px; font-weight:600; color:var(--ink); }
-    .section { padding:18px 0 34px; }
-    .section-heading { max-width:760px; margin-bottom:22px; }
-    .section-heading h2 { font-size:clamp(2rem,3.5vw,3.4rem); }
+    .support-panel h2 { font-size:clamp(1.7rem,2.5vw,2.3rem); }
+    .metric-rail { display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:1px; overflow:hidden; margin-top:28px; background:var(--line); }
+    .metric-cell { padding:18px; background:var(--surface-alt); min-height:118px; }
+    .metric-label { display:block; text-transform:uppercase; letter-spacing:.14em; font-size:10px; color:var(--soft); }
+    .metric-value { display:block; margin-top:10px; font-size:16px; font-weight:600; color:var(--ink); line-height:1.45; }
+    .section { padding:22px 0 34px; }
+    .section-heading { max-width:780px; margin-bottom:22px; }
+    .section-heading h2 { font-size:clamp(2rem,3.1vw,3rem); }
     .two-col,.route-grid,.insight-list,.tier-grid,.feature-grid,.band-grid,.trust-strip { display:grid; gap:20px; }
     .two-col { grid-template-columns:repeat(2, minmax(0,1fr)); }
     .route-grid { grid-template-columns:repeat(auto-fit, minmax(240px,1fr)); }
@@ -312,29 +310,28 @@ function pageLayout(env: Env, page: PageDefinition): string {
     .band-grid { grid-template-columns:1.15fr .85fr; align-items:stretch; }
     .trust-strip { grid-template-columns:repeat(auto-fit, minmax(220px,1fr)); }
     .offer-stack { display:grid; gap:16px; }
-    .offer-row { padding:24px; display:grid; gap:18px; grid-template-columns:1.3fr .7fr; align-items:start; }
-    .offer-row h3,.insight-card h3,.tier-panel h3,.feature-block h3,.route-panel h3,.band-panel h3,.doc-panel h3,.timeline-panel h3 { font-size:1.65rem; margin-bottom:10px; }
+    .offer-row { padding:26px; display:grid; gap:18px; grid-template-columns:1.3fr .7fr; align-items:start; }
+    .offer-row h3,.insight-card h3,.tier-panel h3,.feature-block h3,.route-panel h3,.band-panel h3,.doc-panel h3,.timeline-panel h3 { font-size:1.5rem; margin-bottom:10px; }
     .offer-meta { display:grid; gap:12px; justify-items:start; align-content:start; }
-    .price { font-size:1.7rem; font-weight:700; color:var(--ink); }
+    .price { font-size:1.6rem; font-weight:700; color:var(--ink); }
     .bullet-list,.plain-list,.brand-group-list,.article-list { margin:0; padding-left:18px; display:grid; gap:10px; }
     .plain-list,.brand-group-list { padding-left:0; list-style:none; }
     .pill-row { display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; }
-    .pill { border:1px solid rgba(255,255,255,.16); border-radius:999px; padding:6px 10px; font-size:11px; text-transform:uppercase; letter-spacing:.12em; color:var(--ink); background:rgba(255,255,255,.05); }
-    .brand-group-list li { padding:14px 0; border-bottom:1px solid rgba(255,255,255,.08); }
+    .pill { border:1px solid rgba(17,24,39,.12); border-radius:999px; padding:5px 10px; font-size:11px; letter-spacing:.08em; color:var(--soft); background:var(--surface-alt); }
+    .brand-group-list li { padding:14px 0; border-bottom:1px solid rgba(17,24,39,.08); }
     .brand-group-list li:last-child { border-bottom:0; }
-    .footer { border-top:1px solid var(--line); margin-top:54px; padding:34px 0 52px; }
+    .footer { border-top:1px solid var(--line); margin-top:54px; padding:34px 0 52px; background:#f6f1e9; }
     .footer-grid { display:grid; grid-template-columns:1.2fr 1fr 1fr; gap:24px; }
     .footer-links { display:grid; gap:8px; font-size:14px; color:var(--muted); }
-    .footer-links a:hover { color:var(--ink); }
+    .footer-links a:hover { color:var(--enterprise); }
     .page-shell { padding-bottom:52px; }
-    .doc-callout { margin-top:14px; padding-top:12px; border-top:1px solid rgba(255,255,255,.08); font-size:13px; color:var(--soft); }
+    .doc-callout { margin-top:14px; padding-top:12px; border-top:1px solid rgba(17,24,39,.08); font-size:13px; color:var(--soft); }
     .article-prose { display:grid; gap:22px; }
-    .article-section { padding:22px 0; border-top:1px solid rgba(255,255,255,.08); }
+    .article-section { padding:22px 0; border-top:1px solid rgba(17,24,39,.08); }
     .article-section:first-child { border-top:0; padding-top:0; }
     .article-meta { display:flex; gap:12px; flex-wrap:wrap; color:var(--soft); font-size:13px; text-transform:uppercase; letter-spacing:.12em; }
-    @keyframes drift { from { transform:translate3d(0,0,0) scale(1); } to { transform:translate3d(-18px,18px,0) scale(1.04); } }
     @media (max-width:980px) { .hero-grid,.band-grid,.two-col,.offer-row,.footer-grid { grid-template-columns:1fr; } .hero-stage { padding-top:42px; } .poster { min-height:auto; } .metric-rail { grid-template-columns:1fr; } .nav { gap:10px 14px; } }
-    @media (max-width:760px) { .header-inner { align-items:flex-start; padding-top:18px; padding-bottom:18px; } .nav { font-size:12px; } .shell,.header-inner { padding-left:18px; padding-right:18px; } .poster,.support-panel,.feature-block,.route-panel,.doc-panel,.tier-panel,.insight-card,.offer-row,.band-panel { padding:20px; } .hero-title { max-width:10ch; } }
+    @media (max-width:760px) { .header-inner { align-items:flex-start; padding-top:18px; padding-bottom:18px; } .nav { font-size:12px; } .shell,.header-inner { padding-left:18px; padding-right:18px; } .poster,.support-panel,.feature-block,.route-panel,.doc-panel,.tier-panel,.insight-card,.offer-row,.band-panel { padding:20px; } .hero-title { max-width:11ch; } }
   </style>
 </head>
 <body class="mode-${page.mode}">
@@ -343,7 +340,7 @@ function pageLayout(env: Env, page: PageDefinition): string {
     <div class="header-inner">
       <a class="brand-lockup" href="/" aria-label="JayPVentures LLC home">
         <span class="brand-title">JayPVentures LLC</span>
-        <span class="brand-subtitle">Governance by Design · Creator Proof Layer</span>
+        <span class="brand-subtitle">Strategic systems, governance, and selective public ventures</span>
       </a>
       <nav class="nav" aria-label="Primary navigation">
         ${primaryNavigation.map((item) => `<a href="${item.href}" class="${isNavActive(item.href, page.canonicalPath) ? "active" : ""}">${item.label}</a>`).join("")}
@@ -355,7 +352,7 @@ function pageLayout(env: Env, page: PageDefinition): string {
   </main>
   <footer class="footer">
     <div class="shell footer-grid">
-      <div><div class="eyebrow">JayPVentures LLC</div><h3>One operating system. Two public layers.</h3><p class="muted">Enterprise systems, creator monetization, memberships, and trust infrastructure designed to reinforce one another.</p></div>
+      <div><div class="eyebrow">JayPVentures LLC</div><h3>Enterprise services with associated public portfolio lines.</h3><p class="muted">The firm leads with governance, automation, and commercial infrastructure. Adjacent brands remain visible, but they do not override the primary enterprise posture.</p></div>
       <div class="footer-links"><a href="/services">Services</a><a href="/ventures">Ventures</a><a href="/all-ventures-access">All Ventures Access</a><a href="/trust">Trust Center</a><a href="/GOVERNANCE.md">GOVERNANCE.md</a><a href="/SECURITY.md">SECURITY.md</a></div>
       <div class="footer-links"><a href="mailto:${escapeHtml(siteMeta.contactEmail)}">${escapeHtml(siteMeta.contactEmail)}</a><a href="${escapeHtml(siteMeta.linkedInUrl)}" target="_blank" rel="noopener noreferrer">LinkedIn</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><span>Security: ${escapeHtml(siteMeta.securityEmail)}</span></div>
     </div>
@@ -377,47 +374,47 @@ function renderHome(env: Env): PageDefinition {
 
   return {
     canonicalPath: "/",
-    description: "JayPVentures LLC is the enterprise authority layer for governance-by-design, automation, monetization systems, and a dual-entity creator ecosystem.",
+    description: "JayPVentures LLC is an enterprise services firm focused on governance, automation, revenue infrastructure, and a disciplined portfolio of adjacent public brands.",
     mode: "llc",
     title: "JayPVentures Flagship",
     body: `
       <section class="hero-stage shell">
         <div class="hero-grid">
           <section class="poster">
-            <div class="hero-kicker">Enterprise editorial authority · dual-entity ecosystem</div>
-            <h1 class="hero-title">Systems you can prove. Ventures you can scale.</h1>
-            <p class="hero-copy">JayPVentures LLC leads with governance, monetization architecture, and operational clarity. jaypventures extends that system into creator momentum, recurring membership, music, travel, and collaborative ventures.</p>
+            <div class="hero-kicker">JayPVentures LLC</div>
+            <h1 class="hero-title">Strategic systems for organizations that require control, clarity, and credible execution.</h1>
+            <p class="hero-copy">JayPVentures LLC advises and builds governance, automation, revenue infrastructure, and selective digital ventures. The public site presents the firm's services first and the associated portfolio second.</p>
             ${renderLinks([ctaMap.enterpriseDiscovery, ctaMap.ecosystemOverview], true)}
             ${renderMetricRail([
-              { label: "Authority layer", value: "Governance, automation, compliance, and enterprise-grade system design." },
-              { label: "Proof layer", value: "Creator programming, membership conversion, and public venture momentum." },
-              { label: "Conversion path", value: "Bookings for consultative offers. Stripe for memberships and future direct digital sales." },
+              { label: "Services", value: "Governance, automation, monetization architecture, and operational design." },
+              { label: "Commercial model", value: "Consultative work routes through Bookings. Membership conversion routes through Stripe." },
+              { label: "Portfolio", value: "Adjacent public brands remain visible, but they are presented as managed business lines." },
             ])}
           </section>
           <aside class="support-panel">
-            <div><div class="eyebrow">Why this site exists</div><h2>One flagship presence with the full ecosystem visible.</h2></div>
-            <p class="muted">The root domain converts enterprise buyers first, then shows the deeper creator and membership system as proof, venture depth, and monetization logic.</p>
+            <div><div class="eyebrow">Public structure</div><h2>A primary firm with adjacent portfolio lines.</h2></div>
+            <p class="muted">The root domain leads with enterprise services and trust. The creator, membership, music, and travel lines remain visible as structured commercial extensions rather than the main story.</p>
             <ul class="plain-list">${homeProofPoints.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
             <div class="doc-callout">Trust links, route logic, and premium surfaces are part of the public system architecture, not an afterthought.</div>
           </aside>
         </div>
       </section>
       <section class="section shell">
-        <div class="section-heading"><div class="eyebrow">Enterprise first</div><h2>Start at the authority layer. Expand into the ventures that prove it.</h2><p class="muted">The website leads with strategy, governance, and system architecture, then opens into the creator-facing ecosystem that shows those systems working in public.</p></div>
+        <div class="section-heading"><div class="eyebrow">Firm positioning</div><h2>Enterprise services first. Portfolio lines second.</h2><p class="muted">The homepage is designed to establish the firm's primary offer clearly before introducing the associated public brands and membership lines.</p></div>
         <div class="feature-grid">${ecosystemSignals.map((item) => `<article class="feature-block"><div class="eyebrow">${escapeHtml(item.label)}</div><h3>${escapeHtml(item.label)}</h3><p class="muted">${escapeHtml(item.value)}</p></article>`).join("")}</div>
       </section>
       <section class="section shell">
         <div class="band-grid">
-          <article class="band-panel"><div class="eyebrow">JayPVentures LLC</div><h3>Enterprise systems, monetization design, and high-trust execution.</h3><p class="muted">This layer attracts founders, operators, organizations, and premium service buyers who need clarity, control, and accountable digital infrastructure.</p>${renderLinks([ctaMap.servicesOverview, ctaMap.trustCenter])}</article>
-          <article class="band-panel"><div class="eyebrow">jaypventures</div><h3>Creator energy, recurring community, and venture expansion.</h3><p class="muted">This layer turns audience attention into memberships, premium access, creator services, partnerships, and public venture momentum.</p>${renderLinks([{ label: "Explore Creator Layer", type: "application", destination: "/creator" }, { label: "See Membership Tiers", type: "stripe_checkout", destination: "/all-ventures-access" }])}</article>
+          <article class="band-panel"><div class="eyebrow">JayPVentures LLC</div><h3>Governance, automation, and commercial infrastructure.</h3><p class="muted">This is the primary firm. It serves founders, operators, and organizations that need better operating structure, clearer commercial systems, and accountable execution.</p>${renderLinks([ctaMap.servicesOverview, ctaMap.trustCenter])}</article>
+          <article class="band-panel"><div class="eyebrow">Associated portfolio</div><h3>Public-facing creator, membership, music, and travel lines.</h3><p class="muted">These brands remain visible because they are part of the business. They are presented as associated portfolio lines, not as a replacement for the core enterprise identity.</p>${renderLinks([{ label: "Review Creator Brand", type: "application", destination: "/creator" }, { label: "Review Membership", type: "stripe_checkout", destination: "/all-ventures-access" }])}</article>
         </div>
       </section>
       <section class="section shell">
-        <div class="section-heading"><div class="eyebrow">Brand system</div><h2>Two public modes. One operating backbone.</h2><p class="muted">The enterprise shell stays calm and authoritative. The creator shell carries more energy without fragmenting the flagship structure.</p></div>
+        <div class="section-heading"><div class="eyebrow">Brand architecture</div><h2>Primary firm and associated public brands.</h2><p class="muted">The visual and messaging system keeps the firm authoritative while still allowing the creator and membership lines to exist within the same controlled structure.</p></div>
         ${renderBrandProfiles()}
       </section>
       <section class="section shell">
-        <div class="section-heading"><div class="eyebrow">Ecosystem lanes</div><h2>The full public system</h2><p class="muted">Each lane has its own public story, but all of them feed the same operational backbone.</p></div>
+        <div class="section-heading"><div class="eyebrow">Portfolio lines</div><h2>Associated business lines on the public site.</h2><p class="muted">Each line has its own commercial role, but the firm maintains one operating standard across the full portfolio.</p></div>
         <div class="route-grid">${[
           ["Services", "High-trust enterprise offers and implementation paths.", "/services"],
           ["Pricing", "Engagement ladders, membership tiers, and recurring revenue logic.", "/pricing"],
@@ -427,7 +424,7 @@ function renderHome(env: Env): PageDefinition {
           ["Travel", "Travel inquiries, itinerary builds, and operations-led planning.", "/travel"],
         ].map(([title, copy, href]) => `<article class="route-panel"><h3>${title}</h3><p class="muted">${copy}</p><a class="button button-secondary" href="${href}">Open</a></article>`).join("")}</div>
       </section>
-      <section class="section shell"><div class="section-heading"><div class="eyebrow">Final CTA</div><h2>Build the operating system first. Let the ecosystem compound after that.</h2><p class="muted">Book a discovery call if you want the enterprise layer built right, then use the rest of the ecosystem as a leverage engine rather than a distraction.</p></div>${renderLinks([ctaMap.enterpriseDiscovery, ctaMap.contactRouting])}</section>`,
+      <section class="section shell"><div class="section-heading"><div class="eyebrow">Next step</div><h2>Start with a qualified conversation.</h2><p class="muted">If you are evaluating an engagement, use the contact routing and consultation path first. The portfolio lines are present for context and secondary commercial pathways, not to dilute the firm's primary offer.</p></div>${renderLinks([ctaMap.enterpriseDiscovery, ctaMap.contactRouting])}</section>`,
   };
 }
 function renderServices(env: Env): PageDefinition {
@@ -524,21 +521,21 @@ function renderVentures(env: Env): PageDefinition {
 
   return {
     canonicalPath: "/ventures",
-    description: "The bridge page across JayPVentures LLC, jaypventures, All Ventures Access, Music, Travel, and the broader public ecosystem.",
+    description: "Portfolio overview across JayPVentures LLC, jaypventures, All Ventures Access, Music, Travel, and the associated public business lines.",
     mode: "creator",
     title: "Ventures",
     body: `
       <section class="hero-stage shell">
         <div class="hero-grid">
           <section class="poster">
-            <div class="hero-kicker">Ecosystem bridge</div>
-            <h1 class="hero-title">Public venture depth without losing the enterprise hierarchy.</h1>
-            <p class="hero-copy">This is where the flagship site shows how creator momentum, memberships, music, travel, and partnerships work as proof for the enterprise operating model rather than as disconnected side projects.</p>
+            <div class="hero-kicker">Portfolio overview</div>
+            <h1 class="hero-title">Associated portfolio lines supported by the same operating standards.</h1>
+            <p class="hero-copy">This section explains how the creator, membership, music, travel, and partnership lines sit alongside the primary firm without displacing it.</p>
             ${renderLinks([ctaMap.enterpriseDiscovery, ctaMap.creatorPortal], true)}
           </section>
           <aside class="support-panel">
-            <div><div class="eyebrow">What stays shared</div><h2>Capture, entitlement, metrics, routing, and trust stay centralized.</h2></div>
-            <p class="muted">What changes across the lanes is tone, emotional promise, and the nature of the buyer or audience. The infrastructure remains consistent.</p>
+            <div><div class="eyebrow">Shared standards</div><h2>Infrastructure, routing, and trust remain centralized.</h2></div>
+            <p class="muted">What changes across the lines is audience, offer structure, and commercial framing. The infrastructure and standards remain consistent.</p>
           </aside>
         </div>
       </section>
@@ -547,7 +544,7 @@ function renderVentures(env: Env): PageDefinition {
         ${renderBrandProfiles()}
       </section>
       <section class="section shell">
-        <div class="section-heading"><div class="eyebrow">Creator proof</div><h2>Programming and venture rhythm make the system visible in public.</h2></div>
+        <div class="section-heading"><div class="eyebrow">Public-facing operations</div><h2>Programming, membership, and offers are governed as business lines.</h2></div>
         <div class="two-col">
           <article class="band-panel"><h3>Creator signals</h3><ul class="bullet-list">${creatorSignals.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul></article>
           <article class="band-panel"><h3>Route logic</h3><ul class="bullet-list"><li>Public pages build trust and commercial clarity.</li><li>Bookings handle consultative time-based offers.</li><li>Stripe handles recurring membership conversion.</li><li>Portal access stays gated behind the worker-backed entitlement model.</li></ul></article>
@@ -558,7 +555,7 @@ function renderVentures(env: Env): PageDefinition {
         ${renderLivestreamFormats()}
       </section>
       <section class="section shell">
-        <div class="section-heading"><div class="eyebrow">Open the lanes</div><h2>Explore the public sides of the ecosystem.</h2></div>
+        <div class="section-heading"><div class="eyebrow">Portfolio routes</div><h2>Review the public-facing business lines.</h2></div>
         <div class="route-grid">${[
           ["Creator", "Creator services, public rhythm, and audience-to-revenue architecture.", "/creator"],
           ["All Ventures Access", "Recurring access across the ecosystem.", "/all-ventures-access"],
@@ -577,29 +574,29 @@ function renderCreator(env: Env): PageDefinition {
 
   return {
     canonicalPath: "/creator",
-    description: "Public creator brand overview and creator services for jaypventures, tied directly into the broader JayPVentures ecosystem.",
+    description: "Public creator brand overview and creator services for jaypventures, presented as an associated brand within the JayPVentures portfolio.",
     mode: "creator",
     title: "Creator",
     body: `
       <section class="hero-stage shell">
         <div class="hero-grid">
           <section class="poster">
-            <div class="hero-kicker">jaypventures creator layer</div>
-            <h1 class="hero-title">Creator momentum with clearer offers, stronger monetization, and better routing.</h1>
-            <p class="hero-copy">The creator layer turns attention into recurring membership, collaboration, and higher-trust opportunities without leaving the flagship system.</p>
+            <div class="hero-kicker">jaypventures</div>
+            <h1 class="hero-title">A public-facing creator brand with defined offers, membership routing, and controlled access.</h1>
+            <p class="hero-copy">jaypventures is the creator and membership-facing brand in the portfolio. It is presented with clearer service paths, better membership structure, and gated access where appropriate.</p>
             ${renderLinks([
               { label: "Book Creator Fit Call", type: "booking", destination: env.MICROSOFT_BOOKINGS_URL },
               ctaMap.creatorPortal,
             ], true)}
           </section>
           <aside class="support-panel">
-            <div><div class="eyebrow">Creator system</div><h2>Audience energy should route somewhere useful.</h2></div>
+            <div><div class="eyebrow">Commercial structure</div><h2>Public creator interest should route into defined services and access tiers.</h2></div>
             <ul class="plain-list">${creatorSignals.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
           </aside>
         </div>
       </section>
       <section class="section shell">
-        <div class="section-heading"><div class="eyebrow">Public creator offers</div><h2>Sessions, build sprints, and recurring support.</h2><p class="muted">The page explains the commercial logic publicly, but deeper creator surfaces remain gated to preserve signal quality and operational clarity.</p></div>
+        <div class="section-heading"><div class="eyebrow">Creator offers</div><h2>Sessions, scoped builds, and recurring support.</h2><p class="muted">The public page explains the commercial structure, while deeper creator surfaces remain gated to preserve quality and access control.</p></div>
         ${renderOfferRows(offers)}
       </section>
       <section class="section shell">
@@ -608,8 +605,8 @@ function renderCreator(env: Env): PageDefinition {
       </section>
       <section class="section shell">
         <div class="band-grid">
-          <article class="band-panel"><div class="eyebrow">Portal teaser</div><h3>Existing creator surfaces stay separate and gated.</h3><p class="muted">The flagship site explains the creator and member experience, then hands approved access off to the worker-hosted portal.</p>${renderLinks([ctaMap.creatorPortal, { label: "See Membership Tiers", type: "stripe_checkout", destination: "/all-ventures-access" }])}</article>
-          <article class="band-panel"><div class="eyebrow">Application path</div><h3>High-touch creator work still requires fit.</h3><p class="muted">If the request is a full build, creator sprint, or recurring operating support, the next step is application and routing rather than blind checkout.</p>${renderLinks([ctaMap.creatorApplication, ctaMap.contactRouting])}</article>
+          <article class="band-panel"><div class="eyebrow">Portal access</div><h3>Creator surfaces remain separate and gated.</h3><p class="muted">The public site explains the creator and member experience, then routes approved users into the worker-hosted portal.</p>${renderLinks([ctaMap.creatorPortal, { label: "Review Membership", type: "stripe_checkout", destination: "/all-ventures-access" }])}</article>
+          <article class="band-panel"><div class="eyebrow">Scope review</div><h3>Higher-touch creator work still requires qualification.</h3><p class="muted">If the request is a full build, creator sprint, or recurring operating support, the next step is application and scope review rather than instant checkout.</p>${renderLinks([ctaMap.creatorApplication, ctaMap.contactRouting])}</article>
         </div>
       </section>`,
   };
@@ -620,26 +617,26 @@ function renderAllVenturesAccess(env: Env): PageDefinition {
 
   return {
     canonicalPath: "/all-ventures-access",
-    description: "All Ventures Access membership tiers, recurring access logic, and the gated experience routing for the JayPVentures ecosystem.",
+    description: "All Ventures Access membership tiers, recurring access logic, and gated benefit routing across the JayPVentures portfolio.",
     mode: "creator",
     title: "All Ventures Access",
     body: `
       <section class="hero-stage shell">
         <div class="hero-grid">
           <section class="poster">
-            <div class="hero-kicker">Membership architecture</div>
-            <h1 class="hero-title">All Ventures Access is a routed ecosystem experience, not a throwaway subscription.</h1>
-            <p class="hero-copy">Membership captures recurring intent, unlocks differentiated access, and routes supporters into deeper visibility and premium surfaces across the ecosystem.</p>
+            <div class="hero-kicker">Membership</div>
+            <h1 class="hero-title">All Ventures Access is a membership program with defined access levels and gated benefits.</h1>
+            <p class="hero-copy">This program is designed to support recurring revenue, clearer member expectations, and controlled access to premium portfolio surfaces.</p>
             ${renderLinks([ctaMap.membershipCore, ctaMap.membershipInnerCircle], true)}
           </section>
           <aside class="support-panel">
-            <div><div class="eyebrow">Commercial model</div><h2>Checkout goes through Stripe. Access flows through entitlement.</h2></div>
+            <div><div class="eyebrow">Operating model</div><h2>Checkout goes through Stripe. Access is governed through entitlement.</h2></div>
             <ul class="plain-list"><li>Stripe Checkout and Billing handle recurring payment lifecycle.</li><li>The entitlement worker turns purchase state into actual access.</li><li>Premium portals remain separate, gated surfaces.</li></ul>
           </aside>
         </div>
       </section>
       <section class="section shell">
-        <div class="section-heading"><div class="eyebrow">Membership tiers</div><h2>Core, Plus, and Inner Circle map to increasingly differentiated access.</h2></div>
+        <div class="section-heading"><div class="eyebrow">Membership tiers</div><h2>Core, Plus, and Inner Circle map to clearly differentiated access levels.</h2></div>
         ${renderMembershipGrid(env)}
       </section>
       <section class="section shell">
@@ -649,7 +646,7 @@ function renderAllVenturesAccess(env: Env): PageDefinition {
         </div>
       </section>
       <section class="section shell">
-        <div class="section-heading"><div class="eyebrow">Why this matters</div><h2>The membership tier is the connective tissue between public attention and premium infrastructure.</h2></div>
+        <div class="section-heading"><div class="eyebrow">Commercial purpose</div><h2>The membership program connects public interest to paid access in a controlled way.</h2></div>
         <div class="two-col">
           <article class="doc-panel"><h3>Public value</h3><ul class="bullet-list"><li>Clear explanation of what members are buying</li><li>Visible differentiation between tiers</li><li>Cleaner handoff from public site to Stripe Checkout</li></ul></article>
           <article class="doc-panel"><h3>Operational value</h3><ul class="bullet-list"><li>Entitlement sync feeds portal access</li><li>Billing lifecycle stays externalized in Stripe</li><li>Premium access remains controllable and auditable</li></ul></article>
@@ -670,16 +667,16 @@ function renderMusic(env: Env): PageDefinition {
       <section class="hero-stage shell">
         <div class="hero-grid">
           <section class="poster">
-            <div class="hero-kicker">JayPVentures Music</div>
-            <h1 class="hero-title">Creative systems, release rhythm, and collaboration infrastructure.</h1>
-            <p class="hero-copy">The music lane packages output, creative identity, and collaboration into something commercially usable instead of leaving it as disconnected artistic effort.</p>
+            <div class="hero-kicker">Music</div>
+            <h1 class="hero-title">Music strategy, release planning, and collaboration delivered with structure.</h1>
+            <p class="hero-copy">The music line supports artists and collaborators who need clearer release planning, better creative structure, and more disciplined commercial packaging.</p>
             ${renderLinks([
               { label: "Book Music Fit Call", type: "booking", destination: env.MICROSOFT_BOOKINGS_URL },
               ctaMap.musicApplication,
             ], true)}
           </section>
           <aside class="support-panel">
-            <div><div class="eyebrow">What this lane covers</div><h2>Releases, collaborations, and ecosystem-aware music strategy.</h2></div>
+            <div><div class="eyebrow">Scope</div><h2>Releases, collaborations, and music-specific operating support.</h2></div>
             <ul class="plain-list"><li>Production strategy and release planning</li><li>Creative systems for consistency and output</li><li>Collaboration sessions and campaign packaging</li><li>Recurring direction when the music lane needs stronger cadence</li></ul>
           </aside>
         </div>
@@ -703,22 +700,22 @@ function renderTravel(env: Env): PageDefinition {
       <section class="hero-stage shell">
         <div class="hero-grid">
           <section class="poster">
-            <div class="hero-kicker">JayPVentures Travel</div>
-            <h1 class="hero-title">Planning, itinerary, and experience design with better operational control.</h1>
-            <p class="hero-copy">The travel lane takes story, intention, and coordination pressure and turns them into clearer planning, better logistics, and a more usable client experience.</p>
+            <div class="hero-kicker">Travel</div>
+            <h1 class="hero-title">Travel planning and itinerary services delivered with stronger operational control.</h1>
+            <p class="hero-copy">The travel line is built for custom planning, itinerary development, and higher-touch coordination where clarity and logistics matter.</p>
             ${renderLinks([
               { label: "Book Travel Inquiry", type: "booking", destination: env.MICROSOFT_BOOKINGS_URL },
               ctaMap.travelApplication,
             ], true)}
           </section>
           <aside class="support-panel">
-            <div><div class="eyebrow">Travel structure</div><h2>Built for custom plans, not generic booking widgets.</h2></div>
+            <div><div class="eyebrow">Service structure</div><h2>Built for custom planning, not generic booking widgets.</h2></div>
             <ul class="plain-list"><li>Trip inquiry and route clarity</li><li>Custom planning and itinerary design</li><li>Group strategy and expectation alignment</li><li>High-touch travel operations for more complex work</li></ul>
           </aside>
         </div>
       </section>
       <section class="section shell"><div class="section-heading"><div class="eyebrow">Travel offers</div><h2>Planning support and higher-touch travel operations.</h2></div>${renderOfferRows(offers)}</section>
-      <section class="section shell"><div class="section-heading"><div class="eyebrow">Why it fits</div><h2>Travel is another public proof lane for routing, clarity, and controlled execution.</h2></div><div class="two-col"><article class="doc-panel"><h3>Public promise</h3><ul class="bullet-list"><li>Cleaner planning and expectations</li><li>Higher-quality itinerary structure</li><li>Better handling of group complexity</li></ul></article><article class="doc-panel"><h3>Operational promise</h3><ul class="bullet-list"><li>Intentional intake instead of vague requests</li><li>Application routing for heavier operational work</li><li>Consistent flagship shell across all lanes</li></ul></article></div></section>
+      <section class="section shell"><div class="section-heading"><div class="eyebrow">Commercial fit</div><h2>Travel remains a controlled service line within the broader portfolio.</h2></div><div class="two-col"><article class="doc-panel"><h3>Client value</h3><ul class="bullet-list"><li>Clearer planning and expectations</li><li>Better itinerary structure</li><li>Stronger handling of group complexity</li></ul></article><article class="doc-panel"><h3>Operating value</h3><ul class="bullet-list"><li>Intentional intake instead of vague requests</li><li>Application routing for heavier operational work</li><li>A consistent flagship shell across the portfolio</li></ul></article></div></section>
     `,
   };
 }
@@ -735,13 +732,13 @@ function renderPartnerships(env: Env): PageDefinition {
       <section class="hero-stage shell">
         <div class="hero-grid">
           <section class="poster">
-            <div class="hero-kicker">Partnerships and collaborative brands</div>
-            <h1 class="hero-title">Brand relationships that can fit the operating system.</h1>
-            <p class="hero-copy">Partnerships should reinforce the flagship ecosystem, not dilute it. The public site makes that expectation visible from the start.</p>
+            <div class="hero-kicker">Partnerships</div>
+            <h1 class="hero-title">Commercial relationships evaluated for fit, leverage, and operating discipline.</h1>
+            <p class="hero-copy">Partnerships are evaluated against brand fit, commercial usefulness, and the standards of the primary firm. The public site makes that expectation explicit from the start.</p>
             ${renderLinks([ctaMap.contactRouting, ctaMap.creatorApplication], true)}
           </section>
           <aside class="support-panel">
-            <div><div class="eyebrow">Intake standard</div><h2>Partnerships are evaluated for fit, leverage, and ecosystem coherence.</h2></div>
+            <div><div class="eyebrow">Intake standard</div><h2>Partnerships are evaluated for fit, leverage, and commercial coherence.</h2></div>
             <ul class="plain-list"><li>Brand fit with the public identity</li><li>Operational clarity and realistic deliverables</li><li>Member, creator, or venture leverage</li><li>Potential for repeatable proof rather than one-off noise</li></ul>
           </aside>
         </div>
