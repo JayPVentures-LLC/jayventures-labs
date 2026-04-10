@@ -10,9 +10,9 @@ export const siteMeta = {
 export const primaryNavigation = [
   { href: "/services", label: "Services" },
   { href: "/pricing", label: "Pricing" },
-  { href: "/ventures", label: "Ventures" },
+  { href: "/ventures", label: "Portfolio" },
   { href: "/creator", label: "Creator" },
-  { href: "/all-ventures-access", label: "All Ventures Access" },
+  { href: "/all-ventures-access", label: "Membership" },
   { href: "/partnerships", label: "Partnerships" },
   { href: "/insights", label: "Insights" },
   { href: "/trust", label: "Trust" },
@@ -20,71 +20,71 @@ export const primaryNavigation = [
 ];
 
 export const homeProofPoints = [
-  "Governance-by-design for AI, automation, and digital infrastructure.",
-  "A dual-entity ecosystem where enterprise systems and creator monetization reinforce each other.",
-  "Structured offers across consulting, memberships, music, travel, and partnership lanes.",
+  "Governance, automation, and revenue infrastructure designed for accountability.",
+  "A primary enterprise firm with adjacent public ventures governed by the same operating standards.",
+  "Structured commercial paths across consulting, membership, music, travel, and partnerships.",
 ];
 
 export const ecosystemSignals = [
   {
-    label: "Operating system",
-    value: "Cloudflare-backed workers for entitlement, intake, metrics, and membership routing.",
+    label: "Service focus",
+    value: "Advisory, implementation, and operating design for organizations that need control and clarity.",
   },
   {
-    label: "Conversion model",
-    value: "Bookings for consultative offers. Stripe for recurring membership and future direct digital sales.",
+    label: "Commercial structure",
+    value: "Microsoft Bookings for time-based services. Stripe Checkout for recurring membership and future digital products.",
   },
   {
-    label: "Trust layer",
-    value: "Governance, security, and responsible disclosure are visible parts of the public system.",
+    label: "Portfolio discipline",
+    value: "Public-facing ventures remain visible, but they are framed as managed business lines rather than disconnected side projects.",
   },
 ];
 
 export const creatorSignals = [
-  "Live programming structured around retention, gifts, and member conversion.",
-  "Membership architecture that routes supporters into progressively gated access.",
-  "Creator command surfaces built to translate audience spikes into action.",
+  "A defined creator brand with clear service paths and membership routing.",
+  "Gated member surfaces that separate public interest from approved access.",
+  "Programming and offers managed with commercial discipline rather than ad hoc promotion.",
 ];
 
 export const livestreamFormats = [
   {
     title: "Toonz Tuesday",
-    meta: "Anchor night · 3.5–5 hours · retention + gifts",
-    description: "Long-form music sessions built for rhythm, loyalty, and recurring audience behavior.",
+    meta: "Music program · long-form session",
+    description: "A structured music format designed to support continuity, audience retention, and associated commercial activity.",
   },
   {
     title: "Wildn Out Wednesday",
-    meta: "Support night · 2.5–4 hours · engagement + gifts",
-    description: "High-energy community sessions with stronger participation and conversion potential.",
+    meta: "Community program · interactive session",
+    description: "A participation-led format intended to support recurring audience behavior and member engagement.",
   },
   {
     title: "TravelTok Thursday",
-    meta: "Relationship night · 1.5–3 hours · story + clips",
-    description: "Story-led travel sessions that deepen identity and future trip demand.",
+    meta: "Travel program · editorial session",
+    description: "A travel-led format that builds narrative continuity and future demand for planning-oriented services.",
   },
   {
     title: "Find Out Friday",
-    meta: "Momentum night · 2–4 hours · anticipation + CTA",
-    description: "Teaser-driven programming that turns curiosity into action across the ecosystem.",
+    meta: "Announcement program · conversion session",
+    description: "A structured release and announcement window used to direct attention toward active offers and portfolio updates.",
   },
   {
     title: "VIP Sunday",
-    meta: "Anchor night · 3–5 hours · loyalty + revenue",
-    description: "Support-focused sessions designed to concentrate loyalty and premium conversion.",
+    meta: "Premium program · member-focused session",
+    description: "A higher-touch format intended to concentrate loyalty, premium access, and stronger membership conversion.",
   },
 ];
 
 export const partnershipGroups = [
   {
-    heading: "Premium & Established",
+    heading: "Premium and Established Brands",
     brands: ["Laura Mercier", "Laura Geller Beauty", "Make Up For Ever", "Bare Minerals", "Haus Labs"],
   },
   {
-    heading: "Growth & Performance",
+    heading: "Growth and Performance Brands",
     brands: ["The Face Shop US", "APRILSKIN USA", "Dr. Groot Hair", "Primeval Labs", "Gorilla Mind"],
   },
   {
-    heading: "Affiliate / Volume Partners",
+    heading: "Affiliate and Volume Partners",
     brands: ["FeelingGirl-US", "Mare Azzuro", "Tessan Shop US", "VUSIGN US", "MetaVita Corp", "SNOWY Beautiful"],
   },
 ];
