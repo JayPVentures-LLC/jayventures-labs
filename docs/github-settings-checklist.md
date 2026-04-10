@@ -22,7 +22,13 @@ If you are the only maintainer and need fast iteration, keep admin bypass enable
 ## GitHub Environments
 Create these environments:
 
-### `cloudflare-production`\nUse for manual worker deployment workflow approvals.\nRecommended settings:\n- Required reviewers: you or the operator group\n- Wait timer: optional\n- Deployment workflow now runs a validation script and will fail if Wrangler files still contain placeholder values\n- Environment secrets:
+### `cloudflare-production`
+Use for manual Cloudflare deployment workflow approvals.
+Recommended settings:
+- Required reviewers: you or the operator group
+- Wait timer: optional
+- Deployment workflows now run validation scripts and will fail if Wrangler files still contain placeholder values
+- Environment secrets:
   - `CLOUDFLARE_API_TOKEN`
   - `CLOUDFLARE_ACCOUNT_ID`
 
@@ -75,15 +81,18 @@ In `Settings > Actions > General`:
 - Enable `Allow GitHub Actions to create and approve pull requests` only if you later add release automation that needs it
 
 ## Required Manual Cloudflare Input Before Deployment
-Update both Wrangler files with real values before running deploy workflows:
+Update these Wrangler files with real values before running deploy workflows:
+- [apps/flagship-site/wrangler.toml](/c:/dev/jayventures-labs/apps/flagship-site/wrangler.toml)
 - [operations/entitlement-system/wrangler.toml](/c:/dev/jayventures-labs/operations/entitlement-system/wrangler.toml)
 - [wix/bookings/wrangler.toml](/c:/dev/jayventures-labs/wix/bookings/wrangler.toml)
 
+For the flagship site, replace the placeholder Stripe checkout URLs and gated portal URLs before using `deploy-website`.
+
 ## Recommended First GitHub Workflow Validation
-1. Push current branch.
+1. Push the current branch.
 2. Open a pull request.
 3. Confirm the `verify` workflow passes.
 4. Configure branch protection to require `verify`.
-5. Add repository secrets.
-6. Run `deploy-workers` manually after Wrangler bindings are real.
-
+5. Add repository or environment secrets.
+6. Run `deploy-website` manually after the flagship site placeholders are replaced.
+7. Run `deploy-workers` manually after the worker bindings are real.

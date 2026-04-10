@@ -10,6 +10,7 @@
     "types": ["vitest/globals", "@cloudflare/workers-types", "node"]
   },
   "include": [
+    "apps/**/*.ts",
     "operations/**/*.ts",
     "wix/**/*.ts",
     "tests/**/*.ts",

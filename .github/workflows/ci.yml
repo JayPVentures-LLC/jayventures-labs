@@ -29,6 +29,9 @@ jobs:
       - name: Run typecheck
         run: npm run typecheck
 
+      - name: Validate flagship site packaging
+        run: npm run deploy:dryrun:website
+
       - name: Validate entitlement worker packaging
         run: npm run deploy:dryrun:entitlement
 
