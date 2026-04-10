@@ -2,6 +2,10 @@
 
 Enterprise workspace for JayPVentures LLC systems, flagship website delivery, creator/member surfaces, worker prototypes, and operating documentation.
 
+# One-Click Deploy
+
+[![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button?url=https://github.com/jaypventuresllc/jayventures-labs)](https://deploy.workers.cloudflare.com/?url=https://github.com/jaypventuresllc/jayventures-labs)
+
 ## Active Projects
 
 ### Flagship Website
