@@ -5,7 +5,7 @@ This repository is ready for CI and manual Cloudflare worker deployments once th
 ## Required Repository Secrets
 
 ### Cloudflare
-- `CLOUDFLARE_API_TOKEN`
+- `f0c1be256172a5beb88e8147f7c4b30e.access`
 - `CLOUDFLARE_ACCOUNT_ID`
 
 ### Azure
