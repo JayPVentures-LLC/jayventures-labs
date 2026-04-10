@@ -2,7 +2,7 @@ import { getEnv } from "./config/env";
 import { renderRoute } from "./lib/render";
 
 export default {
-  async fetch(request: Request, rawEnv: Record<string, string>): Promise<Response> {
+  async fetch(request: Request, rawEnv: Record<string, string>, _ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
     const pathname = url.pathname === "/" ? "/" : url.pathname.replace(/\/$/, "");
 
