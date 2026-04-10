@@ -23,12 +23,12 @@ export type GlobalCtaKey =
 export function buildCtaMap(env: Env): Record<GlobalCtaKey, CtaLink> {
   return {
     enterpriseDiscovery: {
-      label: "Schedule a Consultation",
+      label: "Schedule Consultation",
       type: "booking",
       destination: env.MICROSOFT_BOOKINGS_URL,
     },
     ecosystemOverview: {
-      label: "Review Portfolio Lines",
+      label: "View Ventures",
       type: "application",
       destination: "/ventures",
     },

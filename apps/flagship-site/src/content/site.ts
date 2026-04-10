@@ -10,9 +10,9 @@ export const siteMeta = {
 export const primaryNavigation = [
   { href: "/services", label: "Services" },
   { href: "/pricing", label: "Pricing" },
-  { href: "/ventures", label: "Portfolio" },
+  { href: "/ventures", label: "Ventures" },
   { href: "/creator", label: "Creator" },
-  { href: "/all-ventures-access", label: "Membership" },
+  { href: "/all-ventures-access", label: "All Ventures Access" },
   { href: "/partnerships", label: "Partnerships" },
   { href: "/insights", label: "Insights" },
   { href: "/trust", label: "Trust" },
@@ -20,57 +20,57 @@ export const primaryNavigation = [
 ];
 
 export const homeProofPoints = [
-  "Governance, automation, and revenue infrastructure designed for accountability.",
-  "A primary enterprise firm with adjacent public ventures governed by the same operating standards.",
-  "Structured commercial paths across consulting, membership, music, travel, and partnerships.",
+  "Strategic systems for governance, automation, and revenue operations.",
+  "A primary enterprise firm with selective venture lines operated under the same standards.",
+  "Structured commercial paths across consulting, memberships, partnerships, music, and travel.",
 ];
 
 export const ecosystemSignals = [
   {
-    label: "Service focus",
-    value: "Advisory, implementation, and operating design for organizations that need control and clarity.",
+    label: "Advisory focus",
+    value: "Governance, automation, revenue infrastructure, and implementation design for organizations that require accountability.",
   },
   {
-    label: "Commercial structure",
-    value: "Microsoft Bookings for time-based services. Stripe Checkout for recurring membership and future digital products.",
+    label: "Commercial routing",
+    value: "Microsoft Bookings for time-based services. Stripe Checkout for recurring memberships and future digital offers.",
   },
   {
-    label: "Portfolio discipline",
-    value: "Public-facing ventures remain visible, but they are framed as managed business lines rather than disconnected side projects.",
+    label: "Associated ventures",
+    value: "Public-facing JayPVentures lines remain visible, but they operate within the same commercial and governance discipline as the primary firm.",
   },
 ];
 
 export const creatorSignals = [
-  "A defined creator brand with clear service paths and membership routing.",
-  "Gated member surfaces that separate public interest from approved access.",
-  "Programming and offers managed with commercial discipline rather than ad hoc promotion.",
+  "Live programming designed to convert attention into qualified demand.",
+  "Membership tiers that define access clearly instead of relying on vague perks.",
+  "Creator-facing services and portal surfaces structured for repeatable operations.",
 ];
 
 export const livestreamFormats = [
   {
     title: "Toonz Tuesday",
     meta: "Music program · long-form session",
-    description: "A structured music format designed to support continuity, audience retention, and associated commercial activity.",
+    description: "A music-led format built for continuity, recognizable identity, and stronger audience retention.",
   },
   {
     title: "Wildn Out Wednesday",
     meta: "Community program · interactive session",
-    description: "A participation-led format intended to support recurring audience behavior and member engagement.",
+    description: "A higher-participation format intended to support recurring engagement and stronger member conversion.",
   },
   {
     title: "TravelTok Thursday",
     meta: "Travel program · editorial session",
-    description: "A travel-led format that builds narrative continuity and future demand for planning-oriented services.",
+    description: "A travel-led format that keeps the brand narrative active while building future planning demand.",
   },
   {
     title: "Find Out Friday",
     meta: "Announcement program · conversion session",
-    description: "A structured release and announcement window used to direct attention toward active offers and portfolio updates.",
+    description: "A structured release window used to direct attention toward active offers, updates, and portfolio launches.",
   },
   {
     title: "VIP Sunday",
     meta: "Premium program · member-focused session",
-    description: "A higher-touch format intended to concentrate loyalty, premium access, and stronger membership conversion.",
+    description: "A premium format intended to concentrate loyalty, access, and higher-value member activity.",
   },
 ];
 
