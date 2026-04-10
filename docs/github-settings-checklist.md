@@ -22,12 +22,7 @@ If you are the only maintainer and need fast iteration, keep admin bypass enable
 ## GitHub Environments
 Create these environments:
 
-### `cloudflare-production`
-Use for manual worker deployment workflow approvals.
-Recommended settings:
-- Required reviewers: you or the operator group
-- Wait timer: optional
-- Environment secrets:
+### `cloudflare-production`\nUse for manual worker deployment workflow approvals.\nRecommended settings:\n- Required reviewers: you or the operator group\n- Wait timer: optional\n- Deployment workflow now runs a validation script and will fail if Wrangler files still contain placeholder values\n- Environment secrets:
   - `CLOUDFLARE_API_TOKEN`
   - `CLOUDFLARE_ACCOUNT_ID`
 
@@ -91,3 +86,4 @@ Update both Wrangler files with real values before running deploy workflows:
 4. Configure branch protection to require `verify`.
 5. Add repository secrets.
 6. Run `deploy-workers` manually after Wrangler bindings are real.
+

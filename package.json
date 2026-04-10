@@ -12,7 +12,9 @@
     "dev:bookings": "wrangler dev --config wix/bookings/wrangler.toml",
     "deploy:dryrun:entitlement": "wrangler deploy --dry-run --config operations/entitlement-system/wrangler.toml",
     "deploy:dryrun:bookings": "wrangler deploy --dry-run --config wix/bookings/wrangler.toml",
-    "setup:devvars": "powershell -ExecutionPolicy Bypass -File scripts/setup-dev-vars.ps1"
+    "setup:devvars": "powershell -ExecutionPolicy Bypass -File scripts/setup-dev-vars.ps1",
+    "validate:deploy:entitlement": "node scripts/validate-deploy-config.mjs operations/entitlement-system/wrangler.toml",
+    "validate:deploy:bookings": "node scripts/validate-deploy-config.mjs wix/bookings/wrangler.toml"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20260404.0",

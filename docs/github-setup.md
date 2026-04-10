@@ -55,10 +55,7 @@ Patch these placeholder values in the Wrangler files before using deployment wor
   - Runs tests and typecheck
   - Verifies both Cloudflare workers package cleanly with dry-run deploys
 
-- `deploy-workers.yml`
-  - Manual workflow dispatch
-  - Deploys one or both workers to Cloudflare
-  - Requires valid Cloudflare secrets and real Wrangler bindings
+- `deploy-workers.yml`\n  - Manual workflow dispatch\n  - Uses the `cloudflare-production` GitHub environment\n  - Validates Wrangler configs before deploying\n  - Deploys one or both workers to Cloudflare\n  - Requires valid Cloudflare secrets and real Wrangler bindings
 
 ## Recommended Branch Protection
 
@@ -74,3 +71,4 @@ Repository remote currently points to:
 - `https://github.com/jaypventuresllc/jayventures-labs.git`
 
 If you want automated release or issue triage later, add GitHub environments and environment-scoped secrets after the first successful deployment.
+
