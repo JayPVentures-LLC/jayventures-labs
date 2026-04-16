@@ -341,7 +341,7 @@ function pageLayout(env: Env, page: PageDefinition): string {
     <div class="header-inner">
       <a class="brand-lockup" href="/" aria-label="JayPVentures LLC home">
         <span class="brand-title">JayPVentures LLC</span>
-        <span class="brand-subtitle">Strategic systems, governance, and selective public ventures</span>
+        <span class="brand-subtitle">Governance, automation, and executive systems design</span>
       </a>
       <nav class="nav" aria-label="Primary navigation">
         ${primaryNavigation.map((item) => `<a href="${item.href}" class="${isNavActive(item.href, page.canonicalPath) ? "active" : ""}">${item.label}</a>`).join("")}
@@ -353,8 +353,8 @@ function pageLayout(env: Env, page: PageDefinition): string {
   </main>
   <footer class="footer">
     <div class="shell footer-grid">
-      <div><div class="eyebrow">JayPVentures LLC</div><h3>Enterprise services with associated public portfolio lines.</h3><p class="muted">The firm leads with governance, automation, and commercial infrastructure. Adjacent brands remain visible, but they do not override the primary enterprise posture.</p></div>
-      <div class="footer-links"><a href="/services">Services</a><a href="/ventures">Ventures</a><a href="/all-ventures-access">All Ventures Access</a><a href="/trust">Trust Center</a><a href="/GOVERNANCE.md">GOVERNANCE.md</a><a href="/SECURITY.md">SECURITY.md</a></div>
+      <div><div class="eyebrow">JayPVentures LLC</div><h3>Executive systems, governance, and commercial infrastructure.</h3><p class="muted">The flagship site leads with the firm, not the side projects. Associated portfolio lines remain secondary and do not dilute the primary offer.</p></div>
+      <div class="footer-links"><a href="/services">Services</a><a href="/pricing">Pricing</a><a href="/trust">Trust Center</a><a href="/contact">Contact</a><a href="/GOVERNANCE.md">GOVERNANCE.md</a><a href="/SECURITY.md">SECURITY.md</a></div>
       <div class="footer-links"><a href="mailto:${escapeHtml(siteMeta.contactEmail)}">${escapeHtml(siteMeta.contactEmail)}</a><a href="${escapeHtml(siteMeta.linkedInUrl)}" target="_blank" rel="noopener noreferrer">LinkedIn</a><a href="/privacy">Privacy</a><a href="/cookies">Cookies</a><a href="/terms">Terms</a><span>Security: ${escapeHtml(siteMeta.securityEmail)}</span></div>
     </div>
   </footer>
@@ -375,7 +375,7 @@ function renderHome(env: Env): PageDefinition {
 
   return {
     canonicalPath: "/",
-    description: "JayPVentures LLC is an enterprise services firm focused on governance, automation, revenue infrastructure, and a disciplined portfolio of adjacent public brands.",
+    description: "JayPVentures LLC is an executive services firm focused on governance, automation, and revenue infrastructure for organizations that require control and accountable execution.",
     mode: "llc",
     title: "JayPVentures Flagship",
     body: `
@@ -383,49 +383,38 @@ function renderHome(env: Env): PageDefinition {
         <div class="hero-grid">
           <section class="poster">
             <div class="hero-kicker">JayPVentures LLC</div>
-            <h1 class="hero-title">Strategic systems for organizations that require control, clarity, and credible execution.</h1>
-            <p class="hero-copy">JayPVentures LLC advises and builds governance, automation, revenue infrastructure, and selective digital ventures. The public site presents the firm's services first and the associated portfolio second.</p>
-            ${renderLinks([ctaMap.enterpriseDiscovery, ctaMap.ecosystemOverview], true)}
+            <h1 class="hero-title">Executive systems for operators who expect control.</h1>
+            <p class="hero-copy">JayPVentures LLC designs governance, automation, and commercial infrastructure for organizations that want fewer moving parts, better operating clarity, and tighter execution.</p>
+            ${renderLinks([ctaMap.enterpriseDiscovery, ctaMap.contactRouting], true)}
             ${renderMetricRail([
-              { label: "Services", value: "Governance, automation, monetization architecture, and operational design." },
-              { label: "Commercial model", value: "Consultative work routes through Bookings. Membership conversion routes through Stripe." },
-              { label: "Portfolio", value: "Adjacent public brands remain visible, but they are presented as managed business lines." },
+              { label: "Positioning", value: "Executive, selective, and systems-led." },
+              { label: "Scope", value: "Governance architecture, automation design, and revenue infrastructure." },
+              { label: "Engagement", value: "Qualified consultation first. Scoped delivery after alignment." },
             ])}
           </section>
           <aside class="support-panel">
-            <div><div class="eyebrow">Public structure</div><h2>A primary firm with adjacent portfolio lines.</h2></div>
-            <p class="muted">The root domain leads with enterprise services and trust. The creator, membership, music, and travel lines remain visible as structured commercial extensions rather than the main story.</p>
+            <div><div class="eyebrow">What this is</div><h2>A premium firm presentation, not a content feed.</h2></div>
+            <p class="muted">The flagship site is intentionally direct. It establishes authority, explains the offer, and routes serious conversations into a controlled intake path.</p>
             <ul class="plain-list">${homeProofPoints.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
-            <div class="doc-callout">Trust links, route logic, and premium surfaces are part of the public system architecture, not an afterthought.</div>
+            <div class="doc-callout">Trust, governance, and disclosure remain visible because expensive work requires visible standards.</div>
           </aside>
         </div>
       </section>
       <section class="section shell">
-        <div class="section-heading"><div class="eyebrow">Firm positioning</div><h2>Enterprise services first. Portfolio lines second.</h2><p class="muted">The homepage is designed to establish the firm's primary offer clearly before introducing the associated public brands and membership lines.</p></div>
+        <div class="section-heading"><div class="eyebrow">Core advisory lanes</div><h2>Built for high-trust operating decisions.</h2><p class="muted">The offer is intentionally narrow: governance, automation, and commercial infrastructure for teams that need better control.</p></div>
         <div class="feature-grid">${ecosystemSignals.map((item) => `<article class="feature-block"><div class="eyebrow">${escapeHtml(item.label)}</div><h3>${escapeHtml(item.label)}</h3><p class="muted">${escapeHtml(item.value)}</p></article>`).join("")}</div>
       </section>
       <section class="section shell">
         <div class="band-grid">
-          <article class="band-panel"><div class="eyebrow">JayPVentures LLC</div><h3>Governance, automation, and commercial infrastructure.</h3><p class="muted">This is the primary firm. It serves founders, operators, and organizations that need better operating structure, clearer commercial systems, and accountable execution.</p>${renderLinks([ctaMap.servicesOverview, ctaMap.trustCenter])}</article>
-          <article class="band-panel"><div class="eyebrow">Associated portfolio</div><h3>Public-facing creator, membership, music, and travel lines.</h3><p class="muted">These brands remain visible because they are part of the business. They are presented as associated portfolio lines, not as a replacement for the core enterprise identity.</p>${renderLinks([{ label: "Review Creator Brand", type: "application", destination: "/creator" }, { label: "Review Membership", type: "stripe_checkout", destination: "/all-ventures-access" }])}</article>
+          <article class="band-panel"><div class="eyebrow">Primary offer</div><h3>Governance, automation, and commercial infrastructure.</h3><p class="muted">This is the lead story. The work is designed for founders, operators, and leadership teams who want structure that can withstand scrutiny.</p>${renderLinks([ctaMap.servicesOverview, ctaMap.pricingOverview])}</article>
+          <article class="band-panel"><div class="eyebrow">Trust layer</div><h3>Standards are visible before the engagement starts.</h3><p class="muted">Governance and security are public because premium advisory work depends on visible operating standards, not vague positioning.</p>${renderLinks([ctaMap.trustCenter, ctaMap.governanceDoc])}</article>
         </div>
       </section>
       <section class="section shell">
-        <div class="section-heading"><div class="eyebrow">Brand architecture</div><h2>Primary firm and associated public brands.</h2><p class="muted">The visual and messaging system keeps the firm authoritative while still allowing the creator and membership lines to exist within the same controlled structure.</p></div>
-        ${renderBrandProfiles()}
+        <div class="section-heading"><div class="eyebrow">Engagement scale</div><h2>Structured for serious work.</h2><p class="muted">Packages communicate range and posture. Final scope is still qualified through direct consultation.</p></div>
+        ${renderPackagesGrid()}
       </section>
-      <section class="section shell">
-        <div class="section-heading"><div class="eyebrow">Portfolio lines</div><h2>Associated business lines on the public site.</h2><p class="muted">Each line has its own commercial role, but the firm maintains one operating standard across the full portfolio.</p></div>
-        <div class="route-grid">${[
-          ["Services", "High-trust enterprise offers and implementation paths.", "/services"],
-          ["Pricing", "Engagement ladders, membership tiers, and recurring revenue logic.", "/pricing"],
-          ["Ventures", "The bridge page across creator programming, memberships, and proof.", "/ventures"],
-          ["Creator", "Public creator-services surface and creator ecosystem overview.", "/creator"],
-          ["Music", "Artist, release, and collaboration lane.", "/music"],
-          ["Travel", "Travel inquiries, itinerary builds, and operations-led planning.", "/travel"],
-        ].map(([title, copy, href]) => `<article class="route-panel"><h3>${title}</h3><p class="muted">${copy}</p><a class="button button-secondary" href="${href}">Open</a></article>`).join("")}</div>
-      </section>
-      <section class="section shell"><div class="section-heading"><div class="eyebrow">Next step</div><h2>Start with a qualified conversation.</h2><p class="muted">If you are evaluating an engagement, use the contact routing and consultation path first. The portfolio lines are present for context and secondary commercial pathways, not to dilute the firm's primary offer.</p></div>${renderLinks([ctaMap.enterpriseDiscovery, ctaMap.contactRouting])}</section>`,
+      <section class="section shell"><div class="section-heading"><div class="eyebrow">Next step</div><h2>Start with a qualified conversation.</h2><p class="muted">If the work is important, start with consultation and scope alignment. Secondary portfolio lines remain available, but they are not the center of the flagship experience.</p></div>${renderLinks([ctaMap.enterpriseDiscovery, ctaMap.contactRouting])}</section>`,
   };
 }
 function renderServices(env: Env): PageDefinition {

@@ -10,33 +10,28 @@ export const siteMeta = {
 export const primaryNavigation = [
   { href: "/services", label: "Services" },
   { href: "/pricing", label: "Pricing" },
-  { href: "/ventures", label: "Ventures" },
-  { href: "/creator", label: "Creator" },
-  { href: "/all-ventures-access", label: "All Ventures Access" },
-  { href: "/partnerships", label: "Partnerships" },
-  { href: "/insights", label: "Insights" },
   { href: "/trust", label: "Trust" },
   { href: "/contact", label: "Contact" },
 ];
 
 export const homeProofPoints = [
-  "Strategic systems for governance, automation, and revenue operations.",
-  "A primary enterprise firm with selective venture lines operated under the same standards.",
-  "Structured commercial paths across consulting, memberships, partnerships, music, and travel.",
+  "Governance architecture for teams that cannot afford ambiguity.",
+  "Automation and revenue systems designed for control, not chaos.",
+  "Selective engagements with executive visibility from the start.",
 ];
 
 export const ecosystemSignals = [
   {
     label: "Advisory focus",
-    value: "Governance, automation, revenue infrastructure, and implementation design for organizations that require accountability.",
+    value: "Governance, automation, and commercial infrastructure for operators who need accountable execution.",
   },
   {
-    label: "Commercial routing",
-    value: "Microsoft Bookings for time-based services. Stripe Checkout for recurring memberships and future digital offers.",
+    label: "Engagement model",
+    value: "Discovery first, scoped delivery second, with tighter qualification for high-value work.",
   },
   {
-    label: "Associated ventures",
-    value: "Public-facing JayPVentures lines remain visible, but they operate within the same commercial and governance discipline as the primary firm.",
+    label: "Positioning",
+    value: "Executive, selective, and systems-led rather than content-led or creator-led.",
   },
 ];
 

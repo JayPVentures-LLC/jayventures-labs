@@ -65,7 +65,7 @@ describe("flagship site worker", () => {
     const contact = await (await fetchRoute("/contact")).text();
 
     expect(home).toContain("https://bookings.example/discovery");
-    expect(home).toContain('href="/ventures"');
+    expect(home).toContain('href="/contact"');
 
     expect(creator).toContain("https://app.example/creator");
     expect(membership).toContain("https://checkout.example/core");
