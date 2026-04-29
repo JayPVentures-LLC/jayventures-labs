@@ -1,0 +1,23 @@
+name = "jaypventures-discord-bot"
+main = "src/index.ts"
+compatibility_date = "2026-04-09"
+workers_dev = true
+
+[vars]
+SITE_ORIGIN = "https://jaypventuresllc.com"
+# Replace with your Discord Application ID (General Information → Application ID)
+DISCORD_APP_ID = "REPLACE_WITH_DISCORD_APP_ID"
+# Replace with your Discord Client ID (OAuth2 → Client ID — usually same as App ID)
+DISCORD_CLIENT_ID = "REPLACE_WITH_DISCORD_CLIENT_ID"
+
+# Secrets — set via `wrangler secret put <NAME>` or GitHub Actions secrets:
+#   DISCORD_PUBLIC_KEY   — General Information → Public Key
+#   DISCORD_CLIENT_SECRET — OAuth2 → Client Secret
+#   DISCORD_BOT_TOKEN    — Bot → Token
+
+# Optional: uncomment to enable CSRF-safe OAuth2 state storage for Linked Roles.
+# Create the namespace first: `wrangler kv namespace create LINKED_ROLES_KV`
+# [[kv_namespaces]]
+# binding = "LINKED_ROLES_KV"
+# id = "REPLACE_WITH_LINKED_ROLES_KV_ID"
+# preview_id = "REPLACE_WITH_LINKED_ROLES_KV_PREVIEW_ID"
