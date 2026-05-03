@@ -55,6 +55,12 @@ export default {
   async queue(batch: MessageBatch<WorkerEventMessage>, env: Env, ctx: ExecutionContext): Promise<void> {
     for (const message of batch.messages) {
       try {
+        if (message.body.type === "action.plan.created") {
+          await sendTelemetry(env, "action_plan_created", message.body.payload);
+          message.ack();
+          continue;
+        }
+
         await archiveEvent(env, message.body);
         await sendTelemetry(env, `${message.body.payload.source}_${message.body.payload.event}`, message.body.payload.data);
         message.ack();
@@ -68,3 +74,4 @@ export default {
     }
   },
 };
+

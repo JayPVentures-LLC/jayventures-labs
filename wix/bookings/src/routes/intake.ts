@@ -19,6 +19,7 @@ import { pushToStripe } from "../core/integrations/stripe";
 import { sendEmail } from "../core/integrations/email";
 import { pushToDataLake } from "../core/integrations/dataLake";
 import { updateMetrics } from "../core/metrics";
+import { persistActionPlan, planActions } from "../core/actions";
 
 function json(body: unknown, status = 200): Response {
   return new Response(JSON.stringify(body, null, 2), {
@@ -85,6 +86,19 @@ export async function handleIntake(request: Request, env: Env): Promise<Response
   }
 
   const metrics = await updateMetrics(env, record);
+  const actionPlan = planActions(record);
+  await persistActionPlan(env, actionPlan);
+
+  if (env.WORKER_EVENTS_QUEUE && actionPlan.actions.length > 0) {
+    await env.WORKER_EVENTS_QUEUE.send({
+      type: "action.plan.created",
+      payload: {
+        idempotencyKey: record.idempotencyKey,
+        record,
+        actionPlan,
+      },
+    });
+  }
   await enqueueArchive(env, {
     source: "bookings-worker",
     event: event.eventType,
@@ -142,3 +156,4 @@ async function withRetry<T>(fn: () => Promise<T>, attempts = 3): Promise<{ succe
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
+

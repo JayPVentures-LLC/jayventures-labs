@@ -31,6 +31,12 @@ export interface Env {
   ADMIN_UPLOAD_TOKEN?: string;
   WORKER_EVENTS_QUEUE?: Queue<unknown>;
 
+  DISCORD_BOT_TOKEN?: string;
+  DISCORD_GUILD_ID?: string;
+  DISCORD_COMMUNITY_ROLE_ID?: string;
+  DISCORD_VIP_ROLE_ID?: string;
+  DISCORD_INNER_CIRCLE_ROLE_ID?: string;
+
   AZURE_KEY_VAULT_URL?: string;
   AZURE_TENANT_ID?: string;
   AZURE_CLIENT_ID?: string;
@@ -40,3 +46,4 @@ export interface Env {
   AZURE_ARCHIVE_TOKEN?: string;
   AZURE_ARCHIVE_TOKEN_SECRET_NAME?: string;
 }
+
