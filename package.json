@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "name": "jayventures-labs",
   "version": "1.0.0",
   "description": "Private workspace for JayVentures experiments, prototypes, and internal tooling.",
@@ -18,4 +19,34 @@
     "url": "https://github.com/jaypventuresllc/jayventures-labs/issues"
   },
   "homepage": "https://github.com/jaypventuresllc/jayventures-labs#readme"
+=======
+  "name": "jaypventures-labs",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:website": "vitest run tests/flagship-site.test.ts",
+    "test:entitlement": "vitest run tests/entitlement-system.test.ts",
+    "test:bookings": "vitest run tests/wix-bookings.test.ts",
+    "typecheck": "tsc --noEmit",
+    "dev:website": "wrangler dev --config apps/flagship-site/wrangler.toml",
+    "dev:entitlement": "wrangler dev --config operations/entitlement-system/wrangler.toml",
+    "dev:bookings": "wrangler dev --config wix/bookings/wrangler.toml",
+    "deploy:dryrun:website": "wrangler deploy --dry-run --config apps/flagship-site/wrangler.toml",
+    "deploy:dryrun:entitlement": "wrangler deploy --dry-run --config operations/entitlement-system/wrangler.toml",
+    "deploy:dryrun:bookings": "wrangler deploy --dry-run --config wix/bookings/wrangler.toml",
+    "setup:devvars": "powershell -ExecutionPolicy Bypass -File scripts/setup-dev-vars.ps1",
+    "validate:deploy:website": "node scripts/validate-deploy-config.mjs apps/flagship-site/wrangler.toml",
+    "validate:deploy:entitlement": "node scripts/validate-deploy-config.mjs operations/entitlement-system/wrangler.toml",
+    "validate:deploy:bookings": "node scripts/validate-deploy-config.mjs wix/bookings/wrangler.toml"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260404.0",
+    "@types/node": "^22.15.17",
+    "typescript": "^5.8.3",
+    "vitest": "^3.1.2",
+    "wrangler": "^4.11.1"
+  }
+>>>>>>> 51a3291c8de042cf2f7a6c2c10212c78c786dd50
 }

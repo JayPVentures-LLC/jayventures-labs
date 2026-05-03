@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JayPVentures Local Test Site</title>
+  <style>
+    :root {
+      --bg: #0b0d10;
+      --card: rgba(25, 28, 34, 0.85);
+      --border: rgba(255, 255, 255, 0.06);
+      --accent: #4da3ff;
+      --text-primary: #ffffff;
+      --text-secondary: rgba(255,255,255,0.55);
+    }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top left, #12151c 0%, var(--bg) 60%);
+      color: var(--text-primary);
+      letter-spacing: 0.4px;
+    }
+    .container {
+      padding: 40px 24px 60px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+    .title {
+      font-size: 18px;
+      text-transform: uppercase;
+    }
+    .subtitle {
+      color: var(--text-secondary);
+      font-size: 13px;
+      max-width: 700px;
+    }
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 24px;
+    }
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+    .tab {
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.02);
+      color: var(--text-primary);
+      cursor: pointer;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+    .tab.active {
+      border-color: var(--accent);
+      background: rgba(77, 163, 255, 0.15);
+    }
+    .inputs {
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
+      gap: 12px;
+      align-items: end;
+    }
+    label {
+      display: block;
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+    input {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.04);
+      color: var(--text-primary);
+    }
+    button {
+      padding: 10px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--accent);
+      background: var(--accent);
+      color: #fff;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .grid {
+      margin-top: 24px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+      position: relative;
+    }
+    .card::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 2px;
+      width: 100%;
+      background: var(--accent);
+      opacity: 0.18;
+    }
+    .label {
+      font-size: 11px;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+    .value {
+      font-size: 18px;
+      font-weight: 600;
+    }
+    .sectionTitle {
+      margin-top: 24px;
+      font-size: 12px;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+    }
+    .table {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .row {
+      display: grid;
+      grid-template-columns: 1.2fr 0.6fr 2fr;
+      gap: 12px;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .row:last-child {
+      border-bottom: none;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+      color: var(--text-primary);
+    }
+    .signal {
+      color: var(--text-secondary);
+      font-size: 12px;
+    }
+    .status {
+      margin-top: 8px;
+      color: var(--text-secondary);
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div>
+        <div class="title">JayPVentures Local Test Site</div>
+        <div class="subtitle">Validate Inner Circle and Creator Command Center outputs with interactive tabs and buttons.</div>
+      </div>
+      <div id="month" class="subtitle"></div>
+    </div>
+
+    <div class="panel">
+      <div class="inputs">
+        <div>
+          <label for="baseUrl">Base URL</label>
+          <input id="baseUrl" value="http://127.0.0.1:8787" />
+        </div>
+        <div>
+          <label for="token">Bearer Token</label>
+          <input id="token" placeholder="Inner Circle or admin token" />
+        </div>
+        <div>
+          <button id="loadBtn">Load Active Tab</button>
+        </div>
+      </div>
+      <div class="tabs">
+        <button class="tab active" id="tabInner">Inner Circle</button>
+        <button class="tab" id="tabCreator">Creator</button>
+      </div>
+      <div id="status" class="status"></div>
+    </div>
+
+    <div id="innerCircleSection">
+      <div class="grid" id="systemCards"></div>
+
+      <div class="sectionTitle">Divisions</div>
+      <div class="table" id="divisions"></div>
+    </div>
+
+    <div id="creatorSection" style="display:none;">
+      <div class="grid" id="creatorCards"></div>
+
+      <div class="sectionTitle">Spike Log</div>
+      <div class="table" id="creatorSpikes"></div>
+    </div>
+  </div>
+
+  <script>
+    function card(label, value) {
+      const div = document.createElement("div");
+      div.className = "card";
+      div.innerHTML =
+        '<div class="label">' + label + '</div>' +
+        '<div class="value">' + value + '</div>';
+      return div;
+    }
+
+    let activeTab = "inner";
+
+    function setActiveTab(tab) {
+      activeTab = tab;
+      document.getElementById("tabInner").classList.toggle("active", tab === "inner");
+      document.getElementById("tabCreator").classList.toggle("active", tab === "creator");
+      document.getElementById("innerCircleSection").style.display = tab === "inner" ? "block" : "none";
+      document.getElementById("creatorSection").style.display = tab === "creator" ? "block" : "none";
+    }
+
+    async function loadInnerCircle(baseUrl, headers) {
+      const response = await fetch(baseUrl + "/inner-circle/metrics", { headers });
+      if (!response.ok) {
+        return { ok: false };
+      }
+      const data = await response.json();
+      document.getElementById("month").textContent = data.month;
+
+      const cards = document.getElementById("systemCards");
+      cards.innerHTML = "";
+      cards.appendChild(card("Member ID", data.memberId || "Unavailable"));
+      cards.appendChild(card("Intake Engine", data.systemStatus.intakeEngine));
+      cards.appendChild(card("Booking Pipeline", data.systemStatus.bookingPipeline));
+      cards.appendChild(card("Membership Gate", data.systemStatus.membershipGate));
+      cards.appendChild(card("Vault Delivery", data.systemStatus.vaultDelivery));
+
+      const table = document.getElementById("divisions");
+      table.innerHTML = "";
+
+      data.divisions.forEach(function (d) {
+        const row = document.createElement("div");
+        row.className = "row";
+        row.innerHTML =
+          '<div>' + d.name + '</div>' +
+          '<div><span class="badge">' + d.status + '</span></div>' +
+          '<div class="signal">' + d.signal + '</div>';
+        table.appendChild(row);
+      });
+
+      return { ok: true };
+    }
+
+    async function loadCreator(baseUrl, headers) {
+      const response = await fetch(baseUrl + "/creator/metrics", { headers });
+      if (!response.ok) {
+        return { ok: false };
+      }
+      const data = await response.json();
+      document.getElementById("month").textContent = "Creator Metrics";
+
+      const cards = document.getElementById("creatorCards");
+      cards.innerHTML = "";
+      cards.appendChild(card("Member ID", data.memberId || "Admin"));
+      cards.appendChild(card("Spike Events Detected", data.summary.spikesDetected));
+      cards.appendChild(card("Top Recommended CTA", data.summary.topCTA));
+      cards.appendChild(card("Engagement Efficiency", (data.summary.avgEngagementRate * 100).toFixed(1) + "%"));
+      cards.appendChild(card("Window", data.summary.windowDays + " Days"));
+
+      const table = document.getElementById("creatorSpikes");
+      table.innerHTML = "";
+
+      if (!data.spikes.length) {
+        const row = document.createElement("div");
+        row.className = "row";
+        row.innerHTML = '<div class="signal">No spikes detected in this window.</div>';
+        table.appendChild(row);
+        return { ok: true };
+      }
+
+      data.spikes.slice(0, 12).forEach(function (s) {
+        const row = document.createElement("div");
+        row.className = "row";
+        row.innerHTML =
+          '<div><span class="badge">Spike x' + s.spikeMultiplier.toFixed(1) + '</span></div>' +
+          '<div class="signal">' + s.dateLabel + '</div>' +
+          '<div class="signal">' + s.recommendedCTA + '</div>';
+        table.appendChild(row);
+      });
+
+      return { ok: true };
+    }
+
+    async function loadPortal() {
+      const baseUrl = document.getElementById("baseUrl").value.trim();
+      const token = document.getElementById("token").value.trim();
+      const status = document.getElementById("status");
+      status.textContent = "Loading...";
+
+      const headers = token ? { Authorization: "Bearer " + token } : {};
+
+      try {
+        const result = activeTab === "inner"
+          ? await loadInnerCircle(baseUrl, headers)
+          : await loadCreator(baseUrl, headers);
+
+        status.textContent = result.ok ? "Loaded." : "Access required or endpoint unavailable.";
+      } catch (error) {
+        status.textContent = "Failed to load metrics.";
+      }
+    }
+
+    document.getElementById("loadBtn").addEventListener("click", loadPortal);
+    document.getElementById("tabInner").addEventListener("click", function () {
+      setActiveTab("inner");
+    });
+    document.getElementById("tabCreator").addEventListener("click", function () {
+      setActiveTab("creator");
+    });
+  </script>
+</body>
+</html>

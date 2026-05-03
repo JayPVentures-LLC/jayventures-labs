@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JAYPVENTURES LLC - Website Copy Preview</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #0b0b0c;
+      --muted: #5b5b60;
+      --accent: #b11226;
+      --accent-dark: #740a0b;
+      --rose: #f7cec9;
+      --panel: #121315;
+      --panel-2: #191b1f;
+      --line: #2a2d33;
+      --paper: #ffffff;
+    }
+    body {
+      margin: 0;
+      font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, serif;
+      color: var(--paper);
+      background: radial-gradient(circle at top, #1b1d22 0%, #0b0b0c 55%, #080808 100%);
+    }
+    main {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 64px 24px 96px;
+    }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+    h1, h2, h3 {
+      letter-spacing: 0.2px;
+      margin: 0 0 12px;
+    }
+    h1 {
+      font-size: 44px;
+    }
+    h2 {
+      font-size: 28px;
+      margin-top: 48px;
+      padding-top: 8px;
+      border-top: 1px solid var(--line);
+    }
+    h3 {
+      font-size: 20px;
+      margin-top: 28px;
+    }
+    p {
+      line-height: 1.7;
+      margin: 0 0 16px;
+      color: #d5d7dc;
+    }
+    ul {
+      margin: 0 0 16px 20px;
+      color: #d5d7dc;
+    }
+    li {
+      margin-bottom: 6px;
+    }
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      letter-spacing: 0.6px;
+    }
+    .logo-mark {
+      width: 56px;
+      height: 56px;
+      border-radius: 12px;
+      background: #ffffff;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 10px 24px rgba(177, 18, 38, 0.35);
+      overflow: hidden;
+    }
+    .logo-mark img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .nav {
+      display: flex;
+      gap: 18px;
+      font-size: 14px;
+      color: #d5d7dc;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .nav a {
+      opacity: 0.85;
+    }
+    .nav a:hover {
+      opacity: 1;
+      color: #ffffff;
+    }
+    .hero {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 36px;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 40px;
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 70% 20%, rgba(177, 18, 38, 0.22), transparent 55%);
+      pointer-events: none;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      position: relative;
+      z-index: 1;
+    }
+    .hero h1 {
+      max-width: 520px;
+    }
+    .hero p {
+      max-width: 520px;
+      color: #c9ccd2;
+    }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      padding: 20px 24px;
+      border-radius: 12px;
+      margin: 16px 0;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+    .cta {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+    .btn {
+      display: inline-block;
+      padding: 10px 16px;
+      border-radius: 999px;
+      text-decoration: none;
+      border: 1px solid var(--accent);
+      color: #ffffff;
+      font-weight: 600;
+    }
+    .btn.primary {
+      background: var(--accent);
+      color: #ffffff;
+    }
+    .btn.ghost {
+      background: transparent;
+      border-color: #ffffff33;
+      color: #ffffff;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(177, 18, 38, 0.15);
+      color: #f5d2d4;
+      border: 1px solid rgba(177, 18, 38, 0.35);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .divider {
+      height: 1px;
+      background: var(--line);
+      margin: 48px 0 16px;
+    }
+    .footer {
+      margin-top: 56px;
+      font-size: 14px;
+      color: #b8bcc4;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header class="topbar">
+      <div class="logo">
+        <div class="logo-mark"><img src="assets/logo.webp" alt="JAYPVENTURES LLC logo"></div>
+        <div>
+          <div>JAYPVENTURES LLC</div>
+          <div style="font-size: 12px; color: #b8bcc4; letter-spacing: 2px;">GOVERNANCE BY DESIGN</div>
+        </div>
+      </div>
+      <nav class="nav">
+        <a href="#">Home</a>
+        <a href="#">Ventures</a>
+        <a href="#">Partnerships</a>
+        <a href="#">Insights</a>
+        <a href="#">Governance</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="hero-grid">
+        <div>
+          <div class="badge">Operating Ventures</div>
+          <h1>Operating Ventures With Clarity and Intent</h1>
+          <p>JAYPVENTURES LLC fuses enterprise-grade governance with creative innovation. We design resilient systems for organizations and creators, engineered for trust, transparency, and adaptive oversight.</p>
+          <div class="cta">
+            <a class="btn primary" href="https://outlook.office.com/book/JAYPVENTURESLLCConsultations1@jaypventuresllc.com/?ismsaljsauthenabled">Book a discovery call</a>
+            <a class="btn ghost" href="GOVERNANCE.md">Review Governance Framework</a>
+          </div>
+        </div>
+        <div>
+          <div class="panel">
+            <strong>Venture Operations</strong>
+            <p>Creator-led initiatives operated under formal governance, with clear cadence, standards, and risk oversight.</p>
+            <a class="btn" href="#ventures">View Ventures</a>
+          </div>
+          <div class="panel">
+            <strong>Governance Systems</strong>
+            <p>Audit-ready decision architecture, evidence capture, and transparent reporting across teams and tools.</p>
+            <a class="btn" href="GOVERNANCE.md">View Governance</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <h2 id="ventures">Services</h2>
+    <ul>
+      <li><strong>Strategy &amp; Governance:</strong> Future-proof operations with governance-by-design and disciplined risk architecture.</li>
+      <li><strong>Automation &amp; AI Systems:</strong> Deploy secure, auditable automation and AI designed for scalable impact.</li>
+      <li><strong>Platforms &amp; Prototyping:</strong> Rapid validation of new ideas, tools, and workflows with production-ready rigor.</li>
+      <li><strong>Compliance &amp; Audit:</strong> Sustain regulatory alignment with continuous auditability.</li>
+    </ul>
+
+    <h2>Trust</h2>
+    <ul>
+      <li>Governance frameworks are engineered for 2050 and beyond.</li>
+      <li>Systems and processes are designed to withstand independent audit.</li>
+      <li>Human and AI oversight adapt to evolving risks and opportunities.</li>
+      <li>Responsible disclosure and incident response are standard practice.</li>
+    </ul>
+    <p><strong>Learn more:</strong> <a href="SECURITY.md">SECURITY.md</a> | <a href="GOVERNANCE.md">GOVERNANCE.md</a></p>
+
+    <h2>Contact</h2>
+    <p>Email: <a href="mailto:venture@jaypventuresllc.com">venture@jaypventuresllc.com</a><br>
+    LinkedIn: <a href="https://linkedin.com/company/jaypventuresllc">linkedin.com/company/jaypventuresllc</a></p>
+
+    <h2>Monetization Roadmap (2026)</h2>
+
+    <h3>Core Service Areas</h3>
+    <p><strong>Strategy &amp; Governance</strong><br>
+    We build governance-by-design operating models that make innovation safe, auditable, and future-ready. Risk frameworks and decision architecture align leadership, policy, and technology so trust is built in from day one.</p>
+
+    <p><strong>Automation &amp; AI Systems</strong><br>
+    We deploy secure, explainable automation and AI systems that scale impact without sacrificing oversight. Every workflow is built for transparency, auditability, and continuous control.</p>
+
+    <p><strong>Platforms &amp; Prototyping</strong><br>
+    We turn ideas into validated systems quickly. Prototypes, internal tools, and creator platforms are engineered for resilience, adoption, and measurable outcomes.</p>
+
+    <p><strong>Compliance &amp; Audit</strong><br>
+    We operationalize compliance as a living system: controls, evidence, and continuous auditability that turn regulatory alignment into a competitive advantage.</p>
+
+    <h3>Tiered Packages (Recommended)</h3>
+    <div class="grid">
+      <div class="panel">
+        <strong>Essential</strong>
+        <ul>
+          <li><strong>Audience:</strong> Creators, founders, and small teams who need a credible governance baseline.</li>
+          <li><strong>Scope:</strong> Foundational governance, light automation, compliance starter.</li>
+          <li><strong>Deliverables:</strong> 2-3 discovery workshops, risk register + control map, 1-2 high-impact automation wins, compliance foundation kit (policies + evidence checklist), 30-day support window.</li>
+          <li><strong>Pricing Range:</strong> $5,000-$9,000 (2-4 weeks).</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <strong>Growth</strong>
+        <ul>
+          <li><strong>Audience:</strong> Scaling teams and early-stage enterprises preparing for operational maturity.</li>
+          <li><strong>Scope:</strong> Governance operating model + automation blueprint + validated prototype.</li>
+          <li><strong>Deliverables:</strong> Governance-by-design model, 90-180 day AI/automation roadmap, prototype or internal tool MVP, compliance readiness plan + audit trail setup, 60-day support window.</li>
+          <li><strong>Pricing Range:</strong> $15,000-$35,000 (6-10 weeks).</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <strong>Pro</strong>
+        <ul>
+          <li><strong>Audience:</strong> Mid-market enterprises or regulated innovators with cross-team needs.</li>
+          <li><strong>Scope:</strong> Multi-system automation, platform prototype, compliance integration.</li>
+          <li><strong>Deliverables:</strong> Governance framework + policy library, AI system design + model risk controls, platform or tool prototype (2-3 sprints), continuous auditability pipeline, KPI dashboard, 90-day support window.</li>
+          <li><strong>Pricing Range:</strong> $40,000-$95,000 (10-16 weeks).</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <strong>Enterprise</strong>
+        <ul>
+          <li><strong>Audience:</strong> Large enterprises and regulated industries with multi-division risk exposure.</li>
+          <li><strong>Scope:</strong> End-to-end governance, automation at scale, and audit-ready systems.</li>
+          <li><strong>Deliverables:</strong> Enterprise governance architecture, cross-department AI and automation implementation, platform build + integration roadmap, full compliance program + independent audit prep, executive reporting cadence.</li>
+          <li><strong>Pricing Range:</strong> $150,000-$300,000+ (multi-quarter engagement).</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="panel">
+      <strong>Retainers (Optional)</strong>
+      <ul>
+        <li><strong>Governance Oversight:</strong> $3,000-$8,000/month for policy updates, risk reviews, and advisory.</li>
+        <li><strong>Automation Care:</strong> $4,000-$12,000/month for maintenance, monitoring, and optimization.</li>
+        <li><strong>Compliance Maintenance:</strong> $5,000-$15,000/month for evidence capture, audit prep, and reporting.</li>
+      </ul>
+    </div>
+
+    <h3>Digital Revenue Ideas (Integrated)</h3>
+    <ol>
+      <li><strong>Governance Templates &amp; Playbooks</strong>
+        <ul>
+          <li><strong>Offer:</strong> Policy templates, risk registers, control matrices, incident response playbooks.</li>
+          <li><strong>Integration:</strong> Included in Essential/Growth; offered as a paid add-on or standalone for self-serve buyers.</li>
+        </ul>
+      </li>
+      <li><strong>AI Governance &amp; Automation Courses</strong>
+        <ul>
+          <li><strong>Offer:</strong> Self-paced course with optional live cohorts and certification.</li>
+          <li><strong>Integration:</strong> Lead-in to Growth/Pro with preferred pricing for consulting clients and members.</li>
+        </ul>
+      </li>
+      <li><strong>Membership: Governance Lab</strong>
+        <ul>
+          <li><strong>Offer:</strong> Monthly updates, office hours, compliance alerts, template drops, and peer forums.</li>
+          <li><strong>Integration:</strong> Ongoing support for Essential/Growth alumni and creators.</li>
+        </ul>
+      </li>
+      <li><strong>Audit-Ready Toolkit (Premium Add-On)</strong>
+        <ul>
+          <li><strong>Offer:</strong> Evidence workflows, automated logs, audit dashboards, and checklists.</li>
+          <li><strong>Integration:</strong> Add-on to Pro/Enterprise; optional for Growth.</li>
+        </ul>
+      </li>
+    </ol>
+
+    <h3>Wix Implementation Notes (Recommended)</h3>
+    <ul>
+      <li><strong>Site Structure:</strong> Home, Services (tiers), Governance Lab (membership), Resources (digital products), Trust &amp; Governance (security, governance, policies), Contact/Book.</li>
+      <li><strong>Pricing &amp; Payments:</strong> Use Wix Pricing Plans for tiers and membership, Wix Bookings for discovery calls and workshops, Wix Stores for templates and courses.</li>
+      <li><strong>Checkout UX:</strong> Add a Trust by Design notice near checkout and booking confirmations. Place SECURITY.md and GOVERNANCE.md links in the footer and Trust &amp; Governance page.</li>
+      <li><strong>Analytics:</strong> Enable Wix Analytics and GA4; track plan views, checkout starts, booking completions, and resource downloads.</li>
+      <li><strong>Compliance:</strong> Add a privacy notice and cookie banner; retain consent and processing logs; include terms for digital product usage.</li>
+    </ul>
+
+    <h3>Marketing &amp; Outreach (Governance-by-Design)</h3>
+    <ul>
+      <li>Publish monthly Governance Lab Notes with real-world risk scenarios and solutions.</li>
+      <li>Partner with legal, cybersecurity, and compliance firms for referrals.</li>
+      <li>Run founder-led outreach in Louisville and the Midwest with governance-first AI messaging.</li>
+      <li>Build anonymized case studies showing measurable risk reduction.</li>
+      <li>Lead with auditability, transparency, and resilience in all messaging.</li>
+    </ul>
+
+    <h3>Homepage Snapshot (Compact)</h3>
+    <p><strong>Governance-by-Design for AI, Automation, and Compliance</strong><br>
+    JayPVentures LLC helps enterprises and creators build systems that scale without losing trust. Strategy, automation, prototyping, and auditability work in concert so innovation remains measurable, resilient, and safe.</p>
+
+    <p><strong>Packages</strong></p>
+    <ul>
+      <li>Essential: Governance baseline + quick-win automation.</li>
+      <li>Growth: Governance operating model + prototype + 90-180 day roadmap.</li>
+      <li>Pro: Multi-system automation + auditability pipeline.</li>
+      <li>Enterprise: End-to-end governance and audit-ready implementation.</li>
+    </ul>
+
+    <p><strong>Digital Products</strong><br>
+    Templates, courses, and the Governance Lab membership extend our services and keep systems compliant between engagements.</p>
+
+    <h3>Vertical Adaptations (Finance, Healthcare, SaaS, Creators)</h3>
+    <div class="grid">
+      <div class="panel">
+        <strong>Finance</strong>
+        <ul>
+          <li><strong>Emphasis:</strong> Model risk management, audit trails, and regulatory alignment.</li>
+          <li><strong>Add-ons:</strong> Control testing automation and evidence capture dashboards.</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <strong>Healthcare</strong>
+        <ul>
+          <li><strong>Emphasis:</strong> Data handling safeguards, explainability, and clinical workflow integrity.</li>
+          <li><strong>Add-ons:</strong> Policy mapping to HIPAA-aligned controls and incident readiness.</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <strong>SaaS</strong>
+        <ul>
+          <li><strong>Emphasis:</strong> Scalable governance for product teams and customer trust.</li>
+          <li><strong>Add-ons:</strong> AI release gates, monitoring, and compliance-by-design playbooks.</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <strong>Creators</strong>
+        <ul>
+          <li><strong>Emphasis:</strong> IP protection, revenue workflow automation, and transparent disclosure.</li>
+          <li><strong>Add-ons:</strong> Brand governance kit and licensing process templates.</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Call to Action (Website Block)</h3>
+    <p><strong>Build systems you can prove.</strong><br>
+    Start with a governance baseline or book a discovery call to design the right roadmap. Every engagement includes audit-ready documentation and measurable outcomes.</p>
+
+    <div class="cta">
+      <a class="btn primary" href="https://outlook.office.com/book/JAYPVENTURESLLCConsultations1@jaypventuresllc.com/?ismsaljsauthenabled">Book a discovery call</a>
+      <a class="btn" href="GOVERNANCE.md">Review Governance Framework</a>
+      <a class="btn" href="#">Join the Governance Lab</a>
+    </div>
+
+    <h3>CTA Variants</h3>
+    <div class="grid">
+      <div class="panel">
+        <strong>Enterprise</strong>
+        <p>Audit-ready systems start with governance-by-design. We align AI, automation, and compliance under a single accountable roadmap.</p>
+        <div class="cta">
+          <a class="btn primary" href="#">Schedule an executive discovery session</a>
+          <a class="btn" href="#">Request an enterprise roadmap</a>
+        </div>
+      </div>
+      <div class="panel">
+        <strong>Creators</strong>
+        <p>Protect your work, automate revenue, and grow with transparency. Start with a lightweight governance baseline built for modern creators.</p>
+        <div class="cta">
+          <a class="btn primary" href="#">Book a creator strategy call</a>
+          <a class="btn" href="#">Download the Creator Governance Kit</a>
+        </div>
+      </div>
+    </div>
+
+    <p class="footer">JAYPVENTURES LLC - Trust by Design. Innovation with Oversight.</p>
+  </main>
+</body>
+</html>
+

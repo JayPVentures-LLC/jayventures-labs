@@ -1,0 +1,8 @@
+name = "jaypventures-flagship-site"
+main = "src/index.ts"
+compatibility_date = "2026-04-09"
+workers_dev = true
+
+[vars]
+SITE_ORIGIN = "https://jaypventuresllc.com"
+MICROSOFT_BOOKINGS_URL = "https://outlook.office.com/book/JAYPVENTURESLLCConsultations1@jaypventuresllc.com/?ismsaljsauthenabled"

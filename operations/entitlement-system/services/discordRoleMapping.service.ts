@@ -1,0 +1,27 @@
+import type { Brand, Tier } from "../types/entitlement.types";
+import { DISCORD_GUILD_CONFIG } from "../config/discordGuilds";
+
+export function getGuildIdForBrand(brand: Brand): string {
+  return DISCORD_GUILD_CONFIG[brand].guildId;
+}
+
+export function getRoleIdsForBrandTier(brand: Brand, tier: Tier): string[] {
+  return DISCORD_GUILD_CONFIG[brand].tierRoles[tier] ?? [];
+}
+
+export function getAllTierRolesForBrand(brand: Brand): string[] {
+  return Object.values(DISCORD_GUILD_CONFIG[brand].tierRoles).flat();
+}
+
+export function reconcileRoles(params: {
+  brand: Brand;
+  tier: Tier;
+  status: "active" | "inactive" | "expired" | "revoked";
+  currentRoles: string[];
+}): { add: string[]; remove: string[] } {
+  const expected = params.status === "active" ? getRoleIdsForBrandTier(params.brand, params.tier) : [];
+  const allBrandRoles = getAllTierRolesForBrand(params.brand);
+  const remove = params.currentRoles.filter((roleId) => allBrandRoles.includes(roleId) && !expected.includes(roleId));
+  const add = expected.filter((roleId) => !params.currentRoles.includes(roleId));
+  return { add, remove };
+}

@@ -1,0 +1,870 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JayPVentures Dual Brand Preview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0a0c0f;
+      --glow: #eef1f6;
+      --radius-xl: 22px;
+      --radius-lg: 16px;
+      --shadow: 0 30px 80px rgba(0, 0, 0, 0.25);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: radial-gradient(circle at 10% 10%, #1b222c 0%, #0b0e13 45%, #07090c 100%);
+      color: #f7f7f7;
+      font-family: "Space Grotesk", "Segoe UI", sans-serif;
+      letter-spacing: 0.2px;
+      min-height: 100vh;
+    }
+
+    .page {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 48px 24px 100px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .halo {
+      position: absolute;
+      width: 520px;
+      height: 520px;
+      background: radial-gradient(circle, rgba(255, 80, 80, 0.22) 0%, rgba(255, 80, 80, 0.02) 60%, transparent 70%);
+      top: -120px;
+      right: -140px;
+      filter: blur(10px);
+      pointer-events: none;
+    }
+
+    .header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 30px;
+    }
+
+    .title {
+      font-family: "DM Serif Display", serif;
+      font-size: 28px;
+      letter-spacing: 1px;
+    }
+
+    .subtitle {
+      color: rgba(255, 255, 255, 0.6);
+      max-width: 680px;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .toggle {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding: 6px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .toggle button {
+      border: 0;
+      background: transparent;
+      color: rgba(255, 255, 255, 0.65);
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-weight: 600;
+      cursor: pointer;
+      letter-spacing: 0.6px;
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+
+    .toggle button.active {
+      background: #ffffff;
+      color: #0b0e13;
+      box-shadow: 0 10px 30px rgba(255, 255, 255, 0.2);
+    }
+
+    .brand-panel {
+      display: none;
+      padding: 36px;
+      border-radius: var(--radius-xl);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(10, 12, 15, 0.85);
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+      animation: fadeInUp 0.6s ease both;
+      font-family: var(--font-body, "Space Grotesk", "Segoe UI", sans-serif);
+    }
+
+    .brand-panel.active {
+      display: block;
+    }
+
+    .brand-panel::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: var(--radius-xl);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      pointer-events: none;
+    }
+
+    .brand-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 22px;
+      margin-top: 26px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 28px;
+      align-items: center;
+    }
+
+    .hero-content {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .brand-panel .hero h2 {
+      font-family: var(--font-display, "DM Serif Display", serif);
+      font-size: 34px;
+      margin: 0 0 14px;
+    }
+
+    .hero p {
+      color: rgba(255, 255, 255, 0.7);
+      line-height: 1.7;
+      margin: 0 0 18px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .hero-micro {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .btn {
+      padding: 12px 18px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      letter-spacing: 0.4px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      min-height: 140px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .card .label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      opacity: 0.7;
+    }
+
+    .card .value {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .list {
+      display: grid;
+      gap: 12px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .list li {
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.03);
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .pill {
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .footer {
+      margin-top: 30px;
+      color: rgba(255, 255, 255, 0.55);
+      font-size: 12px;
+    }
+
+    .brand-nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      padding: 12px 18px;
+      border-radius: 999px;
+      background: rgba(6, 10, 16, 0.92);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 26px;
+      backdrop-filter: blur(10px);
+    }
+
+    .brand-nav.llc {
+      background: rgba(8, 12, 20, 0.94);
+      border-color: rgba(120, 150, 180, 0.25);
+    }
+
+    .nav-logo {
+      font-weight: 700;
+      letter-spacing: 0.6px;
+      font-family: var(--font-display, "DM Serif Display", serif);
+    }
+
+    .nav-links {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: rgba(255, 255, 255, 0.65);
+      flex-wrap: wrap;
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .nav-pill {
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      font-size: 12px;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .nav-pill.accent {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .section {
+      margin-top: 36px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .section-header h3 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 600;
+      font-family: var(--font-display, "DM Serif Display", serif);
+    }
+
+    .section-header span {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .offer-grid,
+    .vault-grid,
+    .two-column {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+    }
+
+    .offer-card,
+    .vault-card,
+    .info-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .offer-card .cta,
+    .vault-card .cta {
+      margin-top: auto;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--accent);
+    }
+
+    .vault-feature {
+      grid-column: span 2;
+      background: linear-gradient(135deg, rgba(0, 212, 255, 0.18), rgba(0, 0, 0, 0.1));
+    }
+
+    .highlight-list {
+      display: grid;
+      gap: 12px;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    .embed {
+      border: 1px dashed rgba(255, 255, 255, 0.3);
+      border-radius: var(--radius-lg);
+      padding: 22px;
+      text-align: center;
+      color: rgba(255, 255, 255, 0.65);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .portal-strip {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .portal-card {
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.03);
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.6);
+      margin-top: 10px;
+    }
+
+    .footer-links a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .brand-llc {
+      --accent: #ff4d4d;
+      --accent-soft: rgba(255, 77, 77, 0.2);
+      --surface: rgba(18, 20, 25, 0.9);
+      --font-body: "IBM Plex Sans", "Segoe UI", sans-serif;
+      --font-display: "Playfair Display", serif;
+      background: linear-gradient(135deg, rgba(20, 15, 20, 0.95) 0%, rgba(10, 12, 16, 0.95) 55%, rgba(28, 8, 12, 0.95) 100%);
+    }
+
+    .brand-creator {
+      --accent: #00d4ff;
+      --accent-soft: rgba(0, 212, 255, 0.2);
+      --surface: rgba(10, 18, 22, 0.9);
+      --font-body: "Space Grotesk", "Segoe UI", sans-serif;
+      --font-display: "DM Serif Display", serif;
+      background: linear-gradient(135deg, rgba(6, 20, 28, 0.95) 0%, rgba(8, 12, 18, 0.95) 50%, rgba(22, 10, 28, 0.95) 100%);
+    }
+
+    .brand-llc .btn.primary,
+    .brand-creator .btn.primary {
+      background: var(--accent);
+      color: #091018;
+    }
+
+    .brand-llc .btn.ghost,
+    .brand-creator .btn.ghost {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: transparent;
+    }
+
+    .brand-llc .pill,
+    .brand-creator .pill {
+      background: var(--accent-soft);
+      color: var(--accent);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .section-title {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: rgba(255, 255, 255, 0.6);
+      margin: 28px 0 12px;
+    }
+
+    .stagger {
+      animation: fadeInUp 0.7s ease both;
+    }
+
+    .stagger:nth-child(2) { animation-delay: 0.05s; }
+    .stagger:nth-child(3) { animation-delay: 0.1s; }
+    .stagger:nth-child(4) { animation-delay: 0.15s; }
+    .stagger:nth-child(5) { animation-delay: 0.2s; }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 780px) {
+      .brand-panel { padding: 28px; }
+      .hero h2 { font-size: 28px; }
+      .brand-nav {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      .nav-links {
+        justify-content: center;
+      }
+      .vault-feature {
+        grid-column: span 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="halo"></div>
+    <header class="header">
+      <div>
+        <div class="title">JayPVentures Dual Brand Preview</div>
+        <div class="subtitle">Finalize the distinct visual systems for JayPVentures LLC and jaypventures creator. Each brand retains its own tone, palette, and offer mix while sharing a unified operational backbone.</div>
+      </div>
+      <div class="toggle" role="tablist">
+        <button class="active" data-target="llc">JayPVentures LLC</button>
+        <button data-target="creator">jaypventures creator</button>
+      </div>
+    </header>
+
+    <section class="brand-panel brand-llc active" id="brand-llc">
+      <div class="brand-nav llc">
+        <div class="nav-logo">JayPVentures LLC</div>
+        <div class="nav-links">
+          <span>Services</span>
+          <span>Case Studies</span>
+          <span>Consultation</span>
+          <span>About</span>
+        </div>
+        <div class="nav-actions">
+          <a class="nav-pill" href="https://outlook.office.com/book/JAYPVENTURESLLCConsultations1@jaypventuresllc.com/?ismsaljsauthenabled">Book Consultation</a>
+          <a class="nav-pill accent" href="#creator">Creator Brand → jaypventures</a>
+        </div>
+      </div>
+
+      <div class="hero" id="home">
+        <div class="hero-content">
+          <h2>Systems. Strategy. Execution.</h2>
+          <p>Executive-grade systems architecture for founders, operators, and enterprise teams. Built to scale decisions, automation, and outcomes without chaos.</p>
+          <div class="hero-actions">
+            <a class="btn primary" href="https://outlook.office.com/book/JAYPVENTURESLLCConsultations1@jaypventuresllc.com/?ismsaljsauthenabled">Book a Consultation</a>
+            <a class="btn ghost" href="#services">View Services</a>
+          </div>
+        </div>
+        <div class="card">
+          <div class="label">Operator Focus</div>
+          <div class="value">Clarity, governance, and durable systems</div>
+          <div class="section-title">Signals</div>
+          <ul class="list">
+            <li>Enterprise builds active <span class="pill">Aligned</span></li>
+            <li>Automation cadence steady <span class="pill">Stable</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="section" id="what-we-build">
+        <div class="section-header">
+          <h3>What We Build</h3>
+          <span>Systems-first delivery</span>
+        </div>
+        <div class="brand-grid">
+          <div class="card stagger">
+            <div class="label">Unified Intake</div>
+            <div class="value">Booking + CRM + routing infrastructure</div>
+            <div class="footer">Automated capture, classification, and follow-through.</div>
+          </div>
+          <div class="card stagger">
+            <div class="label">Automation Backbone</div>
+            <div class="value">No-code + custom workflows</div>
+            <div class="footer">Ops that move without manual friction.</div>
+          </div>
+          <div class="card stagger">
+            <div class="label">Executive Visibility</div>
+            <div class="value">Dashboards + decision telemetry</div>
+            <div class="footer">Operational clarity without noise.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" id="services">
+        <div class="section-header">
+          <h3>Services Grid</h3>
+          <span>Core capabilities</span>
+        </div>
+        <div class="offer-grid">
+          <div class="offer-card">
+            <div class="label">CRM Architecture</div>
+            <div class="value">Scalable pipelines, segmentation, and lifecycle logic</div>
+            <div class="cta">/services/crm</div>
+          </div>
+          <div class="offer-card">
+            <div class="label">Automation Systems</div>
+            <div class="value">Triggers, routing, and operational continuity</div>
+            <div class="cta">/services/automation</div>
+          </div>
+          <div class="offer-card">
+            <div class="label">Creator Monetization Infrastructure</div>
+            <div class="value">Offer stack + subscription automation</div>
+            <div class="cta">/services/creator</div>
+          </div>
+          <div class="offer-card">
+            <div class="label">Portal Builds</div>
+            <div class="value">Secure experiences, gated data, member portals</div>
+            <div class="cta">/services/portal-builds</div>
+          </div>
+          <div class="offer-card">
+            <div class="label">Enterprise Strategy</div>
+            <div class="value">Operating models, governance, and execution</div>
+            <div class="cta">/services/enterprise</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" id="case-studies">
+        <div class="section-header">
+          <h3>Case Studies</h3>
+          <span>Trust without numbers</span>
+        </div>
+        <div class="brand-grid">
+          <div class="card">
+            <div class="label">Problem</div>
+            <div class="value">Fragmented intake + manual follow-up</div>
+            <div class="footer">System built: unified intake + CRM automation + alerts.</div>
+          </div>
+          <div class="card">
+            <div class="label">Outcome</div>
+            <div class="value">Faster response, cleaner handoffs</div>
+            <div class="footer">Architecture overview available on request.</div>
+          </div>
+          <div class="card">
+            <div class="label">Problem</div>
+            <div class="value">No visibility into project delivery</div>
+            <div class="footer">System built: client portal + milestone board + governance layer.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" id="consultation">
+        <div class="section-header">
+          <h3>Consultation</h3>
+          <span>Booking CTA</span>
+        </div>
+        <div class="embed">
+          Book directly through the live Microsoft Bookings page for JAYPVENTURES LLC consultations.
+          <div class="hero-actions" style="justify-content:center; margin-top:16px;">
+            <a class="btn primary" href="https://outlook.office.com/book/JAYPVENTURESLLCConsultations1@jaypventuresllc.com/?ismsaljsauthenabled">Book Consultation</a>
+          </div>
+          <div class="footer">Use the Book Consultation button to access availability, intake prompts, package expectations, and confirmation details.</div>
+        </div>
+      </div>
+
+      <div class="section" id="about">
+        <div class="section-header">
+          <h3>About</h3>
+          <span>Systems-first methodology</span>
+        </div>
+        <div class="offer-grid">
+          <div class="offer-card">
+            <div class="value">Built for operators who need clarity, speed, and accountability.</div>
+          </div>
+          <div class="offer-card">
+            <div class="value">Dual-brand model: JayPVentures LLC for systems, jaypventures for creator monetization.</div>
+          </div>
+          <div class="offer-card">
+            <div class="value">Contact: venture@jaypventuresllc.com</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" id="footer">
+        <div class="section-header">
+          <h3>Footer</h3>
+          <span>Systems-first firm</span>
+        </div>
+        <div class="footer-links">
+          <a href="https://www.linkedin.com/in/jaypventuresllc">LinkedIn</a>
+          <span>Operations Briefing</span>
+          <span>venture@jaypventuresllc.com</span>
+          <span>Legal</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="brand-panel brand-creator" id="brand-creator">
+      <div class="brand-nav">
+        <div class="nav-logo">jaypventures</div>
+        <div class="nav-links">
+          <span>Live</span>
+          <span>Vault</span>
+          <span>Collaborations</span>
+          <span>Booking</span>
+          <span>Membership</span>
+        </div>
+        <div class="nav-actions">
+          <a class="nav-pill" href="#membership">Join All Ventures Access</a>
+          <a class="nav-pill" href="#">Sign In</a>
+        </div>
+      </div>
+
+      <div class="hero" id="hero">
+        <div class="hero-content">
+          <h2>Livestream. Build. Monetize.</h2>
+          <p>The JVXM Network runs on systems — not luck. This brand is the attention engine, community engine, and conversion engine for creators who want durable momentum.</p>
+          <div class="hero-actions">
+            <a class="btn primary" href="#membership">Join All Ventures Access</a>
+            <a class="btn ghost" href="#booking">Book a Creator Consultation</a>
+          </div>
+          <div class="hero-micro">Inner Circle members unlock transparency portal + command center.</div>
+        </div>
+        <div class="card">
+          <div class="label">Role</div>
+          <div class="value">Attention + community + conversion</div>
+          <div class="section-title">Signals</div>
+          <ul class="list">
+            <li>60-day momentum steady <span class="pill">Cohesive</span></li>
+            <li>Pipeline response active <span class="pill">Live</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="section" id="ecosystem">
+        <div class="section-header">
+          <h3>The Creator Ecosystem</h3>
+          <span>Section A</span>
+        </div>
+        <div class="brand-grid">
+          <div class="card stagger">
+            <div class="label">LIVE Monetization</div>
+            <div class="value">Turn engagement into predictable revenue.</div>
+          </div>
+          <div class="card stagger">
+            <div class="label">Creator Strategy</div>
+            <div class="value">Brand positioning, offer architecture, conversion design.</div>
+          </div>
+          <div class="card stagger">
+            <div class="label">JVXM Network</div>
+            <div class="value">Community + collaborations + growth loops.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" id="offers">
+        <div class="section-header">
+          <h3>Offers</h3>
+          <span>Section B</span>
+        </div>
+        <div class="offer-grid">
+          <div class="offer-card">
+            <div class="label">Creator Consultation</div>
+            <div class="value">1:1 monetization + strategy session</div>
+            <div class="cta">Book</div>
+          </div>
+          <div class="offer-card" id="membership">
+            <div class="label">All Ventures Access</div>
+            <div class="value">Membership: everything I'm building, in real time</div>
+            <div class="cta">Join</div>
+          </div>
+          <div class="offer-card">
+            <div class="label">Inner Circle</div>
+            <div class="value">Premium tier: transparency portal + command center</div>
+            <div class="cta">Apply / Upgrade</div>
+          </div>
+          <div class="offer-card">
+            <div class="label">Brand Collaborations</div>
+            <div class="value">Paid collabs, campaigns, creator partnerships</div>
+            <div class="cta">Request a Collab</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" id="vault">
+        <div class="section-header">
+          <h3>Vault Drops</h3>
+          <span>Section C</span>
+        </div>
+        <div class="vault-grid">
+          <div class="vault-card vault-feature">
+            <div class="label">Featured Drop</div>
+            <div class="value">Creator Monetization Sprint</div>
+            <div class="footer">A premium drop with templates, scripts, and execution playbooks.</div>
+            <div class="cta">Unlock the Vault</div>
+          </div>
+          <div class="vault-card">
+            <div class="label">Recent Drop</div>
+            <div class="value">LIVE Offer Scripts</div>
+          </div>
+          <div class="vault-card">
+            <div class="label">Recent Drop</div>
+            <div class="value">JVXM Workflow Kits</div>
+          </div>
+          <div class="vault-card">
+            <div class="label">Recent Drop</div>
+            <div class="value">Creator Booking Stack</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" id="live">
+        <div class="section-header">
+          <h3>LIVE Schedule + Highlights</h3>
+          <span>Section D</span>
+        </div>
+        <div class="two-column">
+          <div class="info-card">
+            <div class="label">LIVE Schedule</div>
+            <div class="value">Next LIVE: Thu 8PM EST</div>
+            <div class="footer">Theme: Demand to Booking in 20 Minutes</div>
+            <div class="cta">Follow + turn on notifications</div>
+          </div>
+          <div class="info-card">
+            <div class="label">Highlights</div>
+            <div class="highlight-list">
+              <span>Top LIVE moments</span>
+              <span>Conversion micro-wins</span>
+              <span>Community wins recap</span>
+            </div>
+            <div class="cta">Watch Replays</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" id="proof">
+        <div class="section-header">
+          <h3>Proof Without Overexposure</h3>
+          <span>Section E</span>
+        </div>
+        <div class="offer-grid">
+          <div class="offer-card">
+            <div class="value">60-day momentum: consistent growth + spikes</div>
+          </div>
+          <div class="offer-card">
+            <div class="value">Bookings pipeline active</div>
+          </div>
+          <div class="offer-card">
+            <div class="value">Membership scaling</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" id="booking">
+        <div class="section-header">
+          <h3>Booking Embed</h3>
+          <span>Section F</span>
+        </div>
+        <div class="embed">
+          Use this section as the primary conversion anchor for creator consultations and All Ventures Access follow-up calls.
+          <div class="hero-actions" style="justify-content:center; margin-top:16px;">
+            <a class="btn primary" href="https://outlook.office.com/book/JAYPVENTURESLLCConsultations1@jaypventuresllc.com/?ismsaljsauthenabled">Book a Creator Consultation</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" id="portals">
+        <div class="section-header">
+          <h3>Member Portals</h3>
+          <span>Inner Circle Only</span>
+        </div>
+        <div class="portal-strip">
+          <div class="portal-card">Creator Command Center (sign-in required)</div>
+          <div class="portal-card">Inner Circle Transparency Portal (sign-in required)</div>
+        </div>
+      </div>
+
+      <div class="section" id="footer">
+        <div class="section-header">
+          <h3>Stay Connected</h3>
+          <span>Section G</span>
+        </div>
+        <div class="footer-links">
+          <span>TikTok</span>
+          <span>Instagram</span>
+          <span>YouTube</span>
+          <span>jaypventures@icloud.com</span>
+          <span>JVXM Network</span>
+          <span>Legal</span>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const buttons = document.querySelectorAll(".toggle button");
+    const llc = document.getElementById("brand-llc");
+    const creator = document.getElementById("brand-creator");
+
+    function setActive(target) {
+      buttons.forEach((btn) => btn.classList.toggle("active", btn.dataset.target === target));
+      llc.classList.toggle("active", target === "llc");
+      creator.classList.toggle("active", target === "creator");
+    }
+
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", () => setActive(btn.dataset.target));
+    });
+  </script>
+</body>
+</html>
+
