@@ -1,4 +1,4 @@
-
+﻿
 async function syncStripeEntitlement(env: any, event: any) {
   const data = event?.data?.object ?? event;
   const metadata = data?.metadata ?? event?.metadata ?? {};
@@ -180,17 +180,22 @@ const APPROVED_DECISION_REASONS = [
   "user_requested_removal",
   "fraud_prevention",
   "safety_escalation",
-  "admin_correction"
+  "admin_correction",
+  "entitlement_verified"
 ];
 
 const APPROVED_SEVERITIES = ["low", "medium", "high", "critical"];
 
 const ACTION_REASON_MAP: Record<string, string[]> = {
-  role_remove: ["entitlement_expired", "policy_violation", "user_requested_removal", "admin_correction"],
-  role_assign: ["entitlement_expired", "admin_correction"],
+  role_remove: ["entitlement_expired", "policy_violation", "user_requested_removal", "admin_correction",
+  "entitlement_verified"
+],
+  role_assign: ["entitlement_verified"],
   ban: ["fraud_prevention", "safety_escalation", "policy_violation"],
   suspend: ["fraud_prevention", "safety_escalation", "policy_violation"],
-  access_revoke: ["policy_violation", "fraud_prevention", "admin_correction"],
+  access_revoke: ["policy_violation", "fraud_prevention", "admin_correction",
+  "entitlement_verified"
+],
   account_disable: ["fraud_prevention", "safety_escalation", "policy_violation"]
 };
 
@@ -636,4 +641,9 @@ export default {
     }
   },
 };
+
+
+
+
+
 
