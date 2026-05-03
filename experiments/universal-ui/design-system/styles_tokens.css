@@ -1,0 +1,77 @@
+/* ======================================================
+   Universal UI — Design Tokens
+   jaypventures llc
+   Semantic, portable, non-decorative
+   ====================================================== */
+
+:root {
+  /* ----------------------------------
+     Color Semantics (meaning > taste)
+     ---------------------------------- */
+
+  /* Authority & Action */
+  --color-primary: #1c1f26;
+  --color-primary-contrast: #ffffff;
+
+  /* Support & Neutral Actions */
+  --color-secondary: #5a5f6a;
+  --color-secondary-contrast: #ffffff;
+
+  /* Momentum / Accent (use sparingly) */
+  --color-accent: #6d5efc;
+  --color-accent-contrast: #ffffff;
+
+  /* Neutrals / Context */
+  --color-bg: #f7f8fa;
+  --color-surface: #ffffff;
+  --color-border: #e2e5ea;
+  --color-muted: #8b909a;
+
+  /* Status */
+  --color-success: #2e7d32;
+  --color-warning: #ed6c02;
+  --color-error: #d32f2f;
+
+  /* ----------------------------------
+     Typography (role-based)
+     ---------------------------------- */
+
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont,
+               "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* Size scale */
+  --text-display: 2rem;
+  --text-title: 1.25rem;
+  --text-body: 1rem;
+  --text-meta: 0.875rem;
+  --text-code: 0.875rem;
+
+  /* Weights */
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-bold: 600;
+
+  /* ----------------------------------
+     Spacing (4px base rhythm)
+     ---------------------------------- */
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+
+  /* ----------------------------------
+     Motion (feedback, not flair)
+     ---------------------------------- */
+
+  --motion-fast: 140ms;
+  --motion-standard: 200ms;
+  --motion-slow: 280ms;
+
+  --easing-standard: cubic-bezier(0.2, 0, 0, 1);
+}

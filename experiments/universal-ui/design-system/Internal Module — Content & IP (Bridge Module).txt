@@ -1,0 +1,190 @@
+# Internal Module — Content & IP
+
+### JayPVentures LLC · Bridge Module (Creator ↔ Operator)
+
+This module governs how **ideas become assets** and how assets move safely from creation to execution and archive.
+
+It is the **only sanctioned bridge** between creative exploration and operational delivery.
+
+---
+
+## Module Purpose
+
+Enable:
+
+* High-velocity creation without loss of rigor
+* Clean handoff from creative work to execution
+* IP integrity from draft to archive
+
+Creativity is encouraged here.
+Discipline is enforced.
+
+---
+
+## Dependency Rules (Hard)
+
+* Content may originate without Direction, but **cannot be published** without one
+* Execution handoff requires an explicit Promote → Commit sequence
+
+These rules protect focus and prevent drift.
+
+---
+
+## Default Context
+
+* **Brand Context:** corporate (JayPVentures LLC)
+* **Entry Mode:** Creator
+* **Secondary Modes:** Operator, Observer
+
+Strategist mode is limited to review and alignment.
+
+---
+
+## Primary Work Surface — Content Studio
+
+### What It Is
+
+A flexible surface for ideation, drafting, and asset assembly.
+
+It answers:
+
+* What are we creating?
+* What state is it in?
+* What’s required to move it forward?
+
+---
+
+### Core Objects (Content Assets)
+
+Each asset contains:
+
+* Asset type (idea / draft / final)
+* Linked Direction (required for final)
+* Owner (creator)
+* Status (idea / drafting / ready / published / archived)
+* Rights & usage notes
+* Dependencies (approvals, execution steps)
+
+---
+
+## Interaction Primitives Mapping
+
+### Focus
+
+* Deep work on a single asset
+
+### Inspect
+
+* Review asset details, metadata, and rights
+
+### Branch
+
+* Explore alternate versions
+
+### Promote
+
+* Mark asset as ready for execution
+
+### Commit
+
+* Publish or finalize
+
+### Archive
+
+* Retire asset safely
+
+---
+
+## Mode Behavior
+
+### Creator Mode (Default)
+
+* Low density
+* Branching encouraged
+* Execution actions hidden
+
+### Operator Mode
+
+* Readiness checks
+* Promote → Commit emphasized
+* No structural edits
+
+### Observer Mode
+
+* Read-only
+* Portfolio-level visibility
+
+---
+
+## Secondary Insight Plane
+
+Used for:
+
+* References and research
+* AI-assisted drafting (context-aware)
+* Rights and compliance checks
+
+Never replaces the Content Studio.
+
+---
+
+## Action Horizon
+
+Surfaces:
+
+* Branch Version
+* Promote for Execution
+* Commit Publish
+
+Actions appear only when prerequisites are met.
+
+---
+
+## Memory Anchor
+
+Tracks:
+
+* Active drafts
+* Pending promotions
+* Recently published assets
+
+Read-only.
+
+---
+
+## Intelligence Participation
+
+### Inspector Agent
+
+* Summarizes asset state
+* Flags missing metadata
+
+### Operator Agent
+
+* Confirms readiness to publish
+* Validates Direction linkage
+
+Agents do not generate creative content by default.
+
+---
+
+## Guardrails
+
+* No publishing without Direction
+* No silent version overwrites
+* Rights must be explicit before commit
+
+If any guardrail fails, the system blocks progression.
+
+---
+
+## Success Criteria
+
+The module is successful if:
+
+* Creators move fast without breaking rules
+* Execution trusts content readiness
+* IP remains auditable end-to-end
+
+Creativity flows.
+Control holds.

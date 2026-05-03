@@ -1,0 +1,183 @@
+
+# Internal Module — Planning & Direction
+
+### JayPVentures LLC · Corporate Context
+
+This module defines how **planning, strategy, and direction** operate inside the Universal UI as an internal corporate system.
+
+This is the **keystone internal module**. All execution, content, and metrics cascade from here.
+
+---
+
+## Module Purpose
+
+Enable clear thinking about:
+
+* What matters now
+* What matters next
+* What does not matter
+
+The module reduces ambiguity before work begins.
+
+---
+
+## Default Context
+
+* **Brand Context:** corporate (JayPVentures LLC)
+* **Entry Mode:** Observer
+* **Primary Modes:** Strategist → Operator
+
+Creator mode is intentionally secondary here.
+
+---
+
+## Primary Work Surface — Direction Board
+
+### What It Is
+
+A living surface representing **current strategic direction**.
+
+Not a backlog.
+Not a task list.
+
+It answers:
+
+* What are we aiming at?
+* Why now?
+* What constraints apply?
+
+---
+
+### Core Objects
+
+Each planning object contains:
+
+* Objective (singular, declarative)
+* Rationale (why this exists)
+* Time horizon (now / near / later)
+* Constraints (budget, time, risk)
+* Status (draft / active / committed)
+
+---
+
+## Interaction Primitives Mapping
+
+### Inspect
+
+* Review objectives and rationale
+* Examine constraints and assumptions
+
+### Compare
+
+* Weigh competing objectives
+* Surface tradeoffs
+
+### Promote
+
+* Elevate an objective to active focus
+
+### Commit
+
+* Lock direction for a defined period
+
+### Archive
+
+* Retire objectives without deletion
+
+---
+
+## Mode Behavior
+
+### Observer Mode
+
+* Read-only
+* High-level summaries
+* Memory Anchor surfaces last commitments
+
+### Strategist Mode
+
+* Full interaction enabled
+* Compare + Promote emphasized
+* Insight Plane shows implications
+
+### Operator Mode
+
+* Direction locked
+* Execution alignment visible
+* No structural changes allowed
+
+---
+
+## Secondary Insight Plane
+
+Used for:
+
+* Assumption checks
+* Risk analysis
+* Historical comparisons
+* Inspector / Strategist Agent support
+
+Never replaces the Direction Board.
+
+---
+
+## Action Horizon
+
+Surfaces:
+
+* Promote Objective
+* Commit Direction
+* Review Alignment
+
+No task-level actions appear here.
+
+---
+
+## Memory Anchor
+
+Tracks:
+
+* Last committed direction
+* Open strategic questions
+* Deferred decisions
+
+Read-only by design.
+
+---
+
+## Intelligence Participation
+
+### Inspector Agent
+
+* Summarizes current direction
+* Explains why objectives exist
+
+### Strategist Agent
+
+* Surfaces tradeoffs
+* Models implications
+
+Agents never create direction.
+They clarify it.
+
+---
+
+## Guardrails
+
+* No tasks created in this module
+* No deadlines without commitment
+* No silent changes to committed direction
+
+If direction is unclear, execution pauses.
+
+---
+
+## Success Criteria
+
+The module is successful if:
+
+* Strategic intent is obvious within seconds
+* Direction changes are rare and intentional
+* Downstream modules never question priorities
+
+Clarity here prevents chaos everywhere else.

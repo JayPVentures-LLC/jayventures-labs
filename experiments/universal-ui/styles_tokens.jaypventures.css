@@ -1,0 +1,21 @@
+/* ======================================================
+   JayPVentures LLC — Brand Design Tokens
+   Corporate / Institutional System Layer
+   ====================================================== */
+
+:root {
+  /* ----------------------------------
+     Brand Color Semantics
+     (Authority, Trust, Stability)
+     ---------------------------------- */
+
+  /* Core Authority */
+  --jp-color-primary: #0f172a;        /* Deep slate */
+  --jp-color-primary-contrast: #ffffff;
+
+  /* Secondary / Structural */
+  --jp-color-secondary: #334155;      /* Slate */
+  --jp-color-secondary-contrast: #ffffff;
+
+  /* Accent (Used sparingly) */
+  --jp-color-acce
