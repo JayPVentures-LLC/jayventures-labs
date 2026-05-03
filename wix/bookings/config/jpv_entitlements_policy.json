@@ -1,0 +1,21 @@
+﻿{
+  "version": "JPV-ENTITLEMENTS-1.0",
+  "source_of_truth": "stripe",
+  "reflection_layer": "discord",
+  "tiers": {
+    "community": {
+      "stripe_price_ids": [],
+      "discord_role": "COMMUNITY"
+    },
+    "vip": {
+      "stripe_price_ids": [],
+      "discord_role": "VIP"
+    }
+  },
+  "rules": {
+    "grant_role_only_if_entitlement_active": true,
+    "remove_role_only_if_entitlement_expired": true,
+    "discord_never_source_of_truth": true,
+    "all_mutations_require_safety_gate": true
+  }
+}
