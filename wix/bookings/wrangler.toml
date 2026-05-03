@@ -1,6 +1,7 @@
 name = "jaypventures-bookings-worker"
 main = "src/index.ts"
 compatibility_date = "2026-04-09"
+account_id = "56d1a7bef4dabbd308f8846ee620dd19"
 
 [vars]
 ENVIRONMENT = "dev"
@@ -12,29 +13,31 @@ AZURE_ARCHIVE_ENDPOINT = "https://replace-me.example/archive/bookings"
 
 [[kv_namespaces]]
 binding = "IDEMPOTENCY_KV"
-id = "REPLACE_WITH_IDEMPOTENCY_KV_ID"
-preview_id = "REPLACE_WITH_IDEMPOTENCY_KV_PREVIEW_ID"
+id = "11507e93209146e594c0c81b52a39a8e"
+preview_id = "11507e93209146e594c0c81b52a39a8e"
 
 [[kv_namespaces]]
 binding = "METRICS_KV"
-id = "REPLACE_WITH_METRICS_KV_ID"
-preview_id = "REPLACE_WITH_METRICS_KV_PREVIEW_ID"
+id = "2594632e477e4e598333631ed3930abc"
+preview_id = "2594632e477e4e598333631ed3930abc"
 
 [[kv_namespaces]]
 binding = "CREATOR_DATA_KV"
-id = "REPLACE_WITH_CREATOR_DATA_KV_ID"
-preview_id = "REPLACE_WITH_CREATOR_DATA_KV_PREVIEW_ID"
+id = "ce39cc152e1a419fa427d79026ac0517"
+preview_id = "ce39cc152e1a419fa427d79026ac0517"
 
 [[kv_namespaces]]
 binding = "INNER_CIRCLE_MEMBER_KV"
-id = "REPLACE_WITH_INNER_CIRCLE_MEMBER_KV_ID"
-preview_id = "REPLACE_WITH_INNER_CIRCLE_MEMBER_KV_PREVIEW_ID"
+id = "e2f0ae22912546dfa270e1774bbc778f"
+preview_id = "e2f0ae22912546dfa270e1774bbc778f"
 
 [[queues.producers]]
 binding = "WORKER_EVENTS_QUEUE"
-queue = "REPLACE_WITH_BOOKINGS_EVENTS_QUEUE"
+queue = "bookings-events"
 
 [[queues.consumers]]
-queue = "REPLACE_WITH_BOOKINGS_EVENTS_QUEUE"
+queue = "bookings-events"
 max_batch_size = 20
 max_batch_timeout = 5
+
+
