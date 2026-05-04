@@ -168,12 +168,6 @@ async function enforceIdempotency(env: any, event: any) {
 }
 
 
-type SafetyDecision = {
-  allowed: boolean;
-  violations: string[];
-};
-
-
 const APPROVED_DECISION_REASONS = [
   "entitlement_expired",
   "policy_violation",
