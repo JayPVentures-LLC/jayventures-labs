@@ -28,7 +28,11 @@ function json(body: unknown, status = 200): Response {
   });
 }
 
-export async function handleIntake(request: Request, env: Env): Promise<Response> {
+export async function handleIntake(
+  request: Request,
+  env: Env,
+  deps?: { ensureIdempotent?: typeof ensureIdempotent }
+): Promise<Response> {
   if (request.method !== "POST") {
     return json({ error: "Method Not Allowed", allowed: ["POST"] }, 405);
   }
@@ -57,7 +61,7 @@ export async function handleIntake(request: Request, env: Env): Promise<Response
     return json({ error: "Invalid event envelope" }, 400);
   }
 
-  const firstTime = await ensureIdempotent(env, event.idempotencyKey);
+  const firstTime = await (deps?.ensureIdempotent ?? ensureIdempotent)(env, event.idempotencyKey);
   if (!firstTime) {
     return json({ status: "duplicate_ignored", idempotencyKey: event.idempotencyKey }, 200);
   }
