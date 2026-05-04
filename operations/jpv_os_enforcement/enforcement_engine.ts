@@ -8,6 +8,16 @@ export class EnforcementEngine {
   }
 
   validateBrandVoice(brandId: string, text: string): string[] {
+              console.log('DEBUG: Checking text:', text);
+              const brand = this.spec.brands.find(b => b.id === brandId);
+              if (brand) {
+                console.log('DEBUG: Deny list:', brand.language.deny);
+              }
+          console.log('DEBUG: Entered validateBrandVoice');
+        console.log('DEBUG: Checking text:', text);
+        if (brand) {
+          console.log('DEBUG: Deny list:', brand.language.deny);
+        }
     const brand = this.spec.brands.find(b => b.id === brandId);
     if (!brand) return ['unknown_brand'];
     const violations: string[] = [];

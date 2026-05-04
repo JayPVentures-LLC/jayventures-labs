@@ -36,6 +36,7 @@ jpv_os:
           - "This eliminates variability."
           - "This scales without degradation."
         deny:
+          - "vibe"
           - "vibes"
           - "trying"
           - "helping"
