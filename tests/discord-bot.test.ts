@@ -161,6 +161,22 @@ describe("GET /linked-roles/start — OAuth2 redirect", () => {
     expect(location).toContain("client_id=");
   });
 
+  it("uses WORKER_ORIGIN for redirect_uri when set", async () => {
+    const res = await fetchRoute("/linked-roles/start", {}, {
+      WORKER_ORIGIN: "https://my-worker.example.com",
+    });
+    const location = res.headers.get("Location") ?? "";
+    const params = new URL(location).searchParams;
+    expect(params.get("redirect_uri")).toBe("https://my-worker.example.com/linked-roles/callback");
+  });
+
+  it("derives redirect_uri from request URL when WORKER_ORIGIN is not set", async () => {
+    const res = await fetchRoute("/linked-roles/start");
+    const location = res.headers.get("Location") ?? "";
+    const params = new URL(location).searchParams;
+    expect(params.get("redirect_uri")).toBe("https://discord-bot.jaypventuresllc.com/linked-roles/callback");
+  });
+
   it("sets a state cookie for CSRF protection", async () => {
     const res = await fetchRoute("/linked-roles/start");
     const cookie = res.headers.get("Set-Cookie") ?? "";

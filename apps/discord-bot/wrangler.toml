@@ -9,6 +9,11 @@ SITE_ORIGIN = "https://jaypventuresllc.com"
 DISCORD_APP_ID = "REPLACE_WITH_DISCORD_APP_ID"
 # Replace with your Discord Client ID (OAuth2 → Client ID — usually same as App ID)
 DISCORD_CLIENT_ID = "REPLACE_WITH_DISCORD_CLIENT_ID"
+# Set to the public origin of this worker after first deploy (e.g., https://jaypventures-discord-bot.<account>.workers.dev).
+# If omitted, the origin is derived from the incoming request URL — correct for workers.dev but
+# must be set explicitly when using a custom domain so it matches the redirect URI registered in
+# the Discord Developer Portal.
+# WORKER_ORIGIN = "https://jaypventures-discord-bot.<account>.workers.dev"
 
 # Secrets — set via `wrangler secret put <NAME>` or GitHub Actions secrets:
 #   DISCORD_PUBLIC_KEY   — General Information → Public Key

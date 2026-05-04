@@ -26,8 +26,14 @@ const DISCORD_OAUTH_BASE = "https://discord.com/oauth2/authorize";
 const OAUTH_SCOPE = "identify role_connections.write";
 const STATE_TTL_SECONDS = 300; // 5 minutes
 
-function callbackUri(env: Env): string {
-  return `${env.SITE_ORIGIN}/linked-roles/callback`;
+/** Returns this worker's own origin, preferring an explicit `WORKER_ORIGIN` env var
+ *  and falling back to the origin of the incoming request. */
+function workerOrigin(request: Request, env: Env): string {
+  return env.WORKER_ORIGIN ?? new URL(request.url).origin;
+}
+
+function callbackUri(request: Request, env: Env): string {
+  return `${workerOrigin(request, env)}/linked-roles/callback`;
 }
 
 function generateState(): string {
@@ -76,7 +82,7 @@ export async function handleLinkedRolesStart(request: Request, env: Env): Promis
 
   const oauthUrl = new URL(DISCORD_OAUTH_BASE);
   oauthUrl.searchParams.set("client_id", env.DISCORD_CLIENT_ID);
-  oauthUrl.searchParams.set("redirect_uri", callbackUri(env));
+  oauthUrl.searchParams.set("redirect_uri", callbackUri(request, env));
   oauthUrl.searchParams.set("response_type", "code");
   oauthUrl.searchParams.set("scope", OAUTH_SCOPE);
   oauthUrl.searchParams.set("state", state);
@@ -134,7 +140,7 @@ export async function handleLinkedRolesCallback(request: Request, env: Env): Pro
       client_secret: env.DISCORD_CLIENT_SECRET,
       grant_type: "authorization_code",
       code,
-      redirect_uri: callbackUri(env),
+      redirect_uri: callbackUri(request, env),
     }),
   });
 
@@ -193,7 +199,7 @@ export async function handleLinkedRolesCallback(request: Request, env: Env): Pro
   return new Response(null, {
     status: 302,
     headers: {
-      Location: `${env.SITE_ORIGIN}/linked-roles/success`,
+      Location: `${workerOrigin(request, env)}/linked-roles/success`,
       "Set-Cookie": "discord_oauth_state=; Path=/linked-roles; HttpOnly; Secure; SameSite=Lax; Max-Age=0",
     },
   });
