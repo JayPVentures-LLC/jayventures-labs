@@ -8,19 +8,13 @@ export class EnforcementEngine {
   }
 
   validateBrandVoice(brandId: string, text: string): string[] {
-                console.log('DEBUG_OUTPUT Brands loaded from YAML:', this.spec.brands.map(b => b.id));
-              console.log('DEBUG_OUTPUT Checking text:', text);
-              const brand = this.spec.brands.find(b => b.id === brandId);
-              if (brand) {
-                console.log('DEBUG_OUTPUT Full brand object:', JSON.stringify(brand, null, 2));
-                console.log('DEBUG_OUTPUT Deny list for', brandId, ':', brand.language.deny);
-              }
-          console.log('DEBUG: Entered validateBrandVoice');
-        console.log('DEBUG: Checking text:', text);
-        if (brand) {
-          console.log('DEBUG: Deny list:', brand.language.deny);
-        }
+    console.log('DEBUG_OUTPUT Brands loaded from YAML:', this.spec.brands.map(b => b.id));
+    console.log('DEBUG_OUTPUT Checking text:', text);
     const brand = this.spec.brands.find(b => b.id === brandId);
+    if (brand) {
+      console.log('DEBUG_OUTPUT Full brand object:', JSON.stringify(brand, null, 2));
+      console.log('DEBUG_OUTPUT Deny list for', brandId, ':', brand.language.deny);
+    }
     if (!brand) return ['unknown_brand'];
     const violations: string[] = [];
     for (const deny of brand.language.deny) {
