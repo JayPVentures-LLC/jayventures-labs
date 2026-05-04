@@ -576,10 +576,12 @@ export default {
           );
         }
 
-        await env.WORKER_EVENTS_QUEUE?.send({
-          type: "STRIPE_ENTITLEMENT_SYNCED",
-          result: entitlementSync
-        });
+        if (env.WORKER_EVENTS_QUEUE) {
+          await env.WORKER_EVENTS_QUEUE.send({
+            type: "STRIPE_ENTITLEMENT_SYNCED",
+            result: entitlementSync
+          });
+        }
       }
 
 
