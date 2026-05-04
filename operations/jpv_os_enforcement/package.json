@@ -11,8 +11,10 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
-     "js-yaml": "^4.1.1",
-     "ts-node": "^10.9.2",
-     "typescript": "^6.0.3"
+    "js-yaml": "^4.1.1",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.3"
   }
 }
