@@ -36,7 +36,11 @@ async function setEntitlement(
   );
 }
 
-async function requireAccess(request: Request, env: Env) {
+type RequireAccessResult =
+  | { allowed: true; subject: string; entitlement: EntitlementRecord }
+  | { allowed: false; response: Response };
+
+async function requireAccess(request: Request, env: Env): Promise<RequireAccessResult> {
   const subject =
     request.headers.get("x-jpv-subject") ||
     new URL(request.url).searchParams.get("subject");
