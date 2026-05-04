@@ -40,4 +40,38 @@ queue = "bookings-events"
 max_batch_size = 20
 max_batch_timeout = 5
 
+[env.production]
+name = "jaypventures-bookings-worker"
+
+[env.production.vars]
+ENVIRONMENT = "prod"
+
+[[env.production.kv_namespaces]]
+binding = "IDEMPOTENCY_KV"
+id = "11507e93209146e594c0c81b52a39a8e"
+preview_id = "11507e93209146e594c0c81b52a39a8e"
+
+[[env.production.kv_namespaces]]
+binding = "METRICS_KV"
+id = "2594632e477e4e598333631ed3930abc"
+preview_id = "2594632e477e4e598333631ed3930abc"
+
+[[env.production.kv_namespaces]]
+binding = "CREATOR_DATA_KV"
+id = "ce39cc152e1a419fa427d79026ac0517"
+preview_id = "ce39cc152e1a419fa427d79026ac0517"
+
+[[env.production.kv_namespaces]]
+binding = "INNER_CIRCLE_MEMBER_KV"
+id = "e2f0ae22912546dfa270e1774bbc778f"
+preview_id = "e2f0ae22912546dfa270e1774bbc778f"
+
+[[env.production.queues.producers]]
+binding = "WORKER_EVENTS_QUEUE"
+queue = "bookings-events"
+
+[[env.production.queues.consumers]]
+queue = "bookings-events"
+max_batch_size = 20
+max_batch_timeout = 5
 
