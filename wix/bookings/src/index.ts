@@ -78,10 +78,6 @@ async function syncStripeEntitlement(env: any, event: any) {
       user_id: userId,
       record
     };
-      if (!env.INNER_CIRCLE_MEMBER_KV) {
-        return Response.json({ error: "KV not configured" }, { status: 500 });
-      }
-
   }
 
   if (inactiveStatuses.includes(status)) {
@@ -401,6 +397,10 @@ export default {
         return Response.json({ error: "service_unavailable", detail: "INNER_CIRCLE_MEMBER_KV not configured" }, { status: 503 });
       }
 
+      if (!env.INNER_CIRCLE_MEMBER_KV) {
+        return Response.json({ error: "service_unavailable", detail: "INNER_CIRCLE_MEMBER_KV not configured" }, { status: 503 });
+      }
+
       const record = {
         user_id: userId,
         tier,
@@ -408,10 +408,6 @@ export default {
         source: "dev-test",
         created_at: new Date().toISOString()
       };
-
-      if (!env.INNER_CIRCLE_MEMBER_KV) {
-        return Response.json({ error: "KV not configured" }, { status: 500 });
-      }
 
       await env.INNER_CIRCLE_MEMBER_KV.put(userId, JSON.stringify(record));
 
