@@ -1,20 +1,28 @@
 {
+  "name": "jayventures-labs",
+  "version": "1.0.0",
+  "description": "JayPVentures Labs monorepo",
+  "main": "index.js",
   "scripts": {
     "jpv:enforce": "node ./scripts/jpv-enforce.mjs",
     "jpv:enforce:test": "node ./scripts/jpv-enforce.mjs --test",
-    "enforce:brand": "ts-node operations/jpv_os_enforcement/cli.ts jaypventures_llc \"$@\"",
+    "enforce:brand": "ts-node operations/jpv_os_enforcement/cli.ts jaypventures_llc --file",
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "stripe:audit": "node operations/stripe-audit.js",
+    "lint": "eslint . --ext .ts,.tsx,.js,.jsx,.mdx"
   },
   "devDependencies": {
     "@types/js-yaml": "^4.0.9",
     "@types/node": "^25.6.0",
-    "@types/react": "19.2.14"
+    "@types/react": "19.2.14",
+    "eslint": "^8.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "eslint-plugin-react": "^7.0.0"
   },
   "dependencies": {
-    "next": "^16.2.4",
-    "react": "^19.2.5",
-    "react-dom": "^19.2.5"
+    "next": "^9.3.3"
   }
 }
