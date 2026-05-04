@@ -6,6 +6,8 @@ on:
     paths:
       - "wix/bookings/src/**"
       - "wix/bookings/wrangler.toml"
+      - "package.json"
+      - "package-lock.json"
       - ".github/workflows/deploy.yml"
   workflow_dispatch:
 
