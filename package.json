@@ -8,17 +8,21 @@
     "test:website": "vitest run tests/flagship-site.test.ts",
     "test:entitlement": "vitest run tests/entitlement-system.test.ts",
     "test:bookings": "vitest run tests/wix-bookings.test.ts",
+    "test:discord": "vitest run tests/discord-bot.test.ts",
     "typecheck": "tsc --noEmit",
     "dev:website": "wrangler dev --config apps/flagship-site/wrangler.toml",
     "dev:entitlement": "wrangler dev --config operations/entitlement-system/wrangler.toml",
     "dev:bookings": "wrangler dev --config wix/bookings/wrangler.toml",
+    "dev:discord": "wrangler dev --config apps/discord-bot/wrangler.toml",
     "deploy:dryrun:website": "wrangler deploy --dry-run --config apps/flagship-site/wrangler.toml",
     "deploy:dryrun:entitlement": "wrangler deploy --dry-run --config operations/entitlement-system/wrangler.toml",
     "deploy:dryrun:bookings": "wrangler deploy --dry-run --config wix/bookings/wrangler.toml",
+    "deploy:dryrun:discord": "wrangler deploy --dry-run --config apps/discord-bot/wrangler.toml",
     "setup:devvars": "powershell -ExecutionPolicy Bypass -File scripts/setup-dev-vars.ps1",
     "validate:deploy:website": "node scripts/validate-deploy-config.mjs apps/flagship-site/wrangler.toml",
     "validate:deploy:entitlement": "node scripts/validate-deploy-config.mjs operations/entitlement-system/wrangler.toml",
-    "validate:deploy:bookings": "node scripts/validate-deploy-config.mjs wix/bookings/wrangler.toml"
+    "validate:deploy:bookings": "node scripts/validate-deploy-config.mjs wix/bookings/wrangler.toml",
+    "validate:deploy:discord": "node scripts/validate-deploy-config.mjs apps/discord-bot/wrangler.toml"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20260404.0",

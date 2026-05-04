@@ -6,10 +6,11 @@ on:
       target:
         description: Which worker to deploy
         required: true
-        default: both
+        default: all
         type: choice
         options:
-          - both
+          - all
+          - discord
           - entitlement
           - bookings
 
@@ -18,8 +19,36 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  deploy-discord:
+    if: ${{ github.event.inputs.target == 'all' || github.event.inputs.target == 'discord' }}
+    runs-on: ubuntu-latest
+    environment: cloudflare-production
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate discord deploy config
+        run: npm run validate:deploy:discord
+
+      - name: Deploy discord bot worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx wrangler deploy --config apps/discord-bot/wrangler.toml
+
   deploy-entitlement:
-    if: ${{ github.event.inputs.target == 'both' || github.event.inputs.target == 'entitlement' }}
+    if: ${{ github.event.inputs.target == 'all' || github.event.inputs.target == 'entitlement' }}
     runs-on: ubuntu-latest
     environment: cloudflare-production
     permissions:
@@ -47,7 +76,7 @@ jobs:
         run: npx wrangler deploy --config operations/entitlement-system/wrangler.toml
 
   deploy-bookings:
-    if: ${{ github.event.inputs.target == 'both' || github.event.inputs.target == 'bookings' }}
+    if: ${{ github.event.inputs.target == 'all' || github.event.inputs.target == 'bookings' }}
     runs-on: ubuntu-latest
     environment: cloudflare-production
     permissions:

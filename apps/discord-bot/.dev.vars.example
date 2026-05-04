@@ -1,0 +1,16 @@
+# Copy to .dev.vars (git-ignored) for local `wrangler dev` development.
+# Never commit real values — use `wrangler secret put` for production deployment.
+
+# Discord Developer Portal → General Information
+DISCORD_PUBLIC_KEY="your_app_public_key_hex"
+DISCORD_APP_ID="your_discord_application_id"
+
+# Discord Developer Portal → OAuth2
+DISCORD_CLIENT_ID="your_discord_client_id"
+DISCORD_CLIENT_SECRET="your_discord_client_secret"
+
+# Discord Developer Portal → Bot → Token
+DISCORD_BOT_TOKEN="your_discord_bot_token"
+
+# Site origin used for OAuth2 redirect URIs (no trailing slash)
+SITE_ORIGIN="https://jaypventuresllc.com"
