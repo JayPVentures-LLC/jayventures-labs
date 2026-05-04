@@ -2,19 +2,16 @@
 . "$(dirname "$0")/_/husky.sh"
 
 # Run enforcement CLI on all staged .md and .ts files
-STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(md|ts)$' || true)
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(md|ts|js|json)$' || true)
 FAIL=0
 for file in $STAGED_FILES; do
-  if grep -qE '\.md$' <<< "$file"; then
+done
+  if grep -qE '\.(md|ts|js|json)$' <<< "$file"; then
+    echo "Checking $file for brand violations..."
     npx ts-node operations/jpv_os_enforcement/cli.ts jaypventures_llc "$(cat $file)" || FAIL=1
   fi
-  if grep -qE '\.ts$' <<< "$file"; then
-    npx ts-node operations/jpv_os_enforcement/cli.ts jaypventures_llc "$(cat $file)" || FAIL=1
-  fi
-  # Add more file types/brands as needed
-
 done
 if [ $FAIL -ne 0 ]; then
-  echo "JPVOs enforcement failed. Commit aborted."
+  echo "\nJPVOs enforcement failed. Commit aborted.\nSee above for details."
   exit 1
 fi

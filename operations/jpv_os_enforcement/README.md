@@ -60,3 +60,37 @@ npx ts-node run_enforcement.ts
 ## Next Steps
 - Expand enforcement logic for all rules
 - Add test cases for each enforcement rule
+
+## Usage
+
+### Manual Check
+```
+npm run enforce:brand -- "your text here"
+```
+
+### Pre-commit Hook
+- Automatically blocks commits with violations in staged `.md`, `.ts`, `.js`, and `.json` files.
+- To activate hooks, run:
+```
+npx husky install
+```
+
+### CI Enforcement
+- Runs on every push and PR to `main` via GitHub Actions.
+
+### Bulk Check
+```
+sh operations/jpv_os_enforcement/enforce-all.sh
+```
+
+## Adding Brands or Rules
+- Edit `operations/jpv_os_enforcement/jpv_os.yaml` to add brands, deny/allow lists, or enforcement rules.
+
+## Supported File Types
+- Markdown: `.md`
+- TypeScript: `.ts`
+- JavaScript: `.js`
+- JSON: `.json`
+
+## Test Coverage
+- See `operations/jpv_os_enforcement/tests/` for enforcement engine tests.

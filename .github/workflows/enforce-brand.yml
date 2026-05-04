@@ -17,8 +17,9 @@ jobs:
           node-version: '20.x'
       - name: Install dependencies
         run: npm install
-      - name: Run JPVOs enforcement on all .md and .ts files
+      - name: Run JPVOs enforcement on all .md, .ts, .js, and .json files
         run: |
-          for file in $(find . -type f \( -name '*.md' -o -name '*.ts' \)); do
+          for file in $(find . -type f \( -name '*.md' -o -name '*.ts' -o -name '*.js' -o -name '*.json' \)); do
+            echo "Checking $file for brand violations..."
             npx ts-node operations/jpv_os_enforcement/cli.ts jaypventures_llc "$(cat $file)"
           done

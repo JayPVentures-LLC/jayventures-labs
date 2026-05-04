@@ -18,9 +18,8 @@ export class EnforcementEngine {
     if (!brand) return ['unknown_brand'];
     const violations: string[] = [];
     for (const deny of brand.language.deny) {
-      console.log(`DEBUG_OUTPUT Checking if text includes deny term: '${deny.toLowerCase()}'`);
       if (text.toLowerCase().includes(deny.toLowerCase())) {
-        console.log(`DEBUG_OUTPUT Violation detected for deny term: '${deny}'`);
+        console.error(`\n=== JPVOs VIOLATION DETECTED ===\nFile/Brand: ${brandId}\nTerm: '${deny}'\nText: ${text}\n===============================\n`);
         violations.push('mixed_voice');
       }
     }
