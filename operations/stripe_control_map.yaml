@@ -1,0 +1,33 @@
+# Stripe Account Control Map
+
+stripe_accounts:
+  primary_llc:
+    display_name: "JayPVentures LLC"
+    account_id: "acct_1THskaBClaNmyr4z"
+    entity: "JayPVentures LLC"
+    tax_basis: "LLC TIN/EIN"
+    revenue_scope:
+      - "Corporate packages"
+      - "Consulting"
+      - "Automation builds"
+      - "Infrastructure services"
+      - "B2B partnerships"
+    production_webhook: true
+    status: "primary"
+
+  duplicate_review:
+    - display_name: "JayPVentures LLC Official"
+      account_id: "acct_1SuswbGWtXyg7cHp"
+      status: "hold_do_not_wire"
+
+    - display_name: "Jaypventuresllc"
+      account_id: "acct_1T39J009lpqwbIXn"
+      status: "hold_do_not_wire"
+
+    - display_name: "Jaypventuresllc"
+      account_id: "acct_1Sw90yC4qZpU9Sha"
+      status: "hold_do_not_wire"
+
+    - display_name: "Jaypventuresllc"
+      account_id: "acct_1TOmppRFlswJGa4v"
+      status: "hold_do_not_wire"
