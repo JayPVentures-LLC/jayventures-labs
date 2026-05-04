@@ -121,7 +121,7 @@ export default {
           400
         );
       }
-      await setEntitlement(rawEnv as Env, body.subject, {
+      await setEntitlement(rawEnv as unknown as Env, body.subject, {
         active: true,
         customerId: body.customerId,
         email: body.email,
