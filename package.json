@@ -4,6 +4,7 @@
     "jpv:enforce:test": "node ./scripts/jpv-enforce.mjs --test"
   },
   "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
     "@types/node": "^25.6.0"
   }
 }
