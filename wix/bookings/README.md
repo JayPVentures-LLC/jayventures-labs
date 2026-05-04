@@ -79,6 +79,23 @@ Set these environment variables when running the worker locally or in production
 
 EMAIL_API_KEY is used as the email webhook endpoint URL in this package.
 
+## Azure Wrangler Secrets
+
+Azure configuration must be set as Wrangler secrets and must not be committed to `wrangler.toml`.
+Use the following commands to configure each value against the deployed worker:
+
+```
+npx wrangler secret put AZURE_KEY_VAULT_URL --config wix/bookings/wrangler.toml
+npx wrangler secret put AZURE_TENANT_ID --config wix/bookings/wrangler.toml
+npx wrangler secret put AZURE_CLIENT_ID --config wix/bookings/wrangler.toml
+npx wrangler secret put AZURE_CLIENT_SECRET --config wix/bookings/wrangler.toml
+npx wrangler secret put APPINSIGHTS_CONNECTION_STRING --config wix/bookings/wrangler.toml
+npx wrangler secret put AZURE_ARCHIVE_ENDPOINT --config wix/bookings/wrangler.toml
+npx wrangler secret put AZURE_ARCHIVE_TOKEN --config wix/bookings/wrangler.toml
+```
+
+All Azure-dependent runtime paths (Key Vault, Application Insights telemetry, archive) are skipped when these secrets are absent, so the worker remains operational without them.
+
 ## Idempotency KV
 Bind IDEMPOTENCY_KV to a Cloudflare KV namespace to prevent duplicate processing.
 
