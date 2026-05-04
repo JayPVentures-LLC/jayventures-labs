@@ -9,7 +9,9 @@ export interface Env {
   DISCORD_CLIENT_SECRET: string;
   /** Bot token for direct Discord API calls — set via `wrangler secret put DISCORD_BOT_TOKEN` */
   DISCORD_BOT_TOKEN: string;
-  /** Public site origin, no trailing slash — used for OAuth2 redirect URIs and success page */
+  /** Worker origin, no trailing slash — used for Linked Roles OAuth2 redirect URIs/callbacks and should match the origin registered in the Discord Developer Portal */
+  WORKER_ORIGIN?: string;
+  /** Public site origin, no trailing slash — used for the success page and other public site links, not the Linked Roles OAuth2 callback URI */
   SITE_ORIGIN: string;
   /** Optional KV namespace for OAuth2 state storage (prevents CSRF in the linked-roles flow) */
   LINKED_ROLES_KV?: KVNamespace;
