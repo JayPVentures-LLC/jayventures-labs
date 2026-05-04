@@ -349,8 +349,8 @@ export default {
         return Response.json({ error: "Unauthorized" }, { status: 401 });
       }
 
-      const body = await request.json();
-      const userId = body?.user_id;
+      const body = (await request.json()) as Record<string, unknown>;
+      const userId = body?.user_id as string | undefined;
 
       if (!userId) {
         return Response.json({ error: "missing_user_id" }, { status: 400 });

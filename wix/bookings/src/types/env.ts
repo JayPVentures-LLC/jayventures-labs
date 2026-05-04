@@ -1,4 +1,5 @@
 export interface Env {
+    JPV_INTERNAL_TEST_TOKEN?: string;
   ENVIRONMENT: "local" | "dev" | "prod";
 
   INTAKE_HMAC_SECRET: string;
