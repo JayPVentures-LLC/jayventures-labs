@@ -9,7 +9,12 @@
     "deploy": "npx wrangler deploy --config wix/bookings/wrangler.toml --env production",
     "start": "next start",
     "stripe:audit": "node operations/stripe-audit.js",
-    "lint": "eslint apps/ operations/ tests/ --ext .ts,.tsx,.js,.jsx,.mdx"
+    "lint": "eslint apps/ operations/ tests/ --ext .ts,.tsx,.js,.jsx,.mdx",
+    "test": "vitest",
+    "typecheck": "tsc --noEmit",
+    "deploy:dryrun:bookings": "npx wrangler deploy --dry-run --outdir /tmp/worker-build --config wix/bookings/wrangler.toml --env production",
+    "deploy:dryrun:entitlement": "npx wrangler deploy --dry-run --outdir /tmp/entitlement-build --config operations/entitlement-system/wrangler.toml",
+    "deploy:dryrun:website": "npx wrangler deploy --dry-run --outdir /tmp/website-build --config apps/flagship-site/wrangler.toml"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20260504.1",
@@ -18,6 +23,8 @@
     "@types/react": "19.2.14",
     "@vitest/coverage-istanbul": "^4.1.5",
     "@vitest/ui": "^4.1.5",
+    "js-yaml": "^4.1.1",
+    "ts-node": "^10.9.2",
     "vitest": "^4.1.5"
   },
   "dependencies": {
