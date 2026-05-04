@@ -2,11 +2,8 @@ console.log('DEBUG: cli.ts script started');
 import { EnforcementEngine } from './enforcement_engine';
 import path from 'path';
 
-// Debug print arguments
 const args = process.argv.slice(2);
 console.log('DEBUG: Parsed args:', args);
-
-const args = process.argv.slice(2);
 const brand = args[0];
 const text = args[1];
 
