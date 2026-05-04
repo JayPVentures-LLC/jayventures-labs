@@ -1,25 +1,19 @@
 import type { Brand, Tier } from "../types/entitlement.types";
 
-export const DISCORD_GUILD_CONFIG: Record<Brand, {
-  guildId: string;
-  tierRoles: Record<Tier, string[]>;
-}> = {
-  jaypventuresllc: {
-    guildId: "1491229650142105621",
-    tierRoles: {
-      free: ["llc_guest"],
-      member: ["llc_lead"],
-      premium: ["llc_client"],
-      enterprise: ["llc_vip"],
+export const DISCORD_GUILD_CONFIG = {
+  creator: {
+    guildId: process.env.DISCORD_GUILD_ID_CREATOR,
+    roles: {
+      community: process.env.DISCORD_ROLE_CREATOR_COMMUNITY_ID,
+      vip: process.env.DISCORD_ROLE_CREATOR_VIP_ID,
     },
   },
-  jaypventures: {
-    guildId: "1467930335290462357",
-    tierRoles: {
-      free: ["community_free"],
-      member: ["community_supporter"],
-      premium: ["community_vip"],
-      enterprise: ["community_innercircle"],
+  labs: {
+    guildId: process.env.DISCORD_GUILD_ID_LABS,
+    roles: {
+      member: process.env.DISCORD_ROLE_LABS_MEMBER_ID,
+      researcher: process.env.DISCORD_ROLE_LABS_RESEARCHER_ID,
+      student: process.env.DISCORD_ROLE_LABS_STUDENT_ID,
     },
   },
-};
+} as const;
