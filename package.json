@@ -15,7 +15,10 @@
     "typecheck": "tsc --noEmit",
     "deploy:dryrun:bookings": "npx wrangler deploy --dry-run --outdir /tmp/worker-build --config wix/bookings/wrangler.toml --env production",
     "deploy:dryrun:entitlement": "npx wrangler deploy --dry-run --outdir /tmp/entitlement-build --config operations/entitlement-system/wrangler.toml",
-    "deploy:dryrun:website": "npx wrangler deploy --dry-run --outdir /tmp/website-build --config apps/flagship-site/wrangler.toml"
+    "deploy:dryrun:website": "npx wrangler deploy --dry-run --outdir /tmp/website-build --config apps/flagship-site/wrangler.toml",
+    "validate:deploy:bookings": "node scripts/validate-deploy-config.mjs wix/bookings/wrangler.toml",
+    "validate:deploy:entitlement": "node scripts/validate-deploy-config.mjs operations/entitlement-system/wrangler.toml",
+    "validate:deploy:website": "node scripts/validate-deploy-config.mjs apps/flagship-site/wrangler.toml"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20260504.1",

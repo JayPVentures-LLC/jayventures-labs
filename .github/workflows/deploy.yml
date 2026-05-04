@@ -34,6 +34,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Validate deploy config
+        run: npm run validate:deploy:bookings
+
       # Runs on every deploy to ensure the secret is present; Wrangler secrets
       # persist in Cloudflare but re-setting is safe and guards against accidental deletion.
       - name: Set Memberstack JWT Public Key (required by wrangler secret)
@@ -45,7 +48,7 @@ jobs:
           echo "${MEMBERSTACK_JWT_PUBLIC_KEY}" | npx wrangler secret put MEMBERSTACK_JWT_PUBLIC_KEY --config wix/bookings/wrangler.toml --env production
 
       - name: Build Worker
-        run: npm run build
+        run: npm run build:worker
 
       - name: Deploy to Cloudflare Workers
         env:
