@@ -350,11 +350,11 @@ export default {
       const body = await request.json() as Record<string, unknown>;
       const userId = body?.user_id;
 
-      if (!userId) {
+      if (!userId || typeof userId !== "string") {
         return Response.json({ error: "missing_user_id" }, { status: 400 });
       }
 
-      await env.INNER_CIRCLE_MEMBER_KV?.delete(userId as string);
+      await env.INNER_CIRCLE_MEMBER_KV?.delete(userId);
 
       return Response.json({
         status: "ENTITLEMENT_REMOVED",
@@ -375,9 +375,9 @@ export default {
 
       const body = await request.json() as Record<string, unknown>;
       const userId = body?.user_id;
-      const tier = (body?.tier ?? "vip") as string;
+      const tier = typeof body?.tier === "string" ? body.tier : "vip";
 
-      if (!userId) {
+      if (!userId || typeof userId !== "string") {
         return Response.json({ error: "missing_user_id" }, { status: 400 });
       }
 
@@ -389,7 +389,7 @@ export default {
         created_at: new Date().toISOString()
       };
 
-      await env.INNER_CIRCLE_MEMBER_KV?.put(userId as string, JSON.stringify(record));
+      await env.INNER_CIRCLE_MEMBER_KV?.put(userId, JSON.stringify(record));
 
       return Response.json({
         status: "ENTITLEMENT_SET",
@@ -410,11 +410,11 @@ export default {
       const body = await request.json() as Record<string, unknown>;
       const userId = body?.user_id;
 
-      if (!userId) {
+      if (!userId || typeof userId !== "string") {
         return Response.json({ error: "missing_user_id" }, { status: 400 });
       }
 
-      const entitlement = await env.INNER_CIRCLE_MEMBER_KV?.get(userId as string) ?? null;
+      const entitlement = await env.INNER_CIRCLE_MEMBER_KV?.get(userId) ?? null;
 
       return Response.json({
         user_id: userId,
