@@ -36,6 +36,17 @@ function generateState(): string {
   return Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("");
 }
 
+function parseCookieValue(cookieHeader: string, name: string): string | null {
+  for (const part of cookieHeader.split(";")) {
+    const trimmed = part.trim();
+    const eqIdx = trimmed.indexOf("=");
+    if (eqIdx === -1) continue;
+    const key = trimmed.slice(0, eqIdx).trim();
+    if (key === name) return decodeURIComponent(trimmed.slice(eqIdx + 1).trim());
+  }
+  return null;
+}
+
 // ---------------------------------------------------------------------------
 // GET /linked-roles/start
 // ---------------------------------------------------------------------------
@@ -87,13 +98,21 @@ export async function handleLinkedRolesCallback(request: Request, env: Env): Pro
     return new Response("Missing required parameters: code and state", { status: 400 });
   }
 
-  // Validate state against KV when available
+  // Validate state for CSRF protection
   if (env.LINKED_ROLES_KV) {
+    // KV-backed state validation (preferred)
     const stored = await env.LINKED_ROLES_KV.get(`oauth_state:${state}`);
     if (!stored) {
-      return new Response("Invalid or expired OAuth2 state", { status: 400 });
+      return new Response("Invalid or expired OAuth2 state", { status: 403 });
     }
     await env.LINKED_ROLES_KV.delete(`oauth_state:${state}`);
+  } else {
+    // Cookie-based state validation (fallback when KV is not configured)
+    const cookieHeader = request.headers.get("Cookie") ?? "";
+    const cookieState = parseCookieValue(cookieHeader, "discord_oauth_state");
+    if (!cookieState || cookieState !== state) {
+      return new Response("Invalid or expired OAuth2 state", { status: 403 });
+    }
   }
 
   // Exchange authorisation code for tokens
@@ -160,10 +179,13 @@ export async function handleLinkedRolesCallback(request: Request, env: Env): Pro
     return new Response("Failed to update role connection", { status: 502 });
   }
 
-  // All done — redirect to the success page
+  // All done — redirect to the success page and clear the CSRF state cookie
   return new Response(null, {
     status: 302,
-    headers: { Location: `${env.SITE_ORIGIN}/linked-roles/success` },
+    headers: {
+      Location: `${env.SITE_ORIGIN}/linked-roles/success`,
+      "Set-Cookie": "discord_oauth_state=; Path=/linked-roles; HttpOnly; Secure; SameSite=Lax; Max-Age=0",
+    },
   });
 }
 

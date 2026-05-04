@@ -193,6 +193,47 @@ describe("GET /linked-roles/callback — parameter validation", () => {
 });
 
 // ---------------------------------------------------------------------------
+// GET /linked-roles/callback — CSRF state validation (cookie fallback, no KV)
+// ---------------------------------------------------------------------------
+
+describe("GET /linked-roles/callback — CSRF state validation", () => {
+  it("returns 403 when no state cookie is present (no KV configured)", async () => {
+    const res = await fetchRoute("/linked-roles/callback?code=authcode&state=state123");
+    expect(res.status).toBe(403);
+  });
+
+  it("returns 403 when cookie state does not match query state", async () => {
+    const res = await fetchRoute("/linked-roles/callback?code=authcode&state=state123", {
+      headers: { Cookie: "discord_oauth_state=different_state_value" },
+    });
+    expect(res.status).toBe(403);
+  });
+
+  it("proceeds past CSRF check when cookie state matches query state", async () => {
+    // Mock fetch so we don't make a real network call to Discord's token endpoint
+    const mockFetch = vi.spyOn(globalThis, "fetch").mockResolvedValueOnce(
+      new Response(JSON.stringify({ error: "invalid_grant" }), { status: 400 })
+    );
+    try {
+      const res = await fetchRoute("/linked-roles/callback?code=authcode&state=matchingstate", {
+        headers: { Cookie: "discord_oauth_state=matchingstate" },
+      });
+      // CSRF check passes; token exchange returns an error → 502
+      expect(res.status).toBe(502);
+    } finally {
+      mockFetch.mockRestore();
+    }
+  });
+
+  it("returns 403 when cookie is present but value is empty", async () => {
+    const res = await fetchRoute("/linked-roles/callback?code=authcode&state=state123", {
+      headers: { Cookie: "discord_oauth_state=" },
+    });
+    expect(res.status).toBe(403);
+  });
+});
+
+// ---------------------------------------------------------------------------
 // GET /linked-roles/success
 // ---------------------------------------------------------------------------
 
