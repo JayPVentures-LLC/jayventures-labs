@@ -26,10 +26,11 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
+          cache: npm
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       # Runs on every deploy to ensure the secret is present; Wrangler secrets
       # persist in Cloudflare but re-setting is safe and guards against accidental deletion.
@@ -39,7 +40,7 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           MEMBERSTACK_JWT_PUBLIC_KEY: ${{ secrets.MEMBERSTACK_JWT_PUBLIC_KEY }}
         run: |
-          echo "${MEMBERSTACK_JWT_PUBLIC_KEY}" | npx wrangler secret put MEMBERSTACK_JWT_PUBLIC_KEY --config wix/bookings/wrangler.toml --env production --yes
+          echo "${MEMBERSTACK_JWT_PUBLIC_KEY}" | npx wrangler secret put MEMBERSTACK_JWT_PUBLIC_KEY --config wix/bookings/wrangler.toml --env production
 
       - name: Build Worker
         run: npm run build
