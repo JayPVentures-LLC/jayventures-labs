@@ -4,22 +4,29 @@ import { createStripeSignatureHeader } from "../operations/entitlement-system/ut
 import { getEntitlement } from "../operations/entitlement-system/services/entitlement.service";
 import { entitlementCheck } from "../operations/entitlement-system/middleware/entitlementCheck";
 import { asKvNamespace, MockKVNamespace } from "./helpers/mock-kv";
+import type { WorkerEventMessage } from "../operations/entitlement-system/services/azure/observability.service";
 
 function createRawEnv() {
   const entitlementKv = new MockKVNamespace();
   const idempotencyKv = new MockKVNamespace();
   const retryQueueKv = new MockKVNamespace();
+  const metricsKv = new MockKVNamespace();
 
   return {
     raw: {
       STRIPE_WEBHOOK_SECRET: "whsec_test",
       DISCORD_BOT_TOKEN: "discord-token",
+      DISCORD_GUILD_ID: "test-guild-id",
+      DISCORD_ROLE_COMMUNITY_ID: "role-community-id",
+      DISCORD_ROLE_VIP_ID: "role-vip-id",
       ADMIN_OVERRIDE_KEY: "admin-secret",
       ENTITLEMENT_KV: asKvNamespace(entitlementKv),
       IDEMPOTENCY_KV: asKvNamespace(idempotencyKv),
       RETRY_QUEUE_KV: asKvNamespace(retryQueueKv),
+      METRICS_KV: asKvNamespace(metricsKv),
       LOG_LEVEL: "debug",
     },
+    metricsKv,
   };
 }
 
@@ -186,5 +193,177 @@ describe("entitlement system worker", () => {
     const response = await worker.fetch(retryRequest as never, raw, {} as ExecutionContext);
     expect(response.status).toBe(200);
     await expect(response.json()).resolves.toMatchObject({ status: "retry_queue_processed", processed: 1, succeeded: 1, failed: 0 });
+  });
+});
+
+function createMockBatch(messages: WorkerEventMessage[]): MessageBatch<WorkerEventMessage> {
+  const mockMessages = messages.map((body) => ({
+    body,
+    ack: vi.fn(),
+    retry: vi.fn(),
+    attempts: 0,
+    id: crypto.randomUUID(),
+    timestamp: new Date(),
+  }));
+  return {
+    messages: mockMessages,
+    queue: "test-queue",
+    ackAll: vi.fn(),
+    retryAll: vi.fn(),
+  } as unknown as MessageBatch<WorkerEventMessage>;
+}
+
+describe("STRIPE_ENTITLEMENT_SYNCED queue events (Discord reflection)", () => {
+  beforeEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it("ENTITLEMENT_ACTIVE with verified discord user and VIP tier attempts role add and acks", async () => {
+    const { raw, metricsKv } = createRawEnv();
+    const discordFetch = createDiscordFetch();
+    vi.stubGlobal("fetch", discordFetch);
+
+    const message: WorkerEventMessage = {
+      type: "STRIPE_ENTITLEMENT_SYNCED",
+      payload: {
+        subject_id: "user-verified-123",
+        discord_user_id: "discord-user-456",
+        tier: "vip",
+        action: "ENTITLEMENT_ACTIVE",
+      },
+    };
+
+    const batch = createMockBatch([message]);
+    const ctx = { waitUntil: vi.fn() } as unknown as ExecutionContext;
+    await worker.queue(batch, raw, ctx);
+
+    const msg = batch.messages[0] as { ack: ReturnType<typeof vi.fn>; retry: ReturnType<typeof vi.fn> };
+    expect(msg.ack).toHaveBeenCalled();
+    expect(msg.retry).not.toHaveBeenCalled();
+
+    const putCalls = discordFetch.mock.calls.filter(([url, init]: [string, RequestInit | undefined]) => {
+      const method = init?.method ?? "GET";
+      return String(url).includes(`/guilds/test-guild-id/members/discord-user-456/roles/role-vip-id`) && method === "PUT";
+    });
+    expect(putCalls.length).toBeGreaterThan(0);
+
+    const metrics = await metricsKv.list({ prefix: "discord_reflection:" });
+    expect(metrics.keys.length).toBe(1);
+    const stored = JSON.parse((await metricsKv.get(metrics.keys[0].name)) ?? "{}");
+    expect(stored).toMatchObject({
+      subject_id: "user-verified-123",
+      discord_user_id: "discord-user-456",
+      tier: "vip",
+      role_id: "role-vip-id",
+      action: "ENTITLEMENT_ACTIVE",
+      result: "added",
+    });
+  });
+
+  it("ENTITLEMENT_INACTIVE with verified discord user and VIP tier attempts role removal and acks", async () => {
+    const { raw } = createRawEnv();
+    const discordFetch = createDiscordFetch();
+    vi.stubGlobal("fetch", discordFetch);
+
+    const message: WorkerEventMessage = {
+      type: "STRIPE_ENTITLEMENT_SYNCED",
+      payload: {
+        subject_id: "user-verified-123",
+        discord_user_id: "discord-user-456",
+        tier: "vip",
+        action: "ENTITLEMENT_INACTIVE",
+      },
+    };
+
+    const batch = createMockBatch([message]);
+    const ctx = { waitUntil: vi.fn() } as unknown as ExecutionContext;
+    await worker.queue(batch, raw, ctx);
+
+    const msg = batch.messages[0] as { ack: ReturnType<typeof vi.fn>; retry: ReturnType<typeof vi.fn> };
+    expect(msg.ack).toHaveBeenCalled();
+    expect(msg.retry).not.toHaveBeenCalled();
+
+    const deleteCalls = discordFetch.mock.calls.filter(([url, init]: [string, RequestInit | undefined]) => {
+      const method = init?.method ?? "GET";
+      return String(url).includes(`/guilds/test-guild-id/members/discord-user-456/roles/role-vip-id`) && method === "DELETE";
+    });
+    expect(deleteCalls.length).toBeGreaterThan(0);
+  });
+
+  it("fails closed and acks when role mapping is missing for unknown tier", async () => {
+    const { raw } = createRawEnv();
+    vi.stubGlobal("fetch", createDiscordFetch());
+
+    const message: WorkerEventMessage = {
+      type: "STRIPE_ENTITLEMENT_SYNCED",
+      payload: {
+        subject_id: "user-verified-123",
+        discord_user_id: "discord-user-456",
+        tier: "unknown_tier",
+        action: "ENTITLEMENT_ACTIVE",
+      },
+    };
+
+    const batch = createMockBatch([message]);
+    const ctx = { waitUntil: vi.fn() } as unknown as ExecutionContext;
+    await worker.queue(batch, raw, ctx);
+
+    const msg = batch.messages[0] as { ack: ReturnType<typeof vi.fn>; retry: ReturnType<typeof vi.fn> };
+    expect(msg.ack).toHaveBeenCalled();
+    expect(msg.retry).not.toHaveBeenCalled();
+  });
+
+  it("fails closed and acks when discord_user_id is missing", async () => {
+    const { raw } = createRawEnv();
+    vi.stubGlobal("fetch", createDiscordFetch());
+
+    const message: WorkerEventMessage = {
+      type: "STRIPE_ENTITLEMENT_SYNCED",
+      payload: {
+        subject_id: "user-verified-123",
+        discord_user_id: "",
+        tier: "vip",
+        action: "ENTITLEMENT_ACTIVE",
+      },
+    };
+
+    const batch = createMockBatch([message]);
+    const ctx = { waitUntil: vi.fn() } as unknown as ExecutionContext;
+    await worker.queue(batch, raw, ctx);
+
+    const msg = batch.messages[0] as { ack: ReturnType<typeof vi.fn>; retry: ReturnType<typeof vi.fn> };
+    expect(msg.ack).toHaveBeenCalled();
+    expect(msg.retry).not.toHaveBeenCalled();
+    const discordCalls = vi.mocked(fetch).mock.calls.filter(([url]: [string]) =>
+      String(url).includes("/roles/")
+    );
+    expect(discordCalls.length).toBe(0);
+  });
+
+  it("retries on transient Discord API failures", async () => {
+    const { raw } = createRawEnv();
+    vi.stubGlobal("fetch", createDiscordFetch({ failRoleMutation: true }));
+
+    const message: WorkerEventMessage = {
+      type: "STRIPE_ENTITLEMENT_SYNCED",
+      payload: {
+        subject_id: "user-verified-123",
+        discord_user_id: "discord-user-456",
+        tier: "vip",
+        action: "ENTITLEMENT_ACTIVE",
+      },
+    };
+
+    const batch = createMockBatch([message]);
+    const ctx = { waitUntil: vi.fn() } as unknown as ExecutionContext;
+    await worker.queue(batch, raw, ctx);
+
+    const msg = batch.messages[0] as { ack: ReturnType<typeof vi.fn>; retry: ReturnType<typeof vi.fn> };
+    expect(msg.retry).toHaveBeenCalled();
+    expect(msg.ack).not.toHaveBeenCalled();
   });
 });

@@ -18,6 +18,15 @@ export type WorkerEventMessage =
         timestamp: string;
         data: Record<string, unknown>;
       };
+    }
+  | {
+      type: "STRIPE_ENTITLEMENT_SYNCED";
+      payload: {
+        subject_id: string;
+        discord_user_id: string;
+        tier: string;
+        action: string;
+      };
     };
 
 function parseConnectionString(connectionString: string): { instrumentationKey?: string; ingestionEndpoint?: string } {

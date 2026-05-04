@@ -7,8 +7,8 @@ export interface Env {
   DISCORD_BOT_TOKEN?: string;
   DISCORD_BOT_TOKEN_SECRET_NAME?: string;
   DISCORD_GUILD_ID?: string;
-  DISCORD_COMMUNITY_ROLE_ID?: string;
-  DISCORD_VIP_ROLE_ID?: string;
+  DISCORD_ROLE_COMMUNITY_ID?: string;
+  DISCORD_ROLE_VIP_ID?: string;
   OAUTH_STATE_SECRET?: string;
   ACTIVATION_TOKEN_SECRET?: string;
   PUBLIC_BASE_URL?: string;
@@ -19,6 +19,7 @@ export interface Env {
   ENTITLEMENT_KV: KVNamespace;
   IDEMPOTENCY_KV: KVNamespace;
   RETRY_QUEUE_KV?: KVNamespace;
+  METRICS_KV?: KVNamespace;
   WORKER_EVENTS_QUEUE?: Queue<unknown>;
   AZURE_KEY_VAULT_URL?: string;
   AZURE_TENANT_ID?: string;
@@ -52,8 +53,8 @@ export function getEnv(env: Record<string, unknown>): Env {
     DISCORD_BOT_TOKEN: optionalString(env.DISCORD_BOT_TOKEN),
     DISCORD_BOT_TOKEN_SECRET_NAME: optionalString(env.DISCORD_BOT_TOKEN_SECRET_NAME),
     DISCORD_GUILD_ID: optionalString(env.DISCORD_GUILD_ID),
-    DISCORD_COMMUNITY_ROLE_ID: optionalString(env.DISCORD_COMMUNITY_ROLE_ID),
-    DISCORD_VIP_ROLE_ID: optionalString(env.DISCORD_VIP_ROLE_ID),
+    DISCORD_ROLE_COMMUNITY_ID: optionalString(env.DISCORD_ROLE_COMMUNITY_ID),
+    DISCORD_ROLE_VIP_ID: optionalString(env.DISCORD_ROLE_VIP_ID),
     OAUTH_STATE_SECRET: optionalString(env.OAUTH_STATE_SECRET),
     ACTIVATION_TOKEN_SECRET: optionalString(env.ACTIVATION_TOKEN_SECRET),
     PUBLIC_BASE_URL: optionalString(env.PUBLIC_BASE_URL),
@@ -64,6 +65,7 @@ export function getEnv(env: Record<string, unknown>): Env {
     ENTITLEMENT_KV: assertKv(env.ENTITLEMENT_KV, "ENTITLEMENT_KV"),
     IDEMPOTENCY_KV: assertKv(env.IDEMPOTENCY_KV, "IDEMPOTENCY_KV"),
     RETRY_QUEUE_KV: env.RETRY_QUEUE_KV as KVNamespace | undefined,
+    METRICS_KV: env.METRICS_KV as KVNamespace | undefined,
     WORKER_EVENTS_QUEUE: env.WORKER_EVENTS_QUEUE as Queue<unknown> | undefined,
     AZURE_KEY_VAULT_URL: optionalString(env.AZURE_KEY_VAULT_URL),
     AZURE_TENANT_ID: optionalString(env.AZURE_TENANT_ID),
