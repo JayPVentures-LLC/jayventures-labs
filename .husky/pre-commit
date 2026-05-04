@@ -4,6 +4,11 @@
 STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(md|ts|js|json)$' || true)
 FAIL=0
 for file in $STAGED_FILES; do
+  # Skip large or irrelevant files
+  if echo "$file" | grep -qE 'package-lock.json|yarn.lock|pnpm-lock.yaml'; then
+    echo "Skipping $file (lock file)"
+    continue
+  fi
   if echo "$file" | grep -qE '\.(md|ts|js|json)$'; then
     echo "Checking $file for brand violations..."
     npx ts-node operations/jpv_os_enforcement/cli.ts jaypventures_llc "$(cat $file)" || FAIL=1
