@@ -26,8 +26,10 @@ const DISCORD_OAUTH_BASE = "https://discord.com/oauth2/authorize";
 const OAUTH_SCOPE = "identify role_connections.write";
 const STATE_TTL_SECONDS = 300; // 5 minutes
 
-/** Returns this worker's own origin, preferring an explicit `WORKER_ORIGIN` env var
- *  and falling back to the origin of the incoming request. */
+/**
+ * Returns this worker's own origin, preferring an explicit `WORKER_ORIGIN` env var
+ * and falling back to the origin of the incoming request.
+ */
 function workerOrigin(request: Request, env: Env): string {
   return env.WORKER_ORIGIN ?? new URL(request.url).origin;
 }
