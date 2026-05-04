@@ -1,3 +1,4 @@
+console.log("TEST ENFORCEMENT OUTPUT");
 console.log('DEBUG: cli.ts script started');
 import { EnforcementEngine } from './enforcement_engine';
 import path from 'path';
@@ -16,6 +17,7 @@ const specPath = path.join(__dirname, 'jpv_os.yaml');
 const engine = new EnforcementEngine(specPath);
 const violations = engine.validateBrandVoice(brand, text);
 
+console.log('VIOLATION CHECK RESULT:', violations);
 if (violations.length > 0) {
   console.log('Violations:', violations);
   process.exit(2);
