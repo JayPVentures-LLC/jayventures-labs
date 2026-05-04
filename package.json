@@ -1,8 +1,4 @@
 {
-  "name": "jayventures-labs",
-  "version": "1.0.0",
-  "description": "JayPVentures Labs monorepo",
-  "main": "index.js",
   "scripts": {
     "jpv:enforce": "node ./scripts/jpv-enforce.mjs",
     "jpv:enforce:test": "node ./scripts/jpv-enforce.mjs --test",
@@ -16,13 +12,10 @@
   "devDependencies": {
     "@types/js-yaml": "^4.0.9",
     "@types/node": "^25.6.0",
-    "@types/react": "19.2.14",
-    "eslint": "^8.0.0",
-    "@typescript-eslint/parser": "^6.0.0",
-    "@typescript-eslint/eslint-plugin": "^6.0.0",
-    "eslint-plugin-react": "^7.0.0"
+    "@types/react": "19.2.14"
   },
   "dependencies": {
     "next": "^9.3.3"
   }
+}
 }
