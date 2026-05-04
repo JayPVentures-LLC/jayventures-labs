@@ -84,7 +84,7 @@ export async function syncDiscordRoles(
   }
 
   const currentRoles = Array.isArray(member.roles) ? member.roles : [];
-  const { add, remove } = reconcileRoles({
+  const { add, remove } = reconcileRoles(env, {
     brand: brandEntitlement.brand,
     tier: brandEntitlement.tier,
     status: brandEntitlement.status,
