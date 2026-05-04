@@ -1,3 +1,4 @@
+console.log("CLI.TS ABSOLUTE START");
 console.log("TEST ENFORCEMENT OUTPUT");
 console.log('DEBUG: cli.ts script started');
 import { EnforcementEngine } from './enforcement_engine';
