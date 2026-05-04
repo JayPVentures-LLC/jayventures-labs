@@ -1,0 +1,16 @@
+{
+  "name": "jpv_os_enforcement",
+  "version": "1.0.0",
+  "description": "This is the root for the JPVOs enforcement engine implementation. This engine will:\r - Parse the jpv_os YAML spec\r - Enforce brand, voice, mission, and routing constraints\r - Detect violations (mixed_voice, misrouted_revenue, unclear_authority)\r - Take enforcement actions (reject_output, reroute, log)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "js-yaml": "^4.1.1"
+  }
+}
