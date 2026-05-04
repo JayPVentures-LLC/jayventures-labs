@@ -145,8 +145,8 @@ export default {
           400
         );
       }
-      const existing = await getEntitlement(rawEnv as Env, body.subject);
-      await setEntitlement(rawEnv as Env, body.subject, {
+      const existing = await getEntitlement(rawEnv as unknown as Env, body.subject);
+      await setEntitlement(rawEnv as unknown as Env, body.subject, {
         active: false,
         customerId: existing?.customerId ?? "unknown",
         email: existing?.email,
