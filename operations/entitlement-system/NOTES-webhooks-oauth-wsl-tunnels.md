@@ -250,16 +250,32 @@ Do not put secrets in `wrangler.toml`.
 
 Set these with Wrangler secrets:
 
-```bash
-wrangler secret put STRIPE_WEBHOOK_SECRET
-wrangler secret put STRIPE_SECRET_KEY
-wrangler secret put DISCORD_CLIENT_ID
-wrangler secret put DISCORD_CLIENT_SECRET
-wrangler secret put DISCORD_BOT_TOKEN
-wrangler secret put DISCORD_GUILD_ID
-wrangler secret put DISCORD_COMMUNITY_ROLE_ID
-wrangler secret put DISCORD_VIP_ROLE_ID
-wrangler secret put OAUTH_STATE_SECRET
+```powershell
+# Discord bot (shared)
+npx wrangler secret put DISCORD_BOT_TOKEN
+
+# jaypventures Discord
+npx wrangler secret put DISCORD_GUILD_ID_CREATOR
+npx wrangler secret put DISCORD_ROLE_CREATOR_COMMUNITY_ID
+npx wrangler secret put DISCORD_ROLE_CREATOR_VIP_ID
+
+# jaypVLabs Discord
+npx wrangler secret put DISCORD_GUILD_ID_LABS
+npx wrangler secret put DISCORD_ROLE_LABS_MEMBER_ID
+npx wrangler secret put DISCORD_ROLE_LABS_RESEARCHER_ID
+npx wrangler secret put DISCORD_ROLE_LABS_STUDENT_ID
+```
+
+For Microsoft Teams / JayPVentures LLC, add these after Entra app registration:
+
+```powershell
+npx wrangler secret put MS_TENANT_ID
+npx wrangler secret put MS_CLIENT_ID
+npx wrangler secret put MS_CLIENT_SECRET
+npx wrangler secret put MS_TEAM_ID_LLC
+npx wrangler secret put MS_GROUP_ID_LLC_CLIENTS
+npx wrangler secret put MS_GROUP_ID_LLC_PARTNERS
+npx wrangler secret put MS_GROUP_ID_LLC_ENTERPRISE
 ```
 
 ## Local Development Model
