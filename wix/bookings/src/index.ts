@@ -458,6 +458,10 @@ export default {
         return Response.json({ error: "missing_audit_id" }, { status: 400 });
       }
 
+      if (!env.METRICS_KV) {
+        return Response.json({ error: "KV not configured" }, { status: 500 });
+      }
+
       const record = await env.METRICS_KV.get("jpv:safety:audit:" + auditId);
 
       if (!record) {
