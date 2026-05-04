@@ -16,6 +16,7 @@
     "@types/react": "19.2.14"
   },
   "dependencies": {
+    "hono": "^4.12.16",
     "next": "^9.3.3"
   }
 }
