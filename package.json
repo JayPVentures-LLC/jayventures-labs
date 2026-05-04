@@ -2,7 +2,10 @@
   "scripts": {
     "jpv:enforce": "node ./scripts/jpv-enforce.mjs",
     "jpv:enforce:test": "node ./scripts/jpv-enforce.mjs --test",
-    "enforce:brand": "ts-node operations/jpv_os_enforcement/cli.ts jaypventures_llc \"$@\""
+    "enforce:brand": "ts-node operations/jpv_os_enforcement/cli.ts jaypventures_llc \"$@\"",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
   },
   "devDependencies": {
     "@types/js-yaml": "^4.0.9",
