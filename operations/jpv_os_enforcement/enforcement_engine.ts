@@ -12,6 +12,7 @@ export class EnforcementEngine {
               console.log('DEBUG_OUTPUT Checking text:', text);
               const brand = this.spec.brands.find(b => b.id === brandId);
               if (brand) {
+                console.log('DEBUG_OUTPUT Full brand object:', JSON.stringify(brand, null, 2));
                 console.log('DEBUG_OUTPUT Deny list for', brandId, ':', brand.language.deny);
               }
           console.log('DEBUG: Entered validateBrandVoice');
