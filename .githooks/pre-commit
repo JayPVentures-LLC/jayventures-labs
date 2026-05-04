@@ -1,12 +1,11 @@
 #!/bin/sh
-# Pre-commit enforcement hook for JPVOs
+# Pre-commit enforcement hook for JPVOs (Windows/macOS compatible)
 BRAND_ID="jaypventures_llc"
 FILES=$(git diff --cached --name-only | grep -E '\.(ts|js|md|txt)$')
 EXIT=0
 for file in $FILES; do
   if grep -q . "$file"; then
-    CONTENT=$(cat "$file" | head -c 1000)
-    npx ts-node operations/jpv_os_enforcement/cli.ts "$BRAND_ID" "$CONTENT"
+    npx ts-node operations/jpv_os_enforcement/cli.ts "$BRAND_ID" --file "$file"
     if [ $? -ne 0 ]; then
       echo "JPVOs enforcement violation in $file"
       EXIT=1

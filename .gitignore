@@ -4,6 +4,10 @@ coverage/
 *.log
 npm-debug.log*
 
+# Next.js build output
+.next/
+out/
+
 # Python
 .venv/
 __pycache__/

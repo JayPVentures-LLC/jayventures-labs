@@ -9,6 +9,9 @@
     "test:entitlement": "vitest run tests/entitlement-system.test.ts",
     "test:bookings": "vitest run tests/wix-bookings.test.ts",
     "typecheck": "tsc --noEmit",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
     "dev:website": "wrangler dev --config apps/flagship-site/wrangler.toml",
     "dev:entitlement": "wrangler dev --config operations/entitlement-system/wrangler.toml",
     "dev:bookings": "wrangler dev --config wix/bookings/wrangler.toml",
@@ -18,12 +21,18 @@
     "setup:devvars": "powershell -ExecutionPolicy Bypass -File scripts/setup-dev-vars.ps1",
     "validate:deploy:website": "node scripts/validate-deploy-config.mjs apps/flagship-site/wrangler.toml",
     "validate:deploy:entitlement": "node scripts/validate-deploy-config.mjs operations/entitlement-system/wrangler.toml",
-    "validate:deploy:bookings": "node scripts/validate-deploy-config.mjs wix/bookings/wrangler.toml"
+    "validate:deploy:bookings": "node scripts/validate-deploy-config.mjs wix/bookings/wrangler.toml",
+    "jpv:enforce": "node ./scripts/jpv-enforce.mjs",
+    "jpv:enforce:test": "node ./scripts/jpv-enforce.mjs --test",
+    "enforce:brand": "ts-node operations/jpv_os_enforcement/cli.ts jaypventures_llc --file",
+    "stripe:audit": "node operations/stripe-audit.js",
+    "lint": "eslint . --ext .ts,.tsx,.js,.jsx,.mdx"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20260404.0",
     "@types/js-yaml": "^4.0.9",
     "@types/node": "^22.15.17",
+    "@types/react": "19.2.14",
     "typescript": "^5.8.3",
     "vitest": "^3.1.2",
     "wrangler": "^4.11.1"

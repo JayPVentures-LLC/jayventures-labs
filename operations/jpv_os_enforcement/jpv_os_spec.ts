@@ -57,6 +57,6 @@ export function loadJPVOsSpec(path: string): JPVOsSpec {
     principle: doc.jpv_os.principle,
     brands: doc.jpv_os.brands,
     system_flow: doc.jpv_os.system_flow,
-    enforcement_rules: doc.jpv_os.enforcement,
+    enforcement_rules: doc.jpv_os.enforcement_rules || { violations: [], action: [] },
   };
 }

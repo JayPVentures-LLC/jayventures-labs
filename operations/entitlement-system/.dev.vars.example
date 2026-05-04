@@ -1,5 +1,7 @@
-STRIPE_WEBHOOK_SECRET="whsec_replace_me"
-STRIPE_WEBHOOK_SECRET_SECRET_NAME="stripe-webhook-secret"
+# Shared
+INTERNAL_SYNC_TOKEN="replace_me"
+
+# Discord bot
 DISCORD_BOT_TOKEN="replace_me"
 DISCORD_BOT_TOKEN_SECRET_NAME="discord-bot-token"
 DISCORD_GUILD_ID="replace_me"
@@ -10,4 +12,13 @@ ADMIN_OVERRIDE_KEY_SECRET_NAME="admin-override-key"
 AZURE_CLIENT_SECRET="replace_me"
 AZURE_ARCHIVE_TOKEN="replace_me"
 AZURE_ARCHIVE_TOKEN_SECRET_NAME="azure-archive-token"
+
+# Microsoft Teams / JayPVentures LLC
+MS_TENANT_ID="replace_me"
+MS_CLIENT_ID="replace_me"
+MS_CLIENT_SECRET="replace_me"
+MS_TEAM_ID_LLC="replace_me"
+MS_GROUP_ID_LLC_CLIENTS="replace_me"
+MS_GROUP_ID_LLC_PARTNERS="replace_me"
+MS_GROUP_ID_LLC_ENTERPRISE="replace_me"
 LOG_LEVEL="info"

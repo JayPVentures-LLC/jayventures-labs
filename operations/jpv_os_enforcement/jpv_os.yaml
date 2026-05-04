@@ -2,7 +2,8 @@
 
 jpv_os:
   version: 1.0
-  enforcement: strict
+  enforcement:
+    mode: strict
   principle: "no overlap, no ambiguity, no drift"
 
   brands:
@@ -36,6 +37,7 @@ jpv_os:
           - "This eliminates variability."
           - "This scales without degradation."
         deny:
+          - "vibe"
           - "vibes"
           - "trying"
           - "helping"
@@ -151,7 +153,6 @@ jpv_os:
       - no_cross_voice
       - no_cross_mission
       - no_direct_creator_to_enterprise_without_validation
-  enforcement:
     violations:
       - mixed_voice
       - misrouted_revenue
