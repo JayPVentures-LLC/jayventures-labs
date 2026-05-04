@@ -356,6 +356,10 @@ export default {
         return Response.json({ error: "missing_user_id" }, { status: 400 });
       }
 
+      if (!env.INNER_CIRCLE_MEMBER_KV) {
+        return Response.json({ error: "KV not configured" }, { status: 500 });
+      }
+
       await env.INNER_CIRCLE_MEMBER_KV.delete(userId);
 
       return Response.json({
