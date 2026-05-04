@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 10, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/jaypv/projects/jayventures-labs/pages/index.tsx"],"sourcesContent":["import React from \"react\";\r\n\r\nexport default function Home() {\r\n  return (\r\n    <main style={{ padding: 32, fontFamily: 'sans-serif' }}>\r\n      <h1>JayPVentures Flagship Site</h1>\r\n      <p>Welcome! This is your flagship Next.js site. If you see this page, your build and dev server are working.</p>\r\n      <ul>\r\n        <li>Update <code>pages/index.tsx</code> to customize your homepage.</li>\r\n        <li>See <code>apps/flagship-site/src/lib/render.ts</code> for route and content logic.</li>\r\n      </ul>\r\n    </main>\r\n  );\r\n}\r\n"],"names":["Home","style","padding","fontFamily"],"mappings":";;;;;;AAEe,SAASA;IACtB,qBACE,qKAAC;QAAKC,OAAO;YAAEC,SAAS;YAAIC,YAAY;QAAa;;0BACnD,qKAAC;0BAAG;;;;;;0BACJ,qKAAC;0BAAE;;;;;;0BACH,qKAAC;;kCACC,qKAAC;;4BAAG;0CAAO,qKAAC;0CAAK;;;;;;4BAAsB;;;;;;;kCACvC,qKAAC;;4BAAG;0CAAI,qKAAC;0CAAK;;;;;;4BAA2C;;;;;;;;;;;;;;;;;;;AAIjE"}}]
-}
