@@ -1,16 +1,19 @@
+
 import type { Brand, Tier } from "../types/entitlement.types";
 import { DISCORD_GUILD_CONFIG } from "../config/discordGuilds";
 
-export function getGuildIdForBrand(brand: Brand): string {
-  return DISCORD_GUILD_CONFIG[brand].guildId;
+export function getGuildIdForBrand(brand: Brand): string | undefined {
+  return DISCORD_GUILD_CONFIG[brand]?.guildId;
 }
 
 export function getRoleIdsForBrandTier(brand: Brand, tier: Tier): string[] {
-  return DISCORD_GUILD_CONFIG[brand].tierRoles[tier] ?? [];
+  const roleId = DISCORD_GUILD_CONFIG[brand]?.roles?.[tier];
+  return roleId ? [roleId] : [];
 }
 
 export function getAllTierRolesForBrand(brand: Brand): string[] {
-  return Object.values(DISCORD_GUILD_CONFIG[brand].tierRoles).flat();
+  const roles = DISCORD_GUILD_CONFIG[brand]?.roles;
+  return roles ? (Object.values(roles).filter(Boolean) as string[]) : [];
 }
 
 export function reconcileRoles(params: {

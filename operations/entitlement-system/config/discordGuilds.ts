@@ -1,25 +1,29 @@
 import type { Brand, Tier } from "../types/entitlement.types";
 
-export const DISCORD_GUILD_CONFIG: Record<Brand, {
-  guildId: string;
-  tierRoles: Record<Tier, string[]>;
-}> = {
-  jaypventuresllc: {
-    guildId: "1491229650142105621",
-    tierRoles: {
-      free: ["llc_guest"],
-      member: ["llc_lead"],
-      premium: ["llc_client"],
-      enterprise: ["llc_vip"],
+export type BrandGuildConfig = {
+  [B in Brand]: {
+    guildId: string | undefined;
+    roles: Partial<Record<Tier, string | undefined>>;
+  };
+};
+
+export const DISCORD_GUILD_CONFIG: BrandGuildConfig = {
+  jaypventures: {
+    guildId: process.env.DISCORD_GUILD_ID_CREATOR,
+    roles: {
+      free: process.env.DISCORD_ROLE_CREATOR_COMMUNITY_ID,
+      member: process.env.DISCORD_ROLE_CREATOR_COMMUNITY_ID,
+      premium: process.env.DISCORD_ROLE_CREATOR_VIP_ID,
+      enterprise: process.env.DISCORD_ROLE_CREATOR_VIP_ID,
     },
   },
-  jaypventures: {
-    guildId: "1467930335290462357",
-    tierRoles: {
-      free: ["community_free"],
-      member: ["community_supporter"],
-      premium: ["community_vip"],
-      enterprise: ["community_innercircle"],
+  jaypventuresllc: {
+    guildId: process.env.DISCORD_GUILD_ID_LABS,
+    roles: {
+      free: process.env.DISCORD_ROLE_LABS_MEMBER_ID,
+      member: process.env.DISCORD_ROLE_LABS_MEMBER_ID,
+      premium: process.env.DISCORD_ROLE_LABS_RESEARCHER_ID,
+      enterprise: process.env.DISCORD_ROLE_LABS_STUDENT_ID,
     },
   },
 };

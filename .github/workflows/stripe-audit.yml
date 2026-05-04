@@ -1,0 +1,24 @@
+name: Stripe Account Audit
+
+on:
+  push:
+    paths:
+      - 'operations/stripe_control_map.yaml'
+      - 'operations/stripe-audit.js'
+      - '.github/workflows/stripe-audit.yml'
+      - 'package.json'
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install dependencies
+        run: npm install js-yaml
+      - name: Run Stripe audit
+        run: node operations/stripe-audit.js

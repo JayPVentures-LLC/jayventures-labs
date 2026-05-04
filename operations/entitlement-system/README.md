@@ -18,27 +18,36 @@ Cloudflare Worker that receives Stripe subscription/payment events, updates enti
 - Azure archive endpoint: durable downstream event sink.
 
 ## Environment
-Required Cloudflare bindings:
-- `ENTITLEMENT_KV`
-- `IDEMPOTENCY_KV`
-- `WORKER_EVENTS_QUEUE`
 
-Optional fallback binding:
-- `RETRY_QUEUE_KV`
+## Environment Variable Standard
 
-Direct or Key Vault-backed secrets:
-- `STRIPE_WEBHOOK_SECRET` or `STRIPE_WEBHOOK_SECRET_SECRET_NAME`
-- `DISCORD_BOT_TOKEN` or `DISCORD_BOT_TOKEN_SECRET_NAME`
-- `ADMIN_OVERRIDE_KEY` or `ADMIN_OVERRIDE_KEY_SECRET_NAME`
+### Shared
+- `INTERNAL_SYNC_TOKEN`
 
-Azure wiring:
-- `AZURE_KEY_VAULT_URL`
-- `AZURE_TENANT_ID`
-- `AZURE_CLIENT_ID`
-- `AZURE_CLIENT_SECRET`
-- `APPINSIGHTS_CONNECTION_STRING`
-- `AZURE_ARCHIVE_ENDPOINT`
-- `AZURE_ARCHIVE_TOKEN` or `AZURE_ARCHIVE_TOKEN_SECRET_NAME`
+### Discord bot
+- `DISCORD_BOT_TOKEN`
+
+### jaypventures Discord
+- `DISCORD_GUILD_ID_CREATOR`
+- `DISCORD_ROLE_CREATOR_COMMUNITY_ID`
+- `DISCORD_ROLE_CREATOR_VIP_ID`
+
+### jaypVLabs Discord
+- `DISCORD_GUILD_ID_LABS`
+- `DISCORD_ROLE_LABS_MEMBER_ID`
+- `DISCORD_ROLE_LABS_RESEARCHER_ID`
+- `DISCORD_ROLE_LABS_STUDENT_ID`
+
+### Microsoft Teams / JayPVentures LLC
+- `MS_TENANT_ID`
+- `MS_CLIENT_ID`
+- `MS_CLIENT_SECRET`
+- `MS_TEAM_ID_LLC`
+- `MS_GROUP_ID_LLC_CLIENTS`
+- `MS_GROUP_ID_LLC_PARTNERS`
+- `MS_GROUP_ID_LLC_ENTERPRISE`
+
+See also: `config/accessTargets.ts` for access routing and product mapping.
 
 ## Event Flow
 1. Stripe posts an event to `/webhook/stripe`.

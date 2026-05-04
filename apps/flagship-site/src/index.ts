@@ -36,7 +36,11 @@ async function setEntitlement(
   );
 }
 
-async function requireAccess(request: Request, env: Env) {
+type RequireAccessResult =
+  | { allowed: true; subject: string; entitlement: EntitlementRecord }
+  | { allowed: false; response: Response };
+
+async function requireAccess(request: Request, env: Env): Promise<RequireAccessResult> {
   const subject =
     request.headers.get("x-jpv-subject") ||
     new URL(request.url).searchParams.get("subject");
@@ -94,7 +98,7 @@ export default {
     }
 
     if (url.pathname === "/protected") {
-      const access = await requireAccess(request, rawEnv as Env);
+      const access = await requireAccess(request, rawEnv as unknown as Env);
       if (!access.allowed) {
         return access.response;
       }
@@ -117,7 +121,7 @@ export default {
           400
         );
       }
-      await setEntitlement(rawEnv as Env, body.subject, {
+      await setEntitlement(rawEnv as unknown as Env, body.subject, {
         active: true,
         customerId: body.customerId,
         email: body.email,
@@ -141,8 +145,8 @@ export default {
           400
         );
       }
-      const existing = await getEntitlement(rawEnv as Env, body.subject);
-      await setEntitlement(rawEnv as Env, body.subject, {
+      const existing = await getEntitlement(rawEnv as unknown as Env, body.subject);
+      await setEntitlement(rawEnv as unknown as Env, body.subject, {
         active: false,
         customerId: existing?.customerId ?? "unknown",
         email: existing?.email,

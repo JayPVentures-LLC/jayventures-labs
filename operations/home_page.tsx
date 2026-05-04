@@ -1,4 +1,7 @@
+
 import Image from 'next/image';
+import dynamic from 'next/dynamic';
+const Dashboard = dynamic(() => import('../components/Dashboard'), { ssr: false });
 
 /**
  * This file defines the home page for the JAYPVENTURES LLC website.
@@ -157,6 +160,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Business Metrics & KPIs Dashboard */}
+      <Dashboard />
 
       {/* Signature Offers Section */}
       <section id="services" className="bg-[#1A1D23] py-20">
