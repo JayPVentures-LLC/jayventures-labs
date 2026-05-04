@@ -10,6 +10,7 @@
     "lint": "eslint apps/ operations/ tests/ --ext .ts,.tsx,.js,.jsx,.mdx"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260504.1",
     "@types/js-yaml": "^4.0.9",
     "@types/node": "^25.6.0",
     "@types/react": "19.2.14"
