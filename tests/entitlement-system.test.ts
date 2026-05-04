@@ -241,12 +241,12 @@ describe("STRIPE_ENTITLEMENT_SYNCED queue events (Discord reflection)", () => {
     const ctx = { waitUntil: vi.fn() } as unknown as ExecutionContext;
     await worker.queue(batch, raw, ctx);
 
-    const msg = batch.messages[0] as { ack: ReturnType<typeof vi.fn>; retry: ReturnType<typeof vi.fn> };
+    const msg = batch.messages[0] as unknown as { ack: ReturnType<typeof vi.fn>; retry: ReturnType<typeof vi.fn> };
     expect(msg.ack).toHaveBeenCalled();
     expect(msg.retry).not.toHaveBeenCalled();
 
-    const putCalls = discordFetch.mock.calls.filter(([url, init]: [string, RequestInit | undefined]) => {
-      const method = init?.method ?? "GET";
+    const putCalls = discordFetch.mock.calls.filter(([url, init]) => {
+      const method = (init as RequestInit | undefined)?.method ?? "GET";
       return String(url).includes(`/guilds/test-guild-id/members/discord-user-456/roles/role-vip-id`) && method === "PUT";
     });
     expect(putCalls.length).toBeGreaterThan(0);
@@ -283,12 +283,12 @@ describe("STRIPE_ENTITLEMENT_SYNCED queue events (Discord reflection)", () => {
     const ctx = { waitUntil: vi.fn() } as unknown as ExecutionContext;
     await worker.queue(batch, raw, ctx);
 
-    const msg = batch.messages[0] as { ack: ReturnType<typeof vi.fn>; retry: ReturnType<typeof vi.fn> };
+    const msg = batch.messages[0] as unknown as { ack: ReturnType<typeof vi.fn>; retry: ReturnType<typeof vi.fn> };
     expect(msg.ack).toHaveBeenCalled();
     expect(msg.retry).not.toHaveBeenCalled();
 
-    const deleteCalls = discordFetch.mock.calls.filter(([url, init]: [string, RequestInit | undefined]) => {
-      const method = init?.method ?? "GET";
+    const deleteCalls = discordFetch.mock.calls.filter(([url, init]) => {
+      const method = (init as RequestInit | undefined)?.method ?? "GET";
       return String(url).includes(`/guilds/test-guild-id/members/discord-user-456/roles/role-vip-id`) && method === "DELETE";
     });
     expect(deleteCalls.length).toBeGreaterThan(0);
@@ -312,7 +312,7 @@ describe("STRIPE_ENTITLEMENT_SYNCED queue events (Discord reflection)", () => {
     const ctx = { waitUntil: vi.fn() } as unknown as ExecutionContext;
     await worker.queue(batch, raw, ctx);
 
-    const msg = batch.messages[0] as { ack: ReturnType<typeof vi.fn>; retry: ReturnType<typeof vi.fn> };
+    const msg = batch.messages[0] as unknown as { ack: ReturnType<typeof vi.fn>; retry: ReturnType<typeof vi.fn> };
     expect(msg.ack).toHaveBeenCalled();
     expect(msg.retry).not.toHaveBeenCalled();
   });
@@ -335,10 +335,10 @@ describe("STRIPE_ENTITLEMENT_SYNCED queue events (Discord reflection)", () => {
     const ctx = { waitUntil: vi.fn() } as unknown as ExecutionContext;
     await worker.queue(batch, raw, ctx);
 
-    const msg = batch.messages[0] as { ack: ReturnType<typeof vi.fn>; retry: ReturnType<typeof vi.fn> };
+    const msg = batch.messages[0] as unknown as { ack: ReturnType<typeof vi.fn>; retry: ReturnType<typeof vi.fn> };
     expect(msg.ack).toHaveBeenCalled();
     expect(msg.retry).not.toHaveBeenCalled();
-    const discordCalls = vi.mocked(fetch).mock.calls.filter(([url]: [string]) =>
+    const discordCalls = vi.mocked(fetch).mock.calls.filter(([url]) =>
       String(url).includes("/roles/")
     );
     expect(discordCalls.length).toBe(0);
@@ -362,7 +362,7 @@ describe("STRIPE_ENTITLEMENT_SYNCED queue events (Discord reflection)", () => {
     const ctx = { waitUntil: vi.fn() } as unknown as ExecutionContext;
     await worker.queue(batch, raw, ctx);
 
-    const msg = batch.messages[0] as { ack: ReturnType<typeof vi.fn>; retry: ReturnType<typeof vi.fn> };
+    const msg = batch.messages[0] as unknown as { ack: ReturnType<typeof vi.fn>; retry: ReturnType<typeof vi.fn> };
     expect(msg.retry).toHaveBeenCalled();
     expect(msg.ack).not.toHaveBeenCalled();
   });
