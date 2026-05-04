@@ -103,7 +103,7 @@ export async function upsertBrandEntitlement(
     brand: input.brand,
     tier: input.tier,
     status: input.status,
-    guildId: getGuildIdForBrand(input.brand),
+    guildId: getGuildIdForBrand(input.brand) ?? "unknown",
     roleIds: input.roleIds,
     expiresAt: input.expiresAt,
     source: input.source,
