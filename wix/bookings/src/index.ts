@@ -556,14 +556,14 @@ export default {
             { status: 403 }
           );
         }
-
       // LIVE_STRIPE_ENTITLEMENT_SYNC
+      const sp = safetyPayload as Record<string, unknown>;
       if (
-        safetyPayload?.type === "customer.subscription.created" ||
-        safetyPayload?.type === "customer.subscription.updated" ||
-        safetyPayload?.type === "customer.subscription.deleted"
+        sp?.type === "customer.subscription.created" ||
+        sp?.type === "customer.subscription.updated" ||
+        sp?.type === "customer.subscription.deleted"
       ) {
-        const entitlementSync = await syncStripeEntitlement(env, safetyPayload);
+        const entitlementSync = await syncStripeEntitlement(env, sp);
 
         if (!entitlementSync.ok) {
           return Response.json(
@@ -573,6 +573,10 @@ export default {
             },
             { status: 400 }
           );
+        }
+
+        if (!env.WORKER_EVENTS_QUEUE) {
+          return Response.json({ error: "Queue not configured" }, { status: 500 });
         }
 
         await env.WORKER_EVENTS_QUEUE.send({
@@ -638,18 +642,19 @@ export default {
   async queue(batch: MessageBatch<WorkerEventMessage>, env: Env, ctx: ExecutionContext): Promise<void> {
     for (const message of batch.messages) {
       try {
-        if (message.body.type === "action.plan.created") {
-          await sendTelemetry(env, "action_plan_created", message.body.payload);
+        const body = message.body as Record<string, any>;
+        if (body.type === "action.plan.created") {
+          await sendTelemetry(env, "action_plan_created", body.payload);
           message.ack();
           continue;
         }
 
-        await archiveEvent(env, message.body);
-        await sendTelemetry(env, `${message.body.payload.source}_${message.body.payload.event}`, message.body.payload.data);
+        await archiveEvent(env, message.body as import("./core/azure/observability").WorkerEventMessage);
+        await sendTelemetry(env, `${body.payload.source}_${body.payload.event}`, body.payload.data);
         message.ack();
       } catch (error) {
         ctx.waitUntil(sendTelemetry(env, "bookings_queue_failure", {
-          type: message.body.type,
+          type: (message.body as any).type,
           error: error instanceof Error ? error.message : String(error),
         }));
         message.retry();

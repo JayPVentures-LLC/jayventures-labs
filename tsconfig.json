@@ -16,12 +16,12 @@
     "noEmit": true,
     "skipLibCheck": true,
     "allowJs": true,
-    "incremental": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "ignoreDeprecations": "6.0"
   },
   "include": [
     "apps/**/*.ts",
