@@ -8,10 +8,10 @@ export class EnforcementEngine {
   }
 
   validateBrandVoice(brandId: string, text: string): string[] {
-              console.log('DEBUG: Checking text:', text);
+              console.log('[DEBUG] Checking text:', text);
               const brand = this.spec.brands.find(b => b.id === brandId);
               if (brand) {
-                console.log('DEBUG: Deny list:', brand.language.deny);
+                console.log('[DEBUG] Deny list:', brand.language.deny);
               }
           console.log('DEBUG: Entered validateBrandVoice');
         console.log('DEBUG: Checking text:', text);
@@ -22,7 +22,9 @@ export class EnforcementEngine {
     if (!brand) return ['unknown_brand'];
     const violations: string[] = [];
     for (const deny of brand.language.deny) {
+      console.log(`[DEBUG] Checking if text includes deny term: '${deny.toLowerCase()}'`);
       if (text.toLowerCase().includes(deny.toLowerCase())) {
+        console.log(`[DEBUG] Violation detected for deny term: '${deny}'`);
         violations.push('mixed_voice');
       }
     }
