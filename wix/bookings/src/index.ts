@@ -56,6 +56,9 @@ async function syncStripeEntitlement(env: any, event: any) {
   const key = userId;
 
   if (activeStatuses.includes(status)) {
+    if (!env.INNER_CIRCLE_MEMBER_KV) {
+      return { ok: false, error: "missing_kv_binding" };
+    }
     const record = {
       user_id: userId,
       tier,
@@ -67,7 +70,7 @@ async function syncStripeEntitlement(env: any, event: any) {
       updated_at: new Date().toISOString()
     };
 
-    await env.INNER_CIRCLE_MEMBER_KV?.put(key, JSON.stringify(record));
+    await env.INNER_CIRCLE_MEMBER_KV.put(key, JSON.stringify(record));
 
     return {
       ok: true,
@@ -78,7 +81,10 @@ async function syncStripeEntitlement(env: any, event: any) {
   }
 
   if (inactiveStatuses.includes(status)) {
-    await env.INNER_CIRCLE_MEMBER_KV?.delete(key);
+    if (!env.INNER_CIRCLE_MEMBER_KV) {
+      return { ok: false, error: "missing_kv_binding" };
+    }
+    await env.INNER_CIRCLE_MEMBER_KV.delete(key);
 
     return {
       ok: true,
@@ -355,7 +361,11 @@ export default {
         return Response.json({ error: "missing_user_id" }, { status: 400 });
       }
 
-      await env.INNER_CIRCLE_MEMBER_KV?.delete(userId);
+      if (!env.INNER_CIRCLE_MEMBER_KV) {
+        return Response.json({ error: "service_unavailable", detail: "INNER_CIRCLE_MEMBER_KV not configured" }, { status: 503 });
+      }
+
+      await env.INNER_CIRCLE_MEMBER_KV.delete(userId);
 
       return Response.json({
         status: "ENTITLEMENT_REMOVED",
@@ -382,6 +392,10 @@ export default {
         return Response.json({ error: "missing_user_id" }, { status: 400 });
       }
 
+      if (!env.INNER_CIRCLE_MEMBER_KV) {
+        return Response.json({ error: "service_unavailable", detail: "INNER_CIRCLE_MEMBER_KV not configured" }, { status: 503 });
+      }
+
       const record = {
         user_id: userId,
         tier,
@@ -390,7 +404,7 @@ export default {
         created_at: new Date().toISOString()
       };
 
-      await env.INNER_CIRCLE_MEMBER_KV?.put(userId, JSON.stringify(record));
+      await env.INNER_CIRCLE_MEMBER_KV.put(userId, JSON.stringify(record));
 
       return Response.json({
         status: "ENTITLEMENT_SET",
@@ -415,7 +429,11 @@ export default {
         return Response.json({ error: "missing_user_id" }, { status: 400 });
       }
 
-      const entitlement = await env.INNER_CIRCLE_MEMBER_KV?.get(userId);
+      if (!env.INNER_CIRCLE_MEMBER_KV) {
+        return Response.json({ error: "service_unavailable", detail: "INNER_CIRCLE_MEMBER_KV not configured" }, { status: 503 });
+      }
+
+      const entitlement = await env.INNER_CIRCLE_MEMBER_KV.get(userId);
 
       return Response.json({
         user_id: userId,
@@ -441,7 +459,11 @@ export default {
         return Response.json({ error: "missing_audit_id" }, { status: 400 });
       }
 
-      const record = await env.METRICS_KV?.get("jpv:safety:audit:" + auditId);
+      if (!env.METRICS_KV) {
+        return Response.json({ error: "service_unavailable", detail: "METRICS_KV not configured" }, { status: 503 });
+      }
+
+      const record = await env.METRICS_KV.get("jpv:safety:audit:" + auditId);
 
       if (!record) {
         return Response.json({ error: "not_found" }, { status: 404 });
