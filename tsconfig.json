@@ -1,9 +1,13 @@
 {
   "compilerOptions": {
-    "types": ["@cloudflare/workers-types"] ,
+    "types": [
+      "vitest/globals",
+      "@cloudflare/workers-types",
+      "node"
+    ],
     "target": "ES2022",
     "module": "ESNext",
-    "moduleResolution": "bundler",
+    "moduleResolution": "node",
     "lib": [
       "ES2022",
       "WebWorker"
@@ -11,17 +15,12 @@
     "strict": true,
     "noEmit": true,
     "skipLibCheck": true,
-    "types": [
-      "vitest/globals",
-      "@cloudflare/workers-types",
-      "node"
-    ],
     "allowJs": true,
     "incremental": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "react-jsx",
+    "jsx": "preserve",
     "forceConsistentCasingInFileNames": true
   },
   "include": [
