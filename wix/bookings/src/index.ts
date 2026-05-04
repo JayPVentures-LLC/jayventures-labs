@@ -395,6 +395,10 @@ export default {
         created_at: new Date().toISOString()
       };
 
+      if (!env.INNER_CIRCLE_MEMBER_KV) {
+        return Response.json({ error: "KV not configured" }, { status: 500 });
+      }
+
       await env.INNER_CIRCLE_MEMBER_KV.put(userId, JSON.stringify(record));
 
       return Response.json({
