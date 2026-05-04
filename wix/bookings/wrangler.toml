@@ -40,4 +40,9 @@ queue = "bookings-events"
 max_batch_size = 20
 max_batch_timeout = 5
 
+[env.production]
+name = "jaypventures-bookings-worker"
+
+[env.production.vars]
+ENVIRONMENT = "prod"
 
