@@ -4,9 +4,14 @@
 STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(md|ts|js|json)$' || true)
 FAIL=0
 for file in $STAGED_FILES; do
-  # Skip large or irrelevant files
+  # Skip lock files
   if echo "$file" | grep -qE 'package-lock.json|yarn.lock|pnpm-lock.yaml'; then
     echo "Skipping $file (lock file)"
+    continue
+  fi
+  # Skip build/output files
+  if echo "$file" | grep -qE '^(.next|dist|build)/'; then
+    echo "Skipping $file (build/output)"
     continue
   fi
   if echo "$file" | grep -qE '\.(md|ts|js|json)$'; then
