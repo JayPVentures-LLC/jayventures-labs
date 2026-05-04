@@ -94,7 +94,7 @@ export default {
     }
 
     if (url.pathname === "/protected") {
-      const access = await requireAccess(request, rawEnv as Env);
+      const access = await requireAccess(request, rawEnv as unknown as Env);
       if (!access.allowed) {
         return access.response;
       }
