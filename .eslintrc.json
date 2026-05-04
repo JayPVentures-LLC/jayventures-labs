@@ -1,7 +1,16 @@
 {
   "env": {
     "es2021": true,
-    "node": true
+    "node": true,
+    "worker": true,
+    "serviceworker": true
+  },
+  "globals": {
+    "KVNamespace": "readonly",
+    "Request": "readonly",
+    "Response": "readonly",
+    "URL": "readonly",
+    "ExecutionContext": "readonly"
   },
   "extends": [
     "eslint:recommended",
