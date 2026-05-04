@@ -94,9 +94,9 @@ export default {
     }
 
     if (url.pathname === "/protected") {
-      const access = await requireAccess(request, rawEnv as Env);
+      const access = await requireAccess(request, rawEnv as unknown as Env);
       if (!access.allowed) {
-        return access.response;
+        return access.response!;
       }
       return json({
         access: "granted",
@@ -117,7 +117,7 @@ export default {
           400
         );
       }
-      await setEntitlement(rawEnv as Env, body.subject, {
+      await setEntitlement(rawEnv as unknown as Env, body.subject, {
         active: true,
         customerId: body.customerId,
         email: body.email,
@@ -141,8 +141,8 @@ export default {
           400
         );
       }
-      const existing = await getEntitlement(rawEnv as Env, body.subject);
-      await setEntitlement(rawEnv as Env, body.subject, {
+      const existing = await getEntitlement(rawEnv as unknown as Env, body.subject);
+      await setEntitlement(rawEnv as unknown as Env, body.subject, {
         active: false,
         customerId: existing?.customerId ?? "unknown",
         email: existing?.email,
