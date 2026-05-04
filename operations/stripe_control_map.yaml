@@ -4,16 +4,16 @@ stripe_accounts:
   primary_llc:
     display_name: "JayPVentures LLC"
     account_id: "acct_1THskaBClaNmyr4z"
-    entity: "JayPVentures LLC"
-    tax_basis: "LLC TIN/EIN"
+    legal_entity: "JayPVentures LLC"
     revenue_scope:
       - "Corporate packages"
       - "Consulting"
-      - "Automation builds"
       - "Infrastructure services"
+      - "Automation builds"
       - "B2B partnerships"
     production_webhook: true
-    status: "primary"
+    cloudflare_worker: true
+    status: "primary_keep"
 
   duplicate_review:
     - display_name: "JayPVentures LLC Official"
