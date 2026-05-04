@@ -42,9 +42,19 @@ function parseCookieValue(cookieHeader: string, name: string): string | null {
     const eqIdx = trimmed.indexOf("=");
     if (eqIdx === -1) continue;
     const key = trimmed.slice(0, eqIdx).trim();
-    if (key === name) return decodeURIComponent(trimmed.slice(eqIdx + 1).trim());
+    if (key === name) return trimmed.slice(eqIdx + 1).trim();
   }
   return null;
+}
+
+/** Constant-time string comparison to prevent timing attacks on CSRF tokens. */
+function timingSafeEqual(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+  let result = 0;
+  for (let i = 0; i < a.length; i++) {
+    result |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  }
+  return result === 0;
 }
 
 // ---------------------------------------------------------------------------
@@ -110,7 +120,7 @@ export async function handleLinkedRolesCallback(request: Request, env: Env): Pro
     // Cookie-based state validation (fallback when KV is not configured)
     const cookieHeader = request.headers.get("Cookie") ?? "";
     const cookieState = parseCookieValue(cookieHeader, "discord_oauth_state");
-    if (!cookieState || cookieState !== state) {
+    if (!cookieState || !timingSafeEqual(cookieState, state)) {
       return new Response("Invalid or expired OAuth2 state", { status: 403 });
     }
   }
