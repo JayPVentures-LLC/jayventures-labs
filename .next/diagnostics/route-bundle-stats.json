@@ -1,0 +1,20 @@
+[
+  {
+    "route": "/404",
+    "firstLoadUncompressedJsBytes": 333604,
+    "firstLoadChunkPaths": [
+      ".next\\static\\chunks\\09q_o5z6bkp78.js",
+      ".next\\static\\chunks\\0hxzmoo_nlyk..js",
+      ".next\\static\\chunks\\turbopack-0v2fhyj65joe7.js"
+    ]
+  },
+  {
+    "route": "/api/social-metrics",
+    "firstLoadUncompressedJsBytes": 333604,
+    "firstLoadChunkPaths": [
+      ".next\\static\\chunks\\09q_o5z6bkp78.js",
+      ".next\\static\\chunks\\0hxzmoo_nlyk..js",
+      ".next\\static\\chunks\\turbopack-0v2fhyj65joe7.js"
+    ]
+  }
+]
