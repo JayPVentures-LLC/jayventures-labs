@@ -1,15 +1,20 @@
 import type { Env } from "../../types/env";
 import { resolveSecret } from "./keyVault";
 
-export type WorkerEventMessage = {
-  type: "archive";
-  payload: {
-    source: string;
-    event: string;
-    timestamp: string;
-    data: Record<string, unknown>;
-  };
-};
+export type WorkerEventMessage =
+  | {
+      type: "archive";
+      payload: {
+        source: string;
+        event: string;
+        timestamp: string;
+        data: Record<string, unknown>;
+      };
+    }
+  | {
+      type: "action.plan.created";
+      payload: Record<string, unknown>;
+    };
 
 function parseConnectionString(connectionString: string): { instrumentationKey?: string; ingestionEndpoint?: string } {
   const pairs = Object.fromEntries(connectionString.split(";").map((part) => {

@@ -347,14 +347,14 @@ export default {
         return Response.json({ error: "Unauthorized" }, { status: 401 });
       }
 
-      const body = await request.json();
+      const body = await request.json() as Record<string, unknown>;
       const userId = body?.user_id;
 
       if (!userId) {
         return Response.json({ error: "missing_user_id" }, { status: 400 });
       }
 
-      await env.INNER_CIRCLE_MEMBER_KV.delete(userId);
+      await env.INNER_CIRCLE_MEMBER_KV?.delete(userId as string);
 
       return Response.json({
         status: "ENTITLEMENT_REMOVED",
@@ -373,9 +373,9 @@ export default {
         return Response.json({ error: "Unauthorized" }, { status: 401 });
       }
 
-      const body = await request.json();
+      const body = await request.json() as Record<string, unknown>;
       const userId = body?.user_id;
-      const tier = body?.tier ?? "vip";
+      const tier = (body?.tier ?? "vip") as string;
 
       if (!userId) {
         return Response.json({ error: "missing_user_id" }, { status: 400 });
@@ -389,7 +389,7 @@ export default {
         created_at: new Date().toISOString()
       };
 
-      await env.INNER_CIRCLE_MEMBER_KV.put(userId, JSON.stringify(record));
+      await env.INNER_CIRCLE_MEMBER_KV?.put(userId as string, JSON.stringify(record));
 
       return Response.json({
         status: "ENTITLEMENT_SET",
@@ -407,14 +407,14 @@ export default {
         return Response.json({ error: "Unauthorized" }, { status: 401 });
       }
 
-      const body = await request.json();
+      const body = await request.json() as Record<string, unknown>;
       const userId = body?.user_id;
 
       if (!userId) {
         return Response.json({ error: "missing_user_id" }, { status: 400 });
       }
 
-      const entitlement = await env.INNER_CIRCLE_MEMBER_KV.get(userId);
+      const entitlement = await env.INNER_CIRCLE_MEMBER_KV?.get(userId as string) ?? null;
 
       return Response.json({
         user_id: userId,
@@ -440,7 +440,7 @@ export default {
         return Response.json({ error: "missing_audit_id" }, { status: 400 });
       }
 
-      const record = await env.METRICS_KV.get("jpv:safety:audit:" + auditId);
+      const record = await env.METRICS_KV?.get("jpv:safety:audit:" + auditId) ?? null;
 
       if (!record) {
         return Response.json({ error: "not_found" }, { status: 404 });
@@ -502,7 +502,7 @@ export default {
       const clonedRequestForSafety = request.clone();
 
       try {
-        const safetyPayload = await clonedRequestForSafety.json();
+        const safetyPayload = await clonedRequestForSafety.json() as Record<string, unknown>;
 
         // LIVE_IDEMPOTENCY_ENFORCEMENT
         const idempotency = await enforceIdempotency(env, safetyPayload);
@@ -553,7 +553,7 @@ export default {
           );
         }
 
-        await env.WORKER_EVENTS_QUEUE.send({
+        await env.WORKER_EVENTS_QUEUE?.send({
           type: "STRIPE_ENTITLEMENT_SYNCED",
           result: entitlementSync
         });

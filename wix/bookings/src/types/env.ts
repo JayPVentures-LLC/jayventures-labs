@@ -30,6 +30,8 @@ export interface Env {
   INNER_CIRCLE_MEMBER_KV?: KVNamespace;
   ADMIN_UPLOAD_TOKEN?: string;
   WORKER_EVENTS_QUEUE?: Queue<unknown>;
+  JPV_INTERNAL_TEST_TOKEN?: string;
+  JPV_SAFETY_LOCKDOWN?: string;
 
   DISCORD_BOT_TOKEN?: string;
   DISCORD_GUILD_ID?: string;
