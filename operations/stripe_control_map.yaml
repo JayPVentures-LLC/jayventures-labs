@@ -16,18 +16,18 @@ stripe_accounts:
     status: "primary_keep"
 
   duplicate_review:
-    - display_name: "JayPVentures LLC Official"
+    - display_name: "DO NOT USE — Duplicate Review — JayPVentures LLC Official"
       account_id: "acct_1SuswbGWtXyg7cHp"
       status: "hold_do_not_wire"
 
-    - display_name: "Jaypventuresllc"
+    - display_name: "DO NOT USE — Duplicate Review — Jaypventuresllc 01"
       account_id: "acct_1T39J009lpqwbIXn"
       status: "hold_do_not_wire"
 
-    - display_name: "Jaypventuresllc"
+    - display_name: "DO NOT USE — Duplicate Review — Jaypventuresllc 02"
       account_id: "acct_1Sw90yC4qZpU9Sha"
       status: "hold_do_not_wire"
 
-    - display_name: "Jaypventuresllc"
+    - display_name: "DO NOT USE — Duplicate Review — Jaypventuresllc 03"
       account_id: "acct_1TOmppRFlswJGa4v"
       status: "hold_do_not_wire"
