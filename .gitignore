@@ -25,3 +25,4 @@ Thumbs.db
 *.local
 # Next.js build output
 .next/
+tsconfig.tsbuildinfo

@@ -5,18 +5,22 @@ import { getDiscordGuildConfig } from "../config/discordGuilds";
 
 export function getGuildIdForBrand(env: Env, brand: Brand): string | undefined {
   const config = getDiscordGuildConfig(env);
-  return config[brand].guildId;
+  return config[brand]?.guildId;
 }
 
 export function getRoleIdsForBrandTier(env: Env, brand: Brand, tier: Tier): string[] {
   const config = getDiscordGuildConfig(env);
-  const roleId = config[brand].roles[tier];
+  const brandConfig = config[brand];
+  if (!brandConfig) return [];
+  const roleId = brandConfig.roles[tier];
   return roleId ? [roleId] : [];
 }
 
 export function getAllTierRolesForBrand(env: Env, brand: Brand): string[] {
   const config = getDiscordGuildConfig(env);
-  return Object.values(config[brand].roles).filter(Boolean) as string[];
+  const brandConfig = config[brand];
+  if (!brandConfig) return [];
+  return Object.values(brandConfig.roles).filter(Boolean) as string[];
 }
 
 export function reconcileRoles(env: Env, params: {
