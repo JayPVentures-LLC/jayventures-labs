@@ -2,8 +2,8 @@ import { getEnv } from "../config/env";
 import { handleAdminOverride } from "../admin/override";
 import { handleDiscordSync } from "../routes/discord-sync.route";
 import { handleStripeWebhook } from "../routes/webhook.route";
-import { oauthRoute } from "../routes/oauth.route";
-import { activateRoute } from "../routes/activate.route";
+import { oauthRoute, type OAuthEnv } from "../routes/oauth.route";
+import { activateRoute, type ActivateEnv } from "../routes/activate.route";
 import { archiveEvent, sendTelemetry, type WorkerEventMessage } from "../services/azure/observability.service";
 import { getEntitlement } from "../services/entitlement.service";
 import { syncDiscordRoles } from "../services/discordSync.service";
@@ -97,11 +97,11 @@ export default {
     }
 
     if (url.pathname.startsWith("/oauth/")) {
-      return oauthRoute.fetch(request, rawEnv as unknown as Parameters<typeof oauthRoute.fetch>[1], ctx);
+      return oauthRoute.fetch(request, rawEnv as unknown as OAuthEnv, ctx);
     }
 
     if (url.pathname === "/activate") {
-      return activateRoute.fetch(request, rawEnv as unknown as Parameters<typeof activateRoute.fetch>[1], ctx);
+      return activateRoute.fetch(request, rawEnv as unknown as ActivateEnv, ctx);
     }
 
     if (url.pathname === "/admin/override") {
