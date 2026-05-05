@@ -32,6 +32,10 @@ export interface Env {
   ADMIN_UPLOAD_TOKEN?: string;
   WORKER_EVENTS_QUEUE?: Queue<unknown>;
 
+  // JPV_SAFETY enforcement variables.
+  // All safety-gated payloads must include: decision_reason, appeal_path, rollback_supported.
+  JPV_SAFETY_LOCKDOWN?: string;
+
   DISCORD_BOT_TOKEN?: string;
   DISCORD_GUILD_ID?: string;
   DISCORD_COMMUNITY_ROLE_ID?: string;
