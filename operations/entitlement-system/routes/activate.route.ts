@@ -42,8 +42,11 @@ activateRoute.get('/', async (c) => {
   await c.env.ENTITLEMENT_KV.put(`binding:${discordUserId}`, JSON.stringify(binding));
 
   await c.env.WORKER_EVENTS_QUEUE.send({
-    type: 'DISCORD_ROLE_SYNC',
-    payload: binding,
+    type: 'discord-retry',
+    payload: {
+      userId: payload.customer_id,
+      reason: "activation",
+    },
   });
 
   return c.json({ ok: true, status: 'activated' });

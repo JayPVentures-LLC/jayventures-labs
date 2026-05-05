@@ -1,0 +1,20 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "",
+    "FUNCTIONS_WORKER_RUNTIME": "python",
+    "COSMOS_ENDPOINT": "",
+    "COSMOS_KEY": "",
+    "COSMOS_DATABASE": "jpv-entitlements-db",
+    "COSMOS_ENTITLEMENTS_CONTAINER": "entitlements",
+    "COSMOS_AUDIT_CONTAINER": "audit_events",
+    "DISCORD_BOT_TOKEN": "",
+    "DISCORD_CREATOR_GUILD_ID": "",
+    "DISCORD_LABS_GUILD_ID": "",
+    "DISCORD_ENTERPRISE_GUILD_ID": "",
+    "DISCORD_ROLE_COMMUNITY_ID": "",
+    "DISCORD_ROLE_VIP_ID": "",
+    "DISCORD_ROLE_LABS_MEMBER_ID": "",
+    "DISCORD_ROLE_ENTERPRISE_CLIENT_ID": ""
+  }
+}

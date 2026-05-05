@@ -1,0 +1,5 @@
+azure-functions==1.21.3
+azure-cosmos==4.9.0
+azure-storage-queue==12.10.0
+requests==2.32.3
+stripe==11.5.0

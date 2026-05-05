@@ -2,9 +2,13 @@ import { getEnv } from "../config/env";
 import { handleAdminOverride } from "../admin/override";
 import { handleDiscordSync } from "../routes/discord-sync.route";
 import { handleStripeWebhook } from "../routes/webhook.route";
+import { oauthRoute, type OAuthEnv } from "../routes/oauth.route";
+import { activateRoute, type ActivateEnv } from "../routes/activate.route";
 import { archiveEvent, sendTelemetry, type WorkerEventMessage } from "../services/azure/observability.service";
 import { getEntitlement } from "../services/entitlement.service";
 import { syncDiscordRoles } from "../services/discordSync.service";
+import { syncDiscordRole, DiscordReflectionError } from "../services/discord.service";
+import { logger } from "../utils/logger";
 
 function json(body: unknown, status = 200): Response {
   return new Response(JSON.stringify(body, null, 2), {
@@ -13,7 +17,48 @@ function json(body: unknown, status = 200): Response {
   });
 }
 
+async function logDiscordReflectionResult(
+  env: ReturnType<typeof getEnv>,
+  record: {
+    subject_id: string;
+    discord_user_id: string | undefined;
+    tier: string;
+    role_id: string | undefined;
+    action: string;
+    result: string;
+    timestamp: string;
+  }
+): Promise<void> {
+  if (!env.METRICS_KV) return;
+  const key = `discord_reflection:${record.timestamp}:${record.subject_id}`;
+  await env.METRICS_KV.put(key, JSON.stringify(record));
+}
+
 async function processQueueMessage(message: WorkerEventMessage, env: ReturnType<typeof getEnv>): Promise<void> {
+  if (message.type === "STRIPE_ENTITLEMENT_SYNCED") {
+    const { subject_id, discord_user_id, tier, action } = message.payload;
+    const timestamp = new Date().toISOString();
+    let role_id: string | undefined;
+
+    try {
+      const syncResult = await syncDiscordRole(env, { subject_id, discord_user_id, tier, action });
+      role_id = syncResult.roleId;
+      const result = syncResult.applied ? "success" : "no_op";
+      await logDiscordReflectionResult(env, { subject_id, discord_user_id, tier, role_id, action, result, timestamp });
+      return;
+    } catch (error) {
+      if (error instanceof DiscordReflectionError && !error.isTransient) {
+        // Permanent failure — log and ack (no retry will help)
+        const result = error.code;
+        logger.log("warn", "Discord reflection permanent failure", { code: error.code, subject_id, tier, action });
+        await logDiscordReflectionResult(env, { subject_id, discord_user_id, tier, role_id, action, result, timestamp });
+        return;
+      }
+      // Transient failure — re-throw so the outer handler retries the message
+      throw error;
+    }
+  }
+
   if (message.type === "archive") {
     await archiveEvent(env, message);
     await sendTelemetry(env, `${message.payload.source}_${message.payload.event}`, message.payload.data);
@@ -49,6 +94,14 @@ export default {
 
     if (url.pathname === "/webhook/stripe") {
       return handleStripeWebhook(request, env);
+    }
+
+    if (url.pathname.startsWith("/oauth/")) {
+      return oauthRoute.fetch(request, rawEnv as unknown as OAuthEnv, ctx);
+    }
+
+    if (url.pathname === "/activate") {
+      return activateRoute.fetch(request, rawEnv as unknown as ActivateEnv, ctx);
     }
 
     if (url.pathname === "/admin/override") {
