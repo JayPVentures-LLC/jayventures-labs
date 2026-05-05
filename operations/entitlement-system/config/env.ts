@@ -1,6 +1,8 @@
 export interface Env {
     JPV_INTERNAL_TEST_TOKEN?: string;
   STRIPE_WEBHOOK_SECRET?: string;
+  DISCORD_CLIENT_ID?: string;
+  DISCORD_CLIENT_SECRET?: string;
   STRIPE_WEBHOOK_SECRET_SECRET_NAME?: string;
   STRIPE_SECRET_KEY?: string;
   DISCORD_BOT_TOKEN?: string;
@@ -61,6 +63,8 @@ export function getEnv(env: Record<string, unknown>): Env {
   return {
     STRIPE_WEBHOOK_SECRET: optionalString(env.STRIPE_WEBHOOK_SECRET),
     STRIPE_WEBHOOK_SECRET_SECRET_NAME: optionalString(env.STRIPE_WEBHOOK_SECRET_SECRET_NAME),
+    DISCORD_CLIENT_ID: optionalString(env.DISCORD_CLIENT_ID),
+    DISCORD_CLIENT_SECRET: optionalString(env.DISCORD_CLIENT_SECRET),
     STRIPE_SECRET_KEY: optionalString(env.STRIPE_SECRET_KEY),
     DISCORD_BOT_TOKEN: optionalString(env.DISCORD_BOT_TOKEN),
     DISCORD_GUILD_ID: optionalString(env.DISCORD_GUILD_ID),
