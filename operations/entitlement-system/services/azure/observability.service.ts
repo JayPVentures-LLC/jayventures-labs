@@ -1,4 +1,5 @@
 import type { Env } from "../../config/env";
+import type { Tier } from "../../types/entitlement.types";
 import { getKeyVaultSecret, resolveSecret } from "./keyVault.service";
 
 export type WorkerEventMessage =
@@ -17,6 +18,15 @@ export type WorkerEventMessage =
         event: string;
         timestamp: string;
         data: Record<string, unknown>;
+      };
+    }
+  | {
+      type: "STRIPE_ENTITLEMENT_SYNCED";
+      payload: {
+        subject_id: string;
+        discord_user_id: string | undefined;
+        tier: Tier;
+        action: "ENTITLEMENT_ACTIVE" | "ENTITLEMENT_INACTIVE";
       };
     };
 

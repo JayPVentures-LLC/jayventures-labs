@@ -5,21 +5,50 @@ import { getEntitlement } from "../operations/entitlement-system/services/entitl
 import { entitlementCheck } from "../operations/entitlement-system/middleware/entitlementCheck";
 import { asKvNamespace, MockKVNamespace } from "./helpers/mock-kv";
 
-function createRawEnv() {
+// Must be at the top: vi.mock is hoisted. Provides deterministic role IDs for tests.
+vi.mock("../operations/entitlement-system/config/discordGuilds", () => ({
+  DISCORD_GUILD_CONFIG: {
+    jaypventures: {
+      guildId: "guild-creator-test",
+      roles: {
+        member: "role-community-test",
+        premium: "role-vip-test",
+        enterprise: "role-vip-test",
+      },
+    },
+    jaypventuresllc: {
+      guildId: "guild-labs-test",
+      roles: {
+        member: "role-labs-member-test",
+        premium: "role-labs-researcher-test",
+        enterprise: "role-labs-researcher-test",
+      },
+    },
+  },
+}));
+
+function createRawEnv(extra?: Partial<Record<string, unknown>>) {
   const entitlementKv = new MockKVNamespace();
   const idempotencyKv = new MockKVNamespace();
   const retryQueueKv = new MockKVNamespace();
+  const metricsKv = new MockKVNamespace();
 
   return {
     raw: {
       STRIPE_WEBHOOK_SECRET: "whsec_test",
       DISCORD_BOT_TOKEN: "discord-token",
+      DISCORD_GUILD_ID: "guild-primary-test",
+      DISCORD_ROLE_COMMUNITY_ID: "role-community-primary",
+      DISCORD_ROLE_VIP_ID: "role-vip-primary",
       ADMIN_OVERRIDE_KEY: "admin-secret",
       ENTITLEMENT_KV: asKvNamespace(entitlementKv),
       IDEMPOTENCY_KV: asKvNamespace(idempotencyKv),
       RETRY_QUEUE_KV: asKvNamespace(retryQueueKv),
+      METRICS_KV: asKvNamespace(metricsKv),
       LOG_LEVEL: "debug",
+      ...extra,
     },
+    metricsKv,
   };
 }
 
@@ -186,5 +215,204 @@ describe("entitlement system worker", () => {
     const response = await worker.fetch(retryRequest as never, raw, {} as ExecutionContext);
     expect(response.status).toBe(200);
     await expect(response.json()).resolves.toMatchObject({ status: "retry_queue_processed", processed: 1, succeeded: 1, failed: 0 });
+  });
+
+  // --- Issue #7: STRIPE_ENTITLEMENT_SYNCED queue consumer acceptance tests ---
+
+  it("STRIPE_ENTITLEMENT_SYNCED: ENTITLEMENT_ACTIVE adds Discord role and logs to METRICS_KV", async () => {
+    const { raw, metricsKv } = createRawEnv();
+    const discordFetch = vi.fn(async (_input: RequestInfo | URL, init?: RequestInit) => {
+      const method = init?.method ?? "GET";
+      if (method === "PUT") return new Response(null, { status: 204 });
+      return new Response("unexpected", { status: 400 });
+    });
+    vi.stubGlobal("fetch", discordFetch);
+
+    const batch = {
+      messages: [
+        {
+          body: {
+            type: "STRIPE_ENTITLEMENT_SYNCED" as const,
+            payload: {
+              subject_id: "user-q1",
+              discord_user_id: "discord-q1",
+              tier: "premium" as const,
+              action: "ENTITLEMENT_ACTIVE" as const,
+            },
+          },
+          ack: vi.fn(),
+          retry: vi.fn(),
+        },
+      ],
+    };
+
+    const ctx = { waitUntil: vi.fn() } as unknown as ExecutionContext;
+    await worker.queue(batch as never, raw, ctx);
+
+    expect(batch.messages[0].ack).toHaveBeenCalled();
+    expect(batch.messages[0].retry).not.toHaveBeenCalled();
+
+    // The PUT call goes to the VIP role on the primary guild
+    const calls = discordFetch.mock.calls;
+    const putCall = calls.find(([, init]) => (init as RequestInit)?.method === "PUT");
+    expect(putCall).toBeDefined();
+    const putUrl = String((putCall as [RequestInfo | URL, RequestInit])[0]);
+    expect(putUrl).toContain(raw.DISCORD_GUILD_ID);
+    expect(putUrl).toContain(raw.DISCORD_ROLE_VIP_ID);
+    expect(putUrl).toContain("discord-q1");
+
+    // Audit record written to METRICS_KV
+    const keys = await metricsKv.list({ prefix: "discord_reflection:" });
+    expect(keys.keys.length).toBe(1);
+    const record = JSON.parse((await metricsKv.get(keys.keys[0].name)) ?? "{}");
+    expect(record).toMatchObject({ subject_id: "user-q1", discord_user_id: "discord-q1", tier: "premium", action: "ENTITLEMENT_ACTIVE", result: "success" });
+  });
+
+  it("STRIPE_ENTITLEMENT_SYNCED: ENTITLEMENT_INACTIVE removes Discord role and logs to METRICS_KV", async () => {
+    const { raw, metricsKv } = createRawEnv();
+    const discordFetch = vi.fn(async (_input: RequestInfo | URL, init?: RequestInit) => {
+      const method = init?.method ?? "GET";
+      if (method === "DELETE") return new Response(null, { status: 204 });
+      return new Response("unexpected", { status: 400 });
+    });
+    vi.stubGlobal("fetch", discordFetch);
+
+    const batch = {
+      messages: [
+        {
+          body: {
+            type: "STRIPE_ENTITLEMENT_SYNCED" as const,
+            payload: {
+              subject_id: "user-q2",
+              discord_user_id: "discord-q2",
+              tier: "premium" as const,
+              action: "ENTITLEMENT_INACTIVE" as const,
+            },
+          },
+          ack: vi.fn(),
+          retry: vi.fn(),
+        },
+      ],
+    };
+
+    const ctx = { waitUntil: vi.fn() } as unknown as ExecutionContext;
+    await worker.queue(batch as never, raw, ctx);
+
+    expect(batch.messages[0].ack).toHaveBeenCalled();
+    expect(batch.messages[0].retry).not.toHaveBeenCalled();
+
+    const calls = discordFetch.mock.calls;
+    const deleteCall = calls.find(([, init]) => (init as RequestInit)?.method === "DELETE");
+    expect(deleteCall).toBeDefined();
+    const deleteUrl = String((deleteCall as [RequestInfo | URL, RequestInit])[0]);
+    expect(deleteUrl).toContain(raw.DISCORD_ROLE_VIP_ID);
+    expect(deleteUrl).toContain("discord-q2");
+
+    const keys = await metricsKv.list({ prefix: "discord_reflection:" });
+    expect(keys.keys.length).toBe(1);
+    const record = JSON.parse((await metricsKv.get(keys.keys[0].name)) ?? "{}");
+    expect(record).toMatchObject({ action: "ENTITLEMENT_INACTIVE", result: "success" });
+  });
+
+  it("STRIPE_ENTITLEMENT_SYNCED: missing discord_user_id fails closed (ack, not retry)", async () => {
+    const { raw, metricsKv } = createRawEnv();
+    vi.stubGlobal("fetch", vi.fn());
+
+    const batch = {
+      messages: [
+        {
+          body: {
+            type: "STRIPE_ENTITLEMENT_SYNCED" as const,
+            payload: {
+              subject_id: "user-q3",
+              discord_user_id: undefined,
+              tier: "member" as const,
+              action: "ENTITLEMENT_ACTIVE" as const,
+            },
+          },
+          ack: vi.fn(),
+          retry: vi.fn(),
+        },
+      ],
+    };
+
+    const ctx = { waitUntil: vi.fn() } as unknown as ExecutionContext;
+    await worker.queue(batch as never, raw, ctx);
+
+    expect(batch.messages[0].ack).toHaveBeenCalled();
+    expect(batch.messages[0].retry).not.toHaveBeenCalled();
+
+    const keys = await metricsKv.list({ prefix: "discord_reflection:" });
+    expect(keys.keys.length).toBe(1);
+    const record = JSON.parse((await metricsKv.get(keys.keys[0].name)) ?? "{}");
+    expect(record.result).toBe("missing_discord_user_id");
+  });
+
+  it("STRIPE_ENTITLEMENT_SYNCED: missing role mapping fails closed (ack, not retry)", async () => {
+    const { raw, metricsKv } = createRawEnv({
+      DISCORD_ROLE_COMMUNITY_ID: undefined,
+      DISCORD_ROLE_VIP_ID: undefined,
+    });
+    vi.stubGlobal("fetch", vi.fn());
+
+    const batch = {
+      messages: [
+        {
+          body: {
+            type: "STRIPE_ENTITLEMENT_SYNCED" as const,
+            payload: {
+              subject_id: "user-q4",
+              discord_user_id: "discord-q4",
+              tier: "premium" as const,
+              action: "ENTITLEMENT_ACTIVE" as const,
+            },
+          },
+          ack: vi.fn(),
+          retry: vi.fn(),
+        },
+      ],
+    };
+
+    const ctx = { waitUntil: vi.fn() } as unknown as ExecutionContext;
+    await worker.queue(batch as never, raw, ctx);
+
+    expect(batch.messages[0].ack).toHaveBeenCalled();
+    expect(batch.messages[0].retry).not.toHaveBeenCalled();
+
+    const keys = await metricsKv.list({ prefix: "discord_reflection:" });
+    const record = JSON.parse((await metricsKv.get(keys.keys[0].name)) ?? "{}");
+    expect(record.result).toBe("missing_discord_role_mapping");
+  });
+
+  it("STRIPE_ENTITLEMENT_SYNCED: transient Discord API error triggers retry", async () => {
+    const { raw } = createRawEnv();
+    vi.stubGlobal("fetch", vi.fn(async () => new Response("server error", { status: 500 })));
+
+    const ackFn = vi.fn();
+    const retryFn = vi.fn();
+
+    const batch = {
+      messages: [
+        {
+          body: {
+            type: "STRIPE_ENTITLEMENT_SYNCED" as const,
+            payload: {
+              subject_id: "user-q5",
+              discord_user_id: "discord-q5",
+              tier: "member" as const,
+              action: "ENTITLEMENT_ACTIVE" as const,
+            },
+          },
+          ack: ackFn,
+          retry: retryFn,
+        },
+      ],
+    };
+
+    const ctx = { waitUntil: vi.fn() } as unknown as ExecutionContext;
+    await worker.queue(batch as never, raw, ctx);
+
+    expect(retryFn).toHaveBeenCalled();
+    expect(ackFn).not.toHaveBeenCalled();
   });
 });

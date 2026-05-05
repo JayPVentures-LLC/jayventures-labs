@@ -5,6 +5,9 @@ export interface Env {
   STRIPE_SECRET_KEY?: string;
   DISCORD_BOT_TOKEN?: string;
   DISCORD_BOT_TOKEN_SECRET_NAME?: string;
+  DISCORD_GUILD_ID?: string;
+  DISCORD_ROLE_COMMUNITY_ID?: string;
+  DISCORD_ROLE_VIP_ID?: string;
   DISCORD_GUILD_ID_CREATOR?: string;
   DISCORD_ROLE_CREATOR_COMMUNITY_ID?: string;
   DISCORD_ROLE_CREATOR_VIP_ID?: string;
@@ -30,6 +33,7 @@ export interface Env {
   ENTITLEMENT_KV: KVNamespace;
   IDEMPOTENCY_KV: KVNamespace;
   RETRY_QUEUE_KV?: KVNamespace;
+  METRICS_KV?: KVNamespace;
   WORKER_EVENTS_QUEUE?: Queue<unknown>;
   AZURE_KEY_VAULT_URL?: string;
   AZURE_TENANT_ID?: string;
@@ -59,6 +63,9 @@ export function getEnv(env: Record<string, unknown>): Env {
     STRIPE_WEBHOOK_SECRET_SECRET_NAME: optionalString(env.STRIPE_WEBHOOK_SECRET_SECRET_NAME),
     STRIPE_SECRET_KEY: optionalString(env.STRIPE_SECRET_KEY),
     DISCORD_BOT_TOKEN: optionalString(env.DISCORD_BOT_TOKEN),
+    DISCORD_GUILD_ID: optionalString(env.DISCORD_GUILD_ID),
+    DISCORD_ROLE_COMMUNITY_ID: optionalString(env.DISCORD_ROLE_COMMUNITY_ID),
+    DISCORD_ROLE_VIP_ID: optionalString(env.DISCORD_ROLE_VIP_ID),
     DISCORD_GUILD_ID_CREATOR: optionalString(env.DISCORD_GUILD_ID_CREATOR),
     DISCORD_ROLE_CREATOR_COMMUNITY_ID: optionalString(env.DISCORD_ROLE_CREATOR_COMMUNITY_ID),
     DISCORD_ROLE_CREATOR_VIP_ID: optionalString(env.DISCORD_ROLE_CREATOR_VIP_ID),
@@ -84,6 +91,7 @@ export function getEnv(env: Record<string, unknown>): Env {
     ENTITLEMENT_KV: assertKv(env.ENTITLEMENT_KV, "ENTITLEMENT_KV"),
     IDEMPOTENCY_KV: assertKv(env.IDEMPOTENCY_KV, "IDEMPOTENCY_KV"),
     RETRY_QUEUE_KV: env.RETRY_QUEUE_KV as KVNamespace | undefined,
+    METRICS_KV: env.METRICS_KV as KVNamespace | undefined,
     WORKER_EVENTS_QUEUE: env.WORKER_EVENTS_QUEUE as Queue<unknown> | undefined,
     AZURE_KEY_VAULT_URL: optionalString(env.AZURE_KEY_VAULT_URL),
     AZURE_TENANT_ID: optionalString(env.AZURE_TENANT_ID),
