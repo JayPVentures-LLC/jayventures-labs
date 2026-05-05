@@ -1,0 +1,77 @@
+name: Auto-update PR branches
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: '0 * * * *' # every hour
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  update-prs:
+    name: Merge main into open PR branches
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Update open PR branches
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # List all open PRs targeting main
+          prs=$(gh pr list --base main --state open --json headRefName,number --jq '.[] | "\(.number) \(.headRefName)"')
+
+          if [ -z "$prs" ]; then
+            echo "No open PRs found targeting main."
+            exit 0
+          fi
+
+          echo "$prs" | while IFS=' ' read -r pr_number branch_name; do
+            echo "--- Processing PR #$pr_number (branch: $branch_name) ---"
+
+            # Skip if branch is main itself
+            if [ "$branch_name" = "main" ]; then
+              echo "Skipping main branch"
+              continue
+            fi
+
+            # Fetch latest state of the branch
+            if ! git fetch origin "$branch_name" 2>/dev/null; then
+              echo "Branch $branch_name not found on remote, skipping."
+              continue
+            fi
+
+            # Check if branch is behind main
+            behind=$(git rev-list --count "origin/$branch_name..origin/main")
+            if [ "$behind" -eq 0 ]; then
+              echo "PR #$pr_number ($branch_name) is already up to date."
+              continue
+            fi
+
+            echo "PR #$pr_number ($branch_name) is $behind commits behind main — attempting merge."
+
+            # Checkout the PR branch
+            git checkout -B "$branch_name" "origin/$branch_name"
+
+            # Attempt merge
+            if git merge origin/main --no-edit --no-ff -m "chore: merge main into $branch_name [auto-update]"; then
+              git push origin "$branch_name"
+              echo "✅ PR #$pr_number ($branch_name) updated successfully."
+            else
+              git merge --abort || true
+              echo "⚠️  PR #$pr_number ($branch_name) has conflicts — skipping auto-merge. Manual resolution required."
+            fi
+          done
