@@ -1,5 +1,5 @@
 import type { Env } from "../../config/env";
-import { getKeyVaultSecret, resolveSecret } from "./keyVault.service";
+import { resolveSecret } from "./keyVault.service";
 
 export type WorkerEventMessage =
   | {
