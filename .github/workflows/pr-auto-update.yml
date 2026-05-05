@@ -67,7 +67,7 @@ jobs:
             git checkout -B "$branch_name" "origin/$branch_name"
 
             # Attempt merge
-            if git merge origin/main --no-edit --no-ff -m "chore: merge main into $branch_name [auto-update]"; then
+            if git merge origin/main --no-edit --no-ff -m "ci: merge main into $branch_name [auto-update]"; then
               git push origin "$branch_name"
               echo "✅ PR #$pr_number ($branch_name) updated successfully."
             else
