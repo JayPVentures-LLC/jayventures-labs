@@ -1,6 +1,6 @@
 # Entitlement System
 
-Cloudflare Worker that receives Stripe subscription/payment events, updates entitlement state, handles Discord OAuth, and reconciles Discord roles for both JayPVentures brands.
+Cloudflare Worker that receives Stripe subscription/payment events, updates entitlement state, handles Discord OAuth, and reconciles Discord roles for both JayPVentures LLC brands.
 
 ## Runtime Surface
 - `POST /webhook/stripe`: verifies Stripe signature, enforces idempotency, updates entitlement state, and attempts Discord sync.

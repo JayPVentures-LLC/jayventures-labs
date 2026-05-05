@@ -210,7 +210,8 @@ npm run typecheck
 # Start a worker locally
 npm run dev:website
 npm run dev:entitlement
-# npm run dev:bookings  (no standalone dev script — use wrangler dev directly)
+# For bookings, run wrangler dev directly:
+#   npx wrangler dev --config wix/bookings/wrangler.toml --env production
 
 # Validate packaging without deploying
 npm run deploy:dryrun:website
