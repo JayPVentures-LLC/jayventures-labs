@@ -1,4 +1,24 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+
+vi.mock("../operations/entitlement-system/config/discordGuilds", () => ({
+  DISCORD_GUILD_CONFIG: {
+    jaypventures: {
+      guildId: "guild-test-jp",
+      roles: {
+        member: "role-jp-member",
+        premium: "role-jp-premium",
+      },
+    },
+    jaypventuresllc: {
+      guildId: "guild-test-llc",
+      roles: {
+        member: "role-llc-member",
+        premium: "role-llc-premium",
+      },
+    },
+  },
+}));
+
 import worker from "../operations/entitlement-system/workers/stripeWebhook";
 import { createStripeSignatureHeader } from "../operations/entitlement-system/utils/verify-signature";
 import { getEntitlement } from "../operations/entitlement-system/services/entitlement.service";

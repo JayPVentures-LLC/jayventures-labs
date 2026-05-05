@@ -1,19 +1,19 @@
 import type { Brand, Tier } from "../types/entitlement.types";
 
 export const DISCORD_GUILD_CONFIG = {
-  creator: {
+  jaypventures: {
     guildId: process.env.DISCORD_GUILD_ID_CREATOR,
     roles: {
-      community: process.env.DISCORD_ROLE_CREATOR_COMMUNITY_ID,
-      vip: process.env.DISCORD_ROLE_CREATOR_VIP_ID,
+      member: process.env.DISCORD_ROLE_CREATOR_COMMUNITY_ID,
+      premium: process.env.DISCORD_ROLE_CREATOR_VIP_ID,
     },
   },
-  labs: {
+  jaypventuresllc: {
     guildId: process.env.DISCORD_GUILD_ID_LABS,
     roles: {
       member: process.env.DISCORD_ROLE_LABS_MEMBER_ID,
-      researcher: process.env.DISCORD_ROLE_LABS_RESEARCHER_ID,
-      student: process.env.DISCORD_ROLE_LABS_STUDENT_ID,
+      premium: process.env.DISCORD_ROLE_LABS_RESEARCHER_ID,
+      enterprise: process.env.DISCORD_ROLE_LABS_STUDENT_ID,
     },
   },
 } as const;
