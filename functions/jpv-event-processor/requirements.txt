@@ -1,0 +1,5 @@
+azure-functions
+azure-cosmos
+azure-storage-queue
+requests
+stripe
