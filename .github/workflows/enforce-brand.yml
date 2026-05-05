@@ -14,12 +14,13 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20.x'
+          node-version: '22'
+          cache: npm
       - name: Install dependencies
-        run: npm install
+        run: npm ci
       - name: Run JPVOs enforcement on all .md, .ts, .js, and .json files
         run: |
-          for file in $(find . -type f \( -name '*.md' -o -name '*.ts' -o -name '*.js' -o -name '*.json' \)); do
+          for file in $(find . -type f \( -name '*.md' -o -name '*.ts' -o -name '*.js' -o -name '*.json' \) -not -path '*/node_modules/*'); do
             echo "Checking $file for brand violations..."
-            npx ts-node operations/jpv_os_enforcement/cli.ts jaypventures_llc "$(cat $file)"
+            ./node_modules/.bin/ts-node operations/jpv_os_enforcement/cli.ts jaypventures_llc "$(cat $file)"
           done
