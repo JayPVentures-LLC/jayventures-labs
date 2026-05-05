@@ -7,6 +7,8 @@ export interface StripeMetadata {
   discord_id?: string;
   brand?: string;
   tier?: string;
+  /** Alternative product-key strategy used by the Azure Function App processor */
+  jpv_product_key?: string;
 }
 
 export interface StripeEventObject {

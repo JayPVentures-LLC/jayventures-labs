@@ -26,7 +26,7 @@ def map_stripe_event_to_entitlement(event: dict) -> dict | None:
         "customer.subscription.created",
         "customer.subscription.updated",
         "customer.subscription.deleted",
-        "invoice.payment_succeeded",
+        "invoice.paid",
         "invoice.payment_failed"
     }
 
