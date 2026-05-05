@@ -1,31 +1,24 @@
 
 import type { Brand, Tier } from "../types/entitlement.types";
-import { DISCORD_GUILD_CONFIG } from "../config/discordGuilds";
+import { getDiscordGuildConfig } from "../config/discordGuilds";
+import type { Env } from "../config/env";
 
-type KnownBrand = keyof typeof DISCORD_GUILD_CONFIG;
-
-export function getGuildIdForBrand(brand: Brand): string | undefined {
-  if (brand in DISCORD_GUILD_CONFIG) {
-    // @ts-expect-error: TypeScript can't guarantee brand is KnownBrand, but we check above
-    return DISCORD_GUILD_CONFIG[brand].guildId;
-  }
-  return undefined;
+export function getGuildIdForBrand(brand: Brand, env: Env): string | undefined {
+  const config = getDiscordGuildConfig(env);
+  return config[brand]?.guildId;
 }
 
-export function getRoleIdsForBrandTier(brand: Brand, tier: Tier): string[] {
-  if (brand in DISCORD_GUILD_CONFIG) {
-    // @ts-expect-error: TypeScript can't guarantee brand is KnownBrand, but we check above
-    return DISCORD_GUILD_CONFIG[brand].roles?.[tier] ? [DISCORD_GUILD_CONFIG[brand].roles[tier]!] : [];
-  }
-  return [];
+export function getRoleIdsForBrandTier(brand: Brand, tier: Tier, env: Env): string[] {
+  const config = getDiscordGuildConfig(env);
+  const roleId = config[brand]?.roles?.[tier];
+  return roleId ? [roleId] : [];
 }
 
-export function getAllTierRolesForBrand(brand: Brand): string[] {
-  if (brand in DISCORD_GUILD_CONFIG) {
-    // @ts-expect-error: TypeScript can't guarantee brand is KnownBrand, but we check above
-    return Object.values(DISCORD_GUILD_CONFIG[brand].roles).filter(Boolean) as string[];
-  }
-  return [];
+export function getAllTierRolesForBrand(brand: Brand, env: Env): string[] {
+  const config = getDiscordGuildConfig(env);
+  const roles = config[brand]?.roles;
+  if (!roles) return [];
+  return Object.values(roles).filter((id): id is string => Boolean(id));
 }
 
 export function reconcileRoles(params: {
@@ -33,9 +26,10 @@ export function reconcileRoles(params: {
   tier: Tier;
   status: "active" | "inactive" | "expired" | "revoked";
   currentRoles: string[];
+  env: Env;
 }): { add: string[]; remove: string[] } {
-  const expected = params.status === "active" ? getRoleIdsForBrandTier(params.brand, params.tier) : [];
-  const allBrandRoles = getAllTierRolesForBrand(params.brand);
+  const expected = params.status === "active" ? getRoleIdsForBrandTier(params.brand, params.tier, params.env) : [];
+  const allBrandRoles = getAllTierRolesForBrand(params.brand, params.env);
   const remove = params.currentRoles.filter((roleId) => allBrandRoles.includes(roleId) && !expected.includes(roleId));
   const add = expected.filter((roleId) => !params.currentRoles.includes(roleId));
   return { add, remove };
