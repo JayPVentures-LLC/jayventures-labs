@@ -1,8 +1,16 @@
 {
-  "name": "jaypventures-labs",
-  "private": true,
-  "type": "module",
   "scripts": {
+    "jpv:enforce": "node ./scripts/jpv-enforce.mjs",
+    "jpv:enforce:test": "node ./scripts/jpv-enforce.mjs --test",
+    "enforce:brand": "ts-node operations/jpv_os_enforcement/cli.ts jaypventures_llc --file",
+    "dev": "next dev",
+    "build": "next build",
+    "build:site": "next build",
+    "build:worker": "npx wrangler deploy --dry-run --outdir /tmp/worker-build --config wix/bookings/wrangler.toml --env production",
+    "deploy": "npx wrangler deploy --config wix/bookings/wrangler.toml --env production",
+    "start": "next start",
+    "stripe:audit": "node operations/stripe-audit.js",
+    "lint": "eslint apps/ operations/ tests/ --ext .ts,.tsx,.js,.jsx,.mdx",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:website": "vitest run tests/flagship-site.test.ts",
@@ -25,10 +33,21 @@
     "validate:deploy:discord": "node scripts/validate-deploy-config.mjs apps/discord-bot/wrangler.toml"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20260404.0",
-    "@types/node": "^22.15.17",
-    "typescript": "^5.8.3",
-    "vitest": "^3.1.2",
-    "wrangler": "^4.11.1"
+    "@cloudflare/workers-types": "^4.20260504.1",
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^25.6.0",
+    "@types/react": "19.2.14",
+    "@vitest/coverage-istanbul": "^4.1.5",
+    "@vitest/ui": "^4.1.5",
+    "js-yaml": "^4.1.1",
+    "ts-node": "^10.9.2",
+    "vitest": "^4.1.5"
+  },
+  "dependencies": {
+    "hono": "^4.12.16",
+    "next": "^16.2.4",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "webpack": "^5.106.2"
   }
 }

@@ -65,18 +65,17 @@
 - **override.ts**: Admin API for manual entitlement/role overrides, with audit logging.
 
 ## Environment Variables
-- `STRIPE_SECRET_KEY` (Stripe API key)
-- `STRIPE_WEBHOOK_SECRET` (Stripe webhook signing secret)
-- `DISCORD_BOT_TOKEN` (Discord bot token)
-- `DISCORD_GUILD_ID` (Discord server ID)
-- `DISCORD_ROLE_MAP` (JSON: brand/tier → role ID)
+ - `DISCORD_GUILD_ID_CREATOR`, `DISCORD_GUILD_ID_LABS` (Discord server IDs)
+ - `DISCORD_ROLE_CREATOR_COMMUNITY_ID`, `DISCORD_ROLE_CREATOR_VIP_ID`, `DISCORD_ROLE_LABS_MEMBER_ID`, `DISCORD_ROLE_LABS_RESEARCHER_ID`, `DISCORD_ROLE_LABS_STUDENT_ID` (Discord role IDs)
+ - `MS_TENANT_ID`, `MS_CLIENT_ID`, `MS_CLIENT_SECRET`, `MS_TEAM_ID_LLC`, `MS_GROUP_ID_LLC_CLIENTS`, `MS_GROUP_ID_LLC_PARTNERS`, `MS_GROUP_ID_LLC_ENTERPRISE` (Microsoft Teams/Entra)
 - `KV_NAMESPACE` (Cloudflare KV namespace binding)
 - `ADMIN_OVERRIDE_KEY` (Admin override API key)
-- `LOG_LEVEL` (logging verbosity)
-
-## Event Flow: Stripe → KV → Discord
+## Event Flow: Stripe → KV → Access Target
 1. **Stripe Event**: Payment, subscription, or cancellation event POSTed to Cloudflare Worker.
 2. **Webhook Handler**: Verifies signature, parses event, determines user/brand/tier.
+3. **KV Update**: Updates entitlement record (active/inactive, tier, expiration, override flag).
+4. **Access Sync**: Attempts to update Discord roles (for creator/labs) or Microsoft Teams group membership (for LLC).
+5. **Retry/Archive**: Failed access sync is queued for retry; all events are archived to Azure.
 3. **KV Update**: Updates entitlement record (active/inactive, tier, expiration, override flag).
 4. **Discord Sync**: Triggers role assignment/removal via Discord API based on new entitlement state.
 5. **Logging**: All actions and errors logged for audit.

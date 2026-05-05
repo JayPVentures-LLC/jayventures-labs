@@ -8,7 +8,21 @@ This repository is ready for CI and manual Cloudflare deployments once the requi
 - `CLOUDFLARE_API_TOKEN`
 - `CLOUDFLARE_ACCOUNT_ID`
 
-### Azure
+### Azure (Wrangler secrets for bookings and entitlement workers)
+
+Azure values are set directly as Wrangler Worker secrets — they are not committed to `wrangler.toml`:
+
+```
+npx wrangler secret put AZURE_KEY_VAULT_URL --config wix/bookings/wrangler.toml
+npx wrangler secret put AZURE_TENANT_ID --config wix/bookings/wrangler.toml
+npx wrangler secret put AZURE_CLIENT_ID --config wix/bookings/wrangler.toml
+npx wrangler secret put AZURE_CLIENT_SECRET --config wix/bookings/wrangler.toml
+npx wrangler secret put APPINSIGHTS_CONNECTION_STRING --config wix/bookings/wrangler.toml
+npx wrangler secret put AZURE_ARCHIVE_ENDPOINT --config wix/bookings/wrangler.toml
+npx wrangler secret put AZURE_ARCHIVE_TOKEN --config wix/bookings/wrangler.toml
+```
+
+The following GitHub Actions secrets are still required for the entitlement worker and CI pipelines that inject Azure config at deploy time:
 - `AZURE_KEY_VAULT_URL`
 - `AZURE_TENANT_ID`
 - `AZURE_CLIENT_ID`
@@ -46,11 +60,8 @@ Patch these placeholder values in the Wrangler files before using deployment wor
 - `WORKER_EVENTS_QUEUE`
 
 ### wix/bookings/wrangler.toml
-- `IDEMPOTENCY_KV`
-- `METRICS_KV`
-- `CREATOR_DATA_KV`
-- `INNER_CIRCLE_MEMBER_KV`
-- `WORKER_EVENTS_QUEUE`
+
+KV namespace and queue bindings are configured with live Cloudflare IDs. No further wrangler.toml edits are required. Azure configuration must be set via `wrangler secret put` (see Azure section above).
 
 ## GitHub Actions Workflows
 

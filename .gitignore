@@ -23,3 +23,8 @@ Thumbs.db
 
 # Local test artifacts
 *.local
+# Next.js build output
+.next/
+
+# TypeScript build cache
+*.tsbuildinfo

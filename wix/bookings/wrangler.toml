@@ -1,40 +1,77 @@
 name = "jaypventures-bookings-worker"
 main = "src/index.ts"
 compatibility_date = "2026-04-09"
+account_id = "56d1a7bef4dabbd308f8846ee620dd19"
 
 [vars]
 ENVIRONMENT = "dev"
-AZURE_KEY_VAULT_URL = "https://replace-me.vault.azure.net"
-AZURE_TENANT_ID = "replace-me"
-AZURE_CLIENT_ID = "replace-me"
-APPINSIGHTS_CONNECTION_STRING = "InstrumentationKey=replace-me;IngestionEndpoint=https://eastus-0.in.applicationinsights.azure.com/"
-AZURE_ARCHIVE_ENDPOINT = "https://replace-me.example/archive/bookings"
+# Azure bindings (AZURE_KEY_VAULT_URL, AZURE_TENANT_ID, AZURE_CLIENT_ID,
+# APPINSIGHTS_CONNECTION_STRING, AZURE_ARCHIVE_ENDPOINT, AZURE_CLIENT_SECRET)
+# must be set as Wrangler secrets:
+#   npx wrangler secret put AZURE_KEY_VAULT_URL --config wix/bookings/wrangler.toml
+# These are intentionally absent from [vars] to avoid committing sensitive values.
 
 [[kv_namespaces]]
 binding = "IDEMPOTENCY_KV"
-id = "REPLACE_WITH_IDEMPOTENCY_KV_ID"
-preview_id = "REPLACE_WITH_IDEMPOTENCY_KV_PREVIEW_ID"
+id = "11507e93209146e594c0c81b52a39a8e"
+preview_id = "11507e93209146e594c0c81b52a39a8e"
 
 [[kv_namespaces]]
 binding = "METRICS_KV"
-id = "REPLACE_WITH_METRICS_KV_ID"
-preview_id = "REPLACE_WITH_METRICS_KV_PREVIEW_ID"
+id = "2594632e477e4e598333631ed3930abc"
+preview_id = "2594632e477e4e598333631ed3930abc"
 
 [[kv_namespaces]]
 binding = "CREATOR_DATA_KV"
-id = "REPLACE_WITH_CREATOR_DATA_KV_ID"
-preview_id = "REPLACE_WITH_CREATOR_DATA_KV_PREVIEW_ID"
+id = "ce39cc152e1a419fa427d79026ac0517"
+preview_id = "ce39cc152e1a419fa427d79026ac0517"
 
 [[kv_namespaces]]
 binding = "INNER_CIRCLE_MEMBER_KV"
-id = "REPLACE_WITH_INNER_CIRCLE_MEMBER_KV_ID"
-preview_id = "REPLACE_WITH_INNER_CIRCLE_MEMBER_KV_PREVIEW_ID"
+id = "e2f0ae22912546dfa270e1774bbc778f"
+preview_id = "e2f0ae22912546dfa270e1774bbc778f"
 
 [[queues.producers]]
 binding = "WORKER_EVENTS_QUEUE"
-queue = "REPLACE_WITH_BOOKINGS_EVENTS_QUEUE"
+queue = "bookings-events"
 
 [[queues.consumers]]
-queue = "REPLACE_WITH_BOOKINGS_EVENTS_QUEUE"
+queue = "bookings-events"
 max_batch_size = 20
 max_batch_timeout = 5
+
+[env.production]
+name = "jaypventures-bookings-worker"
+
+[env.production.vars]
+ENVIRONMENT = "prod"
+
+[[env.production.kv_namespaces]]
+binding = "IDEMPOTENCY_KV"
+id = "11507e93209146e594c0c81b52a39a8e"
+preview_id = "11507e93209146e594c0c81b52a39a8e"
+
+[[env.production.kv_namespaces]]
+binding = "METRICS_KV"
+id = "2594632e477e4e598333631ed3930abc"
+preview_id = "2594632e477e4e598333631ed3930abc"
+
+[[env.production.kv_namespaces]]
+binding = "CREATOR_DATA_KV"
+id = "ce39cc152e1a419fa427d79026ac0517"
+preview_id = "ce39cc152e1a419fa427d79026ac0517"
+
+[[env.production.kv_namespaces]]
+binding = "INNER_CIRCLE_MEMBER_KV"
+id = "e2f0ae22912546dfa270e1774bbc778f"
+preview_id = "e2f0ae22912546dfa270e1774bbc778f"
+
+[[env.production.queues.producers]]
+binding = "WORKER_EVENTS_QUEUE"
+queue = "bookings-events"
+
+[[env.production.queues.consumers]]
+queue = "bookings-events"
+max_batch_size = 20
+max_batch_timeout = 5
+

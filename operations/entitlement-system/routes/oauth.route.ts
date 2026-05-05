@@ -56,7 +56,7 @@ oauthRoute.get('/discord/start', async (c) => {
 
 oauthRoute.get('/discord/callback', async (c) => {
   const code = c.req.query('code');
-  const state = c.req.query('state');
+  const state = c.req.query('state') ?? null;
   if (!code || !(await verifyState(c.env, state))) {
     return c.json({ ok: false, error: 'invalid_oauth_callback' }, 400);
   }

@@ -15,7 +15,7 @@ export function normalizeStripeEvent(event: IntakeEvent<Record<string, unknown>>
     eventType: event.eventType,
     idempotencyKey: event.idempotencyKey,
 
-    lane: "UNKNOWN",
+    lane: "jaypventures creator",
     tier: null,
 
     email,
@@ -28,3 +28,4 @@ export function normalizeStripeEvent(event: IntakeEvent<Record<string, unknown>>
     createdAt: new Date().toISOString(),
   };
 }
+

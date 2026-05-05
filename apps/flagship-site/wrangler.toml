@@ -6,3 +6,7 @@ workers_dev = true
 [vars]
 SITE_ORIGIN = "https://jaypventuresllc.com"
 MICROSOFT_BOOKINGS_URL = "https://outlook.office.com/book/JAYPVENTURESLLCConsultations1@jaypventuresllc.com/?ismsaljsauthenabled"
+
+[[kv_namespaces]]
+binding = "ENTITLEMENTS_KV"
+id = "YOUR_KV_NAMESPACE_ID"
