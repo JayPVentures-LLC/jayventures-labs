@@ -17,6 +17,15 @@ const TIER_ROLE_ENV: Record<string, string> = {
   vip:       'DISCORD_ROLE_VIP_ID',
 };
 
+// Discord snowflake IDs are strings of 17–20 digits.
+const DISCORD_SNOWFLAKE_RE = /^\d{17,20}$/;
+
+function assertSnowflake(value: string, label: string): void {
+  if (!DISCORD_SNOWFLAKE_RE.test(value)) {
+    throw new Error(`invalid_${label}: expected Discord snowflake, got '${value.slice(0, 20)}'`);
+  }
+}
+
 async function callDiscordRoleApi(
   guildId: string,
   userId: string,
@@ -24,6 +33,11 @@ async function callDiscordRoleApi(
   action: DiscordSyncAction,
   botToken: string
 ): Promise<void> {
+  // Validate all three IDs are snowflakes before embedding in the URL.
+  assertSnowflake(guildId, 'guild_id');
+  assertSnowflake(userId,  'user_id');
+  assertSnowflake(roleId,  'role_id');
+
   const method = action === 'grant' ? 'PUT' : 'DELETE';
   const url = `https://discord.com/api/v10/guilds/${guildId}/members/${userId}/roles/${roleId}`;
 

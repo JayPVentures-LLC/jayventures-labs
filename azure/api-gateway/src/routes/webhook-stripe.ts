@@ -47,9 +47,8 @@ router.post('/stripe', async (req: Request, res: Response) => {
   let event: Stripe.Event;
   try {
     const stripe = getStripeClient();
-    // Raw body is needed for signature verification. Express.json() parses it,
-    // so re-serialise or use express.raw() middleware upstream for production.
-    const rawBody = JSON.stringify(req.body);
+    // express.raw() is applied to this route in index.ts, so req.body is a Buffer.
+    const rawBody = Buffer.isBuffer(req.body) ? req.body : Buffer.from(JSON.stringify(req.body));
     event = stripe.webhooks.constructEvent(rawBody, sig, webhookSecret);
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);

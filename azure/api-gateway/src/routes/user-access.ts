@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
+import { jwtVerify } from 'jose';
 import { CosmosClient } from '@azure/cosmos';
-import { jwtVerify, createLocalJWKSet, importJWK } from 'jose';
 
 const router = Router();
 

@@ -42,6 +42,8 @@ const TIER_ROLE_ENV: Record<string, string> = {
   vip:       'DISCORD_ROLE_VIP_ID',
 };
 
+const DISCORD_SNOWFLAKE_RE = /^\d{17,20}$/;
+
 async function syncDiscordRole(
   guildId: string,
   userId: string,
@@ -49,6 +51,13 @@ async function syncDiscordRole(
   action: DiscordSyncAction,
   botToken: string
 ): Promise<void> {
+  // Validate IDs are Discord snowflakes before embedding in the URL.
+  for (const [label, value] of [['guild_id', guildId], ['user_id', userId], ['role_id', roleId]] as const) {
+    if (!DISCORD_SNOWFLAKE_RE.test(value)) {
+      throw new Error(`discord_permanent_error:invalid_${label}`);
+    }
+  }
+
   const method = action === 'grant' ? 'PUT' : 'DELETE';
   const url = `https://discord.com/api/v10/guilds/${guildId}/members/${userId}/roles/${roleId}`;
 
@@ -123,11 +132,14 @@ async function handleSubscriptionEvent(
       if (!roleId) {
         context.warn(`[event-processor] No Discord role mapped for tier=${tier}`);
       } else {
+        let discordSyncSucceeded = false;
+
         // Transient errors bubble up and cause Azure Functions to retry automatically.
         // Permanent errors are caught and logged — no retry on those.
         try {
           await syncDiscordRole(guildId, discordUserId, roleId, action, botToken);
           context.log(`[event-processor] Discord role ${action} succeeded for discord=${discordUserId} tier=${tier}`);
+          discordSyncSucceeded = true;
         } catch (err) {
           const msg = err instanceof Error ? err.message : String(err);
           if (msg.startsWith('discord_transient_error')) {
@@ -138,7 +150,7 @@ async function handleSubscriptionEvent(
           context.error(`[event-processor] Discord permanent error — acking: ${msg}`);
         }
 
-        // Write audit record on successful Discord sync
+        // Write audit record for every attempted Discord sync (success and permanent failure)
         const auditContainer = getCosmosContainer('audit_events');
         await auditContainer.items.create({
           id: `discord_${action}_${Date.now()}_${subjectId}`,
@@ -146,6 +158,7 @@ async function handleSubscriptionEvent(
           discord_user_id: discordUserId,
           tier,
           action,
+          succeeded: discordSyncSucceeded,
           event_type: 'discord_role_sync',
           stripe_event_id: eventPayload.id,
           created_at: new Date().toISOString(),
