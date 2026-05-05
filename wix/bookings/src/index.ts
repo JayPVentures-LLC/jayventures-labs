@@ -358,7 +358,11 @@ export default {
         return Response.json({ error: "missing_user_id" }, { status: 400 });
       }
 
-      await env.INNER_CIRCLE_MEMBER_KV?.delete(userId);
+      if (!env.INNER_CIRCLE_MEMBER_KV) {
+        return Response.json({ error: "KV_NOT_BOUND" }, { status: 500 });
+      }
+
+      await env.INNER_CIRCLE_MEMBER_KV.delete(userId);
 
       return Response.json({
         status: "ENTITLEMENT_REMOVED",
@@ -385,6 +389,10 @@ export default {
         return Response.json({ error: "missing_user_id" }, { status: 400 });
       }
 
+      if (!env.INNER_CIRCLE_MEMBER_KV) {
+        return Response.json({ error: "KV_NOT_BOUND" }, { status: 500 });
+      }
+
       const record = {
         user_id: userId,
         tier,
@@ -393,7 +401,7 @@ export default {
         created_at: new Date().toISOString()
       };
 
-      await env.INNER_CIRCLE_MEMBER_KV?.put(userId, JSON.stringify(record));
+      await env.INNER_CIRCLE_MEMBER_KV.put(userId, JSON.stringify(record));
 
       return Response.json({
         status: "ENTITLEMENT_SET",
