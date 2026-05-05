@@ -39,7 +39,7 @@ def sync_discord_roles(entitlement: dict) -> dict:
 
     if response.status_code not in [200, 201, 204]:
         raise RuntimeError(
-            f"Discord sync failed: {response.status_code} {response.text}"
+            f"Discord sync failed with status {response.status_code}"
         )
 
     return {

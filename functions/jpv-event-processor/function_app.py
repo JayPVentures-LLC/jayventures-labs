@@ -1,7 +1,6 @@
 import json
 import logging
 import os
-from datetime import datetime, timezone
 
 import azure.functions as func
 from azure.cosmos import CosmosClient
@@ -49,7 +48,6 @@ def process_stripe_event(msg: func.QueueMessage) -> None:
     entitlement = map_stripe_event_to_entitlement(payload)
 
     if entitlement:
-        entitlement["updated_at"] = datetime.now(timezone.utc).isoformat()
         entitlements.upsert_item(entitlement)
 
         discord_result = sync_discord_roles(entitlement)
