@@ -1,15 +1,17 @@
 import type { Env } from "../../types/env";
 import { resolveSecret } from "./keyVault";
 
+export type ArchivePayload = {
+  source: string;
+  event: string;
+  timestamp: string;
+  data: Record<string, unknown>;
+};
+
 export type WorkerEventMessage =
   | {
       type: "archive";
-      payload: {
-        source: string;
-        event: string;
-        timestamp: string;
-        data: Record<string, unknown>;
-      };
+      payload: ArchivePayload;
     }
   | {
       type: "action.plan.created";
@@ -31,7 +33,7 @@ async function getArchiveToken(env: Env): Promise<string | null> {
   return resolveSecret(env.AZURE_ARCHIVE_TOKEN, env, env.AZURE_ARCHIVE_TOKEN_SECRET_NAME);
 }
 
-export async function enqueueArchive(env: Env, payload: WorkerEventMessage["payload"]): Promise<void> {
+export async function enqueueArchive(env: Env, payload: ArchivePayload): Promise<void> {
   if (!env.WORKER_EVENTS_QUEUE) return;
   await env.WORKER_EVENTS_QUEUE.send({ type: "archive", payload });
 }
