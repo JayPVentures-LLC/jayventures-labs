@@ -372,15 +372,7 @@ describe("action layer", () => {
     };
     const rawBody = JSON.stringify(event);
     const secret = env.INTAKE_HMAC_SECRET;
-    const key = await crypto.subtle.importKey(
-      "raw",
-      new TextEncoder().encode(secret),
-      { name: "HMAC", hash: "SHA-256" },
-      false,
-      ["sign"]
-    );
-    const signature = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(rawBody));
-    const sigHex = Array.from(new Uint8Array(signature), (b) => b.toString(16).padStart(2, "0")).join("");
+    const sigHex = await createIntakeSignature(secret, rawBody);
 
     const request = new Request("https://example.com/webhook/intake", {
       method: "POST",
