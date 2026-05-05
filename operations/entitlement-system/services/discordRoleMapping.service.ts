@@ -2,30 +2,19 @@
 import type { Brand, Tier } from "../types/entitlement.types";
 import { DISCORD_GUILD_CONFIG } from "../config/discordGuilds";
 
-type KnownBrand = keyof typeof DISCORD_GUILD_CONFIG;
-
 export function getGuildIdForBrand(brand: Brand): string | undefined {
-  if (brand in DISCORD_GUILD_CONFIG) {
-    // @ts-expect-error: TypeScript can't guarantee brand is KnownBrand, but we check above
-    return DISCORD_GUILD_CONFIG[brand].guildId;
-  }
-  return undefined;
+  return DISCORD_GUILD_CONFIG[brand]?.guildId;
 }
 
 export function getRoleIdsForBrandTier(brand: Brand, tier: Tier): string[] {
-  if (brand in DISCORD_GUILD_CONFIG) {
-    // @ts-expect-error: TypeScript can't guarantee brand is KnownBrand, but we check above
-    return DISCORD_GUILD_CONFIG[brand].roles?.[tier] ? [DISCORD_GUILD_CONFIG[brand].roles[tier]!] : [];
-  }
-  return [];
+  const roleId = DISCORD_GUILD_CONFIG[brand]?.roles?.[tier];
+  return roleId ? [roleId] : [];
 }
 
 export function getAllTierRolesForBrand(brand: Brand): string[] {
-  if (brand in DISCORD_GUILD_CONFIG) {
-    // @ts-expect-error: TypeScript can't guarantee brand is KnownBrand, but we check above
-    return Object.values(DISCORD_GUILD_CONFIG[brand].roles).filter(Boolean) as string[];
-  }
-  return [];
+  const roles = DISCORD_GUILD_CONFIG[brand]?.roles;
+  if (!roles) return [];
+  return Object.values(roles).filter((id): id is string => id !== undefined);
 }
 
 export function reconcileRoles(params: {
