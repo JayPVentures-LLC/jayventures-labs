@@ -1,0 +1,33 @@
+# Stripe Account Control Map
+
+stripe_accounts:
+  primary_llc:
+    display_name: "JayPVentures LLC"
+    account_id: "acct_1THskaBClaNmyr4z"
+    legal_entity: "JayPVentures LLC"
+    revenue_scope:
+      - "Corporate packages"
+      - "Consulting"
+      - "Infrastructure services"
+      - "Automation builds"
+      - "B2B partnerships"
+    production_webhook: true
+    cloudflare_worker: true
+    status: "primary_keep"
+
+  duplicate_review:
+    - display_name: "DO NOT USE — Duplicate Review — JayPVentures LLC Official"
+      account_id: "acct_1SuswbGWtXyg7cHp"
+      status: "hold_do_not_wire"
+
+    - display_name: "DO NOT USE — Duplicate Review — Jaypventuresllc 01"
+      account_id: "acct_1T39J009lpqwbIXn"
+      status: "hold_do_not_wire"
+
+    - display_name: "DO NOT USE — Duplicate Review — Jaypventuresllc 02"
+      account_id: "acct_1Sw90yC4qZpU9Sha"
+      status: "hold_do_not_wire"
+
+    - display_name: "DO NOT USE — Duplicate Review — Jaypventuresllc 03"
+      account_id: "acct_1TOmppRFlswJGa4v"
+      status: "hold_do_not_wire"

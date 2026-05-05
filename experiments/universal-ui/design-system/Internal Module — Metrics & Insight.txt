@@ -1,0 +1,177 @@
+# Internal Module — Metrics & Insight
+
+### JayPVentures LLC · Corporate Context
+
+This module defines how **performance is measured, interpreted, and fed back into strategy**. It closes the internal loop by turning outcomes into learning.
+
+Metrics exist to inform decisions, not to justify them.
+
+---
+
+## Module Purpose
+
+Enable:
+
+* Honest performance visibility
+* Signal over vanity
+* Continuous strategic calibration
+
+This module does not optimize activity.
+It evaluates impact.
+
+---
+
+## Dependency Rules (Hard)
+
+* Metrics must map to an active or archived Direction
+* Metrics may not exist without a question they intend to answer
+
+If there is no decision attached, the metric is invalid.
+
+---
+
+## Default Context
+
+* **Brand Context:** corporate (JayPVentures LLC)
+* **Entry Mode:** Observer
+* **Secondary Mode:** Strategist
+
+Operator and Creator modes are intentionally excluded.
+
+---
+
+## Primary Work Surface — Insight Dashboard
+
+### What It Is
+
+A calm, comparative surface that answers:
+
+* What changed?
+* Why did it change?
+* What should we do next?
+
+Not a scoreboard.
+Not a feed.
+
+---
+
+### Core Objects (Insight Units)
+
+Each insight unit contains:
+
+* Linked Direction
+* Time window
+* Signal type (leading / lagging)
+* Context notes (what influenced this)
+* Confidence level
+
+---
+
+## Interaction Primitives Mapping
+
+### Inspect
+
+* Examine individual metrics and notes
+
+### Compare
+
+* View deltas across time or objectives
+
+### Promote
+
+* Elevate an insight to strategic attention
+
+### Archive
+
+* Retire stale or irrelevant metrics
+
+Commit is not permitted here.
+
+---
+
+## Mode Behavior
+
+### Observer Mode (Default)
+
+* Read-only
+* Summary-first
+* Trend visibility
+
+### Strategist Mode
+
+* Comparative analysis
+* Promote insights to Direction review
+* Insight Plane emphasized
+
+---
+
+## Secondary Insight Plane
+
+Used for:
+
+* Deeper analysis
+* Assumption review
+* Inspector / Strategist Agent explanations
+
+Never replaces the main dashboard.
+
+---
+
+## Action Horizon
+
+Surfaces:
+
+* Promote Insight to Direction Review
+* Archive Metric
+
+No execution actions appear.
+
+---
+
+## Memory Anchor
+
+Tracks:
+
+* Recently reviewed insights
+* Open strategic questions
+* Last Direction adjustments triggered by metrics
+
+Read-only.
+
+---
+
+## Intelligence Participation
+
+### Inspector Agent
+
+* Summarizes trends
+* Explains metric context
+
+### Strategist Agent
+
+* Surfaces implications
+* Flags misalignment with Direction
+
+Agents never interpret metrics emotionally.
+
+---
+
+## Guardrails
+
+* No vanity metrics
+* No real-time obsession
+* No metric without a decision path
+
+If a metric causes distraction, it is removed.
+
+---
+
+## Success Criteria
+
+The module is successful if:
+
+* Strategy changes are rare but justified
+* Learning compounds over time
+* Direction evolves without whiplash
+
+Insight is the output.

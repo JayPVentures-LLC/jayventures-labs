@@ -1,0 +1,30 @@
+
+
+# Run enforcement CLI on each staged .md, .ts, .js, .json file individually to avoid command line too long errors
+FAIL=0
+git diff --cached --name-only --diff-filter=ACM | grep -E '\.(md|ts|js|json)$' | while read file; do
+  # Skip lock files
+  if echo "$file" | grep -qE 'package-lock.json|yarn.lock|pnpm-lock.yaml'; then
+    echo "Skipping $file (lock file)"
+    continue
+  fi
+  # Skip build/output files
+  if echo "$file" | grep -qE '^(.next|dist|build)/'; then
+    echo "Skipping $file (build/output)"
+    continue
+  fi
+  # Only check files under 500KB
+  if [ $(stat -c%s "$file") -gt 512000 ]; then
+    echo "Skipping $file (too large)"
+    continue
+  fi
+  echo "Checking $file for brand violations..."
+  npx ts-node operations/jpv_os_enforcement/cli.ts jaypventures_llc --file "$file"
+  if [ $? -ne 0 ]; then
+    FAIL=1
+  fi
+done
+if [ $FAIL -ne 0 ]; then
+  echo "\nJPVOs enforcement failed. Commit aborted.\nSee above for details."
+  exit 1
+fi
