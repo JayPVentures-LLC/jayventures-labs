@@ -15,14 +15,18 @@ export type DiscordRoleEnv = Pick<
 >;
 
 interface BrandDiscordConfig {
-  guildId?: string;
+  guildId: string;
   roles: RoleMap;
 }
 
 function getConfigForBrand(brand: Brand, env: DiscordRoleEnv): BrandDiscordConfig {
   if (brand === "jaypventures") {
+    const guildId = env.DISCORD_GUILD_ID_CREATOR;
+    if (!guildId) {
+      throw new Error("Missing required Worker binding: DISCORD_GUILD_ID_CREATOR (brand: jaypventures)");
+    }
     return {
-      guildId: env.DISCORD_GUILD_ID_CREATOR,
+      guildId,
       roles: {
         free: env.DISCORD_ROLE_CREATOR_COMMUNITY_ID,
         member: env.DISCORD_ROLE_CREATOR_VIP_ID,
@@ -30,19 +34,26 @@ function getConfigForBrand(brand: Brand, env: DiscordRoleEnv): BrandDiscordConfi
         enterprise: env.DISCORD_ROLE_CREATOR_VIP_ID,
       },
     };
+  } else if (brand === "jaypventuresllc") {
+    const guildId = env.DISCORD_GUILD_ID_LABS;
+    if (!guildId) {
+      throw new Error("Missing required Worker binding: DISCORD_GUILD_ID_LABS (brand: jaypventuresllc)");
+    }
+    return {
+      guildId,
+      roles: {
+        member: env.DISCORD_ROLE_LABS_MEMBER_ID,
+        premium: env.DISCORD_ROLE_LABS_RESEARCHER_ID,
+        enterprise: env.DISCORD_ROLE_LABS_STUDENT_ID,
+      },
+    };
+  } else {
+    const exhaustiveCheck: never = brand;
+    throw new Error(`Unsupported brand: ${String(exhaustiveCheck)}`);
   }
-
-  return {
-    guildId: env.DISCORD_GUILD_ID_LABS,
-    roles: {
-      member: env.DISCORD_ROLE_LABS_MEMBER_ID,
-      premium: env.DISCORD_ROLE_LABS_RESEARCHER_ID,
-      enterprise: env.DISCORD_ROLE_LABS_STUDENT_ID,
-    },
-  };
 }
 
-export function getGuildIdForBrand(brand: Brand, env: DiscordRoleEnv): string | undefined {
+export function getGuildIdForBrand(brand: Brand, env: DiscordRoleEnv): string {
   return getConfigForBrand(brand, env).guildId;
 }
 
@@ -62,9 +73,18 @@ export function reconcileRoles(params: {
   currentRoles: string[];
   env: DiscordRoleEnv;
 }): { add: string[]; remove: string[] } {
-  const expected = params.status === "active" ? getRoleIdsForBrandTier(params.brand, params.tier, params.env) : [];
   const allBrandRoles = getAllTierRolesForBrand(params.brand, params.env);
-  const remove = params.currentRoles.filter((roleId) => allBrandRoles.includes(roleId) && !expected.includes(roleId));
-  const add = expected.filter((roleId) => !params.currentRoles.includes(roleId));
-  return { add, remove };
+
+  if (params.status === "active") {
+    const expected = getRoleIdsForBrandTier(params.brand, params.tier, params.env);
+    if (expected.length === 0) {
+      throw new Error(`Missing required Worker binding for role: brand=${params.brand}, tier=${params.tier}`);
+    }
+    const remove = params.currentRoles.filter((roleId) => allBrandRoles.includes(roleId) && !expected.includes(roleId));
+    const add = expected.filter((roleId) => !params.currentRoles.includes(roleId));
+    return { add, remove };
+  }
+
+  const remove = params.currentRoles.filter((roleId) => allBrandRoles.includes(roleId));
+  return { add: [], remove };
 }

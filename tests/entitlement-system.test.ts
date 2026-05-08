@@ -119,8 +119,13 @@ describe("entitlement system worker", () => {
 
     const entitlement = await getEntitlement("user-123", raw as unknown as { ENTITLEMENT_KV: KVNamespace });
     expect(entitlement?.status).toBe("active");
-    expect(entitlement?.entitlements[0]).toMatchObject({ brand: "jaypventures", tier: "member", status: "active" });
+    expect(entitlement?.entitlements[0]).toMatchObject({ brand: "jaypventures", tier: "member", status: "active", guildId: "creator-guild" });
     expect(discordFetch).toHaveBeenCalled();
+
+    // Verify the worker used the env-driven guildId and roleId for the brand+tier
+    const fetchedUrls = discordFetch.mock.calls.map(([url]: [URL | RequestInfo, ...unknown[]]) => String(url));
+    expect(fetchedUrls.some((url) => url.includes("/guilds/creator-guild/members/"))).toBe(true);
+    expect(fetchedUrls.some((url) => url.includes("/guilds/creator-guild/members/discord-123/roles/creator_vip"))).toBe(true);
 
     const gate = await entitlementCheck("jaypventures", "free")(
       new Request("https://example.com/resource", { headers: { "x-user-id": "user-123" } }) as never,
