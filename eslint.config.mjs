@@ -3,7 +3,8 @@ import tseslint from "@typescript-eslint/eslint-plugin";
 import tsparser from "@typescript-eslint/parser";
 import reactPlugin from "eslint-plugin-react";
 
-const sharedGlobals = {
+// Worker/edge runtime globals (available in Cloudflare Workers)
+const workerGlobals = {
   Request: "readonly",
   RequestInfo: "readonly",
   RequestInit: "readonly",
@@ -21,6 +22,10 @@ const sharedGlobals = {
   atob: "readonly",
   btoa: "readonly",
   console: "readonly",
+};
+
+// Node.js-only globals (NOT available in Cloudflare Workers/edge runtime)
+const nodeGlobals = {
   process: "readonly",
   __dirname: "readonly",
   require: "readonly",
@@ -34,7 +39,17 @@ export default [
     ...js.configs.recommended,
     languageOptions: {
       ...js.configs.recommended.languageOptions,
-      globals: sharedGlobals,
+      globals: workerGlobals,
+    },
+  },
+  // Node.js-only files: scripts, config files, tooling
+  {
+    files: ["scripts/**/*.{js,mjs,ts}", "*.config.{js,mjs,ts}", "eslint.config.mjs", "vitest.config.ts", "next.config.js"],
+    languageOptions: {
+      globals: {
+        ...workerGlobals,
+        ...nodeGlobals,
+      },
     },
   },
   {
@@ -47,7 +62,7 @@ export default [
         ecmaFeatures: { jsx: true },
       },
       globals: {
-        ...sharedGlobals,
+        ...workerGlobals,
         describe: "readonly",
         it: "readonly",
         expect: "readonly",
@@ -59,6 +74,16 @@ export default [
       "no-undef": "off",
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-unused-vars": "warn",
+    },
+  },
+  // Node.js-only TypeScript files: scripts, config
+  {
+    files: ["scripts/**/*.ts", "*.config.ts"],
+    languageOptions: {
+      globals: {
+        ...workerGlobals,
+        ...nodeGlobals,
+      },
     },
   },
   {
