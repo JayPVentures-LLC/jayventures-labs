@@ -1,6 +1,6 @@
 # jaypventures-labs
 
-Enterprise workspace for JayPVentures LLC systems, flagship website delivery, creator/member surfaces, worker prototypes, and operating documentation.
+Enterprise workspace for JayPVentures LLC systems, flagship website delivery, creator/member surfaces, worker prototypes, governance enforcement, and operating documentation.
 
 # One-Click Deploy
 
@@ -31,6 +31,7 @@ Enterprise workspace for JayPVentures LLC systems, flagship website delivery, cr
   - `GET /terms`
   - `GET /GOVERNANCE.md`
   - `GET /SECURITY.md`
+  - `GET /PEOPLE-PROTECTION.md`
 
 ### Entitlement System
 - Location: `operations/entitlement-system`
@@ -72,14 +73,22 @@ Enterprise workspace for JayPVentures LLC systems, flagship website delivery, cr
    - `npm run deploy:dryrun:entitlement`
    - `npm run deploy:dryrun:bookings`
 
+## Trust, Governance, Security, and People Protection
+
+- [GOVERNANCE.md](GOVERNANCE.md)
+- [SECURITY.md](SECURITY.md)
+- [PEOPLE-PROTECTION.md](PEOPLE-PROTECTION.md)
+
+JPV-OS systems must preserve human dignity, informed consent, explainability, accessibility, privacy, equal treatment, and protection from coercion, exploitation, discrimination, manipulative AI behavior, unsafe dependency models, and unlawful surveillance.
+
+No system is considered production-ready if it protects infrastructure while leaving people exposed.
+
 ## Deployment and Automation
 - [docs/flagship-site.md](docs/flagship-site.md)
 - [docs/github-setup.md](docs/github-setup.md)
 - [docs/github-settings-checklist.md](docs/github-settings-checklist.md)
-
-## Trust and Governance
-- [GOVERNANCE.md](GOVERNANCE.md)
-- [SECURITY.md](SECURITY.md)
+- [docs/production-review-checklist.md](docs/production-review-checklist.md)
 
 ## Promotion Policy
-Code and documentation in this repository remain experimental until they are deployed, verified, and promoted into a dedicated production repository or platform environment.
+
+Code and documentation in this repository remain experimental until they are deployed, verified, reviewed for governance/security/people-protection compliance, and promoted into a dedicated production repository or platform environment.
