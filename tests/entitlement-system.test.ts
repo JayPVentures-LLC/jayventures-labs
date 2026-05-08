@@ -15,6 +15,12 @@ vi.mock("../operations/entitlement-system/config/discordGuilds", () => ({
         vip: "role-creator-vip-test",
         member: "role-creator-member-test",
       },
+      tierRoleMap: {
+        free: "community",
+        member: "member",
+        premium: "vip",
+        enterprise: "vip",
+      },
     },
     jaypventuresllc: {
       guildPurpose: "labs_institutional_business",
@@ -25,6 +31,12 @@ vi.mock("../operations/entitlement-system/config/discordGuilds", () => ({
         labs: "role-labs-labs-test",
         institute: "role-labs-institute-test",
         business: "role-labs-business-test",
+      },
+      tierRoleMap: {
+        free: null,
+        member: "labs",
+        premium: "business",
+        enterprise: "partner",
       },
     },
   },
@@ -152,7 +164,8 @@ describe("entitlement system worker", () => {
 
   it("supports admin overrides", async () => {
     const { raw } = createRawEnv();
-    vi.stubGlobal("fetch", createDiscordFetch());
+    const discordFetch = createDiscordFetch();
+    vi.stubGlobal("fetch", discordFetch);
 
     const request = new Request("https://example.com/admin/override", {
       method: "POST",
@@ -177,6 +190,11 @@ describe("entitlement system worker", () => {
     const stored = await getEntitlement("user-admin", raw as unknown as { ENTITLEMENT_KV: KVNamespace });
     expect(stored?.override).toBe(true);
     expect(stored?.overrideReason).toBe("manual grant");
+
+    // jaypventuresllc + premium maps to the "business" role via tierRoleMap
+    const putCalls = discordFetch.mock.calls.filter(([, init]) => init?.method === "PUT");
+    expect(putCalls.length).toBe(1);
+    expect(String(putCalls[0][0])).toContain("role-labs-business-test");
   });
 
   it("queues failed Discord sync work and drains the retry queue", async () => {

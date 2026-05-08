@@ -12,18 +12,26 @@ export function getGuildIdForBrand(brand: Brand): string | undefined {
 }
 
 export function getRoleIdsForBrandTier(brand: Brand, tier: Tier): string[] {
-  if (brand in DISCORD_GUILD_CONFIG) {
-    const roles = DISCORD_GUILD_CONFIG[brand as KnownBrand].roles as Record<string, string | undefined>;
-    return roles[tier] ? [roles[tier]!] : [];
-  }
-  return [];
+  if (!(brand in DISCORD_GUILD_CONFIG)) return [];
+  const config = DISCORD_GUILD_CONFIG[brand as KnownBrand];
+  const roleKey = (config.tierRoleMap as Record<Tier, string | null>)[tier];
+  if (!roleKey) return [];
+  const roleId = (config.roles as Record<string, string | undefined>)[roleKey];
+  return roleId ? [roleId] : [];
 }
 
 export function getAllTierRolesForBrand(brand: Brand): string[] {
-  if (brand in DISCORD_GUILD_CONFIG) {
-    return Object.values(DISCORD_GUILD_CONFIG[brand as KnownBrand].roles).filter(Boolean) as string[];
-  }
-  return [];
+  if (!(brand in DISCORD_GUILD_CONFIG)) return [];
+  const config = DISCORD_GUILD_CONFIG[brand as KnownBrand];
+  // Only return roles that are tier-managed (listed in tierRoleMap) to avoid
+  // inadvertently removing manually-assigned roles (e.g. admin, institute).
+  const tierManagedKeys = new Set(
+    Object.values(config.tierRoleMap as Record<Tier, string | null>).filter(Boolean) as string[]
+  );
+  return Object.entries(config.roles as Record<string, string | undefined>)
+    .filter(([key]) => tierManagedKeys.has(key))
+    .map(([, id]) => id)
+    .filter(Boolean) as string[];
 }
 
 export function reconcileRoles(params: {
