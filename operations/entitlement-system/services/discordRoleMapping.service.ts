@@ -48,8 +48,9 @@ function getConfigForBrand(brand: Brand, env: DiscordRoleEnv): BrandDiscordConfi
       },
     };
   } else {
-    const exhaustiveCheck: never = brand;
-    throw new Error(`Unsupported brand: ${String(exhaustiveCheck)}`);
+    // Exhaustive check: if a new Brand value is added, TypeScript will error here
+    const _exhaustiveCheck: never = brand;
+    throw new Error(`Unsupported brand: ${brand as string}`);
   }
 }
 

@@ -12,6 +12,9 @@ on:
         required: true
         default: "JPV-OS Partner SaaS"
 
+permissions:
+  contents: read
+
 jobs:
   saml-onboarding:
     runs-on: windows-latest
