@@ -1,5 +1,4 @@
 export interface Env {
-    JPV_INTERNAL_TEST_TOKEN?: string;
   STRIPE_WEBHOOK_SECRET?: string;
   STRIPE_WEBHOOK_SECRET_SECRET_NAME?: string;
   STRIPE_SECRET_KEY?: string;

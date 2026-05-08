@@ -172,8 +172,6 @@ async function enforceIdempotency(env: any, event: any) {
 }
 
 
-
-
 const APPROVED_DECISION_REASONS = [
   "entitlement_expired",
   "policy_violation",
@@ -353,18 +351,14 @@ export default {
         return Response.json({ error: "Unauthorized" }, { status: 401 });
       }
 
-      const body = (await request.json()) as Record<string, unknown>;
-      const userId = body?.user_id as string | undefined;
+      const body = await request.json() as Record<string, unknown>;
+      const userId = body?.user_id;
 
-      if (!userId) {
+      if (!userId || typeof userId !== "string") {
         return Response.json({ error: "missing_user_id" }, { status: 400 });
       }
 
-      if (!env.INNER_CIRCLE_MEMBER_KV) {
-        return Response.json({ error: "KV not configured" }, { status: 500 });
-      }
-
-      await env.INNER_CIRCLE_MEMBER_KV.delete(userId);
+      await env.INNER_CIRCLE_MEMBER_KV?.delete(userId);
 
       return Response.json({
         status: "ENTITLEMENT_REMOVED",
@@ -383,11 +377,11 @@ export default {
         return Response.json({ error: "Unauthorized" }, { status: 401 });
       }
 
-      const body = (await request.json()) as Record<string, unknown>;
-      const userId = body?.user_id as string | undefined;
-      const tier = (body?.tier as string | undefined) ?? "vip";
+      const body = await request.json() as Record<string, unknown>;
+      const userId = body?.user_id;
+      const tier = typeof body?.tier === "string" ? body.tier : "vip";
 
-      if (!userId) {
+      if (!userId || typeof userId !== "string") {
         return Response.json({ error: "missing_user_id" }, { status: 400 });
       }
 
@@ -399,11 +393,7 @@ export default {
         created_at: new Date().toISOString()
       };
 
-      if (!env.INNER_CIRCLE_MEMBER_KV) {
-        return Response.json({ error: "KV not configured" }, { status: 500 });
-      }
-
-      await env.INNER_CIRCLE_MEMBER_KV.put(userId, JSON.stringify(record));
+      await env.INNER_CIRCLE_MEMBER_KV?.put(userId, JSON.stringify(record));
 
       return Response.json({
         status: "ENTITLEMENT_SET",
@@ -421,18 +411,14 @@ export default {
         return Response.json({ error: "Unauthorized" }, { status: 401 });
       }
 
-      const body = (await request.json()) as Record<string, unknown>;
-      const userId = body?.user_id as string | undefined;
+      const body = await request.json() as Record<string, unknown>;
+      const userId = body?.user_id;
 
-      if (!userId) {
+      if (!userId || typeof userId !== "string") {
         return Response.json({ error: "missing_user_id" }, { status: 400 });
       }
 
-      if (!env.INNER_CIRCLE_MEMBER_KV) {
-        return Response.json({ error: "KV not configured" }, { status: 500 });
-      }
-
-      const entitlement = await env.INNER_CIRCLE_MEMBER_KV.get(userId);
+      const entitlement = await env.INNER_CIRCLE_MEMBER_KV?.get(userId) ?? null;
 
       return Response.json({
         user_id: userId,
@@ -458,11 +444,7 @@ export default {
         return Response.json({ error: "missing_audit_id" }, { status: 400 });
       }
 
-      if (!env.METRICS_KV) {
-        return Response.json({ error: "KV not configured" }, { status: 500 });
-      }
-
-      const record = await env.METRICS_KV.get("jpv:safety:audit:" + auditId);
+      const record = await env.METRICS_KV?.get("jpv:safety:audit:" + auditId) ?? null;
 
       if (!record) {
         return Response.json({ error: "not_found" }, { status: 404 });
@@ -524,7 +506,7 @@ export default {
       const clonedRequestForSafety = request.clone();
 
       try {
-        const safetyPayload = await clonedRequestForSafety.json();
+        const safetyPayload = await clonedRequestForSafety.json() as Record<string, unknown>;
 
         // LIVE_IDEMPOTENCY_ENFORCEMENT
         const idempotency = await enforceIdempotency(env, safetyPayload);
@@ -575,11 +557,7 @@ export default {
           );
         }
 
-        if (!env.WORKER_EVENTS_QUEUE) {
-          return Response.json({ error: "Queue not configured" }, { status: 500 });
-        }
-
-        await env.WORKER_EVENTS_QUEUE.send({
+        await env.WORKER_EVENTS_QUEUE?.send({
           type: "STRIPE_ENTITLEMENT_SYNCED",
           result: entitlementSync
         });

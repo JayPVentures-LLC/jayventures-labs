@@ -5,7 +5,7 @@ export class MockKVNamespace {
     return this.store.has(key) ? this.store.get(key)! : null;
   }
 
-  async put(key: string, value: string): Promise<void> {
+  async put(key: string, value: string, _options?: { expirationTtl?: number }): Promise<void> {
     this.store.set(key, value);
   }
 

@@ -122,7 +122,7 @@ export async function handleIntake(
     tier: record.tier ?? "none",
   });
 
-  return json({ record, plan, results, metrics }, 200);
+  return json({ record, plan, results, metrics, actionPlan }, 200);
 }
 
 function normalize(event: IntakeEvent<Record<string, unknown>>): CRMRecord {
