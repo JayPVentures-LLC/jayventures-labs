@@ -1,39 +1,3 @@
-            - name: Failure Summary
-              if: failure()
-              shell: pwsh
-              run: |
-                Write-Host "::error::SAML SSO onboarding failed."
-                Write-Host "Failed Stage: ${{ job.status }}"
-                Write-Host "Display Name: ${{ github.event.inputs.display_name }}"
-                Write-Host "Manifest Path: ${{ github.event.inputs.manifest_path }}"
-                Write-Host "Next required action: Review error and remediate before retry."
-
-            - name: Create Issue on Failure
-              if: failure()
-              uses: actions/github-script@v7
-              with:
-                github-token: ${{ secrets.GITHUB_TOKEN }}
-                script: |
-                  github.issues.create({
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    title: `SAML SSO onboarding failed: ${{ github.event.inputs.display_name }}`,
-                    body: `SAML SSO onboarding failed for **${{ github.event.inputs.display_name }}**.\n\nManifest: ${{ github.event.inputs.manifest_path }}\n\nRun: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}\n\nPlease review the workflow logs for details.`,
-                    labels: ['identity', 'saml', 'production-gate', 'jaypventuresllc']
-                  })
-      - name: Workflow Summary
-        if: always()
-        shell: pwsh
-        run: |
-          $summary = @()
-          $summary += "## SAML SSO Onboarding Summary"
-          $summary += "- **App Display Name:** ${{ github.event.inputs.display_name }}"
-          $summary += "- **Manifest Path:** ${{ github.event.inputs.manifest_path }}"
-          $summary += "- **Workflow Actor:** ${{ github.actor }}"
-          $summary += "- **Run ID:** ${{ github.run_id }}"
-          $summary += "- **Artifact Name:** saml-sso-readback"
-          $summary += "- **Timestamp UTC:** $(Get-Date -Format o)"
-          Set-Content -Path $env:GITHUB_STEP_SUMMARY -Value ($summary -join "`n")
 name: JPV-OS SAML SSO Onboarding
 
 on:
