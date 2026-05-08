@@ -1,12 +1,53 @@
 version: 2
 
 updates:
+  # Root npm dependencies
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "npm"
+    commit-message:
+      prefix: "deps"
+    groups:
+      dev-dependencies:
+        patterns:
+          - "@types/*"
+          - "@vitest/*"
+          - "vitest"
+          - "eslint*"
+          - "typescript"
+        update-types:
+          - "minor"
+          - "patch"
 
+  # JPV OS Enforcement npm dependencies
+  - package-ecosystem: "npm"
+    directory: "/operations/jpv_os_enforcement"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "npm"
+      - "jpv-os-enforcement"
+    commit-message:
+      prefix: "deps(enforcement)"
+
+  # GitHub Actions dependencies
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "github-actions"
+    commit-message:
+      prefix: "ci"
