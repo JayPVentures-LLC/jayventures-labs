@@ -4,16 +4,19 @@ INTERNAL_SYNC_TOKEN="replace_me"
 # Discord bot
 DISCORD_BOT_TOKEN="replace_me"
 
-# jaypventures Discord
+# jaypventures → Creator ecosystem guild
 DISCORD_GUILD_ID_CREATOR="replace_me"
 DISCORD_ROLE_CREATOR_COMMUNITY_ID="replace_me"
 DISCORD_ROLE_CREATOR_VIP_ID="replace_me"
+DISCORD_ROLE_CREATOR_MEMBER_ID="replace_me"
 
-# jaypVLabs Discord
+# jaypventuresllc → Labs/Institutional/Business ecosystem guild
 DISCORD_GUILD_ID_LABS="replace_me"
-DISCORD_ROLE_LABS_MEMBER_ID="replace_me"
-DISCORD_ROLE_LABS_RESEARCHER_ID="replace_me"
-DISCORD_ROLE_LABS_STUDENT_ID="replace_me"
+DISCORD_ROLE_LABS_PARTNER_ID="replace_me"
+DISCORD_ROLE_LABS_ADMIN_ID="replace_me"
+DISCORD_ROLE_LABS_LABS_ID="replace_me"
+DISCORD_ROLE_LABS_INSTITUTE_ID="replace_me"
+DISCORD_ROLE_LABS_BUSINESS_ID="replace_me"
 
 # Microsoft Teams / JayPVentures LLC
 MS_TENANT_ID="replace_me"

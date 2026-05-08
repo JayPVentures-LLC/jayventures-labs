@@ -18,7 +18,9 @@
     "deploy:dryrun:website": "npx wrangler deploy --dry-run --outdir /tmp/website-build --config apps/flagship-site/wrangler.toml",
     "validate:deploy:bookings": "node scripts/validate-deploy-config.mjs wix/bookings/wrangler.toml",
     "validate:deploy:entitlement": "node scripts/validate-deploy-config.mjs operations/entitlement-system/wrangler.toml",
-    "validate:deploy:website": "node scripts/validate-deploy-config.mjs apps/flagship-site/wrangler.toml"
+    "validate:deploy:website": "node scripts/validate-deploy-config.mjs apps/flagship-site/wrangler.toml",
+    "validate:discord-brand-map": "node scripts/validate-discord-brand-mapping.mjs",
+    "validate:production": "npm run validate:discord-brand-map && npm test && npm run build"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20260504.1",

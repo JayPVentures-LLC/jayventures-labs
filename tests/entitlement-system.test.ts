@@ -8,18 +8,23 @@ import { asKvNamespace, MockKVNamespace } from "./helpers/mock-kv";
 vi.mock("../operations/entitlement-system/config/discordGuilds", () => ({
   DISCORD_GUILD_CONFIG: {
     jaypventures: {
-      guildId: "guild-labs-test",
-      roles: {
-        member: "role-labs-member-test",
-        researcher: "role-labs-researcher-test",
-        student: "role-labs-student-test",
-      },
-    },
-    jaypventuresllc: {
+      guildPurpose: "creator",
       guildId: "guild-creator-test",
       roles: {
         community: "role-creator-community-test",
         vip: "role-creator-vip-test",
+        member: "role-creator-member-test",
+      },
+    },
+    jaypventuresllc: {
+      guildPurpose: "labs_institutional_business",
+      guildId: "guild-labs-test",
+      roles: {
+        partner: "role-labs-partner-test",
+        admin: "role-labs-admin-test",
+        labs: "role-labs-labs-test",
+        institute: "role-labs-institute-test",
+        business: "role-labs-business-test",
       },
     },
   },
@@ -257,6 +262,6 @@ describe("entitlement system worker", () => {
     // Result should describe what would have been changed and carry dryRun flag
     const syncResults = body.syncResults as Array<{ dryRun: boolean; addedRoles: string[] }>;
     expect(syncResults[0].dryRun).toBe(true);
-    expect(syncResults[0].addedRoles).toContain("role-labs-member-test");
+    expect(syncResults[0].addedRoles).toContain("role-creator-member-test");
   });
 });
