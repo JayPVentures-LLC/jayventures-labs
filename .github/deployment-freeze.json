@@ -1,5 +1,5 @@
 {
-  "frozen": true,
+  "frozen": false,
   "state": "FROZEN",
   "reason": "Freeze simulation for governance validation",
   "requestedBy": "jayhere@jaypventuresllc.com",
