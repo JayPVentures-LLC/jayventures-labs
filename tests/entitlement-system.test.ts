@@ -14,6 +14,13 @@ function createRawEnv() {
     raw: {
       STRIPE_WEBHOOK_SECRET: "whsec_test",
       DISCORD_BOT_TOKEN: "discord-token",
+      DISCORD_GUILD_ID_CREATOR: "creator-guild",
+      DISCORD_ROLE_CREATOR_COMMUNITY_ID: "community_free",
+      DISCORD_ROLE_CREATOR_VIP_ID: "creator_vip",
+      DISCORD_GUILD_ID_LABS: "labs-guild",
+      DISCORD_ROLE_LABS_MEMBER_ID: "labs_member",
+      DISCORD_ROLE_LABS_RESEARCHER_ID: "labs_researcher",
+      DISCORD_ROLE_LABS_STUDENT_ID: "labs_student",
       ADMIN_OVERRIDE_KEY: "admin-secret",
       ENTITLEMENT_KV: asKvNamespace(entitlementKv),
       IDEMPOTENCY_KV: asKvNamespace(idempotencyKv),

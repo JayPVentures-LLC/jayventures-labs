@@ -7,7 +7,7 @@ import type {
   EntitlementStatus,
   Tier,
 } from "../types/entitlement.types";
-import { getGuildIdForBrand } from "./discordRoleMapping.service";
+import { getGuildIdForBrand, type DiscordRoleEnv } from "./discordRoleMapping.service";
 
 const TIER_ORDER: Record<Tier, number> = {
   free: 0,
@@ -86,7 +86,7 @@ async function persistEntitlement(entitlement: Entitlement, env: { ENTITLEMENT_K
 
 export async function upsertBrandEntitlement(
   input: BrandEntitlementInput,
-  env: { ENTITLEMENT_KV: KVNamespace }
+  env: { ENTITLEMENT_KV: KVNamespace } & DiscordRoleEnv
 ): Promise<Entitlement> {
   const existing = (await getEntitlement(input.userId, env)) ?? {
     userId: input.userId,
@@ -103,7 +103,7 @@ export async function upsertBrandEntitlement(
     brand: input.brand,
     tier: input.tier,
     status: input.status,
-    guildId: getGuildIdForBrand(input.brand) ?? "unknown",
+    guildId: getGuildIdForBrand(input.brand, env) ?? "unknown",
     roleIds: input.roleIds,
     expiresAt: input.expiresAt,
     source: input.source,
@@ -137,7 +137,7 @@ export async function upsertBrandEntitlement(
 
 export async function updateEntitlement(
   input: BrandEntitlementInput,
-  env: { ENTITLEMENT_KV: KVNamespace }
+  env: { ENTITLEMENT_KV: KVNamespace } & DiscordRoleEnv
 ): Promise<Entitlement> {
   return upsertBrandEntitlement(input, env);
 }
