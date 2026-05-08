@@ -1,9 +1,9 @@
 {
-  "frozen": false,
-  "state": "NORMAL",
-  "reason": "",
-  "requestedBy": "",
-  "approvedBy": "",
-  "timestampUtc": "",
-  "incidentId": ""
+  "frozen": true,
+  "state": "FROZEN",
+  "reason": "Freeze simulation for governance validation",
+  "requestedBy": "jayhere@jaypventuresllc.com",
+  "approvedBy": "security@jaypventuresllc.com",
+  "timestampUtc": "2026-05-08T21:30:00Z",
+  "incidentId": "JPV-INC-2026-TEST"
 }
