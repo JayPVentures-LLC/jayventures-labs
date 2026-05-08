@@ -41,6 +41,7 @@ export async function handleDiscordSync(request: Request, env: Env): Promise<Res
   const userId = typeof payload.userId === "string" ? payload.userId : undefined;
   const discordId = typeof payload.discordId === "string" ? payload.discordId : undefined;
   const brand = typeof payload.brand === "string" ? payload.brand : undefined;
+  const dryRun = payload.dryRun === true;
 
   const entitlement = await getEntitlementByLookup({ userId, discordId }, env);
   if (!entitlement) {
@@ -49,7 +50,8 @@ export async function handleDiscordSync(request: Request, env: Env): Promise<Res
 
   const syncResults = await syncDiscordRoles(entitlement, env, {
     brand: brand === "jaypventures" || brand === "jaypventuresllc" ? brand : undefined,
+    dryRun,
   });
 
-  return json({ status: "discord_sync_completed", syncResults }, 200);
+  return json({ status: dryRun ? "discord_sync_dry_run" : "discord_sync_completed", syncResults }, 200);
 }

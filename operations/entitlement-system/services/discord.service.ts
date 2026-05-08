@@ -54,7 +54,8 @@ export async function removeMemberRole(env: Env, guildId: string, discordId: str
 export async function syncDiscordRoles(
   entitlement: Entitlement,
   brandEntitlement: BrandEntitlement,
-  env: Env
+  env: Env,
+  options?: { dryRun?: boolean }
 ): Promise<DiscordRoleUpdate & { success: boolean; skipped: boolean; error?: string }> {
   const discordId = entitlement.discord?.discordId;
   if (!discordId) {
@@ -91,12 +92,14 @@ export async function syncDiscordRoles(
     currentRoles,
   });
 
-  for (const roleId of remove) {
-    await removeMemberRole(env, brandEntitlement.guildId, discordId, roleId);
-  }
+  if (!options?.dryRun) {
+    for (const roleId of remove) {
+      await removeMemberRole(env, brandEntitlement.guildId, discordId, roleId);
+    }
 
-  for (const roleId of add) {
-    await addMemberRole(env, brandEntitlement.guildId, discordId, roleId);
+    for (const roleId of add) {
+      await addMemberRole(env, brandEntitlement.guildId, discordId, roleId);
+    }
   }
 
   return {

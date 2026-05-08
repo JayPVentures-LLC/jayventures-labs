@@ -207,4 +207,56 @@ describe("entitlement system worker", () => {
     expect(response.status).toBe(200);
     await expect(response.json()).resolves.toMatchObject({ status: "retry_queue_processed", processed: 1, succeeded: 1, failed: 0 });
   });
+
+  it("supports discord sync dry-run without mutating roles", async () => {
+    const { raw } = createRawEnv();
+    vi.stubGlobal("fetch", createDiscordFetch());
+
+    // Create an entitlement without triggering Discord sync
+    const overrideRequest = new Request("https://example.com/admin/override", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${raw.ADMIN_OVERRIDE_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: "user-dryrun",
+        discordId: "discord-dryrun",
+        brand: "jaypventures",
+        tier: "member",
+        status: "active",
+        syncDiscord: false,
+      }),
+    });
+    await worker.fetch(overrideRequest as never, raw, {} as ExecutionContext);
+
+    // Swap to a fresh mock so we can assert only dryRun-triggered calls
+    const dryRunFetch = createDiscordFetch();
+    vi.stubGlobal("fetch", dryRunFetch);
+
+    const dryRunRequest = new Request("https://example.com/admin/discord-sync", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${raw.ADMIN_OVERRIDE_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userId: "user-dryrun", dryRun: true }),
+    });
+
+    const response = await worker.fetch(dryRunRequest as never, raw, {} as ExecutionContext);
+    expect(response.status).toBe(200);
+    const body = await response.json() as Record<string, unknown>;
+    expect(body.status).toBe("discord_sync_dry_run");
+
+    // GET should be called to read current roles, but no PUT or DELETE mutations
+    const mutationCalls = dryRunFetch.mock.calls.filter(
+      ([, init]) => init?.method === "PUT" || init?.method === "DELETE"
+    );
+    expect(mutationCalls).toHaveLength(0);
+
+    // Result should describe what would have been changed and carry dryRun flag
+    const syncResults = body.syncResults as Array<{ dryRun: boolean; addedRoles: string[] }>;
+    expect(syncResults[0].dryRun).toBe(true);
+    expect(syncResults[0].addedRoles).toContain("role-labs-member-test");
+  });
 });
