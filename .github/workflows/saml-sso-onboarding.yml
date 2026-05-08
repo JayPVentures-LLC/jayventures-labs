@@ -1,0 +1,96 @@
+            - name: Failure Summary
+              if: failure()
+              shell: pwsh
+              run: |
+                Write-Host "::error::SAML SSO onboarding failed."
+                Write-Host "Failed Stage: ${{ job.status }}"
+                Write-Host "Display Name: ${{ github.event.inputs.display_name }}"
+                Write-Host "Manifest Path: ${{ github.event.inputs.manifest_path }}"
+                Write-Host "Next required action: Review error and remediate before retry."
+
+            - name: Create Issue on Failure
+              if: failure()
+              uses: actions/github-script@v7
+              with:
+                github-token: ${{ secrets.GITHUB_TOKEN }}
+                script: |
+                  github.issues.create({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    title: `SAML SSO onboarding failed: ${{ github.event.inputs.display_name }}`,
+                    body: `SAML SSO onboarding failed for **${{ github.event.inputs.display_name }}**.\n\nManifest: ${{ github.event.inputs.manifest_path }}\n\nRun: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}\n\nPlease review the workflow logs for details.`,
+                    labels: ['identity', 'saml', 'production-gate', 'jaypventuresllc']
+                  })
+      - name: Workflow Summary
+        if: always()
+        shell: pwsh
+        run: |
+          $summary = @()
+          $summary += "## SAML SSO Onboarding Summary"
+          $summary += "- **App Display Name:** ${{ github.event.inputs.display_name }}"
+          $summary += "- **Manifest Path:** ${{ github.event.inputs.manifest_path }}"
+          $summary += "- **Workflow Actor:** ${{ github.actor }}"
+          $summary += "- **Run ID:** ${{ github.run_id }}"
+          $summary += "- **Artifact Name:** saml-sso-readback"
+          $summary += "- **Timestamp UTC:** $(Get-Date -Format o)"
+          Set-Content -Path $env:GITHUB_STEP_SUMMARY -Value ($summary -join "`n")
+name: JPV-OS SAML SSO Onboarding
+
+on:
+  workflow_dispatch:
+    inputs:
+      manifest_path:
+        description: "Path to SAML app manifest JSON"
+        required: true
+        default: "config/entra/saml-apps.example.json"
+      display_name:
+        description: "SAML App Display Name for Verification"
+        required: true
+        default: "JPV-OS Partner SaaS"
+
+jobs:
+  saml-onboarding:
+    runs-on: windows-latest
+    environment:
+      name: azure-identity-production
+      url: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up PowerShell 7.x
+        uses: actions/setup-powershell@v2
+        with:
+          pwsh-version: "7.2.x"
+
+      - name: Install Microsoft Graph PowerShell SDK
+        shell: pwsh
+        run: |
+          Install-Module Microsoft.Graph -Force -Scope CurrentUser
+
+      - name: Provision SAML App
+        shell: pwsh
+        env:
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+        run: |
+          Connect-MgGraph -ClientId $env:AZURE_CLIENT_ID -TenantId $env:AZURE_TENANT_ID -ClientSecret $env:AZURE_CLIENT_SECRET
+          pwsh scripts/entra/saml-app-provision.ps1 -ManifestPath "${{ github.event.inputs.manifest_path }}"
+
+      - name: Verify SAML App
+        shell: pwsh
+        env:
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+        run: |
+          Connect-MgGraph -ClientId $env:AZURE_CLIENT_ID -TenantId $env:AZURE_TENANT_ID -ClientSecret $env:AZURE_CLIENT_SECRET
+          pwsh scripts/entra/saml-app-verify.ps1 -DisplayName "${{ github.event.inputs.display_name }}"
+
+      - name: Upload Readback Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: saml-sso-readback
+          path: docs/identity/generated/*.saml-readback.json
+          retention-days: 30
