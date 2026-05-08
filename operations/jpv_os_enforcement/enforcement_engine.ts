@@ -32,5 +32,5 @@ export class EnforcementEngine {
 
 // Example usage:
 // const engine = new EnforcementEngine('path/to/jpv_os.yaml');
-// const violations = engine.validateBrandVoice('jaypventures_llc', 'this is a vibe');
+// const violations = engine.validateBrandVoice('jaypventures_llc', 'sample text to check');
 // console.log(violations);
