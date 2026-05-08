@@ -3,7 +3,8 @@
     "types": [
       "vitest/globals",
       "@cloudflare/workers-types",
-      "node"
+      "node",
+      "styled-jsx"
     ],
     "target": "ES2022",
     "module": "ESNext",
@@ -26,9 +27,13 @@
   },
   "include": [
     "apps/**/*.ts",
+    "apps/**/*.tsx",
     "operations/**/*.ts",
     "wix/**/*.ts",
     "tests/**/*.ts",
+    "pages/**/*.tsx",
+    "shared/**/*.tsx",
+    "types/**/*.d.ts",
     "vitest.config.ts"
   ],
   "exclude": [
