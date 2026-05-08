@@ -38,6 +38,22 @@ updates:
       - "jpv-os-enforcement"
     commit-message:
       prefix: "deps(enforcement)"
+    groups:
+      framework-dependencies:
+        patterns:
+          - "next"
+          - "react"
+          - "react-dom"
+        update-types:
+          - "minor"
+          - "patch"
+      tooling-dependencies:
+        patterns:
+          - "typescript"
+          - "ts-node"
+        update-types:
+          - "minor"
+          - "patch"
 
   # GitHub Actions dependencies
   - package-ecosystem: "github-actions"
