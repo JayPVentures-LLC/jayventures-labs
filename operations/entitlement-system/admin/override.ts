@@ -70,7 +70,7 @@ export async function handleAdminOverride(request: Request, env: Env): Promise<R
       expiresAt,
       source: "admin",
       discordId,
-      roleIds: getRoleIdsForBrandTier(brand, tier),
+      roleIds: getRoleIdsForBrandTier(env, brand, tier),
       override: true,
       overrideReason: reason,
     },
