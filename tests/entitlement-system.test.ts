@@ -5,6 +5,26 @@ import { getEntitlement } from "../operations/entitlement-system/services/entitl
 import { entitlementCheck } from "../operations/entitlement-system/middleware/entitlementCheck";
 import { asKvNamespace, MockKVNamespace } from "./helpers/mock-kv";
 
+vi.mock("../operations/entitlement-system/config/discordGuilds", () => ({
+  DISCORD_GUILD_CONFIG: {
+    jaypventures: {
+      guildId: "guild-labs-test",
+      roles: {
+        member: "role-labs-member-test",
+        researcher: "role-labs-researcher-test",
+        student: "role-labs-student-test",
+      },
+    },
+    jaypventuresllc: {
+      guildId: "guild-creator-test",
+      roles: {
+        community: "role-creator-community-test",
+        vip: "role-creator-vip-test",
+      },
+    },
+  },
+}));
+
 function createRawEnv() {
   const entitlementKv = new MockKVNamespace();
   const idempotencyKv = new MockKVNamespace();

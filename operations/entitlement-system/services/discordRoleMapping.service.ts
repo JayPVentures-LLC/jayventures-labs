@@ -6,24 +6,22 @@ type KnownBrand = keyof typeof DISCORD_GUILD_CONFIG;
 
 export function getGuildIdForBrand(brand: Brand): string | undefined {
   if (brand in DISCORD_GUILD_CONFIG) {
-    // @ts-expect-error: TypeScript can't guarantee brand is KnownBrand, but we check above
-    return DISCORD_GUILD_CONFIG[brand].guildId;
+    return DISCORD_GUILD_CONFIG[brand as KnownBrand].guildId;
   }
   return undefined;
 }
 
 export function getRoleIdsForBrandTier(brand: Brand, tier: Tier): string[] {
   if (brand in DISCORD_GUILD_CONFIG) {
-    // @ts-expect-error: TypeScript can't guarantee brand is KnownBrand, but we check above
-    return DISCORD_GUILD_CONFIG[brand].roles?.[tier] ? [DISCORD_GUILD_CONFIG[brand].roles[tier]!] : [];
+    const roles = DISCORD_GUILD_CONFIG[brand as KnownBrand].roles as Record<string, string | undefined>;
+    return roles[tier] ? [roles[tier]!] : [];
   }
   return [];
 }
 
 export function getAllTierRolesForBrand(brand: Brand): string[] {
   if (brand in DISCORD_GUILD_CONFIG) {
-    // @ts-expect-error: TypeScript can't guarantee brand is KnownBrand, but we check above
-    return Object.values(DISCORD_GUILD_CONFIG[brand].roles).filter(Boolean) as string[];
+    return Object.values(DISCORD_GUILD_CONFIG[brand as KnownBrand].roles).filter(Boolean) as string[];
   }
   return [];
 }
