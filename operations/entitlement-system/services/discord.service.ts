@@ -89,6 +89,7 @@ export async function syncDiscordRoles(
     tier: brandEntitlement.tier,
     status: brandEntitlement.status,
     currentRoles,
+    env,
   });
 
   for (const roleId of remove) {

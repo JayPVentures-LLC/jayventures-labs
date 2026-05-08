@@ -383,25 +383,25 @@ function renderHome(env: Env): PageDefinition {
         <div class="hero-grid">
           <section class="poster">
             <div class="hero-kicker">JayPVentures LLC</div>
-            <h1 class="hero-title">Executive systems for operators who expect control.</h1>
-            <p class="hero-copy">JayPVentures LLC designs governance, automation, and commercial infrastructure for organizations that want fewer moving parts, better operating clarity, and tighter execution.</p>
+            <h1 class="hero-title">Governance, automation, and revenue infrastructure.</h1>
+            <p class="hero-copy">JayPVentures LLC helps operators organize high-trust systems: clear decisions, auditable workflows, and commercial paths that are easier to run.</p>
             ${renderLinks([ctaMap.enterpriseDiscovery, ctaMap.contactRouting], true)}
             ${renderMetricRail([
-              { label: "Positioning", value: "Executive, selective, and systems-led." },
-              { label: "Scope", value: "Governance architecture, automation design, and revenue infrastructure." },
-              { label: "Engagement", value: "Qualified consultation first. Scoped delivery after alignment." },
+              { label: "Focus", value: "Governance, automation, revenue systems." },
+              { label: "Model", value: "Consult first. Scope second. Build with controls." },
+              { label: "Standard", value: "Visible trust, security, and review paths." },
             ])}
           </section>
           <aside class="support-panel">
-            <div><div class="eyebrow">What this is</div><h2>A premium firm presentation, not a content feed.</h2></div>
-            <p class="muted">The flagship site is intentionally direct. It establishes authority, explains the offer, and routes serious conversations into a controlled intake path.</p>
+            <div><div class="eyebrow">Release-ready focus</div><h2>A concise flagship site with clear routing.</h2></div>
+            <p class="muted">The public experience now leads with the firm, explains the offer quickly, and sends serious inquiries into controlled intake.</p>
             <ul class="plain-list">${homeProofPoints.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
             <div class="doc-callout">Trust, governance, and disclosure remain visible because expensive work requires visible standards.</div>
           </aside>
         </div>
       </section>
       <section class="section shell">
-        <div class="section-heading"><div class="eyebrow">Core advisory lanes</div><h2>Built for high-trust operating decisions.</h2><p class="muted">The offer is intentionally narrow: governance, automation, and commercial infrastructure for teams that need better control.</p></div>
+        <div class="section-heading"><div class="eyebrow">Core lanes</div><h2>Three lanes. One operating system.</h2><p class="muted">The site is organized around the work buyers need to understand first.</p></div>
         <div class="feature-grid">${ecosystemSignals.map((item) => `<article class="feature-block"><div class="eyebrow">${escapeHtml(item.label)}</div><h3>${escapeHtml(item.label)}</h3><p class="muted">${escapeHtml(item.value)}</p></article>`).join("")}</div>
       </section>
       <section class="section shell">
