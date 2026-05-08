@@ -9,7 +9,6 @@
     "build:worker": "npx wrangler deploy --dry-run --outdir /tmp/worker-build --config wix/bookings/wrangler.toml --env production",
     "deploy": "npx wrangler deploy --config wix/bookings/wrangler.toml --env production",
     "start": "next start",
-    "stripe:audit": "node operations/stripe-audit.js",
     "lint": "eslint apps/ operations/ tests/ --ext .ts,.tsx,.js,.jsx,.mdx",
     "test": "vitest",
     "typecheck": "tsc --noEmit",
@@ -38,7 +37,7 @@
   },
   "dependencies": {
     "hono": "^4.12.16",
-    "next": "^16.2.4",
+    "next": "^16.2.6",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "webpack": "^5.106.2"
