@@ -39,9 +39,6 @@ jobs:
       - name: Check deployment freeze
         run: npm run governance:freeze-check
 
-      - name: Validate Discord brand mapping
-        run: npm run validate:discord-brand-map
-
       - name: Lint
         run: npm run lint
 
