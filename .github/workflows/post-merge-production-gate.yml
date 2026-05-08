@@ -17,7 +17,7 @@ concurrency:
 
 jobs:
   production-gate:
-    if: github.event.pull_request.merged == true && github.event.pull_request.number == 28
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     environment: cloudflare-production
 
