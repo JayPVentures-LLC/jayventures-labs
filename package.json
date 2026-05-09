@@ -9,7 +9,7 @@
     "build:worker": "npx wrangler deploy --dry-run --outdir /tmp/worker-build --config wix/bookings/wrangler.toml --env production",
     "deploy": "npx wrangler deploy --config wix/bookings/wrangler.toml --env production",
     "start": "next start",
-    "lint": "eslint apps/ operations/ tests/ --ext .ts,.tsx,.js,.jsx,.mdx",
+    "lint": "eslint apps/ components/ operations/ pages/ tests/ --ext .ts,.tsx,.js,.jsx,.mdx",
     "test": "vitest",
     "typecheck": "tsc --noEmit",
     "deploy:dryrun:bookings": "npx wrangler deploy --dry-run --outdir /tmp/worker-build --config wix/bookings/wrangler.toml --env production",
