@@ -34,6 +34,14 @@ jobs:
           test -n "$CLOUDFLARE_ENTITLEMENTS_KV_ID" || (echo "Missing CLOUDFLARE_ENTITLEMENTS_KV_ID" && exit 1)
           perl -0pi -e 's/YOUR_KV_NAMESPACE_ID/$ENV{CLOUDFLARE_ENTITLEMENTS_KV_ID}/g' apps/flagship-site/wrangler.toml
 
+      - name: Verify KV namespace placeholder was replaced
+        shell: bash
+        run: |
+          if grep -q 'YOUR_KV_NAMESPACE_ID' apps/flagship-site/wrangler.toml; then
+            echo "Unreplaced KV namespace placeholder found in apps/flagship-site/wrangler.toml"
+            exit 1
+          fi
+
       - name: Verify Cloudflare secrets
         shell: bash
         env:
