@@ -1,4 +1,40 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+
+// Mock the discordGuilds config before importing modules that use it
+vi.mock("../operations/entitlement-system/config/discordGuilds", () => ({
+  DISCORD_GUILD_CONFIG: {
+    jaypventures: {
+      guildId: "guild-labs",
+      guildPurpose: "labs_institutional_business",
+      roles: {
+        member: "role-labs-member",
+        researcher: "role-labs-researcher",
+        student: "role-labs-student",
+      },
+      tierRoleMap: {
+        free: "member",
+        member: "member",
+        premium: "researcher",
+        enterprise: "researcher",
+      },
+    },
+    jaypventuresllc: {
+      guildId: "guild-creator",
+      guildPurpose: "creator",
+      roles: {
+        community: "role-creator-community",
+        vip: "role-creator-vip",
+      },
+      tierRoleMap: {
+        free: "community",
+        member: "community",
+        premium: "vip",
+        enterprise: "vip",
+      },
+    },
+  },
+}));
+
 import worker from "../operations/entitlement-system/workers/stripeWebhook";
 import { createStripeSignatureHeader } from "../operations/entitlement-system/utils/verify-signature";
 import { getEntitlement } from "../operations/entitlement-system/services/entitlement.service";
