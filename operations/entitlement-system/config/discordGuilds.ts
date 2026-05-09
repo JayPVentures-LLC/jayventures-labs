@@ -1,4 +1,4 @@
-import type { Brand, Tier } from "../types/entitlement.types";
+import type { Brand } from "../types/entitlement.types";
 
 export const DISCORD_GUILD_CONFIG = {
   creator: {
@@ -17,3 +17,4 @@ export const DISCORD_GUILD_CONFIG = {
     },
   },
 } as const;
+
