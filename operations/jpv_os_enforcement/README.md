@@ -28,7 +28,7 @@ You can run the enforcement engine as a CLI:
 ```sh
 npx ts-node cli.ts <brand_id> <text>
 # Example:
-npx ts-node cli.ts jaypventures_llc "this is a vibe"
+npx ts-node cli.ts jaypventures_llc "this contains casual phrasing"
 ```
 
 Returns violations and exits nonzero if any are found.

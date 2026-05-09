@@ -6,7 +6,7 @@ describe('EnforcementEngine', () => {
   const engine = new EnforcementEngine(specPath);
 
   it('detects deny-list violations', () => {
-    const violations = engine.validateBrandVoice('jaypventures_llc', 'this is a vibe');
+    const violations = engine.validateBrandVoice('jaypventures_llc', 'this contains casual phrasing');
     expect(violations).toContain('mixed_voice');
   });
 

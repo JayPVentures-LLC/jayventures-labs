@@ -48,7 +48,7 @@ clarity, or momentum.
 
 2\. Intent before interaction  
 
-The system should understand what the user is trying to accomplish
+The system should understand what the user intends to accomplish
 
 and shape itself accordingly.
 
@@ -244,7 +244,7 @@ If an element is decorative without being informative, it does not belong.
 
 
 
-The system prioritizes what the user is trying to accomplish over how inputs are triggered.
+The system prioritizes what the user intends to accomplish over how inputs are triggered.
 
 
 
@@ -880,7 +880,7 @@ A primitive is:
 
 
 
-Primitives define \*what the user is trying to do\*, not \*how they click\*.
+Primitives define \*what the user intends to do\*, not \*how they click\*.
 
 
 
