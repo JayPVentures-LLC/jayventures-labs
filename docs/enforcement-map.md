@@ -64,13 +64,13 @@ Validates:
 
 ## Forbidden Patterns
 
-Code scans reject:
-- `bypass_jpv_os: true`
-- `skip_enforcement: true`
-- `DISABLE_JPV_ENFORCEMENT=true`
-- `bypass_revenue_check`
-- `skip_tin_validation`
-- `ignore_ssn_separation`
+Code scans reject patterns that attempt to:
+- Bypass JPV-OS enforcement rules
+- Skip enforcement checks
+- Disable JPV enforcement via environment variables
+- Circumvent revenue authority checks
+- Skip TIN validation
+- Ignore SSN separation rules
 
 Document scans reject:
 - "People Protection is optional"
