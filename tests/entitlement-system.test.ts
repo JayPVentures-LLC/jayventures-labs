@@ -16,6 +16,11 @@ function createRawEnv() {
     raw: {
       STRIPE_WEBHOOK_SECRET: "whsec_test",
       DISCORD_BOT_TOKEN: "discord-token",
+      // Single-guild vars for discordEntitlementReflection.service.ts
+      DISCORD_GUILD_ID: "creator-guild",
+      DISCORD_ROLE_COMMUNITY_ID: "community_free",
+      DISCORD_ROLE_VIP_ID: "creator_vip",
+      // Multi-guild vars for discordRoleMapping.service.ts
       DISCORD_GUILD_ID_CREATOR: "creator-guild",
       DISCORD_ROLE_CREATOR_COMMUNITY_ID: "community_free",
       DISCORD_ROLE_CREATOR_VIP_ID: "creator_vip",
