@@ -26,6 +26,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Check deployment freeze
+        run: npm run governance:freeze-check
+
       - name: Validate website deploy config
         run: npm run validate:deploy:website
 

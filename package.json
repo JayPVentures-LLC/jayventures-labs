@@ -1,5 +1,6 @@
 {
   "scripts": {
+    "governance:freeze-check": "node scripts/governance/check-deployment-freeze.mjs",
     "jpv:enforce": "node ./scripts/jpv-enforce.mjs",
     "jpv:enforce:test": "node ./scripts/jpv-enforce.mjs --test",
     "enforce:brand": "ts-node operations/jpv_os_enforcement/cli.ts jaypventures_llc --file",
