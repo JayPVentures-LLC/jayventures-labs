@@ -16,6 +16,9 @@ concurrency:
   group: jpv-os-production-deploy
   cancel-in-progress: false
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   production-gate:
     if: ${{ github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true }}
@@ -24,12 +27,12 @@ jobs:
 
     steps:
       - name: Checkout merged main
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: main
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: "22"
           cache: "npm"
@@ -208,3 +211,5 @@ jobs:
           echo "- Source: main" >> $GITHUB_STEP_SUMMARY
           echo "- Commit: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
           echo "- Brand gate: jaypventures=creator, jaypventuresllc=labs/institutional/business" >> $GITHUB_STEP_SUMMARY
+
+

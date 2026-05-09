@@ -12,12 +12,15 @@ on:
       - "package.json"
       - "package-lock.json"
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   enforce:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 20
       - name: Install dependencies
@@ -35,7 +38,7 @@ jobs:
       contents: read
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Azure login
         uses: azure/login@v2
@@ -64,3 +67,5 @@ jobs:
           fi
 
           curl --fail --silent --show-error "${{ secrets.AZURE_HEALTHCHECK_URL }}"
+
+

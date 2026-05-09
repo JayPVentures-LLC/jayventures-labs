@@ -79,3 +79,4 @@ export async function archiveEvent(env: Env, payload: WorkerEventMessage & { typ
     body: JSON.stringify(payload.payload),
   });
 }
+
