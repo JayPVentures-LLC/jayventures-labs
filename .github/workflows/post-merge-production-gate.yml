@@ -56,6 +56,14 @@ jobs:
           node scripts/jpv-policy-enforcement.cjs
           npm run jpv:enforce
 
+      - name: Inject flagship KV namespace
+        shell: bash
+        env:
+          CLOUDFLARE_ENTITLEMENTS_KV_ID: ${{ secrets.CLOUDFLARE_ENTITLEMENTS_KV_ID }}
+        run: |
+          test -n "$CLOUDFLARE_ENTITLEMENTS_KV_ID" || (echo "Missing CLOUDFLARE_ENTITLEMENTS_KV_ID" && exit 1)
+          perl -0pi -e 's/YOUR_KV_NAMESPACE_ID/$ENV{CLOUDFLARE_ENTITLEMENTS_KV_ID}/g' apps/flagship-site/wrangler.toml
+
       - name: Validate deployment configs
         run: |
           npm run validate:deploy:website

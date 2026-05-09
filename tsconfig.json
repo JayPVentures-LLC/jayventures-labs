@@ -27,6 +27,8 @@
   "include": [
     "apps/**/*.ts",
     "apps/**/*.tsx",
+    "components/**/*.ts",
+    "components/**/*.tsx",
     "pages/**/*.ts",
     "pages/**/*.tsx",
     "operations/**/*.ts",
