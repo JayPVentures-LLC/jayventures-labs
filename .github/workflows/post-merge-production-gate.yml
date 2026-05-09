@@ -1,0 +1,154 @@
+name: JPV-OS Post-Merge Production Gate
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
+
+permissions:
+  contents: read
+  deployments: write
+
+concurrency:
+  group: jpv-os-production-deploy
+  cancel-in-progress: false
+
+jobs:
+  production-gate:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    environment: cloudflare-production
+
+    steps:
+      - name: Checkout merged main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check deployment freeze
+        run: npm run governance:freeze-check
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Test
+        run: npm test -- --run
+
+      - name: Build
+        run: npm run build
+
+      - name: JPV policy enforcement
+        run: |
+          node scripts/jpv-policy-enforcement.cjs
+          npm run jpv:enforce
+
+      - name: Inject flagship KV namespace
+        shell: bash
+        env:
+          CLOUDFLARE_ENTITLEMENTS_KV_ID: ${{ secrets.CLOUDFLARE_ENTITLEMENTS_KV_ID }}
+        run: |
+          test -n "$CLOUDFLARE_ENTITLEMENTS_KV_ID" || (echo "Missing CLOUDFLARE_ENTITLEMENTS_KV_ID" && exit 1)
+          perl -0pi -e 's/YOUR_KV_NAMESPACE_ID/$ENV{CLOUDFLARE_ENTITLEMENTS_KV_ID}/g' apps/flagship-site/wrangler.toml
+
+      - name: Inject entitlement deployment bindings
+        shell: bash
+        env:
+          AZURE_KEY_VAULT_URL: ${{ secrets.AZURE_KEY_VAULT_URL }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          APPINSIGHTS_CONNECTION_STRING: ${{ secrets.APPINSIGHTS_CONNECTION_STRING }}
+          AZURE_ARCHIVE_ENDPOINT: ${{ secrets.AZURE_ARCHIVE_ENDPOINT }}
+          ENTITLEMENT_KV_ID: ${{ secrets.ENTITLEMENT_KV_ID }}
+          ENTITLEMENT_KV_PREVIEW_ID: ${{ secrets.ENTITLEMENT_KV_PREVIEW_ID }}
+          IDEMPOTENCY_KV_ID: ${{ secrets.IDEMPOTENCY_KV_ID }}
+          IDEMPOTENCY_KV_PREVIEW_ID: ${{ secrets.IDEMPOTENCY_KV_PREVIEW_ID }}
+          RETRY_QUEUE_KV_ID: ${{ secrets.RETRY_QUEUE_KV_ID }}
+          RETRY_QUEUE_KV_PREVIEW_ID: ${{ secrets.RETRY_QUEUE_KV_PREVIEW_ID }}
+          ENTITLEMENT_EVENTS_QUEUE: ${{ secrets.ENTITLEMENT_EVENTS_QUEUE }}
+        run: |
+          node <<'NODE'
+          const fs = require("node:fs");
+          const file = "operations/entitlement-system/wrangler.toml";
+          const replacements = {
+            "https://replace-me.vault.azure.net": process.env.AZURE_KEY_VAULT_URL,
+            "\"replace-me\"": `"${process.env.AZURE_TENANT_ID}"`,
+            "InstrumentationKey=replace-me;IngestionEndpoint=https://eastus-0.in.applicationinsights.azure.com/": process.env.APPINSIGHTS_CONNECTION_STRING,
+            "https://replace-me.example/archive/entitlements": process.env.AZURE_ARCHIVE_ENDPOINT,
+            "REPLACE_WITH_ENTITLEMENT_KV_ID": process.env.ENTITLEMENT_KV_ID,
+            "REPLACE_WITH_ENTITLEMENT_KV_PREVIEW_ID": process.env.ENTITLEMENT_KV_PREVIEW_ID,
+            "REPLACE_WITH_IDEMPOTENCY_KV_ID": process.env.IDEMPOTENCY_KV_ID,
+            "REPLACE_WITH_IDEMPOTENCY_KV_PREVIEW_ID": process.env.IDEMPOTENCY_KV_PREVIEW_ID,
+            "REPLACE_WITH_RETRY_QUEUE_KV_ID": process.env.RETRY_QUEUE_KV_ID,
+            "REPLACE_WITH_RETRY_QUEUE_KV_PREVIEW_ID": process.env.RETRY_QUEUE_KV_PREVIEW_ID,
+            "REPLACE_WITH_ENTITLEMENT_EVENTS_QUEUE": process.env.ENTITLEMENT_EVENTS_QUEUE,
+          };
+          if (!process.env.AZURE_CLIENT_ID) throw new Error("Missing AZURE_CLIENT_ID");
+          let content = fs.readFileSync(file, "utf8");
+          content = content.replace('AZURE_CLIENT_ID = "replace-me"', `AZURE_CLIENT_ID = "${process.env.AZURE_CLIENT_ID}"`);
+          for (const [placeholder, value] of Object.entries(replacements)) {
+            if (!value) throw new Error(`Missing replacement for ${placeholder}`);
+            content = content.split(placeholder).join(value);
+          }
+          fs.writeFileSync(file, content);
+          NODE
+
+      - name: Validate deployment configs
+        run: |
+          npm run validate:deploy:website
+          npm run validate:deploy:bookings
+          npm run validate:deploy:entitlement
+
+      - name: Block placeholder KV namespace
+        shell: bash
+        run: |
+          if grep -R "YOUR_KV_NAMESPACE_ID" apps/flagship-site/wrangler.toml; then
+            echo "ENTITLEMENTS_KV still contains placeholder namespace ID."
+            exit 1
+          fi
+
+      - name: Verify Cloudflare secrets
+        shell: bash
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          test -n "$CLOUDFLARE_API_TOKEN" || (echo "Missing CLOUDFLARE_API_TOKEN" && exit 1)
+          test -n "$CLOUDFLARE_ACCOUNT_ID" || (echo "Missing CLOUDFLARE_ACCOUNT_ID" && exit 1)
+
+      - name: Deploy Workers
+        shell: bash
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          npx wrangler deploy --config wix/bookings/wrangler.toml --env production
+          npx wrangler deploy --config operations/entitlement-system/wrangler.toml
+
+      - name: Deploy flagship site
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx wrangler deploy --config apps/flagship-site/wrangler.toml
+
+      - name: Deployment summary
+        run: |
+          echo "JPV-OS production deployment completed." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- PR: #${{ github.event.pull_request.number }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Merge commit: ${{ github.event.pull_request.merge_commit_sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Source: main" >> $GITHUB_STEP_SUMMARY
+          echo "- Brand gate: jaypventures=creator, jaypventuresllc=labs/institutional/business" >> $GITHUB_STEP_SUMMARY

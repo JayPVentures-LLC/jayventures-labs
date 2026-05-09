@@ -5,6 +5,7 @@ import { syncDiscordRoles as syncSingleBrand } from "./discord.service";
 import { enqueueRetryTask, processRetryQueue } from "../utils/retry-queue";
 import { logger } from "../utils/logger";
 import { getEntitlement, setDiscordSyncTimestamp } from "./entitlement.service";
+import { DiscordRoleConfigurationError } from "./discordRoleMapping.service";
 
 export interface DiscordSyncResult {
   brand: Brand;
@@ -42,20 +43,23 @@ export async function syncDiscordRoles(
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
       logger.log("error", "Discord sync failed", { userId: entitlement.userId, brand: entry.brand, error: message });
-      await enqueueRetryTask(env, {
-        type: "discord-sync",
-        payload: {
-          userId: entitlement.userId,
-          brand: entry.brand,
-          reason: message,
-        },
-      });
+      const retryable = !(error instanceof DiscordRoleConfigurationError);
+      if (retryable) {
+        await enqueueRetryTask(env, {
+          type: "discord-sync",
+          payload: {
+            userId: entitlement.userId,
+            brand: entry.brand,
+            reason: message,
+          },
+        });
+      }
       results.push({
         brand: entry.brand,
         guildId: entry.guildId,
         addedRoles: [],
         removedRoles: [],
-        skipped: false,
+        skipped: !retryable,
         success: false,
         error: message,
       });

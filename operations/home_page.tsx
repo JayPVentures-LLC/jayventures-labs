@@ -84,7 +84,8 @@ export default function Home() {
             <Image
               src="/founder-hero.png"
               alt="Founder portrait"
-              fill`r`n              style={{ objectFit: "cover" }}
+              fill
+              style={{ objectFit: "cover" }}
               className="rounded-lg shadow-lg"
             />
           </div>
@@ -204,7 +205,8 @@ export default function Home() {
             <Image
               src="/founder-secondary.png"
               alt="Founder secondary portrait"
-              fill`r`n              style={{ objectFit: "cover" }}
+              fill
+              style={{ objectFit: "cover" }}
               className="rounded-lg shadow-lg"
             />
           </div>
@@ -256,7 +258,8 @@ export default function Home() {
             <Image
               src="/dualbrand-logo.png"
               alt="Dual brand logo"
-              width={256}`r`n              height={256}
+              width={256}
+              height={256}
             />
           </div>
         </div>

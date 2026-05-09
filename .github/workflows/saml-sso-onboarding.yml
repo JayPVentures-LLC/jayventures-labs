@@ -1,0 +1,55 @@
+name: JPV-OS SAML SSO Onboarding
+
+on:
+  workflow_dispatch:
+    inputs:
+      manifest_path:
+        description: "Path to SAML app manifest JSON"
+        required: true
+        default: "config/entra/saml-apps.example.json"
+      display_name:
+        description: "SAML App Display Name for Verification"
+        required: true
+        default: "JPV-OS Partner SaaS"
+
+jobs:
+  saml-onboarding:
+    runs-on: windows-latest
+    environment:
+      name: azure-identity-production
+      url: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install Microsoft Graph PowerShell SDK
+        shell: pwsh
+        run: |
+          Install-Module Microsoft.Graph -Force -Scope CurrentUser
+
+      - name: Provision SAML App
+        shell: pwsh
+        env:
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+        run: |
+          Connect-MgGraph -ClientId $env:AZURE_CLIENT_ID -TenantId $env:AZURE_TENANT_ID -ClientSecret $env:AZURE_CLIENT_SECRET
+          ./scripts/entra/saml-app-provision.ps1 -ManifestPath "${{ github.event.inputs.manifest_path }}"
+
+      - name: Verify SAML App
+        shell: pwsh
+        env:
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+        run: |
+          Connect-MgGraph -ClientId $env:AZURE_CLIENT_ID -TenantId $env:AZURE_TENANT_ID -ClientSecret $env:AZURE_CLIENT_SECRET
+          ./scripts/entra/saml-app-verify.ps1 -DisplayName "${{ github.event.inputs.display_name }}" -ManifestPath "${{ github.event.inputs.manifest_path }}"
+
+      - name: Upload Readback Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: saml-sso-readback
+          path: docs/identity/generated/*.saml-readback.json
+          retention-days: 30
