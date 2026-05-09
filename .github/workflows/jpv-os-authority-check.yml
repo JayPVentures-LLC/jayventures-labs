@@ -1,0 +1,20 @@
+name: Verify JPV-OS Authority Standards
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  authority-check:
+    name: Verify Revenue, Role, and Idea Authority
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run JPV-OS authority check
+        shell: pwsh
+        run: ./operations/jpv_os_enforcement/authority-check.ps1
