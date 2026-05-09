@@ -2,7 +2,7 @@ import type { Brand, Tier } from "../types/entitlement.types";
 
 /**
  * Discord guild configuration using Brand type values as keys.
- * Brand mapping (verified by validate-discord-brand-mapping.mjs):
+ * Brand mapping:
  * - "jaypventures" → labs guild (DISCORD_GUILD_ID_LABS) with member/researcher/student roles
  * - "jaypventuresllc" → creator guild (DISCORD_GUILD_ID_CREATOR) with community/vip roles
  *
