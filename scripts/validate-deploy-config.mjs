@@ -16,6 +16,7 @@ const placeholderPatterns = [
   /https:\/\/replace-me\.[^\s"']+/g,
   /"replace-me"/g,
   /InstrumentationKey=replace-me/g,
+  /YOUR_KV_NAMESPACE_ID/g,
 ];
 
 const matches = new Set();
