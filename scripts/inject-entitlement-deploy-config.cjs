@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 const fs = require("node:fs");
+const path = require("node:path");
 
-const file = "operations/entitlement-system/wrangler.toml";
+const file = path.resolve(__dirname, "..", "operations/entitlement-system/wrangler.toml");
 const required = [
   "AZURE_KEY_VAULT_URL",
   "AZURE_TENANT_ID",
@@ -37,7 +38,15 @@ const replacements = {
   REPLACE_WITH_ENTITLEMENT_EVENTS_QUEUE: process.env.ENTITLEMENT_EVENTS_QUEUE,
 };
 
-let content = fs.readFileSync(file, "utf8");
+let content;
+try {
+  content = fs.readFileSync(file, "utf8");
+} catch (error) {
+  if (error.code === "ENOENT") {
+    throw new Error(`Entitlement deploy config not found at ${file}`);
+  }
+  throw error;
+}
 content = content.replace(
   'AZURE_CLIENT_ID = "replace-me"',
   `AZURE_CLIENT_ID = "${process.env.AZURE_CLIENT_ID}"`,
