@@ -16,9 +16,13 @@ function createRawEnv() {
     raw: {
       STRIPE_WEBHOOK_SECRET: "whsec_test",
       DISCORD_BOT_TOKEN: "discord-token",
-      DISCORD_GUILD_ID: "test-guild-id",
-      DISCORD_ROLE_COMMUNITY_ID: "role-community-id",
-      DISCORD_ROLE_VIP_ID: "role-vip-id",
+      DISCORD_GUILD_ID_CREATOR: "creator-guild",
+      DISCORD_ROLE_CREATOR_COMMUNITY_ID: "community_free",
+      DISCORD_ROLE_CREATOR_VIP_ID: "creator_vip",
+      DISCORD_GUILD_ID_LABS: "labs-guild",
+      DISCORD_ROLE_LABS_MEMBER_ID: "labs_member",
+      DISCORD_ROLE_LABS_RESEARCHER_ID: "labs_researcher",
+      DISCORD_ROLE_LABS_STUDENT_ID: "labs_student",
       ADMIN_OVERRIDE_KEY: "admin-secret",
       ENTITLEMENT_KV: asKvNamespace(entitlementKv),
       IDEMPOTENCY_KV: asKvNamespace(idempotencyKv),
@@ -119,8 +123,13 @@ describe("entitlement system worker", () => {
 
     const entitlement = await getEntitlement("user-123", raw as unknown as { ENTITLEMENT_KV: KVNamespace });
     expect(entitlement?.status).toBe("active");
-    expect(entitlement?.entitlements[0]).toMatchObject({ brand: "jaypventures", tier: "member", status: "active" });
+    expect(entitlement?.entitlements[0]).toMatchObject({ brand: "jaypventures", tier: "member", status: "active", guildId: "creator-guild" });
     expect(discordFetch).toHaveBeenCalled();
+
+    // Verify the worker used the env-driven guildId and roleId for the brand+tier
+    const fetchedUrls = discordFetch.mock.calls.map(([url]: [URL | RequestInfo, ...unknown[]]) => String(url));
+    expect(fetchedUrls.some((url) => url.includes("/guilds/creator-guild/members/"))).toBe(true);
+    expect(fetchedUrls.some((url) => url.includes("/guilds/creator-guild/members/discord-123/roles/creator_vip"))).toBe(true);
 
     const gate = await entitlementCheck("jaypventures", "free")(
       new Request("https://example.com/resource", { headers: { "x-user-id": "user-123" } }) as never,
@@ -247,7 +256,7 @@ describe("STRIPE_ENTITLEMENT_SYNCED queue events (Discord reflection)", () => {
 
     const putCalls = discordFetch.mock.calls.filter(([url, init]) => {
       const method = (init as RequestInit | undefined)?.method ?? "GET";
-      return String(url).includes(`/guilds/test-guild-id/members/discord-user-456/roles/role-vip-id`) && method === "PUT";
+      return String(url).includes(`/guilds/creator-guild/members/discord-user-456/roles/creator_vip`) && method === "PUT";
     });
     expect(putCalls.length).toBeGreaterThan(0);
 
@@ -258,7 +267,7 @@ describe("STRIPE_ENTITLEMENT_SYNCED queue events (Discord reflection)", () => {
       subject_id: "user-verified-123",
       discord_user_id: "discord-user-456",
       tier: "vip",
-      role_id: "role-vip-id",
+      role_id: "creator_vip",
       action: "ENTITLEMENT_ACTIVE",
       result: "added",
     });
@@ -289,7 +298,7 @@ describe("STRIPE_ENTITLEMENT_SYNCED queue events (Discord reflection)", () => {
 
     const deleteCalls = discordFetch.mock.calls.filter(([url, init]) => {
       const method = (init as RequestInit | undefined)?.method ?? "GET";
-      return String(url).includes(`/guilds/test-guild-id/members/discord-user-456/roles/role-vip-id`) && method === "DELETE";
+      return String(url).includes(`/guilds/creator-guild/members/discord-user-456/roles/creator_vip`) && method === "DELETE";
     });
     expect(deleteCalls.length).toBeGreaterThan(0);
   });

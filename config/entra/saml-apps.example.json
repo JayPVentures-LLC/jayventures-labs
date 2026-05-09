@@ -1,0 +1,16 @@
+[
+  {
+    "displayName": "JPV-OS Partner SaaS",
+    "identifierUris": [
+      "https://example-saas.com/saml/metadata"
+    ],
+    "replyUrls": [
+      "https://example-saas.com/saml/acs"
+    ],
+    "logoutUrl": "https://example-saas.com/logout",
+    "assignmentRequired": true,
+    "groupObjectIds": [
+      "00000000-0000-0000-0000-000000000000"
+    ]
+  }
+]
