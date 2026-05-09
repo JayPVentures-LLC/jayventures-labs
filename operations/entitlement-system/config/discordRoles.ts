@@ -1,12 +1,15 @@
 import type { Brand, Tier } from "../types/entitlement.types";
 import { DISCORD_GUILD_CONFIG } from "./discordGuilds";
 
-type KnownBrand = keyof typeof DISCORD_GUILD_CONFIG;
-
+/**
+ * Get the Discord role ID for a brand and tier using the tierRoleMap.
+ */
 export function getDiscordRoleId(brand: Brand, tier: Tier): string | undefined {
-  if (brand in DISCORD_GUILD_CONFIG) {
-    // @ts-expect-error: TypeScript can't guarantee brand is KnownBrand, but we check above
-    return DISCORD_GUILD_CONFIG[brand]?.roles?.[tier] ?? undefined;
-  }
-  return undefined;
+  const config = DISCORD_GUILD_CONFIG[brand];
+  if (!config) return undefined;
+
+  const roleKey = config.tierRoleMap[tier];
+  if (!roleKey) return undefined;
+
+  return config.roles[roleKey];
 }
