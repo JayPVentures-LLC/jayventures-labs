@@ -22,11 +22,6 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Set up PowerShell 7.x
-        uses: actions/setup-powershell@v2
-        with:
-          pwsh-version: "7.2.x"
-
       - name: Install Microsoft Graph PowerShell SDK
         shell: pwsh
         run: |
@@ -50,7 +45,7 @@ jobs:
           AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
         run: |
           Connect-MgGraph -ClientId $env:AZURE_CLIENT_ID -TenantId $env:AZURE_TENANT_ID -ClientSecret $env:AZURE_CLIENT_SECRET
-          ./scripts/entra/saml-app-verify.ps1 -DisplayName "${{ github.event.inputs.display_name }}"
+          ./scripts/entra/saml-app-verify.ps1 -DisplayName "${{ github.event.inputs.display_name }}" -ManifestPath "${{ github.event.inputs.manifest_path }}"
 
       - name: Upload Readback Report
         uses: actions/upload-artifact@v4

@@ -48,7 +48,8 @@ if (-not (Get-MgContext)) {
 
 Write-Host "Connected to Microsoft Graph." -ForegroundColor Green
 
-$existingApp = Get-MgApplication -Filter "displayName eq '$($manifest.displayName)'" -ConsistencyLevel eventual
+$escapedDisplayName = $manifest.displayName -replace "'", "''"
+$existingApp = Get-MgApplication -Filter "displayName eq '$escapedDisplayName'" -ConsistencyLevel eventual
 
 if ($existingApp) {
   Write-Host "Application exists: $($manifest.displayName)" -ForegroundColor Yellow

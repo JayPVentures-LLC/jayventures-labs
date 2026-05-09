@@ -2,7 +2,10 @@
 
 param(
   [Parameter(Mandatory = $true)]
-  [string]$DisplayName
+  [string]$DisplayName,
+
+  [Parameter(Mandatory = $false)]
+  [string]$ManifestPath
 )
 
 $ErrorActionPreference = "Stop"
@@ -41,6 +44,30 @@ if (-not $app.IdentifierUris -or $app.IdentifierUris.Count -eq 0) {
 
 if (-not $app.Web.RedirectUris -or $app.Web.RedirectUris.Count -eq 0) {
   throw "Missing reply URL / ACS URL."
+}
+
+if ($ManifestPath) {
+  if (!(Test-Path $ManifestPath)) {
+    throw "Manifest not found: $ManifestPath"
+  }
+
+  $manifest = Get-Content $ManifestPath -Raw | ConvertFrom-Json
+  if (-not $manifest.groupObjectIds -or $manifest.groupObjectIds.Count -eq 0) {
+    throw "Manifest must include at least one approved groupObjectIds entry."
+  }
+
+  foreach ($groupId in $manifest.groupObjectIds) {
+    $group = Get-MgGroup -GroupId $groupId -ErrorAction Stop
+    $assignment = Get-MgGroupAppRoleAssignment `
+      -GroupId $groupId `
+      -Filter "resourceId eq $($sp.Id)" `
+      -ErrorAction SilentlyContinue |
+      Select-Object -First 1
+
+    if (-not $assignment) {
+      throw "Missing SAML group assignment for $($group.DisplayName) ($groupId)."
+    }
+  }
 }
 
 Write-Host "SAML application verification passed." -ForegroundColor Green

@@ -57,6 +57,11 @@ if (typeof freeze.state !== 'string') fail('Missing or invalid "state" field.');
 if (freeze.frozen && freeze.state !== 'FROZEN') fail('Deployment freeze state must be "FROZEN" when frozen is true.');
 if (!freeze.frozen && freeze.state === 'FROZEN') fail('Deployment freeze state cannot be "FROZEN" when frozen is false.');
 if (freeze.frozen) {
+  for (const field of ['reason', 'requestedBy', 'approvedBy', 'timestampUtc', 'incidentId']) {
+    if (typeof freeze[field] !== 'string' || freeze[field].trim().length === 0) {
+      fail(`Missing or invalid "${field}" field for active deployment freeze.`);
+    }
+  }
   writeSummary(freeze);
   fail('Deployment is frozen: ' + (freeze.reason || 'No reason provided.'));
 } else {
