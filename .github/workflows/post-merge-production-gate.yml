@@ -1,6 +1,7 @@
 name: JPV-OS Post-Merge Production Gate
 
 on:
+  workflow_dispatch:
   pull_request:
     types:
       - closed
@@ -17,7 +18,7 @@ concurrency:
 
 jobs:
   production-gate:
-    if: github.event.pull_request.merged == true
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true }}
     runs-on: ubuntu-latest
     environment: cloudflare-production
 
@@ -36,7 +37,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Verify required production secrets
+      - name: Detect production secrets
+        id: production_secrets
         shell: bash
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -56,7 +58,7 @@ jobs:
           RETRY_QUEUE_KV_PREVIEW_ID: ${{ secrets.RETRY_QUEUE_KV_PREVIEW_ID }}
           ENTITLEMENT_EVENTS_QUEUE: ${{ secrets.ENTITLEMENT_EVENTS_QUEUE }}
         run: |
-          missing=0
+          missing=()
           for name in \
             CLOUDFLARE_API_TOKEN \
             CLOUDFLARE_ACCOUNT_ID \
@@ -77,10 +79,24 @@ jobs:
           do
             if [ -z "${!name}" ]; then
               echo "Missing $name"
-              missing=1
+              missing+=("$name")
             fi
           done
-          exit "$missing"
+
+          if [ "${#missing[@]}" -gt 0 ]; then
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            {
+              echo "JPV-OS production deployment skipped."
+              echo ""
+              echo "Missing production secret count: ${#missing[@]}"
+              echo ""
+              printf -- '- %s\n' "${missing[@]}"
+              echo ""
+              echo "Code validation will still run; deploy steps are intentionally skipped until real production credentials exist."
+            } >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Check deployment freeze
         run: npm run governance:freeze-check
@@ -103,6 +119,7 @@ jobs:
           npm run jpv:enforce
 
       - name: Inject flagship KV namespace
+        if: steps.production_secrets.outputs.ready == 'true'
         shell: bash
         env:
           CLOUDFLARE_ENTITLEMENTS_KV_ID: ${{ secrets.CLOUDFLARE_ENTITLEMENTS_KV_ID }}
@@ -111,6 +128,7 @@ jobs:
           perl -0pi -e 's/YOUR_KV_NAMESPACE_ID/$ENV{CLOUDFLARE_ENTITLEMENTS_KV_ID}/g' apps/flagship-site/wrangler.toml
 
       - name: Inject entitlement deployment bindings
+        if: steps.production_secrets.outputs.ready == 'true'
         shell: bash
         env:
           AZURE_KEY_VAULT_URL: ${{ secrets.AZURE_KEY_VAULT_URL }}
@@ -128,12 +146,14 @@ jobs:
         run: node scripts/inject-entitlement-deploy-config.cjs
 
       - name: Validate deployment configs
+        if: steps.production_secrets.outputs.ready == 'true'
         run: |
           npm run validate:deploy:website
           npm run validate:deploy:bookings
           npm run validate:deploy:entitlement
 
       - name: Block placeholder KV namespace
+        if: steps.production_secrets.outputs.ready == 'true'
         shell: bash
         run: |
           if grep -R "YOUR_KV_NAMESPACE_ID" apps/flagship-site/wrangler.toml; then
@@ -142,6 +162,7 @@ jobs:
           fi
 
       - name: Verify Cloudflare secrets
+        if: steps.production_secrets.outputs.ready == 'true'
         shell: bash
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -151,6 +172,7 @@ jobs:
           test -n "$CLOUDFLARE_ACCOUNT_ID" || (echo "Missing CLOUDFLARE_ACCOUNT_ID" && exit 1)
 
       - name: Set Memberstack JWT Public Key
+        if: steps.production_secrets.outputs.ready == 'true'
         shell: bash
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
@@ -161,6 +183,7 @@ jobs:
           printf '%s' "$MEMBERSTACK_JWT_PUBLIC_KEY" | npx wrangler secret put MEMBERSTACK_JWT_PUBLIC_KEY --config wix/bookings/wrangler.toml --env production
 
       - name: Deploy Workers
+        if: steps.production_secrets.outputs.ready == 'true'
         shell: bash
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -170,16 +193,18 @@ jobs:
           npx wrangler deploy --config operations/entitlement-system/wrangler.toml
 
       - name: Deploy flagship site
+        if: steps.production_secrets.outputs.ready == 'true'
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx wrangler deploy --config apps/flagship-site/wrangler.toml
 
       - name: Deployment summary
+        if: steps.production_secrets.outputs.ready == 'true'
         run: |
           echo "JPV-OS production deployment completed." >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "- PR: #${{ github.event.pull_request.number }}" >> $GITHUB_STEP_SUMMARY
-          echo "- Merge commit: ${{ github.event.pull_request.merge_commit_sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Trigger: ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
           echo "- Source: main" >> $GITHUB_STEP_SUMMARY
+          echo "- Commit: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
           echo "- Brand gate: jaypventures=creator, jaypventuresllc=labs/institutional/business" >> $GITHUB_STEP_SUMMARY
