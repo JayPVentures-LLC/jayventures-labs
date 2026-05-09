@@ -6,14 +6,14 @@
  * are blocked. Required before any production mutation step.
  *
  * Valid states:
- *   - NORMAL: deployments allowed
+ *   - NORMAL: deployments allowed (when frozen: false)
  *   - FROZEN: deployments blocked; rollback and observability allowed
  *   - ROLLBACK: controlled recovery mode (deployments blocked except rollback)
- *   - RECOVERY_VERIFIED: freeze removal eligible
+ *   - RECOVERY_VERIFIED: deployments allowed after recovery (when frozen: false)
  *
  * Exit codes:
- *   - 0: deployment allowed (state is NORMAL or RECOVERY_VERIFIED)
- *   - 1: deployment blocked (state is FROZEN or ROLLBACK) or error reading freeze file
+ *   - 0: deployment allowed (frozen: false AND state is NORMAL or RECOVERY_VERIFIED)
+ *   - 1: deployment blocked (frozen: true OR state is FROZEN/ROLLBACK) or error reading freeze file
  */
 
 import { readFileSync, appendFileSync, existsSync } from 'node:fs';
