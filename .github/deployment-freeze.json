@@ -1,6 +1,6 @@
 {
   "frozen": false,
-  "state": "ACTIVE",
+  "state": "NOT_FROZEN",
   "reason": "Normal operations",
   "requestedBy": null,
   "approvedBy": null,

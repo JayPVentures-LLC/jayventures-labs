@@ -40,7 +40,7 @@ jobs:
           AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
         run: |
           Connect-MgGraph -ClientId $env:AZURE_CLIENT_ID -TenantId $env:AZURE_TENANT_ID -ClientSecret $env:AZURE_CLIENT_SECRET
-          pwsh scripts/entra/saml-app-provision.ps1 -ManifestPath "${{ github.event.inputs.manifest_path }}"
+          ./scripts/entra/saml-app-provision.ps1 -ManifestPath "${{ github.event.inputs.manifest_path }}"
 
       - name: Verify SAML App
         shell: pwsh
@@ -50,7 +50,7 @@ jobs:
           AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
         run: |
           Connect-MgGraph -ClientId $env:AZURE_CLIENT_ID -TenantId $env:AZURE_TENANT_ID -ClientSecret $env:AZURE_CLIENT_SECRET
-          pwsh scripts/entra/saml-app-verify.ps1 -DisplayName "${{ github.event.inputs.display_name }}"
+          ./scripts/entra/saml-app-verify.ps1 -DisplayName "${{ github.event.inputs.display_name }}"
 
       - name: Upload Readback Report
         uses: actions/upload-artifact@v4

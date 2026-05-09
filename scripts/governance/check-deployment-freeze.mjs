@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // JPV-OS Deployment Freeze Governance Gate
-// Reads .github/deployment-freeze.json, validates schema, prints state, writes to $GITHUB_STEP_SUMMARY, and fails closed if frozen or malformed.
+// Reads .github/deployment-freeze.json, validates required fields, prints state, writes to $GITHUB_STEP_SUMMARY, and fails closed if frozen or malformed.
 
 import fs from 'fs';
 import path from 'path';
@@ -47,11 +47,15 @@ try {
   const raw = fs.readFileSync(freezePath, 'utf8');
   freeze = JSON.parse(raw);
 } catch (e) {
-  fail('Malformed .github/deployment-freeze.json: ' + e.message);
+  const message = e instanceof Error ? e.message : String(e);
+  fail('Malformed .github/deployment-freeze.json: ' + message);
 }
 
 // Validate schema
 if (typeof freeze.frozen !== 'boolean') fail('Missing or invalid "frozen" field.');
+if (typeof freeze.state !== 'string') fail('Missing or invalid "state" field.');
+if (freeze.frozen && freeze.state !== 'FROZEN') fail('Deployment freeze state must be "FROZEN" when frozen is true.');
+if (!freeze.frozen && freeze.state === 'FROZEN') fail('Deployment freeze state cannot be "FROZEN" when frozen is false.');
 if (freeze.frozen) {
   writeSummary(freeze);
   fail('Deployment is frozen: ' + (freeze.reason || 'No reason provided.'));

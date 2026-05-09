@@ -37,11 +37,14 @@ foreach ($field in $required) {
 Import-Module Microsoft.Graph.Applications -ErrorAction Stop
 Import-Module Microsoft.Graph.Groups -ErrorAction Stop
 
-Connect-MgGraph -Scopes `
-  "Application.ReadWrite.All",
-"AppRoleAssignment.ReadWrite.All",
-"Directory.Read.All",
-"Group.Read.All"
+if (-not (Get-MgContext)) {
+  Connect-MgGraph -Scopes @(
+    "Application.ReadWrite.All",
+    "AppRoleAssignment.ReadWrite.All",
+    "Directory.Read.All",
+    "Group.Read.All"
+  )
+}
 
 Write-Host "Connected to Microsoft Graph." -ForegroundColor Green
 

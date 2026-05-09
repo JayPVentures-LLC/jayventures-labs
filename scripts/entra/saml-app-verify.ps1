@@ -10,22 +10,23 @@ $ErrorActionPreference = "Stop"
 Import-Module Microsoft.Graph.Applications -ErrorAction Stop
 Import-Module Microsoft.Graph.Groups -ErrorAction Stop
 
-
-
-Connect-MgGraph -Scopes @(
-  "Application.Read.All",
-  "Directory.Read.All",
-  "Group.Read.All"
-)
+if (-not (Get-MgContext)) {
+  Connect-MgGraph -Scopes @(
+    "Application.Read.All",
+    "Directory.Read.All",
+    "Group.Read.All"
+  )
+}
 
 # Find application by display name
-$app = Get-MgApplication -All | Where-Object { $_.DisplayName -eq $DisplayName }
+$escapedDisplayName = $DisplayName -replace "'", "''"
+$app = Get-MgApplication -Filter "displayName eq '$escapedDisplayName'" -ConsistencyLevel eventual | Select-Object -First 1
 if (-not $app) {
   throw "Application not found: $DisplayName"
 }
 
 # Find service principal by appId
-$sp = Get-MgServicePrincipal -All | Where-Object { $_.AppId -eq $app.AppId }
+$sp = Get-MgServicePrincipal -Filter "appId eq '$($app.AppId)'" -ConsistencyLevel eventual | Select-Object -First 1
 if (-not $sp) {
   throw "Service principal not found for: $DisplayName"
 }
@@ -34,15 +35,15 @@ if (-not $sp.AppRoleAssignmentRequired) {
   throw "Assignment required is not enabled."
 }
 
-if (-not $app[0].IdentifierUris -or $app[0].IdentifierUris.Count -eq 0) {
+if (-not $app.IdentifierUris -or $app.IdentifierUris.Count -eq 0) {
   throw "Missing identifier URI."
 }
 
-if (-not $app[0].Web.RedirectUris -or $app[0].Web.RedirectUris.Count -eq 0) {
+if (-not $app.Web.RedirectUris -or $app.Web.RedirectUris.Count -eq 0) {
   throw "Missing reply URL / ACS URL."
 }
 
 Write-Host "SAML application verification passed." -ForegroundColor Green
-Write-Host "Application: $($app[0].DisplayName)"
-Write-Host "AppId: $($app[0].AppId)"
+Write-Host "Application: $($app.DisplayName)"
+Write-Host "AppId: $($app.AppId)"
 Write-Host "ServicePrincipalId: $($sp.Id)"

@@ -26,7 +26,11 @@
   },
   "include": [
     "apps/**/*.ts",
+    "apps/**/*.tsx",
+    "pages/**/*.ts",
+    "pages/**/*.tsx",
     "operations/**/*.ts",
+    "operations/**/*.tsx",
     "wix/**/*.ts",
     "tests/**/*.ts",
     "vitest.config.ts"
