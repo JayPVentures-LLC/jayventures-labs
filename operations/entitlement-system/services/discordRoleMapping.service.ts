@@ -19,11 +19,31 @@ interface BrandDiscordConfig {
   roles: RoleMap;
 }
 
+export class DiscordRoleConfigurationError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "DiscordRoleConfigurationError";
+  }
+}
+
+function requiredRoleBindingName(brand: Brand, tier: Tier): string {
+  if (brand === "jaypventures") {
+    return tier === "free" ? "DISCORD_ROLE_CREATOR_COMMUNITY_ID" : "DISCORD_ROLE_CREATOR_VIP_ID";
+  }
+  if (brand === "jaypventuresllc") {
+    if (tier === "member") return "DISCORD_ROLE_LABS_MEMBER_ID";
+    if (tier === "premium") return "DISCORD_ROLE_LABS_RESEARCHER_ID";
+    return "DISCORD_ROLE_LABS_STUDENT_ID";
+  }
+  const exhaustiveCheck: never = brand;
+  throw new DiscordRoleConfigurationError(`Unsupported brand: ${String(exhaustiveCheck)}`);
+}
+
 function getConfigForBrand(brand: Brand, env: DiscordRoleEnv): BrandDiscordConfig {
   if (brand === "jaypventures") {
     const guildId = env.DISCORD_GUILD_ID_CREATOR;
     if (!guildId) {
-      throw new Error("Missing required Worker binding: DISCORD_GUILD_ID_CREATOR (brand: jaypventures)");
+      throw new DiscordRoleConfigurationError("Missing required Worker binding: DISCORD_GUILD_ID_CREATOR (brand: jaypventures)");
     }
     return {
       guildId,
@@ -37,7 +57,7 @@ function getConfigForBrand(brand: Brand, env: DiscordRoleEnv): BrandDiscordConfi
   } else if (brand === "jaypventuresllc") {
     const guildId = env.DISCORD_GUILD_ID_LABS;
     if (!guildId) {
-      throw new Error("Missing required Worker binding: DISCORD_GUILD_ID_LABS (brand: jaypventuresllc)");
+      throw new DiscordRoleConfigurationError("Missing required Worker binding: DISCORD_GUILD_ID_LABS (brand: jaypventuresllc)");
     }
     return {
       guildId,
@@ -49,7 +69,7 @@ function getConfigForBrand(brand: Brand, env: DiscordRoleEnv): BrandDiscordConfi
     };
   } else {
     const exhaustiveCheck: never = brand;
-    throw new Error(`Unsupported brand: ${String(exhaustiveCheck)}`);
+    throw new DiscordRoleConfigurationError(`Unsupported brand: ${String(exhaustiveCheck)}`);
   }
 }
 
@@ -78,7 +98,9 @@ export function reconcileRoles(params: {
   if (params.status === "active") {
     const expected = getRoleIdsForBrandTier(params.brand, params.tier, params.env);
     if (expected.length === 0) {
-      throw new Error(`Missing required Worker binding for role: brand=${params.brand}, tier=${params.tier}`);
+      throw new DiscordRoleConfigurationError(
+        `Missing required Worker binding: ${requiredRoleBindingName(params.brand, params.tier)} (brand=${params.brand}, tier=${params.tier})`
+      );
     }
     const remove = params.currentRoles.filter((roleId) => allBrandRoles.includes(roleId) && !expected.includes(roleId));
     const add = expected.filter((roleId) => !params.currentRoles.includes(roleId));
