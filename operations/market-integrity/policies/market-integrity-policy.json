@@ -1,28 +1,37 @@
 ﻿{
-  "system": "JPV-OS Market Integrity Stabilization, Anti-Corruption, and Environmental Responsibility Framework",
-  "mode": "observe_verify_alert_document",
-  "core_environmental_rule": "No stabilization action is valid if it creates hidden environmental harm, worsens public health, or shifts risk onto vulnerable communities.",
-  "prohibited_actions": [
-    "autonomous trading",
-    "market manipulation",
-    "sentiment manipulation",
-    "political targeting",
-    "coercive behavioral intervention",
-    "unauthorized surveillance",
-    "black-box enforcement",
-    "environmental harm externalization",
-    "public-health harm concealment",
-    "short-term economic gains dependent on ecological damage"
-  ],
-  "required_controls": {
-    "human_review": true,
-    "explainability": true,
-    "evidence_snapshots": true,
-    "source_attribution": true,
-    "rollback_supported": true,
-    "public_safety_priority": true,
-    "environmental_responsibility_required": true,
-    "community_health_required": true,
-    "environmental_justice_required": true
-  }
+    "system":  "JPV-OS Market Integrity Stabilization, Anti-Corruption, and Environmental Responsibility Framework",
+    "mode":  "observe_verify_alert_document",
+    "core_environmental_rule":  "No stabilization action is valid if it creates hidden environmental harm, worsens public health, or shifts risk onto vulnerable communities.",
+    "prohibited_actions":  [
+                               "autonomous trading",
+                               "market manipulation",
+                               "sentiment manipulation",
+                               "political targeting",
+                               "coercive behavioral intervention",
+                               "unauthorized surveillance",
+                               "black-box enforcement",
+                               "environmental harm externalization",
+                               "public-health harm concealment",
+                               "short-term economic gains dependent on ecological damage"
+                           ],
+    "required_controls":  {
+                              "human_review":  true,
+                              "explainability":  true,
+                              "evidence_snapshots":  true,
+                              "source_attribution":  true,
+                              "rollback_supported":  true,
+                              "public_safety_priority":  true,
+                              "environmental_responsibility_required":  true,
+                              "community_health_required":  true,
+                              "environmental_justice_required":  true
+                          },
+    "integrity_alignment_framework":  {
+                                          "voluntary_participation_required":  true,
+                                          "evidence_required":  true,
+                                          "appeals_required":  true,
+                                          "blacklisting_prohibited":  true,
+                                          "anti_competitive_behavior_prohibited":  true,
+                                          "political_targeting_prohibited":  true,
+                                          "explainability_required":  true
+                                      }
 }

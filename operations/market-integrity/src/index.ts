@@ -1,4 +1,5 @@
-﻿import fs from "node:fs";
+﻿import { assessIntegrityAlignment, IntegrityAlignmentSignal } from "./integrityAlignment";
+import fs from "node:fs";
 import path from "node:path";
 import { assessMarketIntegrity, MarketSignal } from "./assessMarketIntegrity";
 import { assessEconomicStabilization, MacroStabilitySignal } from "./economicStabilization";
@@ -45,7 +46,7 @@ const environmentalSignal: EnvironmentalResponsibilitySignal = {
   corporateResponsibilityRisk: Number(process.env.JPV_ENV_CORPORATE_RESPONSIBILITY_RISK ?? 0.55)
 };
 
-const marketAssessments = marketSignals.map(assessMarketIntegrity);
+const integrityAssessment,`r`n      marketAssessments = marketSignals.map(assessMarketIntegrity);
 const macroAssessment = assessEconomicStabilization(macroSignal);
 const environmentalAssessment = assessEnvironmentalResponsibility(environmentalSignal);
 
@@ -55,9 +56,9 @@ const stabilizationApproved =
   environmentalAssessment.level !== "UNACCEPTABLE_RISK";
 
 const evidence = writeEvidenceSnapshot({
-  marketAssessments,
+  integrityAssessment,`r`n      marketAssessments,
   macroAssessment,
-  environmentalAssessment,
+  environmentalAssessment,`r`n  integrityAssessment,
   stabilizationApproved
 });
 
@@ -88,8 +89,8 @@ fs.writeFileSync(
       evidenceHash: evidence.sha256,
       stabilizationApproved,
       macroAssessment,
-      environmentalAssessment,
-      marketAssessments
+      environmentalAssessment,`r`n  integrityAssessment,
+      integrityAssessment,`r`n      marketAssessments
     },
     null,
     2
@@ -103,3 +104,4 @@ console.log(`Environmental level: ${environmentalAssessment.level}`);
 console.log(`Stabilization approved: ${stabilizationApproved}`);
 console.log(`Evidence hash: ${evidence.sha256}`);
 console.log(`Report: ${reportPath}`);
+

@@ -21,7 +21,8 @@
                     "governance:freeze-check":  "node scripts/governance/check-deployment-freeze.mjs",
                     "market:integrity":  "tsx operations/market-integrity/src/index.ts",
                     "market:integrity:test":  "tsx operations/market-integrity/tests/market-integrity.test.ts",
-                    "market:environmental-responsibility:test":  "tsx operations/market-integrity/tests/environmental-responsibility.test.ts"
+                    "market:environmental-responsibility:test":  "tsx operations/market-integrity/tests/environmental-responsibility.test.ts",
+                    "market:integrity-alignment:test":  "tsx operations/market-integrity/tests/integrity-alignment.test.ts"
                 },
     "devDependencies":  {
                             "@cloudflare/workers-types":  "^4.20260504.1",
