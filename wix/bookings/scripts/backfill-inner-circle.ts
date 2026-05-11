@@ -151,6 +151,16 @@ async function run() {
     return;
   }
 
+  if (process.env.JPV_ALLOW_BACKFILL_HTTP_TRANSPORT !== "true") {
+    throw new Error(
+      "Backfill transport blocked. Set JPV_ALLOW_BACKFILL_HTTP_TRANSPORT=true only for approved operational backfills."
+    );
+  }
+
+  if (!baseUrl.startsWith("https://")) {
+    throw new Error("Backfill endpoint must use HTTPS.");
+  }
+
   const response = await fetch(`${baseUrl}/inner-circle/backfill`, {
     method: "POST",
     headers: {

@@ -17,7 +17,7 @@ function createRawEnv() {
 
 async function fetchRoute(pathname: string, init?: RequestInit) {
   const request = new Request(`https://jaypventuresllc.com${pathname}`, init);
-  return worker.fetch(request as never, createRawEnv(), {} as ExecutionContext);
+  return worker.fetch(request as never, createRawEnv());
 }
 
 describe("flagship site worker", () => {
