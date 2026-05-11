@@ -43,5 +43,8 @@
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "webpack": "^5.106.2"
+  },
+  "overrides": {
+    "postcss": "8.5.10"
   }
 }
