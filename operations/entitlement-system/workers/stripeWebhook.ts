@@ -5,6 +5,7 @@ import { handleStripeWebhook } from "../routes/webhook.route";
 import { archiveEvent, sendTelemetry, type WorkerEventMessage } from "../services/azure/observability.service";
 import { getEntitlement } from "../services/entitlement.service";
 import { syncDiscordRoles } from "../services/discordSync.service";
+import { syncDiscordRole, DiscordReflectionError } from "../services/discordEntitlementReflection.service";
 
 function json(body: unknown, status = 200): Response {
   return new Response(JSON.stringify(body, null, 2), {
@@ -65,6 +66,32 @@ export default {
   async queue(batch: MessageBatch<WorkerEventMessage>, rawEnv: Record<string, unknown>, ctx: ExecutionContext): Promise<void> {
     const env = getEnv(rawEnv);
     for (const message of batch.messages) {
+      if (message.body.type === "STRIPE_ENTITLEMENT_SYNCED") {
+        try {
+          const { subject_id, discord_user_id, tier, action } = message.body.payload;
+          await syncDiscordRole(env, { subject_id, discord_user_id, tier, action });
+          message.ack();
+        } catch (error) {
+          if (error instanceof DiscordReflectionError) {
+            ctx.waitUntil(sendTelemetry(env, "discord_reflection_fail_closed", {
+              code: error.code,
+              error: error.message,
+              subject_id: message.body.payload.subject_id,
+              tier: message.body.payload.tier,
+              action: message.body.payload.action,
+            }));
+            message.ack();
+          } else {
+            ctx.waitUntil(sendTelemetry(env, "discord_reflection_transient_error", {
+              error: error instanceof Error ? error.message : String(error),
+              subject_id: message.body.payload.subject_id,
+            }));
+            message.retry();
+          }
+        }
+        continue;
+      }
+
       try {
         await processQueueMessage(message.body, env);
         message.ack();

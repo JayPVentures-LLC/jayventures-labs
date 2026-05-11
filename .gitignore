@@ -4,6 +4,13 @@ coverage/
 *.log
 npm-debug.log*
 
+# Add .next/ to .gitignore to prevent tracking build cache
+.next/
+out/
+
+# TypeScript build info
+*.tsbuildinfo
+
 # Python
 .venv/
 __pycache__/

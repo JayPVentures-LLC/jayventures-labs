@@ -1,5 +1,4 @@
 export interface Env {
-    JPV_INTERNAL_TEST_TOKEN?: string;
   ENVIRONMENT: "local" | "dev" | "prod";
 
   INTAKE_HMAC_SECRET: string;
@@ -30,6 +29,7 @@ export interface Env {
   CREATOR_DATA_KV?: KVNamespace;
   INNER_CIRCLE_MEMBER_KV?: KVNamespace;
   ADMIN_UPLOAD_TOKEN?: string;
+  JPV_INTERNAL_TEST_TOKEN?: string;
   WORKER_EVENTS_QUEUE?: Queue<unknown>;
 
   DISCORD_BOT_TOKEN?: string;

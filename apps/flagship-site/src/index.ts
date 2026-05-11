@@ -36,11 +36,11 @@ async function setEntitlement(
   );
 }
 
-type RequireAccessResult =
-  | { allowed: true; subject: string; entitlement: EntitlementRecord }
-  | { allowed: false; response: Response };
+type AccessDenied = { allowed: false; response: Response };
+type AccessGranted = { allowed: true; subject: string; entitlement: EntitlementRecord };
+type AccessResult = AccessDenied | AccessGranted;
 
-async function requireAccess(request: Request, env: Env): Promise<RequireAccessResult> {
+async function requireAccess(request: Request, env: Env): Promise<AccessResult> {
   const subject =
     request.headers.get("x-jpv-subject") ||
     new URL(request.url).searchParams.get("subject");

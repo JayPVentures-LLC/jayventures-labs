@@ -1,21 +1,48 @@
-# Shared
+# ============================================================
+# JayPVentures Entitlement Worker — Multi-Cloud Dev Vars
+# Copy to .dev.vars and fill in real values before running locally.
+# NEVER commit .dev.vars — it is in .gitignore.
+# Production values are set as Cloudflare Worker secrets via:
+#   npx wrangler secret put <VAR_NAME> --config operations/entitlement-system/wrangler.toml
+# ============================================================
+
+# Shared / Internal
 INTERNAL_SYNC_TOKEN="replace_me"
+LOG_LEVEL="info"
 
-# Discord bot
+# ---- Stripe (billing source of truth) ----------------------
+STRIPE_WEBHOOK_SECRET="replace_me"
+STRIPE_SECRET_KEY="replace_me"
+
+# ---- Discord (role reflection) -----------------------------
 DISCORD_BOT_TOKEN="replace_me"
+DISCORD_BOT_TOKEN_SECRET_NAME="discord-bot-token"
+DISCORD_GUILD_ID="replace_me"
+DISCORD_ROLE_COMMUNITY_ID="replace_me"
+DISCORD_ROLE_VIP_ID="replace_me"
 
-# jaypventures Discord
-DISCORD_GUILD_ID_CREATOR="replace_me"
-DISCORD_ROLE_CREATOR_COMMUNITY_ID="replace_me"
-DISCORD_ROLE_CREATOR_VIP_ID="replace_me"
+# ---- Discord OAuth / activation flow -----------------------
+OAUTH_STATE_SECRET="replace_me"
+ACTIVATION_TOKEN_SECRET="replace_me"
+PUBLIC_BASE_URL="https://jaypventuresllc.com"
+DISCORD_OAUTH_REDIRECT_URI="https://jaypventuresllc.com/auth/discord/callback"
+ENTITLEMENT_ACTIVATION_URL="https://jaypventuresllc.com/activate"
 
-# jaypVLabs Discord
-DISCORD_GUILD_ID_LABS="replace_me"
-DISCORD_ROLE_LABS_MEMBER_ID="replace_me"
-DISCORD_ROLE_LABS_RESEARCHER_ID="replace_me"
-DISCORD_ROLE_LABS_STUDENT_ID="replace_me"
+# ---- Admin --------------------------------------------------
+ADMIN_OVERRIDE_KEY="replace_me"
+ADMIN_OVERRIDE_KEY_SECRET_NAME="admin-override-key"
 
-# Microsoft Teams / JayPVentures LLC
+# ---- Azure Key Vault / App Insights / Archive ---------------
+AZURE_KEY_VAULT_URL="https://replace-me.vault.azure.net"
+AZURE_TENANT_ID="replace_me"
+AZURE_CLIENT_ID="replace_me"
+AZURE_CLIENT_SECRET="replace_me"
+APPINSIGHTS_CONNECTION_STRING="InstrumentationKey=replace_me;IngestionEndpoint=https://replace-me.in.applicationinsights.azure.com/;LiveEndpoint=https://replace-me.livediagnostics.monitor.azure.com/"
+AZURE_ARCHIVE_ENDPOINT="https://replace-me.example/archive/entitlements"
+AZURE_ARCHIVE_TOKEN="replace_me"
+AZURE_ARCHIVE_TOKEN_SECRET_NAME="azure-archive-token"
+
+# ---- Microsoft Teams / JayPVentures LLC ---------------------
 MS_TENANT_ID="replace_me"
 MS_CLIENT_ID="replace_me"
 MS_CLIENT_SECRET="replace_me"
@@ -23,5 +50,3 @@ MS_TEAM_ID_LLC="replace_me"
 MS_GROUP_ID_LLC_CLIENTS="replace_me"
 MS_GROUP_ID_LLC_PARTNERS="replace_me"
 MS_GROUP_ID_LLC_ENTERPRISE="replace_me"
-
-LOG_LEVEL="info"

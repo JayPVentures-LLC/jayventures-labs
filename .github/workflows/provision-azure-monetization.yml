@@ -1,0 +1,217 @@
+name: Provision Azure Monetization Stack
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'Action to perform'
+        required: true
+        default: 'validate'
+        type: choice
+        options:
+          - validate
+          - deploy
+          - destroy
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  # ─── 1. JPV-OS Enforcement ───────────────────────────────────────────────────
+  enforce:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm ci
+      - run: npm run jpv:enforce
+
+  # ─── 2. Infrastructure Provisioning ─────────────────────────────────────────
+  provision-infrastructure:
+    needs: enforce
+    runs-on: ubuntu-latest
+    environment: production
+    outputs:
+      gateway_url: ${{ steps.deploy_bicep.outputs.gatewayUrl }}
+      cosmos_endpoint: ${{ steps.deploy_bicep.outputs.cosmosEndpoint }}
+      storage_account: ${{ steps.deploy_bicep.outputs.storageAccountName }}
+      function_app_name: ${{ steps.deploy_bicep.outputs.functionAppName }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Ensure Resource Group
+        run: |
+          az group create \
+            --name rg-jpv-prod-monetization \
+            --location eastus \
+            --tags env=prod project=jpv-os || true
+
+      - name: Validate Bicep Template
+        run: |
+          az deployment group validate \
+            --resource-group rg-jpv-prod-monetization \
+            --template-file azure/infrastructure/main.bicep \
+            --parameters azure/infrastructure/parameters/prod.bicepparam \
+            --parameters gatewayImage="${{ secrets.AZURE_ACR_LOGIN_SERVER }}/jpv-api-gateway:${{ github.sha }}"
+
+      - name: Deploy Bicep Infrastructure
+        id: deploy_bicep
+        if: ${{ github.event.inputs.action == 'deploy' }}
+        run: |
+          OUTPUT=$(az deployment group create \
+            --resource-group rg-jpv-prod-monetization \
+            --template-file azure/infrastructure/main.bicep \
+            --parameters azure/infrastructure/parameters/prod.bicepparam \
+            --parameters gatewayImage="${{ secrets.AZURE_ACR_LOGIN_SERVER }}/jpv-api-gateway:${{ github.sha }}" \
+            --output json)
+
+          echo "gatewayUrl=$(echo $OUTPUT | jq -r '.properties.outputs.gatewayUrl.value')" >> "$GITHUB_OUTPUT"
+          echo "cosmosEndpoint=$(echo $OUTPUT | jq -r '.properties.outputs.cosmosEndpoint.value')" >> "$GITHUB_OUTPUT"
+          echo "storageAccountName=$(echo $OUTPUT | jq -r '.properties.outputs.storageAccountName.value')" >> "$GITHUB_OUTPUT"
+          echo "functionAppName=$(echo $OUTPUT | jq -r '.properties.outputs.functionAppName.value')" >> "$GITHUB_OUTPUT"
+
+  # ─── 3. Build & Push API Gateway Container ───────────────────────────────────
+  build-and-push-gateway:
+    needs: enforce
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.action == 'deploy' }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: ACR Login
+        run: az acr login --name ${{ secrets.AZURE_ACR_NAME }}
+
+      - name: Build and push jpv-api-gateway
+        uses: docker/build-push-action@v6
+        with:
+          context: azure/api-gateway
+          push: true
+          tags: |
+            ${{ secrets.AZURE_ACR_LOGIN_SERVER }}/jpv-api-gateway:${{ github.sha }}
+            ${{ secrets.AZURE_ACR_LOGIN_SERVER }}/jpv-api-gateway:latest
+
+  # ─── 4. Deploy API Gateway Secrets ──────────────────────────────────────────
+  deploy-gateway-secrets:
+    needs: [provision-infrastructure, build-and-push-gateway]
+    runs-on: ubuntu-latest
+    environment: production
+    if: ${{ github.event.inputs.action == 'deploy' }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Inject secrets into Container App
+        run: |
+          az containerapp secret set \
+            --resource-group rg-jpv-prod-monetization \
+            --name jpv-api-gateway \
+            --secrets \
+              stripe-webhook-secret="${{ secrets.STRIPE_WEBHOOK_SECRET }}" \
+              stripe-secret-key="${{ secrets.STRIPE_SECRET_KEY }}" \
+              discord-bot-token="${{ secrets.DISCORD_BOT_TOKEN }}" \
+              discord-guild-id="${{ secrets.DISCORD_GUILD_ID }}" \
+              discord-role-community-id="${{ secrets.DISCORD_ROLE_COMMUNITY_ID }}" \
+              discord-role-vip-id="${{ secrets.DISCORD_ROLE_VIP_ID }}" \
+              jwt-secret="${{ secrets.JPV_JWT_SECRET }}"
+
+          az containerapp update \
+            --resource-group rg-jpv-prod-monetization \
+            --name jpv-api-gateway \
+            --set-env-vars \
+              STRIPE_WEBHOOK_SECRET=secretref:stripe-webhook-secret \
+              STRIPE_SECRET_KEY=secretref:stripe-secret-key \
+              DISCORD_BOT_TOKEN=secretref:discord-bot-token \
+              DISCORD_GUILD_ID=secretref:discord-guild-id \
+              DISCORD_ROLE_COMMUNITY_ID=secretref:discord-role-community-id \
+              DISCORD_ROLE_VIP_ID=secretref:discord-role-vip-id \
+              JWT_SECRET=secretref:jwt-secret
+
+  # ─── 5. Deploy Azure Function ────────────────────────────────────────────────
+  deploy-function:
+    needs: [provision-infrastructure]
+    runs-on: ubuntu-latest
+    environment: production
+    if: ${{ github.event.inputs.action == 'deploy' }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Build event-processor
+        working-directory: azure/functions/event-processor
+        run: |
+          npm ci
+          npm run build
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Deploy Azure Function
+        uses: azure/functions-action@v1
+        with:
+          app-name: ${{ needs.provision-infrastructure.outputs.function_app_name }}
+          package: azure/functions/event-processor
+
+      - name: Inject secrets into Function App
+        run: |
+          az functionapp config appsettings set \
+            --resource-group rg-jpv-prod-monetization \
+            --name jpv-event-processor \
+            --settings \
+              STRIPE_SECRET_KEY="${{ secrets.STRIPE_SECRET_KEY }}" \
+              DISCORD_BOT_TOKEN="${{ secrets.DISCORD_BOT_TOKEN }}" \
+              DISCORD_GUILD_ID="${{ secrets.DISCORD_GUILD_ID }}" \
+              DISCORD_ROLE_COMMUNITY_ID="${{ secrets.DISCORD_ROLE_COMMUNITY_ID }}" \
+              DISCORD_ROLE_VIP_ID="${{ secrets.DISCORD_ROLE_VIP_ID }}"
+
+  # ─── 6. Health Check ─────────────────────────────────────────────────────────
+  health-check:
+    needs: [deploy-gateway-secrets, deploy-function]
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.action == 'deploy' }}
+
+    steps:
+      - name: Wait for Container App to stabilize
+        run: sleep 30
+
+      - name: Health probe
+        run: |
+          GATEWAY_URL="${{ needs.provision-infrastructure.outputs.gateway_url }}"
+          echo "Checking $GATEWAY_URL/health"
+          curl --fail --silent --show-error --max-time 30 "$GATEWAY_URL/health"
+          echo "Health check passed ✅"

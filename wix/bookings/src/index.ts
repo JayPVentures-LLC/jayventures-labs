@@ -56,6 +56,9 @@ async function syncStripeEntitlement(env: any, event: any) {
   const key = userId;
 
   if (activeStatuses.includes(status)) {
+    if (!env.INNER_CIRCLE_MEMBER_KV) {
+      return { ok: false, error: "missing_kv_binding" };
+    }
     const record = {
       user_id: userId,
       tier,
@@ -75,13 +78,12 @@ async function syncStripeEntitlement(env: any, event: any) {
       user_id: userId,
       record
     };
-      if (!env.INNER_CIRCLE_MEMBER_KV) {
-        return Response.json({ error: "KV not configured" }, { status: 500 });
-      }
-
   }
 
   if (inactiveStatuses.includes(status)) {
+    if (!env.INNER_CIRCLE_MEMBER_KV) {
+      return { ok: false, error: "missing_kv_binding" };
+    }
     await env.INNER_CIRCLE_MEMBER_KV.delete(key);
 
     return {
@@ -353,15 +355,15 @@ export default {
         return Response.json({ error: "Unauthorized" }, { status: 401 });
       }
 
-      const body = (await request.json()) as Record<string, unknown>;
-      const userId = body?.user_id as string | undefined;
+      const body = await request.json<{ user_id?: string }>();
+      const userId = body?.user_id;
 
       if (!userId) {
         return Response.json({ error: "missing_user_id" }, { status: 400 });
       }
 
       if (!env.INNER_CIRCLE_MEMBER_KV) {
-        return Response.json({ error: "KV not configured" }, { status: 500 });
+        return Response.json({ error: "service_unavailable", detail: "INNER_CIRCLE_MEMBER_KV not configured" }, { status: 503 });
       }
 
       await env.INNER_CIRCLE_MEMBER_KV.delete(userId);
@@ -383,12 +385,20 @@ export default {
         return Response.json({ error: "Unauthorized" }, { status: 401 });
       }
 
-      const body = (await request.json()) as Record<string, unknown>;
-      const userId = body?.user_id as string | undefined;
-      const tier = (body?.tier as string | undefined) ?? "vip";
+      const body = await request.json<{ user_id?: string; tier?: string }>();
+      const userId = body?.user_id;
+      const tier = body?.tier ?? "vip";
 
       if (!userId) {
         return Response.json({ error: "missing_user_id" }, { status: 400 });
+      }
+
+      if (!env.INNER_CIRCLE_MEMBER_KV) {
+        return Response.json({ error: "service_unavailable", detail: "INNER_CIRCLE_MEMBER_KV not configured" }, { status: 503 });
+      }
+
+      if (!env.INNER_CIRCLE_MEMBER_KV) {
+        return Response.json({ error: "service_unavailable", detail: "INNER_CIRCLE_MEMBER_KV not configured" }, { status: 503 });
       }
 
       const record = {
@@ -398,10 +408,6 @@ export default {
         source: "dev-test",
         created_at: new Date().toISOString()
       };
-
-      if (!env.INNER_CIRCLE_MEMBER_KV) {
-        return Response.json({ error: "KV not configured" }, { status: 500 });
-      }
 
       await env.INNER_CIRCLE_MEMBER_KV.put(userId, JSON.stringify(record));
 
@@ -421,15 +427,15 @@ export default {
         return Response.json({ error: "Unauthorized" }, { status: 401 });
       }
 
-      const body = (await request.json()) as Record<string, unknown>;
-      const userId = body?.user_id as string | undefined;
+      const body = await request.json<{ user_id?: string }>();
+      const userId = body?.user_id;
 
       if (!userId) {
         return Response.json({ error: "missing_user_id" }, { status: 400 });
       }
 
       if (!env.INNER_CIRCLE_MEMBER_KV) {
-        return Response.json({ error: "KV not configured" }, { status: 500 });
+        return Response.json({ error: "service_unavailable", detail: "INNER_CIRCLE_MEMBER_KV not configured" }, { status: 503 });
       }
 
       const entitlement = await env.INNER_CIRCLE_MEMBER_KV.get(userId);
@@ -459,7 +465,7 @@ export default {
       }
 
       if (!env.METRICS_KV) {
-        return Response.json({ error: "KV not configured" }, { status: 500 });
+        return Response.json({ error: "service_unavailable", detail: "METRICS_KV not configured" }, { status: 503 });
       }
 
       const record = await env.METRICS_KV.get("jpv:safety:audit:" + auditId);
@@ -524,7 +530,7 @@ export default {
       const clonedRequestForSafety = request.clone();
 
       try {
-        const safetyPayload = await clonedRequestForSafety.json();
+        const safetyPayload = await clonedRequestForSafety.json<any>();
 
         // LIVE_IDEMPOTENCY_ENFORCEMENT
         const idempotency = await enforceIdempotency(env, safetyPayload);
@@ -575,14 +581,12 @@ export default {
           );
         }
 
-        if (!env.WORKER_EVENTS_QUEUE) {
-          return Response.json({ error: "Queue not configured" }, { status: 500 });
+        if (env.WORKER_EVENTS_QUEUE) {
+          await env.WORKER_EVENTS_QUEUE.send({
+            type: "STRIPE_ENTITLEMENT_SYNCED",
+            result: entitlementSync
+          });
         }
-
-        await env.WORKER_EVENTS_QUEUE.send({
-          type: "STRIPE_ENTITLEMENT_SYNCED",
-          result: entitlementSync
-        });
       }
 
 

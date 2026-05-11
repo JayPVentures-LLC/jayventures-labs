@@ -23,6 +23,8 @@ env:
 jobs:
   saml-onboarding:
     runs-on: windows-latest
+    permissions:
+      contents: read
     environment:
       name: azure-identity-production
       url: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
