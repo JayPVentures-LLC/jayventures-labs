@@ -1,0 +1,21 @@
+﻿{
+  "system": "JPV-OS Market Integrity Stabilization and Anti-Corruption Framework",
+  "mode": "observe_verify_alert_document",
+  "prohibited_actions": [
+    "autonomous trading",
+    "market manipulation",
+    "sentiment manipulation",
+    "political targeting",
+    "coercive behavioral intervention",
+    "unauthorized surveillance",
+    "black-box enforcement"
+  ],
+  "required_controls": {
+    "human_review": true,
+    "explainability": true,
+    "evidence_snapshots": true,
+    "source_attribution": true,
+    "rollback_supported": true,
+    "public_safety_priority": true
+  }
+}
