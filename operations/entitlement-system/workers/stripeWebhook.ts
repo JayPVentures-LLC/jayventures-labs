@@ -68,7 +68,7 @@ export default {
       try {
         await processQueueMessage(message.body, env);
         message.ack();
-      } catch {
+      } catch (error) {
         ctx.waitUntil(sendTelemetry(env, "entitlement_queue_failure", {
           type: message.body.type,
           error: error instanceof Error ? error.message : String(error),
