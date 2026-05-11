@@ -1,11 +1,52 @@
 version: 2
 
 updates:
+  # Root npm dependencies (Next.js, Vitest, Cloudflare Workers)
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "weekly"
+    groups:
+      typescript:
+        patterns:
+          - "typescript"
+          - "@types/*"
+          - "ts-node"
+      testing:
+        patterns:
+          - "vitest"
+          - "@vitest/*"
+      react:
+        patterns:
+          - "react"
+          - "react-dom"
+          - "next"
+          - "@types/react"
+      linting:
+        patterns:
+          - "eslint"
+          - "eslint-*"
+          - "@eslint/*"
+          - "@typescript-eslint/*"
 
+  # JPV OS Enforcement Engine npm dependencies
+  - package-ecosystem: "npm"
+    directory: "/operations/jpv_os_enforcement"
+    schedule:
+      interval: "weekly"
+    groups:
+      typescript:
+        patterns:
+          - "typescript"
+          - "@types/*"
+          - "ts-node"
+      react:
+        patterns:
+          - "react"
+          - "react-dom"
+          - "next"
+
+  # GitHub Actions version updates
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
