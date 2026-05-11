@@ -1,9 +1,9 @@
-﻿import { assessIntegrityAlignment, IntegrityAlignmentSignal } from "./integrityAlignment";
-import fs from "node:fs";
+﻿import fs from "node:fs";
 import path from "node:path";
 import { assessMarketIntegrity, MarketSignal } from "./assessMarketIntegrity";
 import { assessEconomicStabilization, MacroStabilitySignal } from "./economicStabilization";
 import { assessEnvironmentalResponsibility, EnvironmentalResponsibilitySignal } from "./environmentalResponsibility";
+import { assessIntegrityAlignment, IntegrityAlignmentSignal } from "./integrityAlignment";
 import { writeEvidenceSnapshot } from "./evidenceSnapshot";
 
 const marketSignals: MarketSignal[] = [
@@ -46,19 +46,41 @@ const environmentalSignal: EnvironmentalResponsibilitySignal = {
   corporateResponsibilityRisk: Number(process.env.JPV_ENV_CORPORATE_RESPONSIBILITY_RISK ?? 0.55)
 };
 
-const integrityAssessment,`r`n      marketAssessments = marketSignals.map(assessMarketIntegrity);
+const integritySignal: IntegrityAlignmentSignal = {
+  organization: "Sample Organization",
+  timestamp: new Date().toISOString(),
+  governanceTransparency: 0.85,
+  environmentalResponsibility: 0.82,
+  securityMaturity: 0.90,
+  antiCorruptionCompliance: 0.88,
+  laborAndHumanRights: 0.84,
+  financialDisclosureIntegrity: 0.86,
+  aiExplainability: 0.75,
+  interoperabilitySupport: 0.92,
+  incidentResponseDiscipline: 0.91,
+  publicRiskDisclosure: 0.80,
+  evidenceProvided: true,
+  humanReviewed: true
+};
+
+const marketAssessments = marketSignals.map(assessMarketIntegrity);
 const macroAssessment = assessEconomicStabilization(macroSignal);
 const environmentalAssessment = assessEnvironmentalResponsibility(environmentalSignal);
+const integrityAssessment = assessIntegrityAlignment(integritySignal);
 
 const stabilizationApproved =
   macroAssessment.autonomousMarketInterventionAllowed === false &&
   environmentalAssessment.harmExternalizationAllowed === false &&
-  environmentalAssessment.level !== "UNACCEPTABLE_RISK";
+  environmentalAssessment.level !== "UNACCEPTABLE_RISK" &&
+  integrityAssessment.blacklistingAllowed === false &&
+  integrityAssessment.politicalTargetingAllowed === false &&
+  integrityAssessment.antiCompetitiveEnforcementAllowed === false;
 
 const evidence = writeEvidenceSnapshot({
-  integrityAssessment,`r`n      marketAssessments,
+  marketAssessments,
   macroAssessment,
-  environmentalAssessment,`r`n  integrityAssessment,
+  environmentalAssessment,
+  integrityAssessment,
   stabilizationApproved
 });
 
@@ -74,9 +96,11 @@ fs.writeFileSync(
       generatedAt: new Date().toISOString(),
       doctrine: "observe_verify_alert_document",
       stabilizationGoal:
-        "Reduce fragility, improve transparency, protect participants, and reject hidden environmental harm.",
+        "Reduce fragility, improve transparency, protect participants, support integrity-aligned organizations, and reject hidden environmental harm.",
       coreEnvironmentalRule:
         "No stabilization action is valid if it creates hidden environmental harm, worsens public health, or shifts risk onto vulnerable communities.",
+      coreIntegrityAlignmentRule:
+        "Alignment is earned through transparent operational integrity, not affiliation, influence, size, or political position.",
       prohibited: [
         "autonomous trading",
         "market manipulation",
@@ -84,13 +108,17 @@ fs.writeFileSync(
         "coercive intervention",
         "unsupported financial prediction",
         "environmental harm externalization",
-        "public-health harm concealment"
+        "public-health harm concealment",
+        "political targeting",
+        "blacklisting",
+        "anti-competitive exclusion"
       ],
       evidenceHash: evidence.sha256,
       stabilizationApproved,
       macroAssessment,
-      environmentalAssessment,`r`n  integrityAssessment,
-      integrityAssessment,`r`n      marketAssessments
+      environmentalAssessment,
+      integrityAssessment,
+      marketAssessments
     },
     null,
     2
@@ -98,10 +126,10 @@ fs.writeFileSync(
   "utf8"
 );
 
-console.log("JPV-OS Market Integrity, Economic Stabilization, and Environmental Responsibility report generated.");
+console.log("JPV-OS Market Integrity, Economic Stabilization, Environmental Responsibility, and Integrity Alignment report generated.");
 console.log(`Macro level: ${macroAssessment.level}`);
 console.log(`Environmental level: ${environmentalAssessment.level}`);
+console.log(`Integrity tier: ${integrityAssessment.tier}`);
 console.log(`Stabilization approved: ${stabilizationApproved}`);
 console.log(`Evidence hash: ${evidence.sha256}`);
 console.log(`Report: ${reportPath}`);
-
