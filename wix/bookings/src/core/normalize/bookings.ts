@@ -22,6 +22,7 @@ function parseRevenue(price?: string | number): number | undefined {
   if (price === undefined || price === null) return undefined;
   if (typeof price === "number") return price;
   const cleaned = price.replace(/[^0-9.-]/g, "").trim();
+  if (!/^-?(?:\d+|\d*\.\d+)$/.test(cleaned)) return undefined;
   const value = parseFloat(cleaned);
   return Number.isFinite(value) ? value : undefined;
 }
