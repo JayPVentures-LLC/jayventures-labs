@@ -30,6 +30,7 @@ jobs:
         run: npm run jpv:enforce
 
   deploy:
+    if: ${{ secrets.AZURE_CLIENT_ID != '' && secrets.AZURE_TENANT_ID != '' && secrets.AZURE_SUBSCRIPTION_ID != '' }}
     needs: enforce
     runs-on: ubuntu-latest
     environment: production
