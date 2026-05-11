@@ -7,6 +7,14 @@ concurrency:
   group: deploy-website-${{ github.ref }}
   cancel-in-progress: false
 
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+
 jobs:
   deploy-website:
     runs-on: ubuntu-latest

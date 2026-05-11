@@ -12,6 +12,14 @@ on:
         required: true
         default: "JPV-OS Partner SaaS"
 
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+
 jobs:
   saml-onboarding:
     runs-on: windows-latest

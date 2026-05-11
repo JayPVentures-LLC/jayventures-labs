@@ -17,6 +17,14 @@ concurrency:
   group: deploy-workers-${{ github.ref }}
   cancel-in-progress: false
 
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+
 jobs:
   deploy-entitlement:
     if: ${{ github.event.inputs.target == 'both' || github.event.inputs.target == 'entitlement' }}
