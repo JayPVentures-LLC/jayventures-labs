@@ -21,7 +21,7 @@
     "governance:freeze-check": "node scripts/governance/check-deployment-freeze.mjs"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20260504.1",
+    "@cloudflare/workers-types": "^4.20260511.1",
     "@eslint/js": "^9.39.4",
     "@types/js-yaml": "^4.0.9",
     "@types/node": "^25.6.0",
