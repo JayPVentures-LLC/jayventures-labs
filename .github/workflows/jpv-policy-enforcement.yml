@@ -26,3 +26,6 @@ jobs:
 
       - name: Run JPV-OS policy enforcement gate
         run: node scripts/jpv-policy-enforcement.cjs
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true

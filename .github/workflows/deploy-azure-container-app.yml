@@ -12,6 +12,10 @@ on:
       - "package.json"
       - "package-lock.json"
 
+
+permissions:
+  contents: read
+
 jobs:
   enforce:
     runs-on: ubuntu-latest
@@ -64,3 +68,6 @@ jobs:
           fi
 
           curl --fail --silent --show-error "${{ secrets.AZURE_HEALTHCHECK_URL }}"
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
