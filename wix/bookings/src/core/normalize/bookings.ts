@@ -21,7 +21,7 @@ function extractTier(serviceName: string): Tier {
 function parseRevenue(price?: string | number): number | undefined {
   if (price === undefined || price === null) return undefined;
   if (typeof price === "number") return price;
-  const cleaned = price.replace("$", "").replace(",", "").trim();
+  const cleaned = price.replace(/[^0-9.-]/g, "").trim();
   const value = parseFloat(cleaned);
   return Number.isFinite(value) ? value : undefined;
 }

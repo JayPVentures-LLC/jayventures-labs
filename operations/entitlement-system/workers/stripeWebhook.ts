@@ -37,8 +37,8 @@ export default {
     try {
       env = getEnv(rawEnv);
       (globalThis as { LOG_LEVEL?: string }).LOG_LEVEL = env.LOG_LEVEL;
-    } catch (error) {
-      return json({ error: error instanceof Error ? error.message : String(error) }, 500);
+    } catch {
+      return json({ error: "Worker configuration failed" }, 500);
     }
 
     const url = new URL(request.url);
@@ -68,7 +68,7 @@ export default {
       try {
         await processQueueMessage(message.body, env);
         message.ack();
-      } catch (error) {
+      } catch {
         ctx.waitUntil(sendTelemetry(env, "entitlement_queue_failure", {
           type: message.body.type,
           error: error instanceof Error ? error.message : String(error),
