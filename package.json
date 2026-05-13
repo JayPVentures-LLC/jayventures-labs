@@ -18,7 +18,11 @@
     "validate:deploy:bookings": "node scripts/validate-deploy-config.mjs wix/bookings/wrangler.toml",
     "validate:deploy:entitlement": "node scripts/validate-deploy-config.mjs operations/entitlement-system/wrangler.toml",
     "validate:deploy:website": "node scripts/validate-deploy-config.mjs apps/flagship-site/wrangler.toml",
-    "governance:freeze-check": "node scripts/governance/check-deployment-freeze.mjs"
+    "governance:freeze-check": "node scripts/governance/check-deployment-freeze.mjs",
+    "market:integrity": "tsx operations/market-integrity/src/index.ts",
+    "market:integrity:test": "tsx operations/market-integrity/tests/market-integrity.test.ts",
+    "market:environmental-responsibility:test": "tsx operations/market-integrity/tests/environmental-responsibility.test.ts",
+    "market:integrity-alignment:test": "tsx operations/market-integrity/tests/integrity-alignment.test.ts"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20260504.1",
@@ -34,6 +38,7 @@
     "eslint-plugin-react": "^7.37.5",
     "js-yaml": "^4.1.1",
     "ts-node": "^10.9.2",
+    "tsx": "^4.19.2",
     "typescript": "^6.0.3",
     "vitest": "^4.1.5"
   },

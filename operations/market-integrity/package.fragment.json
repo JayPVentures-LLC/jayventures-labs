@@ -1,0 +1,14 @@
+﻿{
+  "name": "@jpv-os/market-integrity",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "market:integrity": "tsx operations/market-integrity/src/index.ts",
+    "market:integrity:test": "tsx operations/market-integrity/tests/market-integrity.test.ts"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.2",
+    "typescript": "^6.0.3"
+  }
+}

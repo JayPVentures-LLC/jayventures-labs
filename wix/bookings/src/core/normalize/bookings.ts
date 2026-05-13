@@ -21,8 +21,21 @@ function extractTier(serviceName: string): Tier {
 function parseRevenue(price?: string | number): number | undefined {
   if (price === undefined || price === null) return undefined;
   if (typeof price === "number") return price;
-  const cleaned = price.replace("$", "").replace(",", "").trim();
-  const value = parseFloat(cleaned);
+
+  const trimmed = price.trim();
+  if (trimmed === "") return undefined;
+
+  // Accept only expected price-format characters; reject anything else
+  // instead of stripping it and potentially changing the numeric value.
+  if (!/^[\d\s,.\-+$€£¥]+$/.test(trimmed)) return undefined;
+
+  // Remove only known-safe formatting characters after validation.
+  // Keep behavior consistent with the allowlist by stripping commas and
+  // a leading plus sign before validating the numeric format.
+  const normalized = trimmed.replace(/[\s,$€£¥]/g, "").replace(/^\+/, "");
+  if (!/^-?(?:\d+|\d*\.\d+)$/.test(normalized)) return undefined;
+
+  const value = parseFloat(normalized);
   return Number.isFinite(value) ? value : undefined;
 }
 

@@ -38,7 +38,9 @@ export default {
       env = getEnv(rawEnv);
       (globalThis as { LOG_LEVEL?: string }).LOG_LEVEL = env.LOG_LEVEL;
     } catch (error) {
-      return json({ error: error instanceof Error ? error.message : String(error) }, 500);
+      // Log the actual error server-side for diagnostics while returning generic message to client
+      console.error("Worker configuration failed during getEnv:", error);
+      return json({ error: "Worker configuration failed" }, 500);
     }
 
     const url = new URL(request.url);
