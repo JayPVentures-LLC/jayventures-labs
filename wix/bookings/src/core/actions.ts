@@ -24,6 +24,13 @@ export type ActionPlan = {
   actions: AccessAction[];
 };
 
+export type PersistActionPlanResult = {
+  attempted: boolean;
+  succeeded: boolean;
+  key: string | null;
+  error: string | null;
+};
+
 export function planActions(record: CRMRecord): ActionPlan {
   const actions: AccessAction[] = [];
 
@@ -89,14 +96,39 @@ export function planActions(record: CRMRecord): ActionPlan {
   };
 }
 
-export async function persistActionPlan(env: Env, plan: ActionPlan): Promise<void> {
-  if (!env.CREATOR_DATA_KV) return;
+export async function persistActionPlan(env: Env, plan: ActionPlan): Promise<PersistActionPlanResult> {
+  const key = `action_plan:${plan.idempotencyKey}`;
 
-  await env.CREATOR_DATA_KV.put(
-    `action_plan:${plan.idempotencyKey}`,
-    JSON.stringify({
-      ...plan,
-      createdAt: new Date().toISOString(),
-    }),
-  );
+  if (!env.CREATOR_DATA_KV) {
+    return {
+      attempted: true,
+      succeeded: false,
+      key,
+      error: "CREATOR_DATA_KV unavailable",
+    };
+  }
+
+  try {
+    await env.CREATOR_DATA_KV.put(
+      key,
+      JSON.stringify({
+        ...plan,
+        createdAt: new Date().toISOString(),
+      }),
+    );
+
+    return {
+      attempted: true,
+      succeeded: true,
+      key,
+      error: null,
+    };
+  } catch (error) {
+    return {
+      attempted: true,
+      succeeded: false,
+      key,
+      error: error instanceof Error ? error.message : "Unknown persistence error",
+    };
+  }
 }
