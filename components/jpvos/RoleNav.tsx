@@ -80,8 +80,13 @@ export function RoleNav({
   const handleNavigate = (href: string) => {
     if (onNavigate) {
       onNavigate(href);
+<<<<<<< HEAD
     } else if (typeof globalThis !== 'undefined') {
       globalThis.location.href = href;
+=======
+    } else if (typeof globalThis !== 'undefined') {
+      globalThis.location.href = href;
+>>>>>>> origin/main
     }
     setMobileMenuOpen(false);
   };
@@ -361,4 +366,7 @@ export function RoleNav({
 }
 
 export default RoleNav;
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
