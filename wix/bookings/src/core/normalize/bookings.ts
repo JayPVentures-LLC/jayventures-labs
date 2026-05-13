@@ -32,7 +32,7 @@ function parseRevenue(price?: string | number): number | undefined {
   // Remove only known-safe formatting characters after validation.
   // Keep behavior consistent with the allowlist by stripping commas and
   // a leading plus sign before validating the numeric format.
-  const normalized = trimmed.replace(/[\s,$€£¥,]/g, "").replace(/^\+/, "");
+  const normalized = trimmed.replace(/[\s,$€£¥]/g, "").replace(/^\+/, "");
   if (!/^-?(?:\d+|\d*\.\d+)$/.test(normalized)) return undefined;
 
   const value = parseFloat(normalized);
