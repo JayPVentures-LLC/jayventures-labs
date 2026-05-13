@@ -24,3 +24,4 @@ jobs:
         run: |
           curl --fail --silent --show-error "${{ secrets.AZURE_HEALTHCHECK_URL }}"
 
+
