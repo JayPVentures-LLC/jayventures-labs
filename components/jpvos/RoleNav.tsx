@@ -81,7 +81,7 @@ export function RoleNav({
     if (onNavigate) {
       onNavigate(href);
     } else if (typeof globalThis !== 'undefined') {
-      globalThis.location.href = href;
+      globalThis.location.assign(href);
     }
     setMobileMenuOpen(false);
   };
