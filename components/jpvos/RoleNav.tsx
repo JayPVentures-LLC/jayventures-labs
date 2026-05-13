@@ -82,10 +82,9 @@ export function RoleNav({
       onNavigate(href);
     } else if (
       typeof globalThis !== 'undefined' &&
-      typeof window !== 'undefined' &&
-      typeof window.location?.assign === 'function'
+      typeof onNavigate === 'function'
     ) {
-      window.location.assign(href);
+      onNavigate(href);
     }
     setMobileMenuOpen(false);
   };
@@ -365,6 +364,7 @@ export function RoleNav({
 }
 
 export default RoleNav;
+
 
 
 
