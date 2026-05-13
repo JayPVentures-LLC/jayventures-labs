@@ -80,7 +80,7 @@ export function RoleNav({
   const handleNavigate = (href: string) => {
     if (onNavigate) {
       onNavigate(href);
-    } else if (typeof window !== 'undefined') {
+    } else if (typeof globalThis !== 'undefined') {
       globalThis.location.href = href;
     }
     setMobileMenuOpen(false);
