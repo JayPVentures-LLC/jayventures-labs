@@ -78,15 +78,9 @@ export function RoleNav({
   const filteredItems = items.filter((item) => hasAccess(item, currentRole));
 
   const handleNavigate = (href: string) => {
-    if (onNavigate) {
-      onNavigate(href);
-    } else if (
-      typeof globalThis !== 'undefined' &&
-      typeof onNavigate === 'function'
-    ) {
+    if (typeof onNavigate === 'function') {
       onNavigate(href);
     }
-    setMobileMenuOpen(false);
   };
 
   const navStyle: React.CSSProperties = {
@@ -364,6 +358,7 @@ export function RoleNav({
 }
 
 export default RoleNav;
+
 
 
 
