@@ -104,7 +104,7 @@ export function buildCrmRecord(input: CRMRecord): CRMRecord & {
               ? "Manual"
               : "Unknown",
     revenueConfidence:
-      direct !== undefined && direct !== null && direct > 0
+      direct !== undefined && direct > 0
         ? "direct"
         : fallback > 0
           ? "catalog"
