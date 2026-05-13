@@ -22,9 +22,9 @@ A new repository must have:
 
 Active repositories must maintain:
 
-- clean default branch
+- clean protected default branch
 - protected main branch where available
-- pull-request based changes
+- changes via pull requests
 - signed commits where required
 - CodeQL or equivalent security scanning where applicable
 - dependency update process
@@ -70,3 +70,4 @@ Repositories must not be used for:
 ## Legacy repository rule
 
 Archived repositories are retained as historical references only. New production work must move to the appropriate active repository.
+
