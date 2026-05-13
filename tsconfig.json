@@ -1,4 +1,4 @@
-﻿{
+{
   "compilerOptions": {
     "types": [
       "vitest/globals",
