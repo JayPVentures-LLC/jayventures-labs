@@ -101,10 +101,10 @@ export async function persistActionPlan(env: Env, plan: ActionPlan): Promise<Per
 
   if (!env.CREATOR_DATA_KV) {
     return {
-      attempted: true,
+      attempted: false,
       succeeded: false,
       key,
-      error: "CREATOR_DATA_KV unavailable",
+      error: "CREATOR_DATA_KV not configured",
     };
   }
 
@@ -123,12 +123,12 @@ export async function persistActionPlan(env: Env, plan: ActionPlan): Promise<Per
       key,
       error: null,
     };
-  } catch (error) {
+  } catch {
     return {
       attempted: true,
       succeeded: false,
       key,
-      error: error instanceof Error ? error.message : "Unknown persistence error",
+      error: "ACTION_PLAN_PERSISTENCE_FAILED",
     };
   }
 }
