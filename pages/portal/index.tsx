@@ -164,8 +164,6 @@ export default function PortalIndex({ currentRole = 'member' }: PortalIndexProps
     { href: '/portal/dashboard', label: 'Dashboard', requiredRoles: ['member', 'partner', 'admin'] as UserRole[] },
     { href: '/portal/packages', label: 'Packages', requiredRoles: ['member', 'partner', 'admin'] as UserRole[] },
     { href: '/portal/governance', label: 'Governance', requiredRoles: ['partner', 'admin'] as UserRole[] },
-    { href: '/portal/audit', label: 'Audit', requiredRoles: ['admin'] as UserRole[] },
-    { href: '/portal/settings', label: 'Settings', requiredRoles: ['admin'] as UserRole[] },
   ];
 
   const visibleSections = portalSections.filter((s) => s.roles.includes(currentRole));
