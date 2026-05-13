@@ -1,4 +1,4 @@
-﻿name: Deploy Azure Container App
+name: Deploy Azure Container App
 
 on:
   workflow_dispatch:
