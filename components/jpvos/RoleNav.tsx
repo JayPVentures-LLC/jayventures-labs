@@ -82,9 +82,10 @@ export function RoleNav({
       onNavigate(href);
     } else if (
       typeof globalThis !== 'undefined' &&
-      typeof locationRef.assign === 'function'
+      typeof window !== 'undefined' &&
+      typeof window.location?.assign === 'function'
     ) {
-      locationRef.assign(href);
+      window.location.assign(href);
     }
     setMobileMenuOpen(false);
   };
