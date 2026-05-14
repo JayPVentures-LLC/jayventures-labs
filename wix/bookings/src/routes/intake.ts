@@ -91,7 +91,8 @@ export async function handleIntake(
 
   const metrics = await updateMetrics(env, record);
   const actionPlan = planActions(record);
-  await persistActionPlan(env, actionPlan);
+  const persistence = await persistActionPlan(env, actionPlan);
+  const exposeActionPlanDetails = env.ENVIRONMENT !== "prod";
 
   if (env.WORKER_EVENTS_QUEUE && actionPlan.actions.length > 0) {
     await env.WORKER_EVENTS_QUEUE.send({
@@ -122,7 +123,16 @@ export async function handleIntake(
     tier: record.tier ?? "none",
   });
 
-  return json({ record, plan, results, metrics }, 200);
+  return json({
+    record,
+    plan,
+    results,
+    metrics,
+    actionPlanPersisted: persistence.succeeded,
+    actionPlanKey: exposeActionPlanDetails ? persistence.key : null,
+    actionPlanPersistenceError: exposeActionPlanDetails ? persistence.error : null,
+    ...(exposeActionPlanDetails ? { actionPlan } : {}),
+  }, 200);
 }
 
 function normalize(event: IntakeEvent<Record<string, unknown>>): CRMRecord {
@@ -160,4 +170,3 @@ async function withRetry<T>(fn: () => Promise<T>, attempts = 3): Promise<{ succe
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
-

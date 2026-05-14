@@ -26,6 +26,7 @@ function createBookingsEnv() {
     IDEMPOTENCY_KV: asKvNamespace(new MockKVNamespace()),
     METRICS_KV: asKvNamespace(new MockKVNamespace()),
     INNER_CIRCLE_MEMBER_KV: asKvNamespace(new MockKVNamespace()),
+    CREATOR_DATA_KV: asKvNamespace(new MockKVNamespace()),
     ADMIN_UPLOAD_TOKEN: "upload-secret",
   };
 }
@@ -72,10 +73,45 @@ describe("wix bookings worker", () => {
         lane: "JayPVentures LLC",
         expectedRevenue: 350,
       },
+      actionPlanPersisted: true,
+      actionPlanKey: "action_plan:bookings:1",
     });
+
+    const stored = await env.CREATOR_DATA_KV.get("action_plan:bookings:1");
+    expect(stored).not.toBeNull();
 
     const duplicate = await handleIntake(validRequest.clone() as never, env as never);
     await expect(duplicate.json()).resolves.toMatchObject({ status: "duplicate_ignored", idempotencyKey: "bookings:1" });
+  });
+
+  it("reports skipped action plan persistence when CREATOR_DATA_KV is unavailable", async () => {
+    const env = createBookingsEnv();
+    const { CREATOR_DATA_KV: _creatorDataKv, ...envWithoutCreatorKv } = env;
+    const event = {
+      source: "stripe",
+      eventType: "payment.succeeded",
+      idempotencyKey: "stripe:no-kv",
+      occurredAt: "2026-04-08T10:00:00.000Z",
+      payload: { id: "evt_no_kv", data: { object: { customer: "cus_no_kv", amount_received: 3900, customer_details: { email: "creator@example.com" } } } },
+    };
+    const rawBody = JSON.stringify(event);
+    const signature = await createIntakeSignature(env.INTAKE_HMAC_SECRET, rawBody);
+
+    const response = await handleIntake(
+      new Request("https://example.com/webhook/intake", {
+        method: "POST",
+        body: rawBody,
+        headers: { "x-jvp-signature": signature },
+      }) as never,
+      envWithoutCreatorKv as never
+    );
+
+    expect(response.status).toBe(200);
+    await expect(response.json()).resolves.toMatchObject({
+      actionPlanPersisted: false,
+      actionPlanKey: "action_plan:stripe:no-kv",
+      actionPlanPersistenceError: "CREATOR_DATA_KV not configured",
+    });
   });
 
   it("normalizes bookings, stripe, and memberstack events", () => {
