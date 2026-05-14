@@ -92,6 +92,7 @@ export async function handleIntake(
   const metrics = await updateMetrics(env, record);
   const actionPlan = planActions(record);
   const persistence = await persistActionPlan(env, actionPlan);
+  const exposeActionPlanDetails = env.ENVIRONMENT !== "prod";
 
   if (env.WORKER_EVENTS_QUEUE && actionPlan.actions.length > 0) {
     await env.WORKER_EVENTS_QUEUE.send({
@@ -127,10 +128,10 @@ export async function handleIntake(
     plan,
     results,
     metrics,
-    actionPlan,
     actionPlanPersisted: persistence.succeeded,
-    actionPlanKey: persistence.key,
-    actionPlanPersistenceError: persistence.error,
+    actionPlanKey: exposeActionPlanDetails ? persistence.key : null,
+    actionPlanPersistenceError: exposeActionPlanDetails ? persistence.error : null,
+    ...(exposeActionPlanDetails ? { actionPlan } : {}),
   }, 200);
 }
 
