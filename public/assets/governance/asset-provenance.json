@@ -1,0 +1,161 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "lastUpdated": "2026-05-14",
+    "governance": "Enterprise Asset Governance v1.0",
+    "categories": ["production-logo", "design-reference", "generated-concept", "preview-utility"]
+  },
+  "assets": {
+    "production-logos": {
+      "category": "production-logo",
+      "description": "Approved production brand logos - use only from this directory",
+      "items": [
+        {
+          "id": "jpv-master",
+          "name": "JPV Master Logo",
+          "file": "jpv-master.png",
+          "brand": "master",
+          "approved": true,
+          "version": "1.0",
+          "source": "Brand governance",
+          "notes": "Master enterprise logo, use for official communications"
+        },
+        {
+          "id": "jpv-os",
+          "name": "JPV-OS Logo",
+          "file": "jpv-os.png",
+          "brand": "jpv-os",
+          "approved": true,
+          "version": "1.0",
+          "source": "Brand governance",
+          "notes": "JPV-OS product logo"
+        },
+        {
+          "id": "jaypventures",
+          "name": "JayPVentures Logo",
+          "file": "jaypventures.png",
+          "brand": "jaypventures",
+          "approved": true,
+          "version": "1.0",
+          "source": "Brand governance",
+          "notes": "Creator ecosystem brand"
+        },
+        {
+          "id": "jaypvlabs",
+          "name": "JayPV Labs Logo",
+          "file": "jaypvlabs.png",
+          "brand": "jaypventuresllc",
+          "approved": true,
+          "version": "1.0",
+          "source": "Brand governance",
+          "notes": "Labs and institutional business brand"
+        },
+        {
+          "id": "jpv-institute",
+          "name": "JPV Institute Logo",
+          "file": "jpv-institute.png",
+          "brand": "institute",
+          "approved": true,
+          "version": "1.0",
+          "source": "Brand governance",
+          "notes": "Institute division logo"
+        },
+        {
+          "id": "jpv-init",
+          "name": "JPV Init Logo",
+          "file": "init.png",
+          "brand": "init",
+          "approved": true,
+          "version": "1.0",
+          "source": "Brand governance",
+          "notes": "Initiative/program branding"
+        }
+      ]
+    },
+    "design-references": {
+      "category": "design-reference",
+      "description": "Design inspiration, ecosystem boards, and reference materials - not for production use",
+      "items": [
+        {
+          "id": "allbrands-board",
+          "name": "All Brands Logo Board",
+          "file": "allbrands-logos.png",
+          "approved": true,
+          "source": "Brand exploration",
+          "notes": "Consolidated reference showing all brand variants for design consistency checks"
+        },
+        {
+          "id": "ecosystem-inspo",
+          "name": "Ecosystem Inspiration",
+          "file": "ecosystem-inspo.png",
+          "approved": true,
+          "source": "Research",
+          "notes": "Visual inspiration board for ecosystem design direction"
+        },
+        {
+          "id": "poster-direction",
+          "name": "Poster Direction",
+          "file": "poster-direction.png",
+          "approved": true,
+          "source": "Creative direction",
+          "notes": "Poster and campaign design direction reference"
+        }
+      ]
+    },
+    "generated-concepts": {
+      "category": "generated-concept",
+      "description": "AI-generated and concept renders - exploratory, not approved for production",
+      "items": [
+        {
+          "id": "ai-poster-v1",
+          "name": "AI Poster Concept v1",
+          "file": "ai-poster-v1.png",
+          "approved": false,
+          "version": "1.0",
+          "source": "AI generation",
+          "notes": "AI-generated concept, review before production use"
+        },
+        {
+          "id": "ai-poster-v2",
+          "name": "AI Poster Concept v2",
+          "file": "ai-poster-v2.png",
+          "approved": false,
+          "version": "1.0",
+          "source": "AI generation",
+          "notes": "AI-generated concept, review before production use"
+        }
+      ]
+    },
+    "preview-utilities": {
+      "category": "preview-utility",
+      "description": "Utility assets for preview pages and UI components",
+      "items": [
+        {
+          "id": "preview-bg",
+          "name": "Asset Preview Background",
+          "file": "asset-preview-bg.png",
+          "approved": true,
+          "source": "UI utilities",
+          "notes": "Background for asset preview component"
+        }
+      ]
+    }
+  },
+  "governance": {
+    "rules": [
+      "All production assets must be approved before use",
+      "Design references are for inspiration only - not production logos",
+      "Generated concepts require approval before production deployment",
+      "Asset paths should be referenced through assetPaths.ts constants only",
+      "Any new assets must have metadata entries in this provenance file"
+    ],
+    "reviewProcess": "Assets in production-logo category require brand governance approval",
+    "changeLog": [
+      {
+        "date": "2026-05-14",
+        "change": "Initialized asset governance v1.0",
+        "author": "JayPV-OS Fleet Orchestrator"
+      }
+    ]
+  }
+}
