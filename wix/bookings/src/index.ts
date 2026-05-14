@@ -1,4 +1,4 @@
-﻿
+
 async function syncStripeEntitlement(env: any, event: any) {
   const data = event?.data?.object ?? event;
   const metadata = data?.metadata ?? event?.metadata ?? {};
@@ -56,31 +56,33 @@ async function syncStripeEntitlement(env: any, event: any) {
   const key = userId;
 
   if (activeStatuses.includes(status)) {
-    const record = {
-      user_id: userId,
-      tier,
-      entitlement_active: true,
-      source: "stripe",
-      stripe_customer_id: stripeCustomerId,
-      subscription_id: subscriptionId ?? null,
-      subscription_status: status,
-      updated_at: new Date().toISOString()
-    };
-
-    await env.INNER_CIRCLE_MEMBER_KV.put(key, JSON.stringify(record));
-
+  if (!env.INNER_CIRCLE_MEMBER_KV) {
     return {
-      ok: true,
-      action: "ENTITLEMENT_ACTIVE",
-      user_id: userId,
-      record
+      ok: false,
+      error: "kv_not_configured"
     };
-      if (!env.INNER_CIRCLE_MEMBER_KV) {
-        return Response.json({ error: "KV not configured" }, { status: 500 });
-      }
-
   }
 
+  const record = {
+    user_id: userId,
+    tier,
+    entitlement_active: true,
+    source: "stripe",
+    stripe_customer_id: stripeCustomerId,
+    subscription_id: subscriptionId ?? null,
+    subscription_status: status,
+    updated_at: new Date().toISOString()
+  };
+
+  await env.INNER_CIRCLE_MEMBER_KV.put(key, JSON.stringify(record));
+
+  return {
+    ok: true,
+    action: "ENTITLEMENT_ACTIVE",
+    user_id: userId,
+    record
+  };
+}
   if (inactiveStatuses.includes(status)) {
     await env.INNER_CIRCLE_MEMBER_KV.delete(key);
 
@@ -114,6 +116,11 @@ async function validateEntitlementTruth(env: any, event: any) {
 
   if (!userId) {
     violations.push("missing_entitlement_user_id");
+    return violations;
+  }
+
+  if (!env.INNER_CIRCLE_MEMBER_KV) {
+    violations.push("entitlement_kv_not_configured");
     return violations;
   }
 
@@ -414,7 +421,7 @@ export default {
 
 
     // ENTITLEMENT_CHECK_ROUTE
-    if (url.pathname === "/entitlement/check") {
+    if (env.ENVIRONMENT === "dev" && url.pathname === "/entitlement/check") {
       const internalToken = request.headers.get("x-jpv-internal-test-token");
 
       if (env.JPV_INTERNAL_TEST_TOKEN && internalToken !== env.JPV_INTERNAL_TEST_TOKEN) {
@@ -670,3 +677,4 @@ export default {
 
 
 // Discord entitlement reflection hardening checkpoint
+
