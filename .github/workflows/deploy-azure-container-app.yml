@@ -1,4 +1,4 @@
-name: Azure Container App Healthcheck
+name: Deploy Azure Container App
 
 on:
   workflow_dispatch:
@@ -10,18 +10,71 @@ permissions:
   contents: read
   id-token: write
 
+env:
+  IMAGE_NAME: jayventures-labs
+  IMAGE_TAG: ${{ github.sha }}
+
 jobs:
-  healthcheck:
-    name: Azure Container App Healthcheck
+  deploy:
+    name: Build and Deploy Azure Container App
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Azure healthcheck
-        if: ${{ secrets.AZURE_HEALTHCHECK_URL != '' }}
+      - name: Validate required secrets
+        shell: bash
         run: |
-          curl --fail --silent --show-error "${{ secrets.AZURE_HEALTHCHECK_URL }}"
+          set -euo pipefail
+          for name in AZURE_CLIENT_ID AZURE_TENANT_ID AZURE_SUBSCRIPTION_ID AZURE_RESOURCE_GROUP AZURE_CONTAINER_APP_NAME AZURE_CONTAINER_REGISTRY; do
+            if [ -z "${!name:-}" ]; then
+              echo "::error::Missing required secret: $name"
+              exit 1
+            fi
+          done
+        env:
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          AZURE_RESOURCE_GROUP: ${{ secrets.AZURE_RESOURCE_GROUP }}
+          AZURE_CONTAINER_APP_NAME: ${{ secrets.AZURE_CONTAINER_APP_NAME }}
+          AZURE_CONTAINER_REGISTRY: ${{ secrets.AZURE_CONTAINER_REGISTRY }}
 
+      - name: Azure login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
+      - name: Log in to Azure Container Registry
+        shell: bash
+        run: az acr login --name "${{ secrets.AZURE_CONTAINER_REGISTRY }}"
+
+      - name: Build and push container image
+        shell: bash
+        run: |
+          set -euo pipefail
+          IMAGE="${{ secrets.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${IMAGE_NAME}:${IMAGE_TAG}"
+          docker build -t "$IMAGE" .
+          docker push "$IMAGE"
+          echo "IMAGE=$IMAGE" >> "$GITHUB_ENV"
+
+      - name: Deploy Azure Container App
+        shell: bash
+        run: |
+          set -euo pipefail
+          az containerapp update \
+            --name "${{ secrets.AZURE_CONTAINER_APP_NAME }}" \
+            --resource-group "${{ secrets.AZURE_RESOURCE_GROUP }}" \
+            --image "$IMAGE"
+
+      - name: Confirm deployment
+        shell: bash
+        run: |
+          az containerapp show \
+            --name "${{ secrets.AZURE_CONTAINER_APP_NAME }}" \
+            --resource-group "${{ secrets.AZURE_RESOURCE_GROUP }}" \
+            --query "{name:name, revision:properties.latestRevisionName, state:properties.provisioningState, fqdn:properties.configuration.ingress.fqdn}" \
+            --output table
