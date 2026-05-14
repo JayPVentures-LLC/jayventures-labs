@@ -34,6 +34,8 @@ function createBookingsEnv() {
 describe("wix bookings worker", () => {
   it("validates webhook auth and idempotency on intake", async () => {
     const env = createBookingsEnv();
+    const envWithoutCreatorKv = { ...env };
+    delete (envWithoutCreatorKv as Record<string, unknown>).CREATOR_DATA_KV;
     const event = {
       source: "bookings",
       eventType: "booking.created",
@@ -86,6 +88,8 @@ describe("wix bookings worker", () => {
 
   it("reports skipped action plan persistence when CREATOR_DATA_KV is unavailable", async () => {
     const env = createBookingsEnv();
+    const envWithoutCreatorKv = { ...env };
+    delete (envWithoutCreatorKv as Record<string, unknown>).CREATOR_DATA_KV;
     const event = {
       source: "stripe",
       eventType: "payment.succeeded",
@@ -221,5 +225,7 @@ describe("wix bookings worker", () => {
     expect(stored).not.toBeNull();
   });
 });
+
+
 
 
