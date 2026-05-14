@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import AssetPaths, { AssetMetadata, AssetCategory } from "../../config/assetPaths";
+import AssetPaths from "../../config/assetPaths";
 
 interface ProvenanceData {
   metadata: {
@@ -40,7 +40,7 @@ export default function AssetPreview() {
         if (!response.ok) {
           throw new Error(`Failed to load provenance: ${response.statusText}`);
         }
-        const data = await response.json();
+        const data: ProvenanceData = await response.json();
         setProvenance(data);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Unknown error");
