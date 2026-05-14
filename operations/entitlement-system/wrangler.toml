@@ -1,6 +1,7 @@
 name = "jaypventures-entitlement-system"
 main = "workers/stripeWebhook.ts"
 compatibility_date = "2026-04-09"
+account_id = "56d1a7bef4dabbd308f8846ee620dd19"
 
 [vars]
 LOG_LEVEL = "info"
@@ -12,24 +13,25 @@ AZURE_ARCHIVE_ENDPOINT = "https://replace-me.example/archive/entitlements"
 
 [[kv_namespaces]]
 binding = "ENTITLEMENT_KV"
-id = "REPLACE_WITH_ENTITLEMENT_KV_ID"
-preview_id = "REPLACE_WITH_ENTITLEMENT_KV_PREVIEW_ID"
+id = "6154f3ba6c9846f38ad0a10556f7c443"
+preview_id = "6154f3ba6c9846f38ad0a10556f7c443"
 
 [[kv_namespaces]]
 binding = "IDEMPOTENCY_KV"
-id = "REPLACE_WITH_IDEMPOTENCY_KV_ID"
-preview_id = "REPLACE_WITH_IDEMPOTENCY_KV_PREVIEW_ID"
+id = "11507e93209146e594c0c81b52a39a8e"
+preview_id = "11507e93209146e594c0c81b52a39a8e"
 
 [[kv_namespaces]]
 binding = "RETRY_QUEUE_KV"
-id = "REPLACE_WITH_RETRY_QUEUE_KV_ID"
-preview_id = "REPLACE_WITH_RETRY_QUEUE_KV_PREVIEW_ID"
+id = "b67b37c7bfc94dd58113a451761b241d"
+preview_id = "b67b37c7bfc94dd58113a451761b241d"
 
 [[queues.producers]]
 binding = "WORKER_EVENTS_QUEUE"
-queue = "REPLACE_WITH_ENTITLEMENT_EVENTS_QUEUE"
+queue = "entitlement-events"
 
 [[queues.consumers]]
-queue = "REPLACE_WITH_ENTITLEMENT_EVENTS_QUEUE"
+queue = "entitlement-events"
 max_batch_size = 10
 max_batch_timeout = 5
+
