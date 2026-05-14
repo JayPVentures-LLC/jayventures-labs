@@ -110,7 +110,7 @@ describe("wix bookings worker", () => {
     await expect(response.json()).resolves.toMatchObject({
       actionPlanPersisted: false,
       actionPlanKey: "action_plan:stripe:no-kv",
-      actionPlanPersistenceError: "CREATOR_DATA_KV unavailable",
+      actionPlanPersistenceError: "CREATOR_DATA_KV not configured",
     });
   });
 
