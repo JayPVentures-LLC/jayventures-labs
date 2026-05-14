@@ -222,3 +222,4 @@ describe("wix bookings worker", () => {
     expect(stored).not.toBeNull();
   });
 });
+
