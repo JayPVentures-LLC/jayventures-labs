@@ -86,9 +86,9 @@ export default {
   },
 
   async queue(batch: MessageBatch<WorkerEventMessage>, rawEnv: Record<string, unknown>, ctx: ExecutionContext): Promise<void> {
-    const queueMessageType = message.type;
     const env = getEnv(rawEnv);
     for (const message of batch.messages) {
+      const queueMessageType = String((message as { type?: unknown }).type ?? "unknown");
       try {
         await processQueueMessage(message.body, env);
         message.ack();
@@ -102,6 +102,7 @@ export default {
     }
   },
 };
+
 
 
 
