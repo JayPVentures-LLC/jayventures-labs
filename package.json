@@ -10,7 +10,7 @@
     "deploy": "npx wrangler deploy --config wix/bookings/wrangler.toml --env production",
     "start": "next start",
     "lint": "eslint apps/ components/ operations/ pages/ tests/ --ext .ts,.tsx,.js,.jsx,.mdx",
-    "test": "vitest",
+    "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "deploy:dryrun:bookings": "npx wrangler deploy --dry-run --outdir /tmp/worker-build --config wix/bookings/wrangler.toml --env production",
     "deploy:dryrun:entitlement": "npx wrangler deploy --dry-run --outdir /tmp/entitlement-build --config operations/entitlement-system/wrangler.toml",
@@ -53,3 +53,4 @@
     "postcss": "8.5.10"
   }
 }
+
