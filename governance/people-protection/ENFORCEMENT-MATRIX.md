@@ -30,6 +30,16 @@ If a principle is required, the system must show where it is enforced.
 | Reversibility | Deployments, entitlement updates, policy updates, public releases | Rollback process, deployment freeze, change log | Commit hash, release note, rollback path | Pause deploy |
 | Transparency | Public trust pages, partner standards, pricing, access rules, governance docs | Public copy review, documentation review | Published policy, version history | Block public launch |
 | Accountability | Admin decisions, governance exceptions, partner approvals, appeals | Named reviewer, audit note, issue/PR reference | Reviewer, date, reason, resolution | Escalate |
+| Succession and continuity | Identity, admin, payment, deployment, evidence, governance | Backup access, audit trail, revocation path, anti-capture review | Continuity note, access map, recovery path | Require continuity plan |
+| Accessibility and equal access | Public access, support, appeals, terms, payment explanations | Accessibility review, plain-language review | Review note, support route, correction path | Require remediation |
+| Brand and representation integrity | Public pages, campaigns, partner recognition, doctrine, access routes | Claim verification, role distinction, partner review | Claim source, reviewer, verification note | Correct or block misleading claims |
+| Monetization fairness | Memberships, subscriptions, perks, refunds, cancellations | Pricing clarity, cancellation path, failed delivery review | Public offer copy, support route, refund path | Block unclear paid access |
+| Partner exit and portability | Vendors, platforms, integrations, APIs, payment, identity, hosting | Vendor map, exit path, replacement option | Dependency note, export path, risk review | Require redesign or mitigation |
+| Incident response and public correction | Access errors, payment errors, public copy, partner issues, security events | Containment, correction, notice, root-cause review | Incident record, affected system, remediation | Correct and document prevention step |
+| AI decision boundary | AI summaries, routing, risk detection, review support | Human review for high-impact outcomes | AI output, reviewer, reason, appeal route | Prevent final automated adverse action |
+| Data retention and evidence preservation | Logs, payment records, access records, governance records, appeal records | Retention category, preservation hold, deletion/correction process | Retention note, preservation reason, audit trail | Preserve records or minimize data as required |
+| Conflict-of-interest disclosure | Governance, partner review, evidence handling, payments, access, appeals | Conflict screening, reviewer separation, audit note | Conflict record, neutral reviewer, decision rationale | Require independent review |
+| Evidence and due process | Access, appeals, misconduct review, accountability, policy enforcement | Evidence classification, reviewer record, appeal path, escalation workflow | Evidence record, reviewer, timestamp, rationale | Block final adverse action until review is complete |
 | Privacy and data minimization | Access, membership, payments, AI workflows, analytics, education programs | Data-use review, privacy review, retention review | Data map, retention note, consent basis | Require remediation |
 | No unlawful surveillance | Identity, analytics, automation, community, partner systems | Risk review, data collection review, partner review | Data-use statement, risk note, reviewer | Block integration |
 | No social scoring | AI workflows, access decisions, partner scoring, moderation, institutional systems | AI governance review, decision audit | Decision criteria, appeal route | Block feature |
@@ -51,3 +61,4 @@ Every production launch should include:
 ## Non-Negotiable Rule
 
 No product, workflow, integration, or automation may remove human dignity, appealability, transparency, reversibility, interoperability freedom, or anti-exploitation safeguards for convenience, speed, monetization, partnership pressure, or platform dependency.
+

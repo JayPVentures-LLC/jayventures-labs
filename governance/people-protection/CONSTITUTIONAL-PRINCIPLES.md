@@ -54,3 +54,9 @@ Governance claims, public records, audit packages, evidence releases, and policy
 ## 10. Governance Continuity
 
 These principles may not be removed through acquisition, investment pressure, leadership transition, partnership dependency, platform pressure, or policy drift.
+
+## Doctrine Continuity
+
+People Protection principles must be supported by operational doctrine covering due process, evidence integrity, conflicts of interest, AI decision boundaries, monetization fairness, accessibility, partner portability, public correction, and continuity.
+
+These doctrine layers may evolve, but they may not remove human dignity, appealability, anti-discrimination, anti-exploitation, interoperability freedom, anti-capture, or malicious manipulation accountability.

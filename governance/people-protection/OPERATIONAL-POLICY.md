@@ -68,3 +68,20 @@ For applicable changes, maintain:
 Exceptions must be rare, documented, time-limited, reviewed, and reversible.
 
 No exception may override human dignity, anti-discrimination, anti-exploitation, child/student isolation, appealability, or anti-capture principles.
+
+## Additional Doctrine Standards
+
+The following doctrine files extend this operational policy and must be considered when applicable:
+
+- Evidence, Due Process, and Escalation Doctrine.
+- Conflict-of-Interest and Capture Disclosure Standard.
+- Data Retention and Evidence Preservation Standard.
+- AI Decision Boundary Doctrine.
+- Incident Response and Public Correction Doctrine.
+- Partner Exit and Portability Standard.
+- Monetization Fairness Doctrine.
+- Brand and Representation Integrity Standard.
+- Accessibility and Equal Access Standard.
+- Succession and Continuity Doctrine.
+
+Operational changes must identify which doctrine applies when a change affects access, payment, identity, governance, evidence, partner workflows, AI-assisted decisions, public claims, or continuity.
