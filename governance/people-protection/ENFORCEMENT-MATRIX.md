@@ -35,6 +35,7 @@ If a principle is required, the system must show where it is enforced.
 | No social scoring | AI workflows, access decisions, partner scoring, moderation, institutional systems | AI governance review, decision audit | Decision criteria, appeal route | Block feature |
 | No biometric mass tracking | Identity, events, education, security, physical/digital access pathways | Privacy/security review | Explicit prohibition or lawful limited-scope review | Block integration |
 | Evidence integrity | Public records, audits, release packages, reports, governance artifacts | Hash manifest, signed/traceable commit, versioned archive | SHA256 manifest, release record | Block release |
+| Malicious legal manipulation | Legal, governance, institutional, partner, admin, AI, and policy systems | Evidence review, audit trail, due process review, escalation pathway, lawful referral mechanism | Evidence record, reviewer, timestamp, decision basis, appeal path | Escalate, preserve evidence, block internal sanitization, refer through lawful process |
 | Public leadership standard | Governance content, civic tooling, institutional workflows | Constitutional review, neutrality review, evidence review | Policy reference, reviewer note | Require revision |
 
 ## Required Launch Evidence
@@ -51,3 +52,4 @@ Every production launch should include:
 ## Non-Negotiable Rule
 
 No product, workflow, integration, or automation may remove human dignity, appealability, transparency, reversibility, interoperability freedom, or anti-exploitation safeguards for convenience, speed, monetization, partnership pressure, or platform dependency.
+
