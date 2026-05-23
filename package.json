@@ -22,8 +22,9 @@
     "market:integrity:test": "tsx operations/market-integrity/tests/market-integrity.test.ts",
     "market:environmental-responsibility:test": "tsx operations/market-integrity/tests/environmental-responsibility.test.ts",
     "market:integrity-alignment:test": "tsx operations/market-integrity/tests/integrity-alignment.test.ts",
-    "test": "vitest",
-    "test:run": "vitest run"
+    "test": "vitest run",
+    "test:run": "vitest run",
+    "test:watch": "vitest"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20260504.1",
