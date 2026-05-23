@@ -14,6 +14,7 @@ function json(body: unknown, status = 200): Response {
 }
 
 async function processQueueMessage(message: WorkerEventMessage, env: ReturnType<typeof getEnv>): Promise<void> {
+  const queueMessageType = String((message as { type?: unknown }).type ?? "unknown");
   if (message.type === "archive") {
     await archiveEvent(env, message);
     await sendTelemetry(env, `${message.payload.source}_${message.payload.event}`, message.payload.data);
@@ -46,7 +47,7 @@ async function processQueueMessage(message: WorkerEventMessage, env: ReturnType<
   }
 
   await sendTelemetry(env, "entitlement_queue_unknown_message", {
-    type: message.type,
+    type: queueMessageType,
   });
 }
 
@@ -101,4 +102,8 @@ export default {
     }
   },
 };
+
+
+
+
 
