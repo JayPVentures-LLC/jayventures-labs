@@ -2,9 +2,7 @@ name: JPV-OS Post-Merge Production Gate
 
 on:
   workflow_dispatch:
-  pull_request:
-    types:
-      - closed
+  push:
     branches:
       - main
 
@@ -18,7 +16,7 @@ concurrency:
 
 jobs:
   production-gate:
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true }}
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'push' }}
     runs-on: ubuntu-latest
     environment: cloudflare-production
 
@@ -211,4 +209,5 @@ jobs:
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 
