@@ -1,16 +1,8 @@
 /**
  * AssetPaths - Authoritative asset path configuration
  *
- * This module serves as the single source of truth for all asset paths in the application.
- * All asset references should use constants from this module to ensure consistency,
- * maintainability, and proper governance.
- *
- * Asset Structure:
- * - logos/: Production-ready brand logos
- * - reference/: Design references, inspiration, and ecosystem boards
- * - generated/: AI-generated and concept renders
- * - preview/: Preview and utility assets
- * - governance/: Asset metadata and provenance tracking
+ * This module is the single source of truth for asset paths used by the app.
+ * Asset references should use these constants or the AssetLoader helpers.
  */
 
 const Root = "/assets";
@@ -28,8 +20,8 @@ export const Logos = {
 } as const;
 
 /**
- * Design References - Inspiration and ecosystem resources
- * These assets support design decisions but are not production logos
+ * Design References - Inspiration and ecosystem resources.
+ * These assets support design decisions but are not production logos.
  */
 export const References = {
   AllBrandsBoard: `${Root}/reference/allbrands-logos.png`,
@@ -38,13 +30,13 @@ export const References = {
 } as const;
 
 /**
- * Generated Concepts - AI and concept renders
- * These assets are exploratory and used for iteration
+ * Generated Concepts - AI and concept renders.
+ * These assets are exploratory and used for iteration.
  */
 export const Generated = {
   AIPosterV1: `${Root}/generated/ai-poster-v1.png`,
   AIPosterV2: `${Root}/generated/ai-poster-v2.png`,
-  ConceptRenders: `${Root}/generated/concept-renders`,
+  ConceptRendersDir: `${Root}/generated/concept-renders`,
 } as const;
 
 /**
@@ -59,7 +51,6 @@ export const Preview = {
  */
 export const Governance = {
   ProvenanceFile: `${Root}/governance/asset-provenance.json`,
-  ProvenanceUrl: `${Root}/governance/asset-provenance.json`, // Can be fetched at runtime
 } as const;
 
 /**
