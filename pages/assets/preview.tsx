@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import AssetLoader, {
   AssetCategoryKey,
   AssetItem,
@@ -179,6 +179,8 @@ type AssetCardProps = {
 };
 
 function AssetCard({ asset, imagePath, categoryKey, categoryLabel }: AssetCardProps) {
+  const [imageFailed, setImageFailed] = useState(false);
+
   const categoryColor: Record<AssetCategoryKey, string> = {
     "production-logos": "bg-green-50 border-green-200",
     "design-references": "bg-blue-50 border-blue-200",
@@ -198,15 +200,20 @@ function AssetCard({ asset, imagePath, categoryKey, categoryLabel }: AssetCardPr
       className={`border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow ${categoryColor[categoryKey]}`}
     >
       <div className="bg-gray-100 h-48 flex items-center justify-center overflow-hidden">
-        <img
-          src={imagePath}
-          alt={asset.name}
-          className="max-h-full max-w-full object-contain p-4"
-          loading="lazy"
-          onError={(event) => {
-            event.currentTarget.style.display = "none";
-          }}
-        />
+        {imageFailed ? (
+          <div className="text-gray-500 text-center p-4">
+            <p className="text-sm font-medium">Image unavailable</p>
+            <p className="text-xs mt-2 break-all">{imagePath}</p>
+          </div>
+        ) : (
+          <img
+            src={imagePath}
+            alt={asset.name}
+            className="max-h-full max-w-full object-contain p-4"
+            loading="lazy"
+            onError={() => setImageFailed(true)}
+          />
+        )}
       </div>
 
       <div className="p-4">
