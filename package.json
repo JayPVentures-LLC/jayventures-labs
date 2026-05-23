@@ -10,7 +10,6 @@
     "deploy": "npx wrangler deploy --config wix/bookings/wrangler.toml --env production",
     "start": "next start",
     "lint": "eslint apps/ components/ operations/ pages/ tests/ --ext .ts,.tsx,.js,.jsx,.mdx",
-    "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "deploy:dryrun:bookings": "npx wrangler deploy --dry-run --outdir /tmp/worker-build --config wix/bookings/wrangler.toml --env production",
     "deploy:dryrun:entitlement": "npx wrangler deploy --dry-run --outdir /tmp/entitlement-build --config operations/entitlement-system/wrangler.toml",
@@ -22,7 +21,9 @@
     "market:integrity": "tsx operations/market-integrity/src/index.ts",
     "market:integrity:test": "tsx operations/market-integrity/tests/market-integrity.test.ts",
     "market:environmental-responsibility:test": "tsx operations/market-integrity/tests/environmental-responsibility.test.ts",
-    "market:integrity-alignment:test": "tsx operations/market-integrity/tests/integrity-alignment.test.ts"
+    "market:integrity-alignment:test": "tsx operations/market-integrity/tests/integrity-alignment.test.ts",
+    "test": "vitest",
+    "test:run": "vitest run"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20260504.1",
@@ -53,4 +54,3 @@
     "postcss": "8.5.10"
   }
 }
-
