@@ -11,6 +11,13 @@ export type WorkerEventMessage =
       };
     }
   | {
+      type: "stripe-entitlement-synced";
+      payload: {
+        userId: string;
+        brand?: "jaypventures" | "jaypventuresllc";
+      };
+    }
+  | {
       type: "archive";
       payload: {
         source: string;
@@ -19,7 +26,6 @@ export type WorkerEventMessage =
         data: Record<string, unknown>;
       };
     };
-
 function parseConnectionString(connectionString: string): { instrumentationKey?: string; ingestionEndpoint?: string } {
   const pairs = Object.fromEntries(connectionString.split(";").map((part) => {
     const [key, ...rest] = part.split("=");
@@ -79,3 +85,4 @@ export async function archiveEvent(env: Env, payload: WorkerEventMessage & { typ
     body: JSON.stringify(payload.payload),
   });
 }
+
