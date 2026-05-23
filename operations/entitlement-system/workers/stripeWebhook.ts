@@ -20,13 +20,34 @@ async function processQueueMessage(message: WorkerEventMessage, env: ReturnType<
     return;
   }
 
+  if (message.type === "stripe-entitlement-synced") {
+    const entitlement = await getEntitlement(message.payload.userId, env);
+    if (!entitlement) {
+      throw new Error(`Entitlement not found for synced user ${message.payload.userId}`);
+    }
+
+    await syncDiscordRoles(entitlement, env, message.payload.brand ? { brand: message.payload.brand } : undefined);
+
+    await sendTelemetry(env, "stripe_entitlement_synced_discord_reflected", {
+      userId: message.payload.userId,
+      brand: message.payload.brand ?? "all",
+    });
+
+    return;
+  }
+
   if (message.type === "discord-retry") {
     const entitlement = await getEntitlement(message.payload.userId, env);
     if (!entitlement) {
       throw new Error(`Entitlement not found for retry user ${message.payload.userId}`);
     }
     await syncDiscordRoles(entitlement, env, { brand: message.payload.brand });
+    return;
   }
+
+  await sendTelemetry(env, "entitlement_queue_unknown_message", {
+    type: message.type,
+  });
 }
 
 export default {
@@ -80,3 +101,4 @@ export default {
     }
   },
 };
+
