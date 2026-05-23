@@ -46,7 +46,7 @@ async function processQueueMessage(message: WorkerEventMessage, env: ReturnType<
   }
 
   await sendTelemetry(env, "entitlement_queue_unknown_message", {
-    type: message.type,
+    type: queueMessageType,
   });
 }
 
@@ -86,6 +86,7 @@ export default {
   },
 
   async queue(batch: MessageBatch<WorkerEventMessage>, rawEnv: Record<string, unknown>, ctx: ExecutionContext): Promise<void> {
+    const queueMessageType = message.type;
     const env = getEnv(rawEnv);
     for (const message of batch.messages) {
       try {
@@ -101,4 +102,5 @@ export default {
     }
   },
 };
+
 
