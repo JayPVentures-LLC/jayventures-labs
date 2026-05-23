@@ -28,7 +28,7 @@ jobs:
       url: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Install Microsoft Graph PowerShell SDK
         shell: pwsh
@@ -61,3 +61,4 @@ jobs:
           name: saml-sso-readback
           path: docs/identity/generated/*.saml-readback.json
           retention-days: 30
+
