@@ -1,0 +1,35 @@
+name: JPV Governance Base
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  governance:
+    runs-on: windows-latest
+
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Governance validation
+        shell: pwsh
+        run: |
+          ./scripts/validate-required-docs.ps1
+
+      - name: Action pinning validation
+        shell: pwsh
+        run: |
+          ./scripts/validate-action-pinning.ps1
+
+      - name: Deployment freeze validation
+        shell: pwsh
+        run: |
+          ./scripts/check-deployment-freeze.ps1
