@@ -18,6 +18,9 @@ jobs:
     name: Validate People Protection Artifacts
     runs-on: windows-latest
 
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -25,3 +28,4 @@ jobs:
       - name: Validate People Protection package
         shell: pwsh
         run: ./scripts/governance/validate-people-protection.ps1
+
