@@ -2,28 +2,27 @@ name: Azure Container App Healthcheck
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
 
 permissions:
   contents: read
-  id-token: write
 
 jobs:
   healthcheck:
     name: Azure Container App Healthcheck
     runs-on: ubuntu-latest
+    env:
+      AZURE_HEALTHCHECK_URL: ${{ secrets.AZURE_HEALTHCHECK_URL }}
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
-      - name: Azure healthcheck
-        if: ${{ secrets.AZURE_HEALTHCHECK_URL != '' }}
+      - name: Skip when healthcheck URL is not configured
+        if: ${{ env.AZURE_HEALTHCHECK_URL == '' }}
         run: |
-          curl --fail --silent --show-error "${{ secrets.AZURE_HEALTHCHECK_URL }}"
+          echo "AZURE_HEALTHCHECK_URL is not configured. Skipping Azure healthcheck."
 
-
-
-
+      - name: Run Azure healthcheck
+        if: ${{ env.AZURE_HEALTHCHECK_URL != '' }}
+        run: |
+          curl --fail --silent --show-error "$AZURE_HEALTHCHECK_URL"
