@@ -290,7 +290,7 @@ First, get a JWT from Memberstack with `tier: "plus"`:
 
 ```bash
 # Example JWT (get real one from Memberstack):
-JWT_TOKEN="eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VyLTEyMyIsInRpZXIiOiJwbHVzIiwiZXhwIjoxNzA3MzAwMDAwfQ.signature..."
+JWT_TOKEN="<set-in-provider-secret-store>"
 
 curl https://vault.jaypventuresllc.com/all-access/plus/guide.pdf \
   -H "Authorization: Bearer $JWT_TOKEN" \
@@ -480,3 +480,4 @@ After these 8 phases (~18 min):
 ---
 
 **Questions?** Check `CLOUDFLARE_SETUP.md` for detailed troubleshooting.
+

@@ -94,3 +94,6 @@ cloudflared*.zip
 # Secret scan outputs
 gitleaks-report.*
 secret-scan-report.*
+
+# Local repo tooling
+.tools/
