@@ -1,7 +1,7 @@
 # Secret Hygiene Automation Report
 
 Generated: 2026-06-04 15:39:40 -04:00
-Branch: security/secret-hygiene-automation-20260604
+Source branch (at generation time): security/secret-hygiene-automation-20260604
 Repository: JayPVentures-LLC/jayventures-labs
 
 Scope:
