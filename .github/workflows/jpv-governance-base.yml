@@ -22,14 +22,14 @@ jobs:
       - name: Governance validation
         shell: pwsh
         run: |
-          ./scripts/validate-required-docs.ps1
+          ./scripts/governance/validate-people-protection.ps1
 
-      - name: Action pinning validation
+      - name: Policy enforcement validation
         shell: pwsh
         run: |
-          ./scripts/validate-action-pinning.ps1
+          node ./scripts/jpv-policy-enforcement.cjs
 
       - name: Deployment freeze validation
         shell: pwsh
         run: |
-          ./scripts/check-deployment-freeze.ps1
+          node ./scripts/governance/check-deployment-freeze.mjs
