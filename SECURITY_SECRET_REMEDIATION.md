@@ -24,7 +24,7 @@ Included:
 
 - Expanded `.gitignore`.
 - Strict Gitleaks workflow.
-- Removal from Git tracking for `.next`, `node_modules`, and cloudflared binary artifacts where present.
+- Removal from Git tracking for generated/vendor/binary artifacts where present.
 - Remediation documentation.
 
 ## History cleanup
