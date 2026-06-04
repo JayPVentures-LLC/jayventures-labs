@@ -17,19 +17,23 @@ jobs:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
+        with:
+          node-version: 22
 
       - name: Governance validation
         shell: pwsh
         run: |
-          ./scripts/validate-required-docs.ps1
+          ./scripts/governance/validate-people-protection.ps1
 
-      - name: Action pinning validation
+      - name: Policy enforcement validation
         shell: pwsh
         run: |
-          ./scripts/validate-action-pinning.ps1
+          node ./scripts/jpv-policy-enforcement.cjs
 
       - name: Deployment freeze validation
         shell: pwsh
         run: |
-          ./scripts/check-deployment-freeze.ps1
+          node ./scripts/governance/check-deployment-freeze.mjs
