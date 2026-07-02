@@ -37,7 +37,7 @@ Use the canonical term unless a domain-specific implementation term is being exp
 
 | Term | Type | Meaning |
 |---|---|---|
-| Accessibility | State Property | Degree to which information is available for system use. |
+| Accessibility | Property | Degree to which information is available for system use. |
 | Latent Information | State | Represented or integrated information not currently available for deliberate use. |
 | Accessible Information | State | Information available for system use. |
 | Conscious Availability | State | Information available to subjective awareness or deliberate reasoning. |
