@@ -57,6 +57,11 @@ Enterprise workspace for JayPVentures LLC systems, flagship website delivery, cr
   - `GET /creator/metrics`
   - `POST /creator/upload`
 
+### Adaptive Systems Ontology
+- Location: `docs/adaptive-systems-ontology`
+- Purpose: Four-primitives research framework for deriving and comparing systems concepts across domains.
+- Status: v0.1 research draft; experimental until reviewed and promoted.
+
 ## Local Tooling
 
 1. Install dependencies with `npm install` from the repo root.
