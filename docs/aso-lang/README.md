@@ -23,8 +23,11 @@ No equation, theorem, measurement, or simulation should use a term that lacks a 
 - `GRAMMAR.md` — legal statement forms.
 - `RELATIONSHIP_VERBS.md` — approved relationship verbs.
 - `NAMESPACES.md` — naming and addressing convention.
+- `TYPE_SYSTEM.md` — type distinctions and category-error rules.
 - `INFERENCE_RULES.md` — first-pass reasoning rules.
 - `examples.md` — valid and invalid statement examples.
+- `VERSION.md` — current version and stability notes.
+- `CHANGELOG.md` — version change history.
 
 ## Boundary
 
