@@ -19,7 +19,7 @@ Relationship verbs define how terms may connect in ASO-Lang statements.
 | MODIFIES | Subject alters future form, rule, or behavior of object. | Feedback MODIFIES Process |
 | REPRESENTS | Subject stands for object. | Model REPRESENTS System |
 | MODELS | Subject constructs representation of object. | Reflection MODELS System |
-| IMPLEMENTS | Domain mechanism realizes ontology function. | DNA IMPLEMENTS Representation |
+| IMPLEMENTS | Domain mechanism realizes ontology function. | Biology.DNA IMPLEMENTS Representation |
 | OPERATIONALIZES | Measurement makes construct observable. | Rubric OPERATIONALIZES Adaptive Capacity |
 | EVIDENCES | Observation supports claim. | CaseLog EVIDENCES Hypothesis |
 | CONSTRAINS | Subject limits possible states or processes of object. | Budget CONSTRAINS Action |
