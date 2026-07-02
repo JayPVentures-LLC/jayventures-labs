@@ -24,6 +24,7 @@ No equation, theorem, measurement, or simulation should use a term that lacks a 
 - `RELATIONSHIP_VERBS.md` — approved relationship verbs.
 - `NAMESPACES.md` — naming and addressing convention.
 - `INFERENCE_RULES.md` — first-pass reasoning rules.
+- `examples.md` — valid and invalid statement examples.
 
 ## Boundary
 
