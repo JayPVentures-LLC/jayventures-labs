@@ -50,7 +50,6 @@ Avoid using these as technical terms unless separately defined:
 
 - intelligence
 - consciousness
-- intuition
 - knowing
 - wisdom
 - awareness
