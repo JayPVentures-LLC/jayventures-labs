@@ -14,6 +14,7 @@ The type system prevents category errors.
 | Process | Ordered transformation. |
 | Transition | Movement between states. |
 | Property | Attribute or measurable characteristic. |
+| Phenomenon | Reported or observed experience/appearance (often human-facing); may be tracked via observations and measurements. |
 | Mechanism | Domain-specific implementation. |
 | Measurement | Operational construct or scoring method. |
 | Theorem | Logical claim. |
