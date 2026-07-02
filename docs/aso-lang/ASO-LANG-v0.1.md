@@ -51,16 +51,17 @@ For the authoritative type set and type rules, see `TYPE_SYSTEM.md`. The table b
 | Type | Meaning |
 | Primitive | Candidate irreducible concept. |
 | Function | Derived universal function. |
-| State | Condition of a system or information object. |
+| State | Condition at a point in sequence. |
 | Process | Ordered transformation. |
 | Transition | Movement between states. |
-| Representation | Stored structure corresponding to information. |
+| Property | Attribute or measurable characteristic. |
+| Phenomenon | Reported or observed experience/appearance (often human-facing); may be tracked via observations and measurements. |
+| Mechanism | Domain-specific implementation. |
 | Measurement | Operational construct. |
-| Implementation | Domain-specific mechanism. |
-| Hypothesis | Empirical claim. |
 | Theorem | Logical claim. |
+| Hypothesis | Empirical claim. |
 | Observation | Recorded event or case. |
-
+| Decision | Accepted, rejected, deferred, or superseded research choice. |
 ## Legal statement pattern
 
 Basic statement:
