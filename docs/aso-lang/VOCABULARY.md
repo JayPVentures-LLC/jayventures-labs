@@ -40,7 +40,7 @@ Use the canonical term unless a domain-specific implementation term is being exp
 | Accessibility | Property | Degree to which information is available for system use. |
 | Latent Information | State | Represented or integrated information not currently available for deliberate use. |
 | Accessible Information | State | Information available for system use. |
-| Conscious Availability | State | Information available to subjective awareness or deliberate reasoning. |
+| Consciously Available Information | State | Information available to subjective awareness or deliberate reasoning. |
 | Intuition | Phenomenon | Information, certainty, or direction becoming available before conscious explanation. |
 | Deja Vu | Phenomenon | Familiarity or prior-experience sensation without ordinary conscious source identification. |
 
