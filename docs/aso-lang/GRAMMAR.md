@@ -6,9 +6,9 @@ Grammar rules define legal statement forms for controlled research documentation
 
 ## Basic syntax
 
-```text
-Subject RELATIONSHIP_VERB Object
-```
+In formal statements, multi-word canonical terms should be written as a single token (e.g., `OrderedChange`, `LatentInformation`) to avoid whitespace ambiguity.
+
+    Subject RELATIONSHIP_VERB Object
 
 Examples:
 
