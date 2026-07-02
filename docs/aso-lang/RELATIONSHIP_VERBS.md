@@ -14,6 +14,8 @@ Relationship verbs define how terms may connect in ASO-Lang statements.
 | REQUIRES | Subject cannot occur without object. | Feedback REQUIRES Ordered Change |
 | GENERATES | Subject produces object. | Process GENERATES Outcome |
 | CHANGES | Subject transforms object. | Process CHANGES State |
+| TRANSITIONS_TO | Subject moves from one state to another state. | LatentInformation TRANSITIONS_TO AccessibleInformation |
+| CAN_BE | Subject may be classified as object (possible state/category membership). | RepresentedInformation CAN_BE LatentInformation |
 | MODIFIES | Subject alters future form, rule, or behavior of object. | Feedback MODIFIES Process |
 | REPRESENTS | Subject stands for object. | Model REPRESENTS System |
 | MODELS | Subject constructs representation of object. | Reflection MODELS System |
