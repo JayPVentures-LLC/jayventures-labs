@@ -57,6 +57,11 @@ Enterprise workspace for JayPVentures LLC systems, flagship website delivery, cr
   - `GET /creator/metrics`
   - `POST /creator/upload`
 
+### Information Accessibility Theory
+- Location: `docs/information-accessibility-theory`
+- Purpose: Companion research framework for studying how information becomes available to adaptive systems.
+- Status: v0.1 research draft; experimental until reviewed and promoted.
+
 ## Local Tooling
 
 1. Install dependencies with `npm install` from the repo root.
