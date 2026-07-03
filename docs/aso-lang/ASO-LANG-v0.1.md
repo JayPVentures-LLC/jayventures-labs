@@ -76,7 +76,7 @@ Examples:
 System HAS State
 Process CHANGES State
 Feedback MODIFIES Process
-Representation MODELS System
+Representation REPRESENTS System
 Biology IMPLEMENTS Persistence
 ```
 
