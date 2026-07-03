@@ -15,7 +15,7 @@ Use the canonical term unless a domain-specific implementation term is being exp
 | Existence | Primitive | Possibility of being. |
 | Difference | Primitive | Possibility of distinction. |
 | Interaction | Primitive | Possibility of influence. |
-| Ordered Change | Primitive | Possibility of sequential transformation. |
+| OrderedChange | Primitive | Possibility of sequential transformation. |
 | Boundary | Function | Distinguishable separation. |
 | Identity | Function | Traceable distinction across sequence. |
 | Relation | Function | Connection, comparison, or relevance between distinguishable entities. |
