@@ -33,16 +33,13 @@ Adaptation := Feedback changing future response rules.
 
 ## Derivation syntax
 
-```text
-InputConcept + InputConcept DERIVES DerivedConcept
-```
+    InputConcept + InputConcept DERIVES DerivedConcept
+
+Note: In ASO-Lang statements, multi-word vocabulary terms are written as single PascalCase tokens (e.g., `OrderedChange` corresponds to the vocabulary term "Ordered Change").
 
 Example:
 
-```text
-Difference + Interaction + OrderedChange DERIVES Information
-```
-
+    Difference + Interaction + OrderedChange DERIVES Information
 ## Implementation syntax
 
 ```text
