@@ -35,7 +35,7 @@ Adaptation := Feedback changing future response rules.
 
     InputConcept + InputConcept DERIVES DerivedConcept
 
-Note: In ASO-Lang statements, multi-word vocabulary terms are written as single PascalCase tokens (e.g., `OrderedChange` corresponds to the vocabulary term "Ordered Change").
+Note: In ASO-Lang statements, multi-word vocabulary terms are written as single PascalCase tokens (e.g., `OrderedChange` corresponds to the vocabulary term `OrderedChange`).
 
 Example:
 
