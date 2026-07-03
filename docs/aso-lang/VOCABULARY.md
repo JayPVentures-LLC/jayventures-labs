@@ -32,6 +32,8 @@ Use the canonical term unless a domain-specific implementation term is being exp
 | Evolution | Function | Accumulated adaptive difference across generations, versions, institutions, or populations. |
 | Reflection | Function | A system representing itself or its own processes. |
 | RecursiveDesign | Function | A system modifying the process by which it modifies itself. |
+| ProcessModification | Function | Transformation applied to a process resulting in altered state transition behavior. |
+| IntentionalProcessModification | Function | ProcessModification initiated through reflective or recursive control rather than emergent or environmental change. |
 
 ## IAT terms
 
