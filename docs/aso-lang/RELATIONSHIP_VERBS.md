@@ -11,7 +11,7 @@ Relationship verbs define how terms may connect in ASO-Lang statements.
 | HAS | Subject possesses object as property or component. | System HAS State |
 | CONTAINS | Subject includes object within its boundary. | System CONTAINS Process |
 | DERIVES | Object can be generated from subject or prior concepts. | Difference DERIVES Boundary |
-| REQUIRES | Subject cannot occur without object. | Feedback REQUIRES Ordered Change |
+| REQUIRES | Subject cannot occur without object. | Feedback REQUIRES OrderedChange |
 | GENERATES | Subject produces object. | Process GENERATES Outcome |
 | CHANGES | Subject transforms object. | Process CHANGES State |
 | TRANSITIONS_TO | Subject moves from one state to another state. | LatentInformation TRANSITIONS_TO AccessibleInformation |
