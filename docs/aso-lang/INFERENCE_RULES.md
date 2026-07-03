@@ -38,7 +38,7 @@ C REQUIRES A
 
 Example:
 
-If Feedback requires Ordered Change, and Adaptation requires Feedback, then Adaptation requires Ordered Change.
+If Feedback requires OrderedChange, and Adaptation requires Feedback, then Adaptation requires OrderedChange.
 
 ## Rule 3 — Implementation separation
 
