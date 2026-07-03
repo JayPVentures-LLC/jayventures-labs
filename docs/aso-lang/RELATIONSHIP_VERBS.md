@@ -40,4 +40,4 @@ Avoid these in technical statements unless used in ordinary prose:
 
 ## Rule
 
-If a relationship cannot be expressed with an approved verb, propose a new verb through the proposal workflow rather than using vague language.
+If a relationship cannot be expressed with an approved verb, propose a new verb by opening a pull request that updates this file (and any affected examples), rather than using vague language.
