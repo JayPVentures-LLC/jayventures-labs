@@ -27,7 +27,7 @@ Symbols are provisional until ASO-Math begins.
 | F | Feedback |
 | A | Adaptation |
 | Ref | Reflection |
-| D | Recursive Design |
+| D | RecursiveDesign |
 
 ## IAT symbols
 
