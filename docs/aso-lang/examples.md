@@ -58,8 +58,8 @@ DejaVu PROVES PastLifeMemory
 Valid alternatives:
 
 ```text
-AI.System MAY_IMPLEMENT AdaptiveFunctions
-Biology.Mechanisms IMPLEMENT Adaptation
+AI.System IMPLEMENTS AdaptiveFunctions
+Biology.Mechanisms IMPLEMENTS Adaptation
 Intuition EVIDENCES AccessibilityEvent
-PastLifeMemoryHypothesis MAY_EXPLAIN DejaVuCase IF competing explanations fail and predictions hold
+IF PastLifeMemoryHypothesis THEN DejaVuCase
 ```
