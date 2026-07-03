@@ -31,7 +31,7 @@ Use the canonical term unless a domain-specific implementation term is being exp
 | Learning | Function | Feedback-modified representation altering future response. |
 | Evolution | Function | Accumulated adaptive difference across generations, versions, institutions, or populations. |
 | Reflection | Function | A system representing itself or its own processes. |
-| Recursive Design | Function | A system modifying the process by which it modifies itself. |
+| RecursiveDesign | Function | A system modifying the process by which it modifies itself. |
 
 ## IAT terms
 
