@@ -78,7 +78,7 @@ System HAS State
 Process CHANGES State
 Feedback MODIFIES Process
 Representation REPRESENTS System
-Biology IMPLEMENTS Persistence
+Biology.Homeostasis IMPLEMENTS Persistence
 ```
 
 ## Illegal statement pattern
