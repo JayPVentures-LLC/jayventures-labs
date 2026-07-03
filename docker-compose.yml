@@ -1,0 +1,47 @@
+version: "3.9"
+
+services:
+
+  kernel:
+    image: node:20
+    working_dir: /app
+    volumes:
+      - ./services/kernel:/app
+    command: node index.js
+
+  aso-engine:
+    image: node:20
+    working_dir: /app
+    volumes:
+      - ./services/aso:/app
+    command: node index.js
+
+  iat-engine:
+    image: node:20
+    working_dir: /app
+    volumes:
+      - ./services/iat:/app
+    command: node index.js
+
+  instrumentation:
+    image: node:20
+    working_dir: /app
+    volumes:
+      - ./services/instrumentation:/app
+    command: node index.js
+
+  simulation:
+    image: python:3.11
+    working_dir: /app
+    volumes:
+      - ./services/simulation:/app
+    command: python main.py
+
+  registry:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: aso
+      POSTGRES_PASSWORD: aso
+      POSTGRES_DB: aso_registry
+    ports:
+      - "5432:5432"
