@@ -17,9 +17,7 @@ B DERIVES C
 
 Then:
 
-```text
-A contributes to derivation of C
-```
+A contributes to the derivation of C.
 
 Do not state `A DERIVES C` directly unless intermediate dependencies are preserved or summarized.
 
