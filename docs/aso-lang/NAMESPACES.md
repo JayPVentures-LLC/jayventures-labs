@@ -21,7 +21,7 @@ Framework.Layer.Term
 | ASO.Measure | Measurement constructs. |
 | IAT.State | Information accessibility states. |
 | IAT.Transition | Accessibility transitions. |
-| IAT.Phenomenon | Intuition, deja vu, insight, and related phenomena. |
+| IAT.Phenomenon | Intuition, DejaVu, insight, and related phenomena. |
 | Human.Implementation | Human-domain mechanisms. |
 | AI.Implementation | Artificial-system mechanisms. |
 | Org.Implementation | Organizational mechanisms. |
