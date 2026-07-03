@@ -51,7 +51,7 @@ A state should not be described as MODIFYING a process unless a mechanism is spe
 ## Example type-safe statements
 
 ```text
-AI.WeightUpdate IMPLEMENTS Adaptation
+AI.Implementation.WeightUpdate IMPLEMENTS Adaptation
 FeedbackDelayScore OPERATIONALIZES FeedbackDelay
 CaseLog EVIDENCES IAT-HYP-0001
 LatentInformation TRANSITIONS_TO AccessibleInformation
