@@ -13,7 +13,7 @@ Symbols are provisional until ASO-Math begins.
 | E | Existence |
 | Delta | Difference |
 | I | Interaction |
-| Omega | Ordered Change |
+| Omega | OrderedChange |
 
 ## Core object symbols
 
