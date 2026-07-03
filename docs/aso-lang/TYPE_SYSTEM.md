@@ -54,7 +54,7 @@ A state should not be described as MODIFYING a process unless a mechanism is spe
 AI.Implementation.WeightUpdate IMPLEMENTS Adaptation
 FeedbackDelayScore OPERATIONALIZES FeedbackDelay
 CaseLog EVIDENCES IAT-HYP-0001
-LatentInformation TRANSITIONS_TO AccessibleInformation
+IAT.State.LatentInformation TRANSITIONS_TO IAT.State.AccessibleInformation
 ```
 
 ## Example type errors
