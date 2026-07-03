@@ -34,11 +34,11 @@ Symbols are provisional until ASO-Math begins.
 | Symbol | Term |
 |---|---|
 | Acc | Accessibility |
-| LatInf | Latent Information |
-| AccInf | Accessible Information |
-| ConInf | Consciously Available Information |
-| ExpInf | Expressed Information |
-| AppInf | Applied Information |
+| LatInf | LatentInformation |
+| AccInf | AccessibleInformation |
+| ConInf | ConsciouslyAvailableInformation |
+| ExpInf | ExpressedInformation |
+| AppInf | AppliedInformation |
 
 ## Notation caution
 
