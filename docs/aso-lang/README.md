@@ -1,7 +1,7 @@
 # ASO-Lang
 
 Status: v0.1 formal-language draft  
-Lane: jaypVLabs research, validation, and experimentation  
+Lane: jayventures-labs research, validation, and experimentation
 Owner: JayPVentures LLC  
 Classification: formal language layer for ASO/IAT research
 
