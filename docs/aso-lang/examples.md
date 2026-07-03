@@ -7,7 +7,7 @@ Existence + Difference DERIVES Boundary
 Interaction + OrderedChange DERIVES Process
 Difference + Interaction + OrderedChange DERIVES Information
 Process + Information + OrderedChange DERIVES Feedback
-Feedback + Persistence + ProcessModification DERIVES Adaptation
+Feedback + Persistence + RecursiveDesign DERIVES Adaptation
 ```
 
 ## IAT accessibility examples
