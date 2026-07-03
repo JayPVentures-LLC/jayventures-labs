@@ -16,7 +16,7 @@ Examples:
 System HAS State
 Process CHANGES State
 Feedback MODIFIES Process
-Biology IMPLEMENTS Persistence
+Biology.Homeostasis IMPLEMENTS Persistence
 ```
 
 ## Definition syntax
