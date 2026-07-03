@@ -44,7 +44,7 @@ A hypothesis is evaluated by evidence.
 
 ### Rule 5
 
-A state may TRANSITIONS_TO another state.
+A state may transition to another state (expressed as `State TRANSITIONS_TO State`).
 
 A state should not be described as MODIFYING a process unless a mechanism is specified.
 
