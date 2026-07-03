@@ -49,6 +49,7 @@ Every ASO-Lang statement should be classifiable as definition, derivation, theor
 For the authoritative type set and type rules, see `TYPE_SYSTEM.md`. The table below is an abbreviated overview.
 
 | Type | Meaning |
+|---|---|
 | Primitive | Candidate irreducible concept. |
 | Function | Derived universal function. |
 | State | Condition at a point in sequence. |
