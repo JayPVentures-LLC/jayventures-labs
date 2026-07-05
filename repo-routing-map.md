@@ -4,6 +4,7 @@
 
 - Primary repository: `JayPVentures-LLC/jayventures-labs`
 - Scope: governance, labs, non-production support systems, and controlled production workflows declared in `/home/runner/work/jayventures-labs/jayventures-labs/deployment-registry.json`
+- Constitutional directive: Project AURORA (`/home/runner/work/jayventures-labs/jayventures-labs/governance/jpv-os/project-aurora-directive.json`)
 - JPV Nexus production source of truth: `jaypVLabs/JPV-OS`
 - Rule: production Nexus deploy routing from this repository is denied.
 

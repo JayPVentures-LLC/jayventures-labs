@@ -22,6 +22,7 @@ This repository (`JayPVentures-LLC/jayventures-labs`) is **not** the production 
   "nexusProductionSourceOfTruth": "jaypVLabs/JPV-OS",
   "nexusProductionRoutingAllowed": false,
   "status": "non-production",
+  "constitutionalDirective": "governance/jpv-os/project-aurora-directive.json",
   "manifest": "REPOSITORY_MANIFEST.json",
   "deploymentRegistry": "deployment-registry.json",
   "routingMap": "repo-routing-map.md"

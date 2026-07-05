@@ -92,5 +92,26 @@
       "revenueEnabled"
     ],
     "displayMode": "evidence-first"
+  },
+  "founderDashboardQuestions": [
+    "What matters today?",
+    "What changed?",
+    "What is blocked?",
+    "What needs approval?",
+    "What opportunities exist?",
+    "How free am I?"
+  ],
+  "freedomIndex": {
+    "primaryMetric": true,
+    "metrics": [
+      "hoursReclaimed",
+      "manualTasksRemoved",
+      "timeOutdoors",
+      "deepThinkingTime",
+      "meaningfulConversations",
+      "automatedDecisions",
+      "stressReduction",
+      "timeSpentCreating"
+    ]
   }
 }

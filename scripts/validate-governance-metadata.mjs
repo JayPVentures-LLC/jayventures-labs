@@ -23,7 +23,8 @@ const requiredSystemLayerFiles = [
   'governance/jpv-os/relationship-map-contract.json',
   'governance/jpv-os/offer-engine-contract.json',
   'governance/jpv-os/completion-gates.json',
-  'governance/jpv-os/founder-operator-mode.json'
+  'governance/jpv-os/founder-operator-mode.json',
+  'governance/jpv-os/project-aurora-directive.json'
 ].map((rel) => path.resolve(root, rel));
 
 const failures = [];
@@ -82,6 +83,14 @@ function validateRepositoryManifest(manifest) {
 
   if (executionBoundary.nexusProductionRoutingAllowed !== false) {
     fail('REPOSITORY_MANIFEST.json executionBoundary.nexusProductionRoutingAllowed must be false');
+  }
+
+  if (manifest.constitutionalDirective?.project !== 'AURORA') {
+    fail('REPOSITORY_MANIFEST.json constitutionalDirective.project must be AURORA');
+  }
+
+  if (manifest.optimizationTarget !== 'life') {
+    fail('REPOSITORY_MANIFEST.json optimizationTarget must be life');
   }
 
   const layers = manifest.systemLayers ?? {};
@@ -261,6 +270,28 @@ function validateFounderOperatorMode() {
   }
 }
 
+function validateAuroraDirective() {
+  const auroraPath = path.resolve(root, 'governance/jpv-os/project-aurora-directive.json');
+  const aurora = readJson(auroraPath, 'governance/jpv-os/project-aurora-directive.json');
+  if (!aurora) return;
+
+  if (aurora.directive?.project !== 'AURORA') {
+    fail('project-aurora-directive.json directive.project must be AURORA');
+  }
+
+  if (aurora.directive?.priority !== 'highest') {
+    fail('project-aurora-directive.json directive.priority must be highest');
+  }
+
+  if (!Array.isArray(aurora.executiveModules) || aurora.executiveModules.length < 20) {
+    fail('project-aurora-directive.json executiveModules must include the full executive module set');
+  }
+
+  if (aurora.engineeringRule?.rejectIfNoImprovement !== true) {
+    fail('project-aurora-directive.json engineeringRule.rejectIfNoImprovement must be true');
+  }
+}
+
 const manifest = readJson(files.manifest, 'REPOSITORY_MANIFEST.json');
 const deploymentRegistry = readJson(files.deploymentRegistry, 'deployment-registry.json');
 const intentContract = readJson(files.intentContract, 'governance/jpv-os/intent-normalization-contract.json');
@@ -279,6 +310,7 @@ validateIntentContract(intentContract);
 validateExecutiveStateModel(executiveStateModel);
 validatePublicReadiness(publicReadinessGate);
 validateFounderOperatorMode();
+validateAuroraDirective();
 
 if (failures.length > 0) {
   console.error('Governance metadata validation failed:');

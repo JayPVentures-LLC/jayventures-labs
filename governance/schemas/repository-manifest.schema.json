@@ -3,7 +3,7 @@
   "$id": "https://jaypventuresllc.com/schemas/repository-manifest.schema.json",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schemaVersion", "repository", "executionBoundary", "systemLayers"],
+  "required": ["schemaVersion", "repository", "executionBoundary", "systemLayers", "constitutionalDirective", "optimizationTarget"],
   "properties": {
     "schemaVersion": {"type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$"},
     "repository": {
@@ -49,6 +49,21 @@
         "learningLoop": {"type": "string", "enum": ["active", "planned"]},
         "proofOfWorkDashboard": {"type": "string", "enum": ["active", "planned"]}
       }
+    },
+    "constitutionalDirective": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["project", "status", "priority", "objective"],
+      "properties": {
+        "project": {"type": "string", "const": "AURORA"},
+        "status": {"type": "string", "minLength": 1},
+        "priority": {"type": "string", "minLength": 1},
+        "objective": {"type": "string", "minLength": 1}
+      }
+    },
+    "optimizationTarget": {
+      "type": "string",
+      "enum": ["life"]
     }
   }
 }

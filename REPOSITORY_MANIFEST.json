@@ -36,5 +36,12 @@
     "offerEngine": "active",
     "learningLoop": "active",
     "proofOfWorkDashboard": "active"
-  }
+  },
+  "constitutionalDirective": {
+    "project": "AURORA",
+    "status": "constitutional-directive",
+    "priority": "highest",
+    "objective": "Maximize founder freedom, impact, and life quality while minimizing unnecessary friction."
+  },
+  "optimizationTarget": "life"
 }

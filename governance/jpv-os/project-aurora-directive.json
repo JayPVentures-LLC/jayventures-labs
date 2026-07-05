@@ -1,0 +1,126 @@
+{
+  "schemaVersion": "1.0.0",
+  "directive": {
+    "project": "AURORA",
+    "status": "constitutional-directive",
+    "priority": "highest",
+    "scope": "entire-jpv-ecosystem",
+    "mission": "Create a life with maximum freedom, maximum impact, and minimum unnecessary friction."
+  },
+  "corePrinciple": "The system optimizes life; work is one expression of life, not its replacement.",
+  "constitutionalLaws": [
+    {
+      "id": "law-1",
+      "name": "Protect the Founder",
+      "focus": [
+        "health",
+        "freedom",
+        "curiosity",
+        "creativity",
+        "relationships",
+        "financial-resilience",
+        "meaningful-contribution"
+      ]
+    },
+    {
+      "id": "law-2",
+      "name": "Increase Freedom",
+      "focus": [
+        "time",
+        "mobility",
+        "financial-flexibility",
+        "emotional-capacity",
+        "attention",
+        "opportunity",
+        "choice"
+      ]
+    },
+    {
+      "id": "law-3",
+      "name": "Reduce Cognitive Load",
+      "focus": [
+        "repositories",
+        "deployments",
+        "credentials",
+        "routing",
+        "branches",
+        "workflow names",
+        "status",
+        "platform differences"
+      ]
+    },
+    {
+      "id": "law-4",
+      "name": "Life First",
+      "focus": [
+        "nature",
+        "family",
+        "travel",
+        "learning",
+        "adventure",
+        "friendship",
+        "reflection",
+        "rest"
+      ]
+    }
+  ],
+  "executiveIntelligenceLayer": {
+    "classificationActions": [
+      "ignore",
+      "archive",
+      "automate",
+      "delegate",
+      "research",
+      "schedule",
+      "escalate",
+      "approve",
+      "execute"
+    ],
+    "showOnlyHighValueInformation": true
+  },
+  "executiveModules": [
+    "founder-dashboard",
+    "freedom-index",
+    "curiosity-engine",
+    "opportunity-radar",
+    "experience-designer",
+    "relationship-intelligence",
+    "personal-cfo",
+    "health-intelligence",
+    "emotional-friction-engine",
+    "anti-burnout-system",
+    "thinking-capture",
+    "legacy-engine",
+    "decision-engine",
+    "serendipity-engine",
+    "environment-intelligence",
+    "reputation-guardian",
+    "personal-knowledge-graph",
+    "mission-alignment-engine",
+    "recovery-intelligence",
+    "joy-optimizer"
+  ],
+  "engineeringRule": {
+    "mustImproveAtLeastOne": [
+      "freedom",
+      "health",
+      "relationships",
+      "learning",
+      "financial-resilience",
+      "mission",
+      "time",
+      "attention",
+      "joy"
+    ],
+    "rejectIfNoImprovement": true
+  },
+  "maturityCriteria": [
+    "phone-first-primary-operation",
+    "minimal-manual-routine-execution",
+    "proactive-protection-attention-health-relationships-financial-resilience",
+    "decreasing-operational-complexity",
+    "automatic-friction-to-automation-conversion",
+    "mission-and-life-constitution-aligned-recommendations",
+    "freedom-index-growth"
+  ]
+}
