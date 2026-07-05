@@ -1,0 +1,72 @@
+{
+  "schemaVersion": "1.0.0",
+  "policy": {
+    "name": "mission-alignment-policy",
+    "requiredFor": [
+      "features",
+      "automations",
+      "workflows",
+      "production-promotions"
+    ],
+    "failClosed": true
+  },
+  "humanCapabilityAcceptanceCriteria": {
+    "requiredProgression": [
+      "technology",
+      "reduces-friction",
+      "creates-freedom",
+      "protects-life-capital",
+      "expands-human-capability",
+      "creates-meaningful-contribution",
+      "improves-the-world"
+    ],
+    "rejectIfMissingAnyStep": true
+  },
+  "requiredGovernanceMetadata": {
+    "initiative": [
+      "name",
+      "owner",
+      "decisionClass",
+      "summary",
+      "expectedLifeCapitalImpact",
+      "expectedFreedomIndexDelta",
+      "expectedHRIDelta"
+    ],
+    "lifeCapital": {
+      "requiredAtLeastOne": true,
+      "dimensions": [
+        "physical",
+        "cognitive",
+        "emotional",
+        "relationship",
+        "financial",
+        "experiential",
+        "legacy"
+      ]
+    },
+    "humanInfrastructurePillars": {
+      "requiredAtLeastOne": true,
+      "pillars": [
+        "protect",
+        "liberate",
+        "amplify",
+        "connect",
+        "explore",
+        "build",
+        "leave-better"
+      ]
+    },
+    "riskAndBurden": [
+      "cognitiveLoadImpact",
+      "bureaucracyImpact",
+      "manualWorkImpact",
+      "attentionDemand"
+    ],
+    "postImplementation": [
+      "observedLifeCapitalDelta",
+      "observedFreedomIndexDelta",
+      "observedHRIDelta",
+      "remainingFriction"
+    ]
+  }
+}

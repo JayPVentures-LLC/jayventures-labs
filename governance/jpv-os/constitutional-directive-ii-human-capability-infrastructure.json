@@ -1,0 +1,69 @@
+{
+  "schemaVersion": "1.0.0",
+  "directive": {
+    "id": "constitutional-directive-ii",
+    "name": "Human Capability Infrastructure",
+    "status": "constitutional-amendment",
+    "appliesTo": "entire-jpv-ecosystem",
+    "supersedes": "Traditional Productivity Systems",
+    "mission": "Build infrastructure that continuously increases human capability while continuously decreasing unnecessary human burden."
+  },
+  "constitutionalPrinciple": "Technology should quietly expand human possibility while demanding as little human attention as possible.",
+  "humanCapabilityEquation": [
+    "technology",
+    "reduces-friction",
+    "creates-freedom",
+    "protects-life-capital",
+    "expands-human-capability",
+    "creates-meaningful-contribution",
+    "improves-the-world"
+  ],
+  "equationEnforcement": {
+    "rejectIfChainBroken": true,
+    "requiredFor": [
+      "feature-design",
+      "automation-design",
+      "release-promotion"
+    ]
+  },
+  "ultimateObjective": {
+    "maximize": [
+      "freedom",
+      "health",
+      "curiosity",
+      "wisdom",
+      "creativity",
+      "relationships",
+      "contribution"
+    ],
+    "minimize": [
+      "bureaucracy",
+      "cognitive-load",
+      "unnecessary-decisions",
+      "repetitive-work",
+      "operational-friction"
+    ]
+  },
+  "policyPrecedence": {
+    "order": [
+      "PEOPLE-PROTECTION.md",
+      "governance/jpv-os/constitutional-directive-ii-human-capability-infrastructure.json",
+      "governance/jpv-os/project-aurora-directive.json",
+      "GOVERNANCE.md"
+    ],
+    "rules": [
+      {
+        "id": "no-human-harm-tradeoff",
+        "statement": "If optimization conflicts with People Protection, People Protection is binding and optimization must be redesigned."
+      },
+      {
+        "id": "life-capital-required",
+        "statement": "If work cannot demonstrate Life Capital improvement, it cannot be promoted."
+      },
+      {
+        "id": "aurora-execution-bounded",
+        "statement": "AURORA execution and automation must operate inside this amendment's quiet-infrastructure and freedom objectives."
+      }
+    ]
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "schemaVersion": "1.0.0",
+  "policy": {
+    "name": "constitutional-release-gate",
+    "requiredFor": [
+      "planning",
+      "design-review",
+      "production-readiness"
+    ],
+    "failClosed": true
+  },
+  "alignmentChecks": [
+    "human-capability-equation-passed",
+    "life-capital-impact-declared",
+    "human-infrastructure-pillar-mapped",
+    "people-protection-compatible",
+    "quiet-infrastructure-compatible",
+    "freedom-index-and-hri-deltas-declared"
+  ],
+  "explicitRejectionCriteria": [
+    "increases-cognitive-load-without-offset",
+    "adds-bureaucracy-without-life-capital-gain",
+    "adds-unnecessary-decisions",
+    "requires-repetitive-manual-work",
+    "escalates-low-value-noise-to-founder",
+    "conflicts-with-people-protection"
+  ],
+  "routingBoundaryEnforcement": {
+    "nexusProductionSourceOfTruth": "jaypVLabs/JPV-OS",
+    "nexusProductionRoutingAllowed": false,
+    "requiredInNonProduction": true
+  },
+  "rolloutSequence": [
+    {
+      "phase": "phase-1",
+      "scope": "governance-codification-and-validation-updates"
+    },
+    {
+      "phase": "phase-2",
+      "scope": "founder-dashboard-classification-pipeline-freedom-index-core"
+    },
+    {
+      "phase": "phase-3",
+      "scope": "executive-systems-expansion-curiosity-opportunity-relationship-health-cfo-wisdom"
+    },
+    {
+      "phase": "phase-4",
+      "scope": "optimization-loops-anti-burnout-serendipity-environment-joy-and-long-horizon-learning"
+    }
+  ],
+  "stewardshipAndAudit": {
+    "requiredRoles": [
+      "policy-owner",
+      "data-quality-owner",
+      "automation-behavior-owner",
+      "mission-alignment-owner"
+    ],
+    "constitutionalReviewCadence": "quarterly",
+    "focus": "real-human-outcomes-over-activity-volume"
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "1.0.0",
+  "model": {
+    "name": "executive-intelligence-operating-model",
+    "objective": "Only high-value decisions and opportunities reach the founder while routine execution shifts into automation."
+  },
+  "decisionClasses": [
+    {
+      "class": "ignore",
+      "requiredRoutingOutcome": "drop-noise",
+      "founderEscalationAllowed": false
+    },
+    {
+      "class": "archive",
+      "requiredRoutingOutcome": "store-for-reference",
+      "founderEscalationAllowed": false
+    },
+    {
+      "class": "automate",
+      "requiredRoutingOutcome": "execute-via-system",
+      "founderEscalationAllowed": false
+    },
+    {
+      "class": "delegate",
+      "requiredRoutingOutcome": "route-to-owner",
+      "founderEscalationAllowed": false
+    },
+    {
+      "class": "research",
+      "requiredRoutingOutcome": "produce-brief-and-options",
+      "founderEscalationAllowed": false
+    },
+    {
+      "class": "escalate",
+      "requiredRoutingOutcome": "founder-decision-queue",
+      "founderEscalationAllowed": true
+    },
+    {
+      "class": "approve",
+      "requiredRoutingOutcome": "one-tap-approval-queue",
+      "founderEscalationAllowed": true
+    },
+    {
+      "class": "execute",
+      "requiredRoutingOutcome": "execute-with-governance-logging",
+      "founderEscalationAllowed": true
+    }
+  ],
+  "founderEscalationThresholds": {
+    "mustEscalateIfAny": [
+      "material-people-protection-risk",
+      "material-financial-risk",
+      "irreversible-decision",
+      "mission-alignment-conflict",
+      "cross-lane-governance-exception"
+    ],
+    "mustNotEscalateIfAll": [
+      "repetitive",
+      "reversible",
+      "within-approved-policy",
+      "low-impact"
+    ]
+  },
+  "quietInfrastructureConstraints": {
+    "rejectDesignsThatIncrease": [
+      "attention-fragmentation",
+      "context-switching",
+      "manual-status-checking",
+      "bureaucracy",
+      "approval-churn"
+    ],
+    "requireDesignsThatIncrease": [
+      "automation-coverage",
+      "background-resolution",
+      "executive-clarity",
+      "time-for-thinking-creating-relationships-exploration"
+    ]
+  }
+}

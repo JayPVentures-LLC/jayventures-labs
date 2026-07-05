@@ -1,0 +1,171 @@
+{
+  "schemaVersion": "1.0.0",
+  "policy": {
+    "trackedBacklog": true,
+    "prioritizationRule": "systems-that-reduce-routine-founder-work-and-recurring-friction-first"
+  },
+  "systems": [
+    {
+      "name": "founder-dashboard",
+      "priority": "phase-2-core",
+      "purpose": "Answer what matters, what changed, what is blocked, what needs approval, where opportunity exists, and how Freedom Index is changing.",
+      "requiredInputs": ["deployment-registry", "approval-queue", "blocker-graph", "freedom-index-metrics"],
+      "outputFormat": "executive-summary-under-2-minutes",
+      "escalationRules": ["escalate-only-high-value"],
+      "protectionConstraints": ["low-cognitive-load", "phone-first", "people-protection-safe"]
+    },
+    {
+      "name": "curiosity-engine",
+      "priority": "phase-3",
+      "purpose": "Deliver insight without overload and protect wonder.",
+      "requiredInputs": ["research-stream", "knowledge-graph", "interest-signals"],
+      "outputFormat": "curated-insight-brief",
+      "escalationRules": ["escalate-breakthrough-opportunities"],
+      "protectionConstraints": ["overwhelm-guardrails"]
+    },
+    {
+      "name": "opportunity-radar",
+      "priority": "phase-3",
+      "purpose": "Continuously surface clients, partnerships, grants, research, speaking, investment, and collaborator opportunities.",
+      "requiredInputs": ["market-signals", "relationship-map", "mission-alignment-rules"],
+      "outputFormat": "opportunity-queue",
+      "escalationRules": ["escalate-high-impact-mission-aligned"],
+      "protectionConstraints": ["no-manual-search-dependency"]
+    },
+    {
+      "name": "experience-designer",
+      "priority": "phase-3",
+      "purpose": "Optimize recovery, exploration, and life experiences based on energy and context.",
+      "requiredInputs": ["energy-state", "calendar-context", "recovery-data"],
+      "outputFormat": "experience-recommendation-cards",
+      "escalationRules": ["escalate-if-overload-risk"],
+      "protectionConstraints": ["recovery-before-expansion"]
+    },
+    {
+      "name": "relationship-intelligence",
+      "priority": "phase-2-core",
+      "purpose": "Provide context before interaction and strengthen trust.",
+      "requiredInputs": ["relationship-map", "conversation-history", "followup-ledger"],
+      "outputFormat": "pre-interaction-context-brief",
+      "escalationRules": ["escalate-critical-followups"],
+      "protectionConstraints": ["privacy-by-design"]
+    },
+    {
+      "name": "personal-cfo",
+      "priority": "phase-3",
+      "purpose": "Deliver executive tradeoffs, forecasts, and financial protection recommendations.",
+      "requiredInputs": ["cashflow-signals", "revenue-risks", "forecast-models"],
+      "outputFormat": "financial-intelligence-brief",
+      "escalationRules": ["escalate-material-financial-risk"],
+      "protectionConstraints": ["resilience-over-vanity-metrics"]
+    },
+    {
+      "name": "health-intelligence",
+      "priority": "phase-3",
+      "purpose": "Protect long-term capability by correlating health with decision quality and output quality.",
+      "requiredInputs": ["sleep", "stress", "movement", "nutrition", "recovery"],
+      "outputFormat": "health-capability-signals",
+      "escalationRules": ["escalate-pre-burnout-patterns"],
+      "protectionConstraints": ["health-data-minimization"]
+    },
+    {
+      "name": "thinking-capture",
+      "priority": "phase-2-core",
+      "purpose": "Convert ideas into structured, reusable knowledge and execution pathways.",
+      "requiredInputs": ["notes", "voice-ideas", "research-capture"],
+      "outputFormat": "structured-knowledge-objects",
+      "escalationRules": ["escalate-high-leverage-ideas"],
+      "protectionConstraints": ["minimal-manual-organization"]
+    },
+    {
+      "name": "emotional-friction-engine",
+      "priority": "phase-2-core",
+      "purpose": "Treat repeated frustration as engineering data.",
+      "requiredInputs": ["friction-signals", "repeat-patterns", "workflow-events"],
+      "outputFormat": "friction-ledger-and-auto-tasks",
+      "escalationRules": ["escalate-systemic-friction"],
+      "protectionConstraints": ["convert-repeat-stress-to-fixes"]
+    },
+    {
+      "name": "anti-burnout-intelligence",
+      "priority": "phase-4",
+      "purpose": "Predict overload and recommend recovery before collapse.",
+      "requiredInputs": ["capacity-signals", "workload-trends", "recovery-adherence"],
+      "outputFormat": "burnout-risk-alerts",
+      "escalationRules": ["escalate-when-burnout-risk-high"],
+      "protectionConstraints": ["no-productivity-overrides-health"]
+    },
+    {
+      "name": "wisdom-engine",
+      "priority": "phase-3",
+      "purpose": "Surface long-horizon patterns, mistakes, and successful strategies.",
+      "requiredInputs": ["historical-decisions", "outcomes", "knowledge-graph"],
+      "outputFormat": "pattern-intelligence-brief",
+      "escalationRules": ["escalate-recurring-costly-patterns"],
+      "protectionConstraints": ["institutional-memory-integrity"]
+    },
+    {
+      "name": "serendipity-engine",
+      "priority": "phase-4",
+      "purpose": "Introduce unexpected ideas, people, and places to expand creativity.",
+      "requiredInputs": ["curiosity-profile", "knowledge-gaps", "external-discovery-stream"],
+      "outputFormat": "serendipity-prompts",
+      "escalationRules": ["escalate-high-potential-connections"],
+      "protectionConstraints": ["protect-focus-and-recovery-windows"]
+    },
+    {
+      "name": "environment-intelligence",
+      "priority": "phase-4",
+      "purpose": "Recommend physical environments that maximize capability.",
+      "requiredInputs": ["energy-state", "task-type", "environment-history"],
+      "outputFormat": "environment-recommendations",
+      "escalationRules": ["escalate-when-environment-causes-degradation"],
+      "protectionConstraints": ["accessibility-aware-recommendations"]
+    },
+    {
+      "name": "reputation-guardian",
+      "priority": "phase-3",
+      "purpose": "Detect public trust, security, and brand risks before they become incidents.",
+      "requiredInputs": ["web-presence-scans", "security-signals", "pricing-and-form-audits"],
+      "outputFormat": "risk-alerts-and-remediation-tasks",
+      "escalationRules": ["escalate-public-risk-immediately"],
+      "protectionConstraints": ["prevent-public-harm"]
+    },
+    {
+      "name": "personal-knowledge-graph",
+      "priority": "phase-3",
+      "purpose": "Connect ideas, projects, people, and research for navigable institutional knowledge.",
+      "requiredInputs": ["thinking-capture", "project-data", "relationship-intelligence"],
+      "outputFormat": "linked-knowledge-views",
+      "escalationRules": ["escalate-critical-knowledge-gaps"],
+      "protectionConstraints": ["privacy-and-data-boundary-controls"]
+    },
+    {
+      "name": "mission-alignment-engine",
+      "priority": "phase-2-core",
+      "purpose": "Score opportunities by purpose, ethics, freedom, people impact, sustainability, and long-term contribution.",
+      "requiredInputs": ["mission-alignment-policy", "people-protection-policy", "financial-resilience-signals"],
+      "outputFormat": "go-no-go-recommendation",
+      "escalationRules": ["escalate-mission-conflicts"],
+      "protectionConstraints": ["reject-misaligned-opportunities"]
+    },
+    {
+      "name": "recovery-intelligence",
+      "priority": "phase-4",
+      "purpose": "Ensure recovery precedes expansion.",
+      "requiredInputs": ["capacity", "cashflow-stability", "focus-load", "visibility-risk"],
+      "outputFormat": "recovery-priority-actions",
+      "escalationRules": ["escalate-when-expansion-violates-recovery-thresholds"],
+      "protectionConstraints": ["capacity-before-growth"]
+    },
+    {
+      "name": "joy-optimizer",
+      "priority": "phase-4",
+      "purpose": "Track wonder, peace, adventure, connection, gratitude, and fulfillment as core success outcomes.",
+      "requiredInputs": ["freedom-index", "experience-signals", "relationship-signals"],
+      "outputFormat": "joy-outcomes-report",
+      "escalationRules": ["escalate-when-joy-trends-decline"],
+      "protectionConstraints": ["human-meaning-over-productivity"]
+    }
+  ]
+}

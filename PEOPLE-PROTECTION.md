@@ -233,6 +233,8 @@ People Protection protects the humans affected by those systems.
 
 All three are required for production readiness.
 
+Human Capability Infrastructure (`governance/jpv-os/constitutional-directive-ii-human-capability-infrastructure.json`) is also binding. If optimization or automation conflicts with People Protection, People Protection controls and the work must be redesigned.
+
 ## Enforcement in GitHub
 
 Repository enforcement must ensure this file cannot be silently removed, bypassed, or ignored.

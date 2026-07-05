@@ -1,0 +1,72 @@
+{
+  "schemaVersion": "1.0.0",
+  "measurement": {
+    "primaryKpi": "freedom-index",
+    "ultimateKpi": "human-return-on-infrastructure",
+    "updateCadence": "weekly",
+    "owners": {
+      "metricSteward": "system",
+      "dataQualityOwner": "system",
+      "missionReviewOwner": "system"
+    }
+  },
+  "freedomIndex": {
+    "metrics": [
+      "hoursReturned",
+      "manualWorkEliminated",
+      "attentionProtected",
+      "timeOutdoors",
+      "meaningfulConversations",
+      "creativeOutput",
+      "learning",
+      "recovery",
+      "purpose",
+      "relationshipsStrengthened",
+      "lifeCapitalIncreased"
+    ],
+    "dataSources": [
+      "workflow-events",
+      "automation-ledger",
+      "founder-dashboard-signals",
+      "relationship-intelligence-signals",
+      "recovery-intelligence-signals"
+    ],
+    "baseline": {
+      "status": "required-before-phase-2",
+      "captureMethod": "initial-governance-baseline-snapshot"
+    }
+  },
+  "humanReturnOnInfrastructure": {
+    "metrics": [
+      "hoursReturned",
+      "foundersAvoidedBurnout",
+      "peopleHealthImproved",
+      "communitiesStrengthened",
+      "childrenSafer",
+      "meaningfulIdeasRealized",
+      "unnecessarySystemsRemoved",
+      "lifeCapitalCreated"
+    ],
+    "dataSources": [
+      "outcome-audits",
+      "people-protection-reviews",
+      "friction-improvement-ledger",
+      "governance-evidence-packages"
+    ],
+    "baseline": {
+      "status": "required-before-phase-3",
+      "captureMethod": "hri-baseline-review"
+    }
+  },
+  "initiativeMeasurementRequirement": {
+    "required": true,
+    "fields": [
+      "expectedLifeCapitalImpact",
+      "expectedFreedomIndexDelta",
+      "expectedHRIDelta",
+      "observedLifeCapitalDelta",
+      "observedFreedomIndexDelta",
+      "observedHRIDelta"
+    ]
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "1.0.0",
+  "policy": {
+    "name": "friction-to-improvement",
+    "required": true,
+    "principle": "Recurring friction is engineering data, not founder burden."
+  },
+  "captureStandard": {
+    "requiredSignals": [
+      "manual-rework",
+      "repeated-corrections",
+      "context-switches",
+      "decision-delays",
+      "approval-churn",
+      "stress-spikes"
+    ],
+    "coverage": [
+      "workflows",
+      "systems",
+      "interactions"
+    ]
+  },
+  "automation": {
+    "repeatThreshold": 3,
+    "onThresholdAction": "create-governed-improvement-task",
+    "requiredTaskFields": [
+      "frictionPattern",
+      "affectedLifeCapital",
+      "owner",
+      "targetReduction",
+      "dueReview"
+    ]
+  },
+  "reviewCheckpoints": {
+    "cadence": "biweekly",
+    "requiredChecks": [
+      "friction-pattern-still-present",
+      "improvement-task-progress",
+      "measured-friction-reduction",
+      "burden-eliminated-or-re-scoped"
+    ],
+    "blockPhaseAdvanceIfRecurringBurdenUnaddressed": true
+  }
+}

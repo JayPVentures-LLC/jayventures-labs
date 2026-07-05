@@ -122,5 +122,23 @@
     "automatic-friction-to-automation-conversion",
     "mission-and-life-constitution-aligned-recommendations",
     "freedom-index-growth"
-  ]
+  ],
+  "linkedConstitutionalArtifacts": [
+    "governance/jpv-os/constitutional-directive-ii-human-capability-infrastructure.json",
+    "governance/jpv-os/mission-alignment-policy.json",
+    "governance/jpv-os/executive-operating-model.json",
+    "governance/jpv-os/permanent-executive-systems-backlog.json",
+    "governance/jpv-os/freedom-index-hri-measurement.json",
+    "governance/jpv-os/friction-to-improvement-policy.json",
+    "governance/jpv-os/constitutional-release-gate-policy.json"
+  ],
+  "precedenceRules": {
+    "order": [
+      "PEOPLE-PROTECTION.md",
+      "governance/jpv-os/constitutional-directive-ii-human-capability-infrastructure.json",
+      "governance/jpv-os/project-aurora-directive.json",
+      "GOVERNANCE.md"
+    ],
+    "statement": "AURORA execution must remain bounded by People Protection and Human Capability Infrastructure constraints."
+  }
 }

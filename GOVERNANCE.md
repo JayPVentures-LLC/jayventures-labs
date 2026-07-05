@@ -18,17 +18,20 @@ Governance is not limited to technical enforcement. Governance also defines how 
 
 ## Governance Relationship to Other Policies
 
-This repository operates under three required policy layers:
+This repository operates under four required policy layers:
 
 - `GOVERNANCE.md`
 - `SECURITY.md`
 - `PEOPLE-PROTECTION.md`
+- `governance/jpv-os/constitutional-directive-ii-human-capability-infrastructure.json`
 
 Governance protects decision integrity.
 Security protects systems from compromise.
 People Protection protects the humans affected by those systems.
 
-No system may be considered production-ready unless all three policy layers are satisfied.
+No system may be considered production-ready unless all required policy layers are satisfied.
+
+Human Capability Infrastructure sets mission-alignment, Life Capital, and freedom-first constraints that all governance controls must enforce.
 
 ## Risk Tiers
 
