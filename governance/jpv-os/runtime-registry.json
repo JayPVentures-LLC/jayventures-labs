@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "1.0.0",
+  "registry": {
+    "repositories": [
+      "JayPVentures-LLC/jayventures-labs",
+      "jaypVLabs/JPV-OS"
+    ],
+    "deployments": [
+      "flagship-site",
+      "entitlement-system",
+      "unified-intake-engine",
+      "nexus-production-reference"
+    ],
+    "platforms": [
+      "cloudflare-workers",
+      "cloudflare-pages",
+      "github-actions",
+      "stripe",
+      "discord",
+      "google",
+      "microsoft",
+      "nexus",
+      "flow",
+      "gate",
+      "ledger",
+      "pulse"
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "1.0.0",
+  "objective": "Prevent system-created stress and preserve founder leverage.",
+  "triggers": [
+    "highBlockerCount",
+    "deploymentFailures",
+    "fallingLeverage",
+    "operatorOverload",
+    "stressSignals"
+  ],
+  "automaticResponse": [
+    "pauseExpansion",
+    "prioritizeRecovery",
+    "reduceNoise",
+    "focusOnBlockerRemoval"
+  ]
+}

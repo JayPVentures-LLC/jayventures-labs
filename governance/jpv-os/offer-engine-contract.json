@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "1.0.0",
+  "components": [
+    "pricing",
+    "accessTiers",
+    "checkout",
+    "discordEntitlements",
+    "publicPages",
+    "followUpWorkflows"
+  ],
+  "requiredIntegrityChecks": [
+    "checkoutHealthy",
+    "entitlementsRouted",
+    "offerPublished",
+    "followUpOperational"
+  ]
+}

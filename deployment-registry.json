@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "1.0.0",
+  "generatedAtUtc": "2026-07-05T00:00:00Z",
+  "repositories": [
+    {
+      "repository": "JayPVentures-LLC/jayventures-labs",
+      "role": "non-production-governance-and-labs",
+      "owner": "JayPVentures-LLC"
+    },
+    {
+      "repository": "jaypVLabs/JPV-OS",
+      "role": "nexus-production-source-of-truth",
+      "owner": "jaypVLabs"
+    }
+  ],
+  "deployments": [
+    {
+      "id": "flagship-site",
+      "service": "Flagship Website",
+      "deploymentSource": "JayPVentures-LLC/jayventures-labs",
+      "deploymentTarget": "cloudflare-workers",
+      "environment": "production",
+      "productionUrl": "https://jaypventuresllc.com",
+      "workflow": ".github/workflows/deploy-website.yml",
+      "branch": "main",
+      "lastDeployment": "unknown",
+      "lastFailure": "unknown",
+      "rollbackTarget": "last-known-good-artifact",
+      "lane": "business",
+      "workflowOwner": "system"
+    },
+    {
+      "id": "entitlement-system",
+      "service": "Entitlement System",
+      "deploymentSource": "JayPVentures-LLC/jayventures-labs",
+      "deploymentTarget": "cloudflare-workers",
+      "environment": "production",
+      "productionUrl": "https://entitlements.jaypventuresllc.com",
+      "workflow": ".github/workflows/deploy-workers.yml",
+      "branch": "main",
+      "lastDeployment": "unknown",
+      "lastFailure": "unknown",
+      "rollbackTarget": "last-known-good-artifact",
+      "lane": "business",
+      "workflowOwner": "system"
+    },
+    {
+      "id": "unified-intake-engine",
+      "service": "Unified Intake Engine",
+      "deploymentSource": "JayPVentures-LLC/jayventures-labs",
+      "deploymentTarget": "cloudflare-workers",
+      "environment": "production",
+      "productionUrl": "https://intake.jaypventuresllc.com",
+      "workflow": ".github/workflows/deploy-workers.yml",
+      "branch": "main",
+      "lastDeployment": "unknown",
+      "lastFailure": "unknown",
+      "rollbackTarget": "last-known-good-artifact",
+      "lane": "creator",
+      "workflowOwner": "system"
+    },
+    {
+      "id": "nexus-production-reference",
+      "service": "JPV Nexus",
+      "deploymentSource": "jaypVLabs/JPV-OS",
+      "deploymentTarget": "external-repository",
+      "environment": "production",
+      "productionUrl": "https://nexus.jaypventuresllc.com",
+      "workflow": "managed-in-jaypVLabs/JPV-OS",
+      "branch": "main",
+      "lastDeployment": "managed-externally",
+      "lastFailure": "managed-externally",
+      "rollbackTarget": "managed-externally",
+      "lane": "business",
+      "workflowOwner": "system",
+      "readOnlyReference": true
+    }
+  ]
+}

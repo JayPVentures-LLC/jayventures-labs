@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "1.0.0",
+  "decisions": {
+    "storage": "persistent",
+    "requiredBeforeExecution": true,
+    "example": {
+      "decision": "JPV Nexus deploys only from JPV-OS.",
+      "status": "active",
+      "owner": "system"
+    }
+  },
+  "frictionEngine": {
+    "trackedSignals": [
+      "manualWork",
+      "duplicateEffort",
+      "repeatedCorrections",
+      "repeatedExplanations",
+      "wrongRepositoryUsage",
+      "contextSwitches"
+    ],
+    "repeatThreshold": 3,
+    "autoTaskAction": "create-system-improvement-task"
+  },
+  "learningLoop": {
+    "chain": [
+      "decision",
+      "rule",
+      "validator",
+      "automation"
+    ],
+    "applyToEveryMistake": true
+  }
+}

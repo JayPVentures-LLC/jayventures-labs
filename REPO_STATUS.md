@@ -12,3 +12,18 @@ This repository (`JayPVentures-LLC/jayventures-labs`) is **not** the production 
 - Enterprise/public site work
 - Labs and experimental work
 - Non-production documentation and supporting systems
+
+## Machine-Checkable Status Reference
+
+```json
+{
+  "repository": "JayPVentures-LLC/jayventures-labs",
+  "scope": "governance-and-labs",
+  "nexusProductionSourceOfTruth": "jaypVLabs/JPV-OS",
+  "nexusProductionRoutingAllowed": false,
+  "status": "non-production",
+  "manifest": "REPOSITORY_MANIFEST.json",
+  "deploymentRegistry": "deployment-registry.json",
+  "routingMap": "repo-routing-map.md"
+}
+```

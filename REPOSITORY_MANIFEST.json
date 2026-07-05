@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "1.0.0",
+  "repository": {
+    "name": "jayventures-labs",
+    "owner": "JayPVentures-LLC",
+    "fullName": "JayPVentures-LLC/jayventures-labs",
+    "purpose": "Governance, enterprise website delivery, labs experimentation, and non-production JPV-OS support systems.",
+    "productionStatus": "non-production",
+    "workflowOwner": "system",
+    "runtime": [
+      "Node.js",
+      "Cloudflare Workers",
+      "Next.js"
+    ],
+    "lane": [
+      "business",
+      "creator",
+      "labs"
+    ],
+    "phoneFirst": true
+  },
+  "executionBoundary": {
+    "scope": "governance-and-labs",
+    "nexusProductionSourceOfTruth": "jaypVLabs/JPV-OS",
+    "nexusProductionRoutingAllowed": false,
+    "statusFile": "REPO_STATUS.md"
+  },
+  "systemLayers": {
+    "trust": "active",
+    "entitlement": "active",
+    "revenueCommand": "active",
+    "publicReadinessGate": "active",
+    "operatorSafety": "active",
+    "lifecycleArchive": "active",
+    "relationshipMap": "active",
+    "offerEngine": "active",
+    "learningLoop": "active",
+    "proofOfWorkDashboard": "active"
+  }
+}

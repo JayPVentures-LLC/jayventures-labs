@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "1.0.0",
+  "gates": [
+    "phoneOperability",
+    "automaticRepositoryAndWorkflowSelection",
+    "decliningManualWorkload",
+    "frictionToImprovementAutomation",
+    "founderStrategicApprovalRole"
+  ],
+  "reviewRequiredBeforePhaseExpansion": true
+}
