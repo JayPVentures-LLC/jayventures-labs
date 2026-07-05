@@ -27,6 +27,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Validate governance metadata
+        run: npm run validate:governance-metadata
+
       - name: Run tests
         run: npm test
 
@@ -44,4 +47,3 @@ jobs:
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-

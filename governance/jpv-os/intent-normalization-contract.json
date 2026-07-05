@@ -2,22 +2,221 @@
   "schemaVersion": "1.0.0",
   "description": "Deterministic intent expansion contract for founder-first command routing.",
   "commands": [
-    {"command": "Deploy Nexus", "class": "deploy", "approvalRequired": true, "registryRequired": true, "safetyGates": ["execution-boundary", "public-readiness", "rollback-available"]},
-    {"command": "Fix it", "class": "remediation", "approvalRequired": false, "registryRequired": true, "safetyGates": ["impact-assessment", "decision-check"]},
-    {"command": "Do it", "class": "execution", "approvalRequired": true, "registryRequired": true, "safetyGates": ["decision-check", "owner-validation"]},
-    {"command": "Next", "class": "prioritization", "approvalRequired": false, "registryRequired": false, "safetyGates": ["queue-health"]},
-    {"command": "Check it", "class": "validation", "approvalRequired": false, "registryRequired": true, "safetyGates": ["health-checks", "public-readiness-if-public"]},
-    {"command": "Release", "class": "release", "approvalRequired": true, "registryRequired": true, "safetyGates": ["public-readiness", "rollback-available", "trust-evidence"]},
-    {"command": "Approve", "class": "approval", "approvalRequired": true, "registryRequired": true, "safetyGates": ["decision-check", "queue-integrity"]},
-    {"command": "Merge", "class": "merge", "approvalRequired": true, "registryRequired": true, "safetyGates": ["validation-pass", "protected-branch-rules"]},
-    {"command": "Validate", "class": "validation", "approvalRequired": false, "registryRequired": true, "safetyGates": ["schema-validation", "ci-validation"]},
-    {"command": "Rollback", "class": "rollback", "approvalRequired": true, "registryRequired": true, "safetyGates": ["rollback-target-exists", "trust-evidence"]},
-    {"command": "Summarize", "class": "executive-replay", "approvalRequired": false, "registryRequired": false, "safetyGates": ["signal-filtering"]},
-    {"command": "show money blockers", "class": "revenue", "approvalRequired": false, "registryRequired": true, "safetyGates": ["revenue-impact-index"]},
-    {"command": "protect revenue", "class": "revenue", "approvalRequired": true, "registryRequired": true, "safetyGates": ["revenue-protection-plan", "decision-check"]},
-    {"command": "publish offer", "class": "offer", "approvalRequired": true, "registryRequired": true, "safetyGates": ["offer-integrity", "checkout-health", "entitlement-linkage"]},
-    {"command": "check checkout", "class": "revenue-validation", "approvalRequired": false, "registryRequired": true, "safetyGates": ["checkout-health", "fallback-path"]},
-    {"command": "show unpaid opportunities", "class": "opportunity", "approvalRequired": false, "registryRequired": true, "safetyGates": ["relationship-map-coverage"]}
+    {
+      "command": "Deploy Nexus",
+      "class": "deploy",
+      "approvalRequired": true,
+      "registryRequired": true,
+      "safetyGates": [
+        "execution-boundary",
+        "public-readiness",
+        "rollback-available"
+      ]
+    },
+    {
+      "command": "Fix it",
+      "class": "remediation",
+      "approvalRequired": false,
+      "registryRequired": true,
+      "safetyGates": [
+        "impact-assessment",
+        "decision-check"
+      ]
+    },
+    {
+      "command": "Do it",
+      "class": "execution",
+      "approvalRequired": true,
+      "registryRequired": true,
+      "safetyGates": [
+        "decision-check",
+        "owner-validation"
+      ]
+    },
+    {
+      "command": "Next",
+      "class": "prioritization",
+      "approvalRequired": false,
+      "registryRequired": false,
+      "safetyGates": [
+        "queue-health"
+      ]
+    },
+    {
+      "command": "Check it",
+      "class": "validation",
+      "approvalRequired": false,
+      "registryRequired": true,
+      "safetyGates": [
+        "health-checks",
+        "public-readiness-if-public"
+      ]
+    },
+    {
+      "command": "Release",
+      "class": "release",
+      "approvalRequired": true,
+      "registryRequired": true,
+      "safetyGates": [
+        "public-readiness",
+        "rollback-available",
+        "trust-evidence"
+      ]
+    },
+    {
+      "command": "Approve",
+      "class": "approval",
+      "approvalRequired": true,
+      "registryRequired": true,
+      "safetyGates": [
+        "decision-check",
+        "queue-integrity"
+      ]
+    },
+    {
+      "command": "Merge",
+      "class": "merge",
+      "approvalRequired": true,
+      "registryRequired": true,
+      "safetyGates": [
+        "validation-pass",
+        "protected-branch-rules"
+      ]
+    },
+    {
+      "command": "Validate",
+      "class": "validation",
+      "approvalRequired": false,
+      "registryRequired": true,
+      "safetyGates": [
+        "schema-validation",
+        "ci-validation"
+      ]
+    },
+    {
+      "command": "Rollback",
+      "class": "rollback",
+      "approvalRequired": true,
+      "registryRequired": true,
+      "safetyGates": [
+        "rollback-target-exists",
+        "trust-evidence"
+      ]
+    },
+    {
+      "command": "Summarize",
+      "class": "executive-replay",
+      "approvalRequired": false,
+      "registryRequired": false,
+      "safetyGates": [
+        "signal-filtering"
+      ]
+    },
+    {
+      "command": "show money blockers",
+      "class": "revenue",
+      "approvalRequired": false,
+      "registryRequired": true,
+      "safetyGates": [
+        "revenue-impact-index"
+      ]
+    },
+    {
+      "command": "protect revenue",
+      "class": "revenue",
+      "approvalRequired": true,
+      "registryRequired": true,
+      "safetyGates": [
+        "revenue-protection-plan",
+        "decision-check"
+      ]
+    },
+    {
+      "command": "publish offer",
+      "class": "offer",
+      "approvalRequired": true,
+      "registryRequired": true,
+      "safetyGates": [
+        "offer-integrity",
+        "checkout-health",
+        "entitlement-linkage"
+      ]
+    },
+    {
+      "command": "check checkout",
+      "class": "revenue-validation",
+      "approvalRequired": false,
+      "registryRequired": true,
+      "safetyGates": [
+        "checkout-health",
+        "fallback-path"
+      ]
+    },
+    {
+      "command": "show unpaid opportunities",
+      "class": "opportunity",
+      "approvalRequired": false,
+      "registryRequired": true,
+      "safetyGates": [
+        "relationship-map-coverage"
+      ]
+    },
+    {
+      "command": "get it done",
+      "class": "execution",
+      "approvalRequired": true,
+      "registryRequired": true,
+      "safetyGates": [
+        "highest-valid-next-action",
+        "decision-check"
+      ]
+    },
+    {
+      "command": "what's next",
+      "class": "prioritization",
+      "approvalRequired": false,
+      "registryRequired": true,
+      "safetyGates": [
+        "dependency-aware-selection"
+      ]
+    },
+    {
+      "command": "shut up",
+      "class": "response-control",
+      "approvalRequired": false,
+      "registryRequired": false,
+      "safetyGates": [
+        "minimum-necessary-response"
+      ]
+    },
+    {
+      "command": "route work",
+      "class": "routing",
+      "approvalRequired": false,
+      "registryRequired": true,
+      "safetyGates": [
+        "lane-separation",
+        "capacity-aware-routing"
+      ]
+    },
+    {
+      "command": "review money",
+      "class": "revenue",
+      "approvalRequired": false,
+      "registryRequired": true,
+      "safetyGates": [
+        "money-protection-priority"
+      ]
+    },
+    {
+      "command": "check blockers",
+      "class": "blocker-review",
+      "approvalRequired": false,
+      "registryRequired": true,
+      "safetyGates": [
+        "stress-cutoff-aware-output"
+      ]
+    }
   ],
   "manualRoutingAllowed": false
 }

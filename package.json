@@ -24,7 +24,8 @@
     "market:integrity-alignment:test": "tsx operations/market-integrity/tests/integrity-alignment.test.ts",
     "test": "vitest run",
     "test:run": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "validate:governance-metadata": "node scripts/validate-governance-metadata.mjs"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20260504.1",

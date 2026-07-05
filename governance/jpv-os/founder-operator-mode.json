@@ -1,0 +1,100 @@
+{
+  "schemaVersion": "1.0.0",
+  "jayMode": {
+    "enabled": true,
+    "flow": [
+      "intent",
+      "execution",
+      "approval"
+    ],
+    "advisorLoopDefault": false
+  },
+  "natureMobileMode": {
+    "enabled": true,
+    "phoneCommandSurface": [
+      "approve",
+      "deploy",
+      "check blockers",
+      "review money",
+      "route work"
+    ]
+  },
+  "founderEnergyRouting": {
+    "lowEnergyPriority": [
+      "money",
+      "blockers",
+      "approvals"
+    ],
+    "highEnergyPriority": [
+      "creation",
+      "research",
+      "strategy"
+    ]
+  },
+  "moneyProtectionMode": {
+    "enabled": true,
+    "triggers": [
+      "cashPressure"
+    ],
+    "priorityQueue": [
+      "checkout",
+      "offers",
+      "leads",
+      "invoices",
+      "outreach",
+      "publicVisibility"
+    ],
+    "pausedWhenActive": [
+      "low-return-expansion"
+    ]
+  },
+  "oneTapApprovalQueue": {
+    "enabled": true,
+    "actions": [
+      "merge",
+      "deploy",
+      "publish",
+      "send",
+      "archive",
+      "promote"
+    ]
+  },
+  "laneSeparationEnforcement": {
+    "enabled": true,
+    "lanes": [
+      "enterprise",
+      "creator",
+      "labs",
+      "public",
+      "personal-admin",
+      "streaming"
+    ],
+    "crossLaneMixingDeniedByDefault": true
+  },
+  "creatorToEnterpriseBridge": {
+    "enabled": true,
+    "sources": [
+      "tiktok",
+      "live",
+      "nature-notes",
+      "phone-notes"
+    ],
+    "routes": [
+      "content",
+      "offer",
+      "lab-test",
+      "enterprise-asset",
+      "discard"
+    ]
+  },
+  "personalArchiveIntelligence": {
+    "enabled": true,
+    "labels": [
+      "active",
+      "superseded",
+      "archived",
+      "deprecated",
+      "production"
+    ]
+  }
+}

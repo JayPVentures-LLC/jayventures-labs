@@ -1,12 +1,65 @@
 {
   "schemaVersion": "1.0.0",
   "views": [
-    {"key": "live", "question": "What's live?", "signalSources": ["deployment-registry", "workflow-success", "uptime-health"], "engineeringNoiseFiltered": true},
-    {"key": "broken", "question": "What's broken?", "signalSources": ["failed-workflows", "incident-events", "revenue-disruptions"], "engineeringNoiseFiltered": true},
-    {"key": "blocked", "question": "What's blocked?", "signalSources": ["approval-queue", "dependency-graph", "critical-issues"], "engineeringNoiseFiltered": true},
-    {"key": "waiting", "question": "What's waiting for me?", "signalSources": ["approval-queue", "decision-prompts"], "engineeringNoiseFiltered": true},
-    {"key": "money", "question": "What's making money?", "signalSources": ["offer-engine", "checkout-health", "entitlement-conversions"], "engineeringNoiseFiltered": true},
-    {"key": "next", "question": "What's next?", "signalSources": ["priority-engine", "friction-engine", "recovery-mode"], "engineeringNoiseFiltered": true}
+    {
+      "key": "live",
+      "question": "What's live?",
+      "signalSources": [
+        "deployment-registry",
+        "workflow-success",
+        "uptime-health"
+      ],
+      "engineeringNoiseFiltered": true
+    },
+    {
+      "key": "broken",
+      "question": "What's broken?",
+      "signalSources": [
+        "failed-workflows",
+        "incident-events",
+        "revenue-disruptions"
+      ],
+      "engineeringNoiseFiltered": true
+    },
+    {
+      "key": "blocked",
+      "question": "What's blocked?",
+      "signalSources": [
+        "approval-queue",
+        "dependency-graph",
+        "critical-issues"
+      ],
+      "engineeringNoiseFiltered": true
+    },
+    {
+      "key": "waiting",
+      "question": "What's waiting for me?",
+      "signalSources": [
+        "approval-queue",
+        "decision-prompts"
+      ],
+      "engineeringNoiseFiltered": true
+    },
+    {
+      "key": "money",
+      "question": "What's making money?",
+      "signalSources": [
+        "offer-engine",
+        "checkout-health",
+        "entitlement-conversions"
+      ],
+      "engineeringNoiseFiltered": true
+    },
+    {
+      "key": "next",
+      "question": "What's next?",
+      "signalSources": [
+        "priority-engine",
+        "friction-engine",
+        "recovery-mode"
+      ],
+      "engineeringNoiseFiltered": true
+    }
   ],
   "proofOfWorkDashboard": {
     "metrics": [
@@ -19,5 +72,25 @@
     ],
     "displayMode": "founder-executive",
     "maxSummaryReadTimeMinutes": 2
+  },
+  "visualSpatialDashboard": {
+    "enabled": true,
+    "maps": [
+      "repoMap",
+      "deployMap",
+      "blockerGraph",
+      "incomeGraph",
+      "opportunityMap"
+    ]
+  },
+  "proofOfPurposeDashboard": {
+    "metrics": [
+      "peopleProtected",
+      "systemsAligned",
+      "abuseReduced",
+      "workAutomated",
+      "revenueEnabled"
+    ],
+    "displayMode": "evidence-first"
   }
 }

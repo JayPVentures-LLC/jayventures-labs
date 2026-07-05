@@ -13,5 +13,9 @@
     "prioritizeRecovery",
     "reduceNoise",
     "focusOnBlockerRemoval"
-  ]
+  ],
+  "stressCutoffDetector": {
+    "enabled": true,
+    "responseMode": "one-blocker-one-action-no-extra-explanation"
+  }
 }

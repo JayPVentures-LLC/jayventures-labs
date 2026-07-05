@@ -23,7 +23,10 @@
       "flow",
       "gate",
       "ledger",
-      "pulse"
+      "pulse",
+      "approval-queue",
+      "creator-enterprise-bridge",
+      "relationship-intelligence"
     ]
   }
 }

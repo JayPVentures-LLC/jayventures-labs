@@ -22,7 +22,8 @@ const requiredSystemLayerFiles = [
   'governance/jpv-os/lifecycle-archive-policy.json',
   'governance/jpv-os/relationship-map-contract.json',
   'governance/jpv-os/offer-engine-contract.json',
-  'governance/jpv-os/completion-gates.json'
+  'governance/jpv-os/completion-gates.json',
+  'governance/jpv-os/founder-operator-mode.json'
 ].map((rel) => path.resolve(root, rel));
 
 const failures = [];
@@ -182,7 +183,13 @@ function validateIntentContract(intentContract) {
     'protect revenue',
     'publish offer',
     'check checkout',
-    'show unpaid opportunities'
+    'show unpaid opportunities',
+    'get it done',
+    "what's next",
+    'check blockers',
+    'review money',
+    'route work',
+    'shut up'
   ];
 
   for (const command of requiredCommands) {
@@ -228,6 +235,32 @@ function validatePublicReadiness(publicReadinessGate) {
   }
 }
 
+function validateFounderOperatorMode() {
+  const modePath = path.resolve(root, 'governance/jpv-os/founder-operator-mode.json');
+  const mode = readJson(modePath, 'governance/jpv-os/founder-operator-mode.json');
+  if (!mode) return;
+
+  if (mode.jayMode?.enabled !== true) {
+    fail('founder-operator-mode.json jayMode.enabled must be true');
+  }
+
+  if (mode.jayMode?.advisorLoopDefault !== false) {
+    fail('founder-operator-mode.json jayMode.advisorLoopDefault must be false');
+  }
+
+  if (mode.natureMobileMode?.enabled !== true) {
+    fail('founder-operator-mode.json natureMobileMode.enabled must be true');
+  }
+
+  if (mode.moneyProtectionMode?.enabled !== true) {
+    fail('founder-operator-mode.json moneyProtectionMode.enabled must be true');
+  }
+
+  if (mode.oneTapApprovalQueue?.enabled !== true) {
+    fail('founder-operator-mode.json oneTapApprovalQueue.enabled must be true');
+  }
+}
+
 const manifest = readJson(files.manifest, 'REPOSITORY_MANIFEST.json');
 const deploymentRegistry = readJson(files.deploymentRegistry, 'deployment-registry.json');
 const intentContract = readJson(files.intentContract, 'governance/jpv-os/intent-normalization-contract.json');
@@ -245,6 +278,7 @@ validateDeploymentRegistry(deploymentRegistry);
 validateIntentContract(intentContract);
 validateExecutiveStateModel(executiveStateModel);
 validatePublicReadiness(publicReadinessGate);
+validateFounderOperatorMode();
 
 if (failures.length > 0) {
   console.error('Governance metadata validation failed:');

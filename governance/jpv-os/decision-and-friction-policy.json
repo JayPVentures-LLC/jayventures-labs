@@ -29,5 +29,31 @@
       "automation"
     ],
     "applyToEveryMistake": true
+  },
+  "dontMakeMeRepeatMyself": {
+    "trigger": "repeated-correction",
+    "chain": [
+      "rule",
+      "validator",
+      "automation"
+    ],
+    "required": true
+  },
+  "emotionalFrictionLedger": {
+    "type": "system-performance",
+    "tracks": [
+      "workflowStressRate",
+      "repeatStressWorkflows",
+      "context-switch-load"
+    ],
+    "autoConvertToEngineeringFix": true
+  },
+  "systemicIssueDetector": {
+    "signals": [
+      "cross-repo",
+      "cross-conversation",
+      "cross-workflow"
+    ],
+    "action": "escalate-as-systemic"
   }
 }

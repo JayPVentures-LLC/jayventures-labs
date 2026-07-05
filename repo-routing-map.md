@@ -29,9 +29,16 @@ All commands require registry-backed resolution from `/home/runner/work/jayventu
 | publish offer | Publish approved offer stack | context-backed | release branch | offer publish workflow | Required |
 | check checkout | Validate checkout + entitlement linkage | context-backed | current context | checkout validation workflow | Not required |
 | show unpaid opportunities | Surface leads/opportunities lacking monetization routing | context-backed | N/A | opportunity report workflow | Not required |
+| get it done | Execute highest valid next action | context-backed | context-backed | policy-selected workflow | Required when production-affecting |
+| what's next | Show dependency-aware next move | context-backed | N/A | prioritization workflow | Not required |
+| check blockers | Show current blocker graph and top actionable blocker | context-backed | N/A | blocker analysis workflow | Not required |
+| review money | Show revenue status and cash-protection priorities | context-backed | N/A | revenue intelligence workflow | Not required |
+| route work | Route work by lane and current founder energy profile | context-backed | context-backed | routing workflow | Not required |
+| shut up | Minimum-necessary response mode | N/A | N/A | response mode toggle | Not required |
 
 ## Safety and Governance Requirements
 
 - Public release requires passing `/home/runner/work/jayventures-labs/jayventures-labs/governance/jpv-os/public-readiness-gate.json` checks.
 - Operator safety events can automatically activate recovery mode via `/home/runner/work/jayventures-labs/jayventures-labs/governance/jpv-os/operator-safety-policy.json`.
 - Decision and friction automation rules are enforced through `/home/runner/work/jayventures-labs/jayventures-labs/governance/jpv-os/decision-and-friction-policy.json`.
+- Founder-specific operation defaults are defined in `/home/runner/work/jayventures-labs/jayventures-labs/governance/jpv-os/founder-operator-mode.json`.
