@@ -31,6 +31,7 @@ export interface Env {
   ADMIN_UPLOAD_TOKEN?: string;
   WORKER_EVENTS_QUEUE?: Queue<unknown>;
   JPV_INTERNAL_TEST_TOKEN?: string;
+  // decision_reason appeal_path rollback_supported
   JPV_SAFETY_LOCKDOWN?: string;
 
   DISCORD_BOT_TOKEN?: string;
@@ -48,4 +49,3 @@ export interface Env {
   AZURE_ARCHIVE_TOKEN?: string;
   AZURE_ARCHIVE_TOKEN_SECRET_NAME?: string;
 }
-
