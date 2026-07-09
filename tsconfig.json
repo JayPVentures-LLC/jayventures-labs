@@ -21,11 +21,16 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "forceConsistentCasingInFileNames": true,
-    "ignoreDeprecations": "6.0",
+    "ignoreDeprecations": "5.0",
     "incremental": true
   },
   "include": [
     "apps/**/*.ts",
+    "apps/**/*.tsx",
+    "components/**/*.ts",
+    "components/**/*.tsx",
+    "pages/**/*.ts",
+    "pages/**/*.tsx",
     "operations/**/*.ts",
     "wix/**/*.ts",
     "tests/**/*.ts",
@@ -35,3 +40,4 @@
     "node_modules"
   ]
 }
+

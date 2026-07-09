@@ -43,6 +43,6 @@ export async function handleStripeWebhook(request: Request, env: Env): Promise<R
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     logger.log("error", "Stripe webhook processing failed", { message, eventId: event.id });
-    return json({ error: "Webhook error", detail: message }, 500);
+    return json({ error: "Webhook processing failed", eventId: event.id }, 500);
   }
 }

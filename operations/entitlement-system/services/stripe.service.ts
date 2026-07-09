@@ -100,7 +100,7 @@ export async function processStripeEvent(
       expiresAt: payload.expiresAt,
       source: "stripe",
       discordId: payload.discordId,
-      roleIds: getRoleIdsForBrandTier(payload.brand, payload.tier),
+      roleIds: getRoleIdsForBrandTier(payload.brand, payload.tier, env),
       lastEventId: payload.eventId,
     },
     env

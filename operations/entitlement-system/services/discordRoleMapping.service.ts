@@ -1,31 +1,89 @@
-
+import type { Env } from "../config/env";
 import type { Brand, Tier } from "../types/entitlement.types";
-import { DISCORD_GUILD_CONFIG } from "../config/discordGuilds";
 
-type KnownBrand = keyof typeof DISCORD_GUILD_CONFIG;
+type RoleMap = Partial<Record<Tier, string>>;
 
-export function getGuildIdForBrand(brand: Brand): string | undefined {
-  if (brand in DISCORD_GUILD_CONFIG) {
-    // @ts-expect-error: TypeScript can't guarantee brand is KnownBrand, but we check above
-    return DISCORD_GUILD_CONFIG[brand].guildId;
-  }
-  return undefined;
+export type DiscordRoleEnv = Pick<
+  Env,
+  | "DISCORD_GUILD_ID_CREATOR"
+  | "DISCORD_ROLE_CREATOR_COMMUNITY_ID"
+  | "DISCORD_ROLE_CREATOR_VIP_ID"
+  | "DISCORD_GUILD_ID_LABS"
+  | "DISCORD_ROLE_LABS_MEMBER_ID"
+  | "DISCORD_ROLE_LABS_RESEARCHER_ID"
+  | "DISCORD_ROLE_LABS_STUDENT_ID"
+>;
+
+interface BrandDiscordConfig {
+  guildId: string;
+  roles: RoleMap;
 }
 
-export function getRoleIdsForBrandTier(brand: Brand, tier: Tier): string[] {
-  if (brand in DISCORD_GUILD_CONFIG) {
-    // @ts-expect-error: TypeScript can't guarantee brand is KnownBrand, but we check above
-    return DISCORD_GUILD_CONFIG[brand].roles?.[tier] ? [DISCORD_GUILD_CONFIG[brand].roles[tier]!] : [];
+export class DiscordRoleConfigurationError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "DiscordRoleConfigurationError";
   }
-  return [];
 }
 
-export function getAllTierRolesForBrand(brand: Brand): string[] {
-  if (brand in DISCORD_GUILD_CONFIG) {
-    // @ts-expect-error: TypeScript can't guarantee brand is KnownBrand, but we check above
-    return Object.values(DISCORD_GUILD_CONFIG[brand].roles).filter(Boolean) as string[];
+function requiredRoleBindingName(brand: Brand, tier: Tier): string {
+  if (brand === "jaypventures") {
+    return tier === "free" ? "DISCORD_ROLE_CREATOR_COMMUNITY_ID" : "DISCORD_ROLE_CREATOR_VIP_ID";
   }
-  return [];
+  if (brand === "jaypventuresllc") {
+    if (tier === "member") return "DISCORD_ROLE_LABS_MEMBER_ID";
+    if (tier === "premium") return "DISCORD_ROLE_LABS_RESEARCHER_ID";
+    return "DISCORD_ROLE_LABS_STUDENT_ID";
+  }
+  const exhaustiveCheck: never = brand;
+  throw new DiscordRoleConfigurationError(`Unsupported brand: ${String(exhaustiveCheck)}`);
+}
+
+function getConfigForBrand(brand: Brand, env: DiscordRoleEnv): BrandDiscordConfig {
+  if (brand === "jaypventures") {
+    const guildId = env.DISCORD_GUILD_ID_CREATOR;
+    if (!guildId) {
+      throw new DiscordRoleConfigurationError("Missing required Worker binding: DISCORD_GUILD_ID_CREATOR (brand: jaypventures)");
+    }
+    return {
+      guildId,
+      roles: {
+        free: env.DISCORD_ROLE_CREATOR_COMMUNITY_ID,
+        member: env.DISCORD_ROLE_CREATOR_VIP_ID,
+        premium: env.DISCORD_ROLE_CREATOR_VIP_ID,
+        enterprise: env.DISCORD_ROLE_CREATOR_VIP_ID,
+      },
+    };
+  } else if (brand === "jaypventuresllc") {
+    const guildId = env.DISCORD_GUILD_ID_LABS;
+    if (!guildId) {
+      throw new DiscordRoleConfigurationError("Missing required Worker binding: DISCORD_GUILD_ID_LABS (brand: jaypventuresllc)");
+    }
+    return {
+      guildId,
+      roles: {
+        member: env.DISCORD_ROLE_LABS_MEMBER_ID,
+        premium: env.DISCORD_ROLE_LABS_RESEARCHER_ID,
+        enterprise: env.DISCORD_ROLE_LABS_STUDENT_ID,
+      },
+    };
+  } else {
+    const exhaustiveCheck: never = brand;
+    throw new DiscordRoleConfigurationError(`Unsupported brand: ${String(exhaustiveCheck)}`);
+  }
+}
+
+export function getGuildIdForBrand(brand: Brand, env: DiscordRoleEnv): string {
+  return getConfigForBrand(brand, env).guildId;
+}
+
+export function getRoleIdsForBrandTier(brand: Brand, tier: Tier, env: DiscordRoleEnv): string[] {
+  const roleId = getConfigForBrand(brand, env).roles[tier];
+  return roleId ? [roleId] : [];
+}
+
+export function getAllTierRolesForBrand(brand: Brand, env: DiscordRoleEnv): string[] {
+  return Object.values(getConfigForBrand(brand, env).roles).filter((roleId): roleId is string => Boolean(roleId));
 }
 
 export function reconcileRoles(params: {
@@ -33,10 +91,22 @@ export function reconcileRoles(params: {
   tier: Tier;
   status: "active" | "inactive" | "expired" | "revoked";
   currentRoles: string[];
+  env: DiscordRoleEnv;
 }): { add: string[]; remove: string[] } {
-  const expected = params.status === "active" ? getRoleIdsForBrandTier(params.brand, params.tier) : [];
-  const allBrandRoles = getAllTierRolesForBrand(params.brand);
-  const remove = params.currentRoles.filter((roleId) => allBrandRoles.includes(roleId) && !expected.includes(roleId));
-  const add = expected.filter((roleId) => !params.currentRoles.includes(roleId));
-  return { add, remove };
+  const allBrandRoles = getAllTierRolesForBrand(params.brand, params.env);
+
+  if (params.status === "active") {
+    const expected = getRoleIdsForBrandTier(params.brand, params.tier, params.env);
+    if (expected.length === 0) {
+      throw new DiscordRoleConfigurationError(
+        `Missing required Worker binding: ${requiredRoleBindingName(params.brand, params.tier)} (brand=${params.brand}, tier=${params.tier})`
+      );
+    }
+    const remove = params.currentRoles.filter((roleId) => allBrandRoles.includes(roleId) && !expected.includes(roleId));
+    const add = expected.filter((roleId) => !params.currentRoles.includes(roleId));
+    return { add, remove };
+  }
+
+  const remove = params.currentRoles.filter((roleId) => allBrandRoles.includes(roleId));
+  return { add: [], remove };
 }

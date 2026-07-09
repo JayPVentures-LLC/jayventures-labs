@@ -1,0 +1,22 @@
+{
+  "tenants": {
+    "tenant-abc": {
+      "allow": true,
+      "tiers": {
+        "admin": ["/vault/*", "/billing/*"],
+        "user": ["/vault/*"],
+        "pro": ["/vault/*"],
+        "readonly": []
+      }
+    },
+    "tenant-xyz": {
+      "allow": true,
+      "tiers": {
+        "admin": ["/vault/*"],
+        "user": [],
+        "readonly": []
+      }
+    }
+  },
+  "defaultDeny": true
+}

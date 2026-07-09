@@ -17,7 +17,7 @@ if (fileArgIndex !== -1 && args[fileArgIndex + 1]) {
   try {
     text = fs.readFileSync(filePath, 'utf8');
     console.log(`DEBUG: Loaded file content from ${filePath}`);
-  } catch (err) {
+  } catch {
     console.error(`Failed to read file: ${filePath}`);
     process.exit(1);
   }
