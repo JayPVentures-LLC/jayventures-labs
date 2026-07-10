@@ -34,7 +34,7 @@ This document maps the infrastructure controls that enforce JPV-OS governance, s
 | Workflow | Trigger | Enforces |
 |----------|---------|----------|
 | `jpv-policy-enforcement.yml` | PR, push to main | Policy file presence, content requirements |
-| `ci.yml` | PR, push | Build, test, lint verification |
+| `ci.yml` | PR, push | Build, test, typecheck, and deploy dry-run verification |
 | `enforce-brand.yml` | PR, push | Brand voice and language compliance |
 | `jpv-os-enforcement.yml` | PR, push | JPV-OS spec compliance |
 
