@@ -39,6 +39,8 @@ The chain is not strictly linear. Several derived concepts require multiple earl
 
 ## Derived concept dependencies
 
+Token alignment note: `ProcessModification` maps to `Process Modification`, and `IntentionalProcessModification` maps to `Intentional Process Modification`.
+
 | Concept | Derived from | Definition |
 |---|---|---|
 | Boundary | Existence + Difference | A distinguishable separation between system and environment or one entity and another. |
