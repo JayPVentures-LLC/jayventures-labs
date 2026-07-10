@@ -61,7 +61,7 @@ The chain is not strictly linear. Several derived concepts require multiple earl
 | Evolution | Adaptation + Replication + Selection + Ordered Change | Accumulated adaptive difference across generations, versions, institutions, or populations. |
 | Recursion | Representation + Process | A process operating on its own output, representation, or process structure. |
 | Reflection | Representation + Recursion | A system representing itself or its own processes. |
-| Intentional Process Modification | Reflection + Evaluation + Process Modification | Deliberate revision of a process based on represented goals, evidence, or expected consequences. |
+| Intentional Process Modification | Reflection + Evaluation (see adaptive-classification-rubric.md#evaluation-checklist) + Process Modification | Deliberate revision of a process based on represented goals, evidence, or expected consequences. |
 | Recursive Design | Reflection + Adaptation + Intentional Process Modification | A system modifying the process by which it modifies itself. |
 
 ## Constraint result
