@@ -33,7 +33,7 @@ The resulting candidate ontology is:
 1. Existence
 2. Difference
 3. Interaction
-4. Ordered change
+4. Ordered Change
 
 ## 2. Candidate primitives
 
