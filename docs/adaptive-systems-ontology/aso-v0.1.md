@@ -153,9 +153,15 @@ Response is derived from information and process.
 
 Response occurs when information changes current state or action.
 
+### Process Modification
+
+Process Modification is derived from process and ordered change.
+
+Process Modification occurs when the transformation rule mapping one state to a later state is changed.
+
 ### Adaptation
 
-Adaptation is derived from feedback, persistence, and process modification.
+Adaptation is derived from feedback, persistence, and Process Modification.
 
 Adaptation occurs when feedback changes the future response rule.
 
@@ -171,11 +177,29 @@ Learning is derived from adaptation and representation.
 
 Learning occurs when feedback changes representation in a way that alters future response.
 
+### Replication
+
+Replication is derived from structure, process, and ordered change.
+
+Replication occurs when a traceably similar structure, pattern, or rule is produced across sequence.
+
+### Selection
+
+Selection is derived from difference, interaction, constraint, and ordered change.
+
+Selection occurs when environmental conditions produce differential persistence or replication among alternatives.
+
 ### Evolution
 
 Evolution is derived from adaptation, replication, selection, and ordered change.
 
 Evolution occurs when adaptive differences accumulate across generations, versions, institutions, or populations.
+
+### Recursion
+
+Recursion is derived from representation and process.
+
+Recursion occurs when a process operates on its own output, representation, or process structure.
 
 ### Reflection
 
@@ -183,9 +207,15 @@ Reflection is derived from representation and recursion.
 
 Reflection occurs when a system represents itself or its own processes.
 
+### Intentional Process Modification
+
+Intentional Process Modification is derived from reflection, evaluation, and Process Modification.
+
+Intentional Process Modification occurs when a reflective system deliberately revises a process based on represented goals, evidence, or expected consequences.
+
 ### Recursive design
 
-Recursive design is derived from reflection, adaptation, and intentional process modification.
+Recursive design is derived from reflection, adaptation, and Intentional Process Modification.
 
 Recursive design occurs when a system modifies the process by which it modifies itself.
 
