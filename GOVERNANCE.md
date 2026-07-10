@@ -30,6 +30,25 @@ People Protection protects the humans affected by those systems.
 
 No system may be considered production-ready unless all three policy layers are satisfied.
 
+## Constitutional Continuity Doctrine
+
+JPV-OS governance aligns with constitutional continuity principles, using the 25th Amendment as a civic model for reviewable authority, lawful transfer, incapacity review, and continuity of operations.
+
+Core doctrine principles:
+
+- Authority must be executable, but always reviewable, reversible, auditable, and transferable.
+- Institutional protection is not disloyalty. It is the highest form of responsibility.
+- People-protection and continuity are not friction. They are the foundation of resilient, trustworthy systems.
+
+This means:
+
+- No single actor should unilaterally mutate production systems.
+- No role-holder should override people-protection safeguards.
+- Authority must remain bounded by independent review, continuity rules, and operational accountability.
+- Production mutation must be governed before it is executable.
+
+See [`docs/doctrine/constitutional-continuity.md`](/docs/doctrine/constitutional-continuity.md) for the full doctrine.
+
 ## Risk Tiers
 
 Risks are classified for dynamic response:
