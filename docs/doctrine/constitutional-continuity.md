@@ -48,10 +48,10 @@ The current enforcement stack operationalizes this doctrine through:
 - Stale approvals dismissed on new commits
 
 ### Required Status Checks
-- Governance verification (`jpv-policy-enforcement`)
-- Security validation
-- People-protection enforcement
-- Brand enforcement
+- Governance/security/people-protection verification (`jpv-policy-enforcement`)
+- CI validation (`ci`)
+- Brand enforcement (`enforce-brand`)
+- JPV-OS spec enforcement (`jpv-os-enforcement`)
 
 ### CODEOWNER Review
 - Policy files require designated owner review
