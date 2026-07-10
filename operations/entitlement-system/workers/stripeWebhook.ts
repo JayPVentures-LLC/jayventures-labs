@@ -14,9 +14,26 @@ function json(body: unknown, status = 200): Response {
 }
 
 async function processQueueMessage(message: WorkerEventMessage, env: ReturnType<typeof getEnv>): Promise<void> {
+  const queueMessageType = String((message as { type?: unknown }).type ?? "unknown");
   if (message.type === "archive") {
     await archiveEvent(env, message);
     await sendTelemetry(env, `${message.payload.source}_${message.payload.event}`, message.payload.data);
+    return;
+  }
+
+  if (message.type === "stripe-entitlement-synced") {
+    const entitlement = await getEntitlement(message.payload.userId, env);
+    if (!entitlement) {
+      throw new Error(`Entitlement not found for synced user ${message.payload.userId}`);
+    }
+
+    await syncDiscordRoles(entitlement, env, message.payload.brand ? { brand: message.payload.brand } : undefined);
+
+    await sendTelemetry(env, "stripe_entitlement_synced_discord_reflected", {
+      userId: message.payload.userId,
+      brand: message.payload.brand ?? "all",
+    });
+
     return;
   }
 
@@ -26,7 +43,12 @@ async function processQueueMessage(message: WorkerEventMessage, env: ReturnType<
       throw new Error(`Entitlement not found for retry user ${message.payload.userId}`);
     }
     await syncDiscordRoles(entitlement, env, { brand: message.payload.brand });
+    return;
   }
+
+  await sendTelemetry(env, "entitlement_queue_unknown_message", {
+    type: queueMessageType,
+  });
 }
 
 export default {
@@ -38,7 +60,9 @@ export default {
       env = getEnv(rawEnv);
       (globalThis as { LOG_LEVEL?: string }).LOG_LEVEL = env.LOG_LEVEL;
     } catch (error) {
-      return json({ error: error instanceof Error ? error.message : String(error) }, 500);
+      // Log the actual error server-side for diagnostics while returning generic message to client
+      console.error("Worker configuration failed during getEnv:", error);
+      return json({ error: "Worker configuration failed" }, 500);
     }
 
     const url = new URL(request.url);
@@ -78,3 +102,8 @@ export default {
     }
   },
 };
+
+
+
+
+

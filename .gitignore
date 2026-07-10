@@ -28,3 +28,109 @@ Thumbs.db
 
 # TypeScript build cache
 *.tsbuildinfo
+
+# ===================================================
+# JPV-OS Governance Secret Policy
+# ===================================================
+
+.env
+.env.*
+!.env.example
+
+secrets.local.json
+secret*.json
+
+.wrangler
+.cloudflare
+.azure
+
+*.bak
+*.tmp
+*.cache
+
+ops-snapshot-*.txt
+
+# Deployment residue
+*.publishsettings
+*.PublishSettings
+*.deployment.json
+
+# Runtime artifacts
+coverage/
+dist/
+build/
+
+# Secret hygiene / generated artifacts
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer
+*.der
+*.asc
+id_rsa
+id_dsa
+id_ecdsa
+id_ed25519
+*_rsa
+*_dsa
+*_ecdsa
+*_ed25519
+# Next.js / build outputs
+.next/cache/
+out/
+.vercel/
+.turbo/
+.cache/
+# Dependencies / vendored generated content
+# Cloudflared binaries and local tunnels
+operations/cloudflared/*.exe
+operations/cloudflared/*.zip
+operations/cloudflared/*.tar.gz
+operations/cloudflared/*windows-amd64*
+cloudflared*.exe
+cloudflared*.zip
+# Secret scan outputs
+gitleaks-report.*
+secret-scan-report.*
+
+# Local repo tooling
+.tools/
+.wrangler/
+**/.wrangler/
+.cloudflare/
+.azure/
+out/
+.next/
+.next/cache/
+.vercel/
+.turbo/
+.cache/
+node_modules/
+**/node_modules/
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer
+*.der
+*.asc
+id_rsa
+id_dsa
+id_ecdsa
+id_ed25519
+*_rsa
+*_dsa
+*_ecdsa
+*_ed25519
+operations/cloudflared/*.exe
+operations/cloudflared/*.zip
+operations/cloudflared/*.tar.gz
+operations/cloudflared/*windows-amd64*
+cloudflared*.exe
+cloudflared*.zip
+gitleaks-report.*
+secret-scan-report.*
+.tools/

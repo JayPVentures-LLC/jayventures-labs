@@ -1,0 +1,52 @@
+{
+  "metadata": {
+    "version": "1.1",
+    "lastUpdated": "2026-05-23",
+    "governance": "Enterprise Asset Governance v1.1 - metadata scaffold pending binary asset import",
+    "categories": ["production-logo", "design-reference", "generated-concept", "preview-utility"]
+  },
+  "assets": {
+    "production-logos": {
+      "category": "production-logo",
+      "description": "Reserved production logo metadata. Binary logo files must be committed before production approval.",
+      "items": []
+    },
+    "design-references": {
+      "category": "design-reference",
+      "description": "Reserved design reference metadata. Binary reference files must be committed before display.",
+      "items": []
+    },
+    "generated-concepts": {
+      "category": "generated-concept",
+      "description": "Reserved generated concept metadata. Binary concept files must be committed before display.",
+      "items": []
+    },
+    "preview-utilities": {
+      "category": "preview-utility",
+      "description": "Reserved preview utility metadata. Binary preview files must be committed before display.",
+      "items": []
+    }
+  },
+  "governance": {
+    "rules": [
+      "Production assets must not be marked approved until the referenced binary file is committed",
+      "Design references are for inspiration only - not production logos",
+      "Generated concepts require approval before production deployment",
+      "Asset paths should be referenced through assetPaths.ts constants or AssetLoader helpers only",
+      "Any new assets must have both metadata entries and committed binary files"
+    ],
+    "reviewProcess": "Add binary assets first, then add matching provenance metadata and approval status in the same pull request.",
+    "changeLog": [
+      {
+        "date": "2026-05-14",
+        "change": "Initialized asset governance v1.0",
+        "author": "JayPV-OS Fleet Orchestrator"
+      },
+      {
+        "date": "2026-05-23",
+        "change": "Converted provenance to metadata scaffold because referenced binary assets are not present in this pull request",
+        "author": "JayPVentures governance stabilization"
+      }
+    ]
+  }
+}

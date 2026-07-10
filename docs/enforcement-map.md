@@ -1,128 +1,38 @@
 # JPV-OS Enforcement Map
 
-This document maps the infrastructure controls that enforce JPV-OS governance, security, people-protection, and constitutional continuity requirements.
+This map identifies how governance, security, and People Protection requirements are enforced before merge or deployment.
 
-## Enforcement Layers
+## Automated Gates
 
-### Layer 1: Repository Protection
+| Gate | Enforcement point | Required evidence |
+| --- | --- | --- |
+| Policy presence | `.github/workflows/jpv-policy-enforcement.yml` runs `scripts/jpv-policy-enforcement.cjs`. | Required policy files, CODEOWNERS, workflow files, and production review docs exist. |
+| Policy integrity | `scripts/jpv-policy-enforcement.cjs` checks required People Protection, governance, and security terms. | Root policy files preserve required production-readiness language. |
+| Code quality | Repository CI runs typecheck, tests, build, and lint where configured. | Passing checks or documented remediation before release. |
+| Deployment validation | Deployment dry runs and config validators run for Cloudflare Worker surfaces. | Worker configs, bindings, and release paths validate before promotion. |
 
-| Control | Enforcement | Doctrine Alignment |
-|---------|-------------|-------------------|
-| Branch protection on `main` | No direct push; PR required | No unilateral production mutation |
-| Require approvals | At least 1 approval before merge | Independent review requirement |
-| Dismiss stale approvals | New commits require re-approval | Continuous accountability |
-| Require status checks | CI must pass before merge | Verified governance compliance |
-| Require conversation resolution | Review concerns must be addressed | Concerns cannot be bypassed |
-| No force push | History cannot be rewritten | Audit trail preservation |
-| No branch deletion | Protected branches are persistent | Continuity of operations |
+## Human Review Gates
 
-### Layer 2: Code Ownership
+| Gate | Owner | Required review |
+| --- | --- | --- |
+| CODEOWNER review | `.github/CODEOWNERS` | Policy, workflow, governance, security, and production-readiness changes require accountable review. |
+| Production review | Release owner | `docs/production-review-checklist.md` must be completed before a system is promoted as production-ready. |
+| People Protection review | Release owner and reviewer | Human impact, informed consent, autonomy, accessibility, exploitation risk, discriminatory automation, surveillance risk, and appeal paths must be reviewed. |
+| Security review | Release owner and reviewer | Secret handling, authentication, webhook verification, admin access, audit logging, and least privilege must be reviewed. |
 
-| Protected Path | Owner | Purpose |
-|----------------|-------|---------|
-| `/GOVERNANCE.md` | @JayPVentures-LLC | Governance integrity |
-| `/SECURITY.md` | @JayPVentures-LLC | Security policy ownership |
-| `/PEOPLE-PROTECTION.md` | @JayPVentures-LLC | People-protection oversight |
-| `/.github/CODEOWNERS` | @JayPVentures-LLC | Ownership definition control |
-| `/.github/workflows/` | @JayPVentures-LLC | Workflow enforcement |
-| `/scripts/` | @JayPVentures-LLC | Enforcement script ownership |
-| `/docs/` | @JayPVentures-LLC | Documentation governance |
-| `/operations/entitlement-system/` | @JayPVentures-LLC | Production system ownership |
+## Enforcement Boundaries
 
-### Layer 3: CI Enforcement
+Automation can block missing or weakened policy controls, but it does not replace accountable review. A passing automated gate means the required policy surfaces are present and have not obviously been weakened. It does not mean production approval is complete.
 
-| Workflow | Trigger | Enforces |
-|----------|---------|----------|
-| `jpv-policy-enforcement.yml` | PR, push to main | Policy file presence, content requirements |
-| `ci.yml` | PR, push | Build, test, typecheck, and deploy dry-run verification |
-| `enforce-brand.yml` | PR, push | Brand voice and language compliance |
-| `jpv-os-enforcement.yml` | PR, push | JPV-OS spec compliance |
+Production approval still requires:
 
-### Layer 4: Policy Verification
+- documented review evidence
+- identified owners
+- rollback and remediation paths
+- passing CI
+- completed People Protection, governance, and security review
+- no unresolved critical risk to human dignity, user autonomy, accessibility, equal treatment, or safety
 
-The `jpv-policy-enforcement.cjs` script verifies:
+## Failure Handling
 
-| Check | Enforcement |
-|-------|-------------|
-| Required files exist | README.md, GOVERNANCE.md, SECURITY.md, PEOPLE-PROTECTION.md, .github/CODEOWNERS, .github/workflows/jpv-policy-enforcement.yml |
-| Policy content requirements | Required terms and sections |
-| No weakening language | Prohibited patterns that dilute protections |
-| Minimum policy depth | Document length thresholds |
-| Cross-reference integrity | Policy documents reference each other |
-| Operational documentation | production-review-checklist.md, policy-index.md, enforcement-map.md |
-
-### Layer 5: Production Gates
-
-| Gate | Control |
-|------|---------|
-| Environment protection | `cloudflare-production` requires reviewers |
-| Deployment validation | `validate:deploy:*` scripts verify config |
-| Manual approval | Production deploys may require explicit approval |
-| Deployment freeze | Freeze governance during critical periods |
-
-## Constitutional Continuity Mapping
-
-| Constitutional Principle | Infrastructure Control |
-|--------------------------|----------------------|
-| **Succession** | CODEOWNER hierarchy, fallback reviewers |
-| **Incapacity Review** | Required independent approval, stale approval dismissal |
-| **Congressional Confirmation** | Branch protection, required status checks |
-| **Constitutional Limits** | Force-push prevention, deletion prevention, admin enforcement |
-| **Continuity of Government** | Deployment freeze governance, rollback paths, audit logging |
-
-## Enforcement Status
-
-### Active Enforcements
-
-- [x] Branch protection requiring PR
-- [x] Required approval before merge
-- [x] Required status checks
-- [x] CODEOWNER review for policy files
-- [x] CI policy enforcement workflow
-- [x] Policy content verification
-- [x] Forbidden pattern detection
-- [x] Cross-reference integrity
-
-### Configuration Requirements
-
-These must be configured in GitHub repository settings:
-
-- [ ] Branch protection rule for `main` with all settings
-- [ ] Environment protection for `cloudflare-production`
-- [ ] Repository secrets properly scoped
-- [ ] Dependabot enabled
-- [ ] Secret scanning enabled
-
-See [`docs/github-settings-checklist.md`](/docs/github-settings-checklist.md) for complete configuration requirements.
-
-## Verification
-
-Run the policy enforcement script locally:
-
-```sh
-node scripts/jpv-policy-enforcement.cjs
-```
-
-If enforcement passes, the output is:
-
-```
-JPV-OS policy enforcement passed.
-```
-
-If enforcement fails, the output lists all violations that must be addressed before merge.
-
-## Enforcement Failure Response
-
-When enforcement fails:
-
-1. Read the failure output to identify violations
-2. Address each violation in the relevant policy file
-3. Re-run enforcement verification
-4. Continue until all checks pass
-5. Submit PR for review
-
-Do not bypass enforcement failures by removing checks.
-
----
-
-*This enforcement map is reviewed and updated whenever enforcement controls are added, removed, or modified.*
+If an enforcement gate fails, the release must stop until the missing policy, workflow, review evidence, or control is restored. Bypassing the gate is not an acceptable remediation.

@@ -15,23 +15,23 @@ export const primaryNavigation = [
 ];
 
 export const homeProofPoints = [
-  "Governance architecture for teams that cannot afford ambiguity.",
-  "Automation and revenue systems designed for control, not chaos.",
-  "Selective engagements with executive visibility from the start.",
+  "Governance architecture for decisions that need a clear owner.",
+  "Automation systems designed to reduce drag without hiding risk.",
+  "Selective intake, scoped delivery, and executive-ready reporting.",
 ];
 
 export const ecosystemSignals = [
   {
-    label: "Advisory focus",
-    value: "Governance, automation, and commercial infrastructure for operators who need accountable execution.",
+    label: "Governance",
+    value: "Controls, roles, and review paths that make decisions easier to defend.",
   },
   {
-    label: "Engagement model",
-    value: "Discovery first, scoped delivery second, with tighter qualification for high-value work.",
+    label: "Automation",
+    value: "Workflows built for speed, evidence, and human oversight.",
   },
   {
-    label: "Positioning",
-    value: "Executive, selective, and systems-led rather than content-led or creator-led.",
+    label: "Revenue Systems",
+    value: "Offer, pricing, intake, and membership paths organized for cleaner conversion.",
   },
 ];
 

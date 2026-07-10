@@ -1,0 +1,31 @@
+name: People Protection Enforcement
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+      - governance/people-protection-enforcement
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-people-protection:
+    name: Validate People Protection Artifacts
+    runs-on: windows-latest
+
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate People Protection package
+        shell: pwsh
+        run: ./scripts/governance/validate-people-protection.ps1
+

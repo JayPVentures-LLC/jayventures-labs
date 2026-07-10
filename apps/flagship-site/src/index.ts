@@ -1,4 +1,4 @@
-
+﻿
 // --- Access Gate Layer Start ---
 export interface Env {
   ENTITLEMENTS_KV: KVNamespace;
@@ -86,7 +86,7 @@ import { getEnv } from "./config/env";
 import { renderRoute } from "./lib/render";
 
 export default {
-  async fetch(request: Request, rawEnv: Record<string, string>, _ctx: ExecutionContext): Promise<Response> {
+  async fetch(request: Request, rawEnv: Record<string, string>): Promise<Response> {
     const url = new URL(request.url);
 
     // Access Gate endpoints
@@ -204,3 +204,4 @@ export default {
     });
   },
 };
+
