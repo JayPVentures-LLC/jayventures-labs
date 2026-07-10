@@ -36,7 +36,7 @@ Existence
   -> Recursive Design
 ```
 
-The chain is not strictly linear. Several derived concepts require multiple earlier primitives or derived concepts.
+This chain is illustrative and non-exhaustive, not strictly linear. Additional branches—including Replication, Selection, Recursion, and Evaluation—are defined in the dependency table below, and several concepts require multiple earlier primitives or derived concepts.
 
 ## Derived concept dependencies
 
