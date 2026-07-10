@@ -56,6 +56,7 @@ The chain is not strictly linear. Several derived concepts require multiple earl
 | Adaptation | Feedback + Persistence + Process Modification | Feedback changing future response rules. |
 | Learning | Adaptation + Representation | Feedback-modified representation that alters future response. |
 | Replication | Structure + Process + Ordered Change | Production of a traceably similar structure, pattern, or rule across sequence. |
+| Constraint | Difference + Interaction + Ordered Change + Structure | A stable difference in structure, state, or interaction that limits possible future processes. |
 | Selection | Difference + Interaction + Constraint + Ordered Change | Differential persistence or replication among alternatives under environmental conditions. |
 | Evolution | Adaptation + Replication + Selection + Ordered Change | Accumulated adaptive difference across generations, versions, institutions, or populations. |
 | Recursion | Representation + Process | A process operating on its own output, representation, or process structure. |
