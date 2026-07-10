@@ -44,7 +44,7 @@ The `jpv-policy-enforcement.cjs` script verifies:
 
 | Check | Enforcement |
 |-------|-------------|
-| Required files exist | GOVERNANCE.md, SECURITY.md, PEOPLE-PROTECTION.md, CODEOWNERS |
+| Required files exist | README.md, GOVERNANCE.md, SECURITY.md, PEOPLE-PROTECTION.md, .github/CODEOWNERS, .github/workflows/jpv-policy-enforcement.yml |
 | Policy content requirements | Required terms and sections |
 | No weakening language | Prohibited patterns that dilute protections |
 | Minimum policy depth | Document length thresholds |
