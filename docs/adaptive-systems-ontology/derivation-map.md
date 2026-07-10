@@ -28,6 +28,7 @@ Existence
   -> Feedback
   -> Persistence
   -> Response
+  -> Process Modification
   -> Adaptation
   -> Learning
   -> Evolution
@@ -53,7 +54,7 @@ Vocabulary alignment: the compact tokens `ProcessModification` and `IntentionalP
 | Representation | Information + Structure | Stored structure corresponding to information about something else. |
 | Feedback | Process + Information + Ordered Change | Result of one process becoming information for a later process. |
 | Persistence | Structure + Process + Ordered Change | Continuation of identifiable structure through sustaining processes. |
-| Response | Information + Process | Current state or action change caused by information. |
+| Response | Information + Process | A change in current state or action caused by information. |
 | Process Modification | Process + Ordered Change | A change to the transformation rule that maps one state to a later state. |
 | Adaptation | Feedback + Persistence + Process Modification | Feedback changing future response rules. |
 | Learning | Adaptation + Representation | Feedback-modified representation that alters future response. |
