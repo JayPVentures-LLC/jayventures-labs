@@ -52,10 +52,15 @@ The chain is not strictly linear. Several derived concepts require multiple earl
 | Feedback | Process + Information + Ordered Change | Result of one process becoming information for a later process. |
 | Persistence | Structure + Process + Ordered Change | Continuation of identifiable structure through sustaining processes. |
 | Response | Information + Process | Current state or action change caused by information. |
+| Process Modification | Process + Ordered Change | A change to the transformation rule that maps one state to a later state. |
 | Adaptation | Feedback + Persistence + Process Modification | Feedback changing future response rules. |
 | Learning | Adaptation + Representation | Feedback-modified representation that alters future response. |
+| Replication | Structure + Process + Ordered Change | Production of a traceably similar structure, pattern, or rule across sequence. |
+| Selection | Difference + Interaction + Constraint + Ordered Change | Differential persistence or replication among alternatives under environmental conditions. |
 | Evolution | Adaptation + Replication + Selection + Ordered Change | Accumulated adaptive difference across generations, versions, institutions, or populations. |
+| Recursion | Representation + Process | A process operating on its own output, representation, or process structure. |
 | Reflection | Representation + Recursion | A system representing itself or its own processes. |
+| Intentional Process Modification | Reflection + Evaluation + Process Modification | Deliberate revision of a process based on represented goals, evidence, or expected consequences. |
 | Recursive Design | Reflection + Adaptation + Intentional Process Modification | A system modifying the process by which it modifies itself. |
 
 ## Constraint result
