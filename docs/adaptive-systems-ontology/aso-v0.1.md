@@ -185,7 +185,7 @@ Replication occurs when a traceably similar structure, pattern, or rule is produ
 
 ### Selection
 
-Selection is derived from difference, interaction, constraint, and ordered change.
+Selection is derived from difference, interaction, constraint (see working definition in derivation-map.md), and ordered change.
 
 Selection occurs when environmental conditions produce differential persistence or replication among alternatives.
 
