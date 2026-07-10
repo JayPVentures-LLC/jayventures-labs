@@ -39,7 +39,7 @@ The chain is not strictly linear. Several derived concepts require multiple earl
 
 ## Derived concept dependencies
 
-Token alignment note: `ProcessModification` maps to `Process Modification`, and `IntentionalProcessModification` maps to `Intentional Process Modification`.
+Vocabulary alignment: the compact tokens `ProcessModification` and `IntentionalProcessModification` correspond to the canonical concept labels `Process Modification` and `Intentional Process Modification` used below.
 
 | Concept | Derived from | Definition |
 |---|---|---|
