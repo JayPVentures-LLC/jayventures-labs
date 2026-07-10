@@ -209,7 +209,7 @@ Reflection occurs when a system represents itself or its own processes.
 
 ### Intentional Process Modification
 
-Intentional Process Modification is derived from reflection, evaluation, and Process Modification.
+Intentional Process Modification is derived from reflection, evaluation (see adaptive-classification-rubric.md#evaluation-checklist), and Process Modification.
 
 Intentional Process Modification occurs when a reflective system deliberately revises a process based on represented goals, evidence, or expected consequences.
 
