@@ -67,9 +67,9 @@ Minimal statement:
 
 > Something affects something else.
 
-### 2.4 Ordered change
+### 2.4 Ordered Change
 
-Ordered change is the possibility of sequence: before, during, after.
+Ordered Change is the possibility of sequence: before, during, after.
 
 This does not require human timekeeping. It requires only ordered state transition. Without ordered change, there is no process, memory, feedback, learning, adaptation, or evolution.
 
