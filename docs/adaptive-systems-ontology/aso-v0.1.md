@@ -213,11 +213,11 @@ Intentional Process Modification is derived from reflection, evaluation (see ada
 
 Intentional Process Modification occurs when a reflective system deliberately revises a process based on represented goals, evidence, or expected consequences.
 
-### Recursive design
+### Recursive Design
 
-Recursive design is derived from reflection, adaptation, and Intentional Process Modification.
+Recursive Design is derived from Reflection, Adaptation, and Intentional Process Modification.
 
-Recursive design occurs when a system modifies the process by which it modifies itself.
+Recursive Design occurs when a system modifies the process by which it modifies itself.
 
 Examples include science, education, governance reform, engineering, and AI system design.
 
