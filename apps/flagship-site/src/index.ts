@@ -12,10 +12,10 @@ type EntitlementRecord = {
   updatedAt: string;
 };
 
-function json(body: unknown, status = 200) {
+function json(body: unknown, status = 200, headers: Record<string, string> = {}) {
   return new Response(JSON.stringify(body, null, 2), {
     status,
-    headers: { "content-type": "application/json" },
+    headers: { "content-type": "application/json", ...headers },
   });
 }
 
@@ -65,17 +65,32 @@ import { getEnv } from "./config/env";
 import { JPV_DESIGN_SYSTEM_CSS, JPV_DESIGN_SYSTEM_VERSION } from "./lib/jpvDesignSystem";
 import { renderRoute } from "./lib/render";
 
+const DESIGN_SYSTEM_FONT_LINK =
+  '<link data-jpv-fonts="2.1.0" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">';
+
 function applyDesignSystem(html: string): string {
-  return html
-    .replace('<meta name="theme-color" content="#f3efe8">', '<meta name="theme-color" content="#050508">')
-    .replace(
-      /<link href="https:\/\/fonts\.googleapis\.com\/css2\?family=Fraunces:[^"]+" rel="stylesheet">/,
-      '<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">'
-    )
-    .replace(
-      "</head>",
-      `<link rel="stylesheet" href="/jpv-design-system.css?v=${JPV_DESIGN_SYSTEM_VERSION}"><meta name="jpv-design-system" content="${JPV_DESIGN_SYSTEM_VERSION}"></head>`
-    );
+  const withoutLegacyFonts = html.replace(
+    /<link[^>]+fonts\.googleapis\.com[^>]+family=Fraunces[^>]*>/gi,
+    ""
+  );
+  const withTheme = withoutLegacyFonts.replace(
+    /<meta name="theme-color" content="[^"]*">/i,
+    '<meta name="theme-color" content="#050508">'
+  );
+  const fontLink = withTheme.includes('data-jpv-fonts="2.1.0"') ? "" : DESIGN_SYSTEM_FONT_LINK;
+
+  return withTheme.replace(
+    "</head>",
+    `${fontLink}<link rel="stylesheet" href="/jpv-design-system.css?v=${JPV_DESIGN_SYSTEM_VERSION}"><meta name="jpv-design-system" content="${JPV_DESIGN_SYSTEM_VERSION}"></head>`
+  );
+}
+
+function methodNotAllowed(allow: string): Response {
+  return json(
+    { error: "Method not allowed" },
+    405,
+    { Allow: allow, "X-JPV-Design-System": JPV_DESIGN_SYSTEM_VERSION }
+  );
 }
 
 export default {
@@ -83,7 +98,10 @@ export default {
     const url = new URL(request.url);
 
     if (url.pathname === "/jpv-design-system.css") {
-      return new Response(JPV_DESIGN_SYSTEM_CSS, {
+      if (request.method !== "GET" && request.method !== "HEAD") {
+        return methodNotAllowed("GET, HEAD");
+      }
+      return new Response(request.method === "HEAD" ? null : JPV_DESIGN_SYSTEM_CSS, {
         headers: {
           "Content-Type": "text/css; charset=UTF-8",
           "Cache-Control": "public, max-age=3600, stale-while-revalidate=86400",
@@ -93,11 +111,21 @@ export default {
     }
 
     if (url.pathname === "/health") {
-      return json({
-        status: "ok",
-        system: "JPV Access Layer",
-        designSystem: JPV_DESIGN_SYSTEM_VERSION,
-      });
+      if (request.method !== "GET" && request.method !== "HEAD") {
+        return methodNotAllowed("GET, HEAD");
+      }
+      const response = json(
+        {
+          status: "ok",
+          system: "JPV Access Layer",
+          designSystem: JPV_DESIGN_SYSTEM_VERSION,
+        },
+        200,
+        { "X-JPV-Design-System": JPV_DESIGN_SYSTEM_VERSION }
+      );
+      return request.method === "HEAD"
+        ? new Response(null, { status: response.status, headers: response.headers })
+        : response;
     }
 
     if (url.pathname === "/protected") {
@@ -143,13 +171,7 @@ export default {
     const pathname = url.pathname === "/" ? "/" : url.pathname.replace(/\/$/, "");
 
     if (request.method !== "GET" && request.method !== "HEAD") {
-      return new Response(JSON.stringify({ error: "Method not allowed" }), {
-        status: 405,
-        headers: {
-          "Content-Type": "application/json; charset=UTF-8",
-          Allow: "GET, HEAD",
-        },
-      });
+      return methodNotAllowed("GET, HEAD");
     }
 
     if (url.pathname !== pathname) {
@@ -163,11 +185,14 @@ export default {
 
     if (!rendered) {
       const notFound = applyDesignSystem(
-        '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#050508"><title>Not Found</title></head><body style="padding:40px"><main><h1>404</h1><p>The requested page was not found.</p><p><a href="/">Return home</a></p></main></body></html>'
+        '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#050508"><title>Not Found</title></head><body style="padding:40px"><main id="content"><h1>404</h1><p>The requested page was not found.</p><p><a href="/">Return home</a></p></main></body></html>'
       );
-      return new Response(notFound, {
+      return new Response(request.method === "HEAD" ? null : notFound, {
         status: 404,
-        headers: { "Content-Type": "text/html; charset=UTF-8" },
+        headers: {
+          "Content-Type": "text/html; charset=UTF-8",
+          "X-JPV-Design-System": JPV_DESIGN_SYSTEM_VERSION,
+        },
       });
     }
 
