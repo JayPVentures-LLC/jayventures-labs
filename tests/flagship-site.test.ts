@@ -42,12 +42,33 @@ describe("flagship site worker", () => {
     }
   });
 
-  it("serves the canonical design-system asset", async () => {
+  it("serves the canonical design-system asset with governed request semantics", async () => {
     const response = await fetchRoute("/jpv-design-system.css");
     expect(response.status).toBe(200);
     expect(response.headers.get("Content-Type")).toContain("text/css");
     expect(response.headers.get("X-JPV-Design-System")).toBe("2.1.0");
-    await expect(response.text()).resolves.toContain("--jpv-void:#050508");
+    await expect(response.text()).resolves.toContain("--jpv-void: #050508;");
+
+    const head = await fetchRoute("/jpv-design-system.css", { method: "HEAD" });
+    expect(head.status).toBe(200);
+    expect(head.headers.get("X-JPV-Design-System")).toBe("2.1.0");
+    await expect(head.text()).resolves.toBe("");
+
+    const post = await fetchRoute("/jpv-design-system.css", { method: "POST" });
+    expect(post.status).toBe(405);
+    expect(post.headers.get("Allow")).toBe("GET, HEAD");
+  });
+
+  it("exposes the design-system version consistently", async () => {
+    const health = await fetchRoute("/health");
+    expect(health.status).toBe(200);
+    expect(health.headers.get("X-JPV-Design-System")).toBe("2.1.0");
+    await expect(health.json()).resolves.toMatchObject({ designSystem: "2.1.0" });
+
+    const notFoundHead = await fetchRoute("/not-real", { method: "HEAD" });
+    expect(notFoundHead.status).toBe(404);
+    expect(notFoundHead.headers.get("X-JPV-Design-System")).toBe("2.1.0");
+    await expect(notFoundHead.text()).resolves.toBe("");
   });
 
   it("keeps internal links inside the planned route set", async () => {
@@ -124,5 +145,6 @@ describe("flagship site worker", () => {
   it("returns 404 for unknown routes", async () => {
     const response = await fetchRoute("/not-real");
     expect(response.status).toBe(404);
+    expect(response.headers.get("X-JPV-Design-System")).toBe("2.1.0");
   });
 });
