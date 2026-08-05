@@ -3,6 +3,8 @@ import worker from "../apps/flagship-site/src/index";
 import { insightArticles } from "../apps/flagship-site/src/content/insights";
 import { publicRoutes } from "../apps/flagship-site/src/lib/render";
 
+const staticRoutes = ["/jpv-design-system.css"] as const;
+
 function createRawEnv() {
   return {
     SITE_ORIGIN: "https://jaypventuresllc.com",
@@ -40,8 +42,20 @@ describe("flagship site worker", () => {
     }
   });
 
+  it("serves the canonical design-system asset", async () => {
+    const response = await fetchRoute("/jpv-design-system.css");
+    expect(response.status).toBe(200);
+    expect(response.headers.get("Content-Type")).toContain("text/css");
+    expect(response.headers.get("X-JPV-Design-System")).toBe("2.1.0");
+    await expect(response.text()).resolves.toContain("--jpv-void:#050508");
+  });
+
   it("keeps internal links inside the planned route set", async () => {
-    const routable = new Set<string>([...publicRoutes, ...insightArticles.map((article) => `/insights/${article.slug}`)]);
+    const routable = new Set<string>([
+      ...publicRoutes,
+      ...staticRoutes,
+      ...insightArticles.map((article) => `/insights/${article.slug}`),
+    ]);
     const htmlRoutes = publicRoutes.filter((route) => !route.endsWith(".md"));
 
     for (const route of htmlRoutes) {
@@ -51,7 +65,8 @@ describe("flagship site worker", () => {
 
       for (const href of hrefs) {
         if (!href.startsWith("/")) continue;
-        const [path] = href.split("#");
+        const [pathWithQuery] = href.split("#");
+        const [path] = pathWithQuery.split("?");
         expect(routable.has(path || "/")).toBe(true);
       }
     }
@@ -96,6 +111,7 @@ describe("flagship site worker", () => {
     expect(securityText.status).toBe(200);
     await expect(securityText.text()).resolves.toContain("mailto:jayhere@jaypventuresllc.com");
   });
+
   it("redirects trailing slashes and rejects unsupported methods", async () => {
     const redirect = await fetchRoute("/services/");
     expect(redirect.status).toBe(301);
