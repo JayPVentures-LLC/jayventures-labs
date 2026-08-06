@@ -38,7 +38,9 @@ jobs:
 
       - name: Repair enforcement dependency graph
         run: |
-          npm --prefix operations/jpv_os_enforcement install
+          npm --prefix operations/jpv_os_enforcement install js-yaml@^5.2.2 --save
+          npm --prefix operations/jpv_os_enforcement pkg set overrides.postcss='^8.5.23'
+          npm --prefix operations/jpv_os_enforcement install --package-lock-only
           npm --prefix operations/jpv_os_enforcement audit fix --package-lock-only
 
       - name: Verify repaired graphs
