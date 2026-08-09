@@ -1,39 +1,59 @@
 # GitHub Settings Checklist
 
-This checklist covers the GitHub repository settings that still must be configured manually because they are not writable from the current tool access.
+This checklist covers GitHub repository settings that are not writable from the current connected tool surface and therefore must be treated as explicit repository configuration dependencies.
 
 ## Repository
-- Repository: `jaypventuresllc/jayventures-labs`
+- Repository: `JayPVentures-LLC/jayventures-labs`
 - Default branch: `main`
 
 ## Branch Protection for `main`
-Create a branch protection rule for `main` with these settings:
-- Require a pull request before merging
-- Require approvals: at least `1`
-- Dismiss stale pull request approvals when new commits are pushed
-- Require status checks to pass before merging
-- Required status check: `verify`
-- Require conversation resolution before merging
-- Do not allow force pushes
-- Do not allow deletions
+Required baseline:
+- Require a pull request before merging.
+- Require status checks to pass before merging.
+- Required status check: `verify` plus any additional repository-required enforcement checks.
+- Require conversation resolution before merging.
+- Require verified signatures where supported by the selected merge path.
+- Do not allow force pushes.
+- Do not allow deletions.
 
-If you are the only maintainer and need fast iteration, keep admin bypass enabled. If this becomes team-operated, disable bypass and require the same rule for admins.
+### Review-gate availability invariant
+Do **not** enable a mandatory approving-review gate unless at least one of the following is true and verified before the rule becomes active:
+1. at least one independent write-capable reviewer, other than the expected PR author, is operationally available and can authenticate to review;
+2. a governed automated reviewer is enabled and GitHub Actions is permitted to create/approve pull requests; or
+3. an explicit founder/admin bypass is enabled for deadlock recovery while all required CI, signature, and audit gates remain intact.
+
+A configuration that requires one approval while providing no operable approving identity and no approved bypass is a governance deadlock and must be rejected as `REVIEW_GATE_UNSATISFIABLE`.
+
+For founder-operated repositories, keep the founder/admin bypass enabled unless and until an independently operable reviewer path has been verified end-to-end. Do not infer reviewer availability merely because a second account exists in the collaborator list.
+
+## Deadlock Preflight
+Before opening or enforcing a protected PR, verify:
+- PR author identity;
+- required approval count;
+- at least one eligible reviewer distinct from the author;
+- reviewer can actually authenticate and submit `APPROVE`;
+- GitHub Actions approval setting if automation is relied upon;
+- admin bypass state if bypass is the recovery route;
+- required checks and signature requirements;
+- auto-merge eligibility.
+
+If any required reviewer path is not operational, fail before creating a merge-dependent workflow and route to the configured governed recovery path.
+
+## GitHub Actions Approval Policy
+If governed automated approval is used:
+- Enable `Allow GitHub Actions to create and approve pull requests` in repository Actions settings.
+- Restrict the workflow to explicitly governed branches and authors.
+- Keep required CI/security/governance checks mandatory.
+- Do not use automated approval as a substitute for an independent human review where policy specifically requires human review.
 
 ## GitHub Environments
-Create these environments:
-
 ### `cloudflare-production`
-Use for manual Cloudflare deployment workflow approvals.
-Recommended settings:
-- Required reviewers: you or the operator group
-- Wait timer: optional
-- Deployment workflows now run validation scripts and will fail if Wrangler files still contain placeholder values
-- Environment secrets:
-  - `CLOUDFLARE_API_TOKEN`
-  - `CLOUDFLARE_ACCOUNT_ID`
+Use for governed Cloudflare deployment approvals.
+Recommended environment secrets:
+- `CLOUDFLARE_API_TOKEN`
+- `CLOUDFLARE_ACCOUNT_ID`
 
 ### `hybrid-production`
-Use if you later want Azure-bound deploy or archive approval separation.
 Recommended environment secrets:
 - `AZURE_KEY_VAULT_URL`
 - `AZURE_TENANT_ID`
@@ -44,8 +64,6 @@ Recommended environment secrets:
 - `AZURE_ARCHIVE_TOKEN`
 
 ## Repository Secrets
-Set these in `Settings > Secrets and variables > Actions`.
-
 ### Cloudflare
 - `CLOUDFLARE_API_TOKEN`
 - `CLOUDFLARE_ACCOUNT_ID`
@@ -61,7 +79,7 @@ Set these in `Settings > Secrets and variables > Actions`.
 
 ### Stripe
 - `STRIPE_WEBHOOK_SECRET`
-- `STRIPE_SECRET_KEY` if you later add administrative Stripe API calls in CI or deploy automation
+- `STRIPE_SECRET_KEY` when administrative Stripe API calls are intentionally added to CI/deploy automation.
 
 ### Discord
 - `DISCORD_BOT_TOKEN`
@@ -74,25 +92,24 @@ Set these in `Settings > Secrets and variables > Actions`.
 
 ## Recommended Actions Policy
 In `Settings > Actions > General`:
-- Allow GitHub Actions
-- Allow local and GitHub-authored actions
-- Allow `actions/checkout` and `actions/setup-node`
-- Restrict workflow permissions to `Read repository contents` by default
-- Enable `Allow GitHub Actions to create and approve pull requests` only if you later add release automation that needs it
+- Allow GitHub Actions.
+- Allow local and GitHub-authored actions.
+- Allow `actions/checkout` and `actions/setup-node`.
+- Restrict default workflow permissions to read unless a specific workflow requires a narrower documented write permission.
+- Enable GitHub Actions PR approval only when a governed automated-review path is intentionally active.
 
 ## Required Manual Cloudflare Input Before Deployment
 Update these Wrangler files with real values before running deploy workflows:
-- [apps/flagship-site/wrangler.toml](/c:/dev/jayventures-labs/apps/flagship-site/wrangler.toml)
-- [operations/entitlement-system/wrangler.toml](/c:/dev/jayventures-labs/operations/entitlement-system/wrangler.toml)
-- [wix/bookings/wrangler.toml](/c:/dev/jayventures-labs/wix/bookings/wrangler.toml)
+- `apps/flagship-site/wrangler.toml`
+- `operations/entitlement-system/wrangler.toml`
+- `wix/bookings/wrangler.toml`
 
-For the flagship site, only override the default membership and portal URLs if you are ready to replace the publish-safe internal routing with live checkout or gated destinations.
+For the flagship site, only override the default membership and portal URLs when replacing the publish-safe internal routing with live checkout or gated destinations.
 
-## Recommended First GitHub Workflow Validation
-1. Push the current branch.
-2. Open a pull request.
-3. Confirm the `verify` workflow passes.
-4. Configure branch protection to require `verify`.
-5. Add repository or environment secrets.
-6. Run `deploy-website` manually after the flagship site placeholders are replaced.
-7. Run `deploy-workers` manually after the worker bindings are real.
+## Required GitHub Workflow Validation
+1. Confirm reviewer/bypass availability before enforcing review requirements.
+2. Push the branch and open the PR.
+3. Confirm required checks pass.
+4. Confirm the configured approval path actually produces an eligible `APPROVE` review or a governed bypass is available.
+5. Enable auto-merge only after the above preflight is satisfiable.
+6. Treat `REVIEW_GATE_UNSATISFIABLE` as a configuration defect, not a task for the founder to manually discover after work is complete.
