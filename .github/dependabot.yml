@@ -7,7 +7,7 @@ updates:
       interval: "weekly"
       day: "monday"
       time: "09:00"
-      timezone: "America/Chicago"
+      timezone: "America/New_York"
     target-branch: "main"
     open-pull-requests-limit: 5
     rebase-strategy: "auto"
