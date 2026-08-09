@@ -1,0 +1,33 @@
+{
+  "schema": "jpv.public-site.design-system.receipt.v1",
+  "version": "2.1.0",
+  "status": "IMPLEMENTED_PENDING_MERGE",
+  "authority": "JayPVentures LLC",
+  "governance": "JPV-OS",
+  "surface": "apps/flagship-site",
+  "implementation": {
+    "stylesheet_route": "/jpv-design-system.css",
+    "html_binding": "all rendered text/html routes",
+    "health_receipt": "/health includes designSystem version",
+    "response_header": "X-JPV-Design-System",
+    "theme_color": "#050508",
+    "typography": ["Space Grotesk", "IBM Plex Sans", "IBM Plex Mono"],
+    "responsive": true,
+    "reduced_motion": true,
+    "focus_states": true
+  },
+  "prohibited_treatments_removed_by_override": [
+    "warm metallic accents",
+    "serif headline system",
+    "cream foundation",
+    "loud business headline color"
+  ],
+  "acceptance": [
+    "canonical stylesheet is served by the worker",
+    "all HTML pages receive the canonical stylesheet link",
+    "design-system version is externally observable",
+    "mobile navigation remains horizontally usable",
+    "reduced-motion users receive minimized animation",
+    "focus-visible states are preserved"
+  ]
+}
