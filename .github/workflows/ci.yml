@@ -7,7 +7,6 @@ on:
       - master
   pull_request:
 
-
 permissions:
   contents: read
 
@@ -25,7 +24,7 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --legacy-peer-deps
 
       - name: Audit root dependency graph
         run: npm audit --audit-level=moderate

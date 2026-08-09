@@ -6,13 +6,11 @@ on:
     branches:
       - main
 
-
 permissions:
   contents: read
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
 
 jobs:
   enforce:
@@ -24,7 +22,6 @@ jobs:
           node-version: 22
           cache: npm
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --legacy-peer-deps
       - name: Run JPV-OS enforcement
         run: npm run jpv:enforce
-

@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0",
+  "authority_repository": "JayPVentures-LLC/jpv-governance",
+  "authority_commit": "585c35463d5f5bb23a8785bf5f4b6796d68ee693",
+  "policy": "policies/AUTHORITY-ACCOUNTABILITY-COUPLING.md",
+  "decision_record_schema": "governance/schemas/material-decision-record.schema.json",
+  "validator": "scripts/validate-material-decision-record.ps1",
+  "required": true,
+  "failure_mode": "block",
+  "inherited_at": "2026-08-06T23:30:00Z"
+}

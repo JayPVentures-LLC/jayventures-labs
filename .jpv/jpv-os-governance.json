@@ -1,0 +1,9 @@
+{
+  "schemaVersion": "1.0",
+  "authorityRepository": "jaypVLabs/JPV-OS",
+  "authorityRef": "main",
+  "requiredStandards": ["governance/GOVERNING-INTENT-EQUILIBRIUM-STANDARD.md","governance/SYSTEM-CONSISTENCY-INTEGRITY-STANDARD.md","governance/ARTIFACT-CONTEXT-CURATION-STANDARD.md"],
+  "requiredContracts": ["governance/contracts/governing-intent-equilibrium.v1.json","governance/contracts/system-consistency-integrity.v1.json","governance/contracts/artifact-success-gate.v1.json"],
+  "rules": {"governingOutcomeOverridesLocalOptimization":true,"semanticIntentDeterminesToolRouting":true,"establishedCorrectionsApplyBeforeExecution":true,"repeatedFailureEscalatesToPathBlock":true,"mutationSuccessIsNotCompletion":true,"founderRediscoveryRequired":false,"downstreamRulesMayNotWeakenAuthority":true},
+  "enforcement": "fail_closed"
+}
