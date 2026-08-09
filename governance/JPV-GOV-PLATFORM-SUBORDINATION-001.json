@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "standard_id": "JPV-GOV-PLATFORM-SUBORDINATION-001",
+  "version": "1.0.0",
+  "status": "ACTIVE",
+  "authority": "JayPVentures LLC / Founder",
+  "purpose": "Validate that third-party platform configuration enforces JPV governance without becoming the source of authority or creating an unsatisfiable execution deadlock.",
+  "validation_requirements": [
+    "verify every blocking platform gate has an operable satisfaction or governed recovery path",
+    "reject mandatory review if no eligible reviewer can actually authenticate and approve",
+    "reject reliance on GitHub Actions approval unless repository settings permit Actions to approve pull requests",
+    "verify founder/admin recovery exists for founder-operated repositories unless an independent reviewer path is verified end-to-end",
+    "preserve CI, security, provenance, and signature gates during recovery",
+    "verify platform rules are derived from canonical JPV policy and are not the sole representation of governance authority"
+  ],
+  "failure_codes": ["REVIEW_GATE_UNSATISFIABLE","PLATFORM_AUTHORITY_ESCALATION","RECOVERY_PATH_MISSING","HOSTING_PROVIDER_LOCK_IN_GOVERNANCE"]
+}
