@@ -11,6 +11,7 @@
 /.github/CODEOWNERS @jaypventures
 
 /.github/ @jaypventures
+/.github/workflows/ @jaypventures
 /scripts/ @jaypventures
 /docs/ @jaypventures
 
