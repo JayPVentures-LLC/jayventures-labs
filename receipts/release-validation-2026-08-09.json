@@ -1,0 +1,60 @@
+{
+  "schema": "jpv.release.validation.receipt.v1",
+  "generated_at": "2026-08-09T13:20:00Z",
+  "authority": "JayPVentures LLC",
+  "system": "jayventures-labs",
+  "source_branch": "main",
+  "source_commit": "c1059f30b36262bfd3084da3ffd529d4dfa5b2ba",
+  "status": "BLOCKED_EXTERNAL_BINDINGS",
+  "checks": {
+    "deployment_target_verification": {
+      "status": "PASS_WITH_CONFIG_DEPENDENCY",
+      "targets": [
+        "jaypventures-flagship-site",
+        "jaypventures-entitlement-system",
+        "jaypventures-bookings-worker"
+      ],
+      "runtime": "Cloudflare Workers"
+    },
+    "runtime_environment_binding_validation": {
+      "status": "BLOCKED",
+      "blockers": [
+        "apps/flagship-site/wrangler.toml still contains YOUR_KV_NAMESPACE_ID until CLOUDFLARE_ENTITLEMENTS_KV_ID is injected by the production gate",
+        "operations/entitlement-system/wrangler.toml contains deployment placeholders for Azure bindings until production secrets are injected",
+        "wix/bookings production deployment requires Wrangler/Azure/Memberstack secrets outside source"
+      ]
+    },
+    "production_endpoint_checks": {
+      "status": "UNVERIFIED",
+      "target_origin": "https://jaypventuresllc.com",
+      "reason": "No production deployment receipt for source_commit was observed through the connected GitHub execution surface; endpoint validation must follow a successful production-gate deployment."
+    },
+    "external_dependency_verification": {
+      "status": "BLOCKED",
+      "required": [
+        "CLOUDFLARE_API_TOKEN",
+        "CLOUDFLARE_ACCOUNT_ID",
+        "CLOUDFLARE_ENTITLEMENTS_KV_ID",
+        "MEMBERSTACK_JWT_PUBLIC_KEY",
+        "AZURE_KEY_VAULT_URL",
+        "AZURE_TENANT_ID",
+        "AZURE_CLIENT_ID",
+        "APPINSIGHTS_CONNECTION_STRING",
+        "AZURE_ARCHIVE_ENDPOINT",
+        "ENTITLEMENT_KV_ID",
+        "ENTITLEMENT_KV_PREVIEW_ID",
+        "IDEMPOTENCY_KV_ID",
+        "IDEMPOTENCY_KV_PREVIEW_ID",
+        "RETRY_QUEUE_KV_ID",
+        "RETRY_QUEUE_KV_PREVIEW_ID",
+        "ENTITLEMENT_EVENTS_QUEUE"
+      ]
+    },
+    "release_receipt_generation": {
+      "status": "PASS",
+      "receipt": "receipts/release-validation-2026-08-09.json"
+    }
+  },
+  "next_transition": "RUN_POST_MERGE_PRODUCTION_GATE_WHEN_BINDINGS_READY",
+  "promotion_allowed": false
+}
