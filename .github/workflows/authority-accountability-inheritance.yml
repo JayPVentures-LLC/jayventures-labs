@@ -1,0 +1,32 @@
+name: Authority Accountability Inheritance
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate-inheritance:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Validate canonical governance inheritance
+        shell: pwsh
+        run: |
+          $path = '.jpv/governance-inheritance.json'
+          if (-not (Test-Path $path)) { throw 'Missing canonical governance inheritance manifest.' }
+          $m = Get-Content $path -Raw | ConvertFrom-Json
+          if ($m.authority_repository -ne 'JayPVentures-LLC/jpv-governance') { throw 'Invalid governance authority repository.' }
+          if ($m.authority_commit -ne '585c35463d5f5bb23a8785bf5f4b6796d68ee693') { throw 'Governance authority commit drift detected.' }
+          if ($m.policy -ne 'policies/AUTHORITY-ACCOUNTABILITY-COUPLING.md') { throw 'Authority-accountability policy inheritance missing.' }
+          if ($m.required -ne $true -or $m.failure_mode -ne 'block') { throw 'Governance inheritance is not blocking.' }
+          New-Item -ItemType Directory -Force receipts | Out-Null
+          @{ gate='authority-accountability-inheritance'; result='passed'; authority_commit=$m.authority_commit; verified_at=[DateTimeOffset]::UtcNow.ToString('o') } | ConvertTo-Json | Set-Content receipts/authority-accountability-inheritance.json
+      - uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808
+        with:
+          name: authority-accountability-inheritance-receipt
+          path: receipts/authority-accountability-inheritance.json
+          if-no-files-found: error
