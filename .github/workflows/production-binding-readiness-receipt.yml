@@ -1,0 +1,64 @@
+name: JPV-OS Production Binding Readiness Receipt
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows:
+      - "JPV-OS Post-Merge Production Gate"
+    types:
+      - completed
+
+permissions:
+  contents: read
+
+jobs:
+  receipt:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate production binding readiness receipt
+        shell: bash
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_ENTITLEMENTS_KV_ID: ${{ secrets.CLOUDFLARE_ENTITLEMENTS_KV_ID }}
+          MEMBERSTACK_JWT_PUBLIC_KEY: ${{ secrets.MEMBERSTACK_JWT_PUBLIC_KEY }}
+          AZURE_KEY_VAULT_URL: ${{ secrets.AZURE_KEY_VAULT_URL }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+        run: |
+          state="READY"
+          missing=()
+
+          for name in \
+            CLOUDFLARE_API_TOKEN \
+            CLOUDFLARE_ACCOUNT_ID \
+            CLOUDFLARE_ENTITLEMENTS_KV_ID \
+            MEMBERSTACK_JWT_PUBLIC_KEY \
+            AZURE_KEY_VAULT_URL \
+            AZURE_TENANT_ID \
+            AZURE_CLIENT_ID
+          do
+            if [ -z "${!name}" ]; then
+              missing+=("$name")
+            fi
+          done
+
+          if [ "${#missing[@]}" -gt 0 ]; then
+            state="WAITING_EXTERNAL_BINDING"
+          fi
+
+          cat > production-binding-readiness.json <<EOF
+{
+  "system": "JPV-OS",
+  "gate": "production-binding-readiness",
+  "state": "$state",
+  "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+  "missing_bindings": [$(printf '"%s",' "${missing[@]}" | sed 's/,$//')]
+}
+EOF
+
+      - name: Upload readiness receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-binding-readiness-receipt
+          path: production-binding-readiness.json
