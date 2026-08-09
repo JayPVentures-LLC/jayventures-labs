@@ -1,0 +1,24 @@
+name: Governed Auto Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  approve-governance-only:
+    if: >-
+      github.event.pull_request.draft == false &&
+      github.event.pull_request.user.login == 'jaypventures' &&
+      startsWith(github.head_ref, 'governance/')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Approve governed founder-authored governance PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+        run: |
+          gh pr review "$PR_URL" --approve --body "Automated governance approval: founder-authored governance branch; repository checks remain mandatory and auto-merge remains gated on required status checks."
