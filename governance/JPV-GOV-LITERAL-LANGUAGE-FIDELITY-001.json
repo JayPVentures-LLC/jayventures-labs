@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "standard_id": "JPV-GOV-LITERAL-LANGUAGE-FIDELITY-001",
+  "version": "1.0.0",
+  "status": "ACTIVE",
+  "authority": "JayPVentures LLC / Founder",
+  "principle": "Explicit wording is authoritative. Interpretation may resolve genuine ambiguity but may not add, replace, soften, future-frame, psychologize, or otherwise alter a clear statement.",
+  "validation_requirements": ["falsify any interpretation that adds an unstated premise","verify binding corrections propagated downstream","verify explicit wording outranks generic conversational priors","verify user-specific settled semantics are preserved","verify execution was attempted when an authorized action was requested"],
+  "failure_codes": ["EXPLICIT_MEANING_OVERRIDDEN","UNSTATED_PREMISE_INSERTED","BINDING_CORRECTION_IGNORED","GENERIC_PRIOR_OVERWEIGHTED","USER_CORRECTION_BURDEN_TRANSFER","EXECUTION_REPLACED_BY_EXPLANATION"]
+}
