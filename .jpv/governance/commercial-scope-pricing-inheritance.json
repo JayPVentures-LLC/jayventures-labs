@@ -1,0 +1,16 @@
+{
+  "schema_version": "jpv.governance-inheritance.v1",
+  "invariant_id": "JPV-GOV-COMMERCIAL-SCOPE-PRICING-001",
+  "canonical_authority": "JayPVentures-LLC/jpv-governance:JPV-SYSTEM/12_COMMERCIAL_SCOPE_PRICING_DOCTRINE.md",
+  "runtime_authority": "jaypVLabs/JPV-OS:.jpv/governance/commercial-scope-pricing-doctrine.json",
+  "validator": "jaypVLabs/JPV-OS:scripts/governance/validate-commercial-scope-pricing-doctrine.mjs",
+  "scope": "jaypVLabs paid research, validation, experimentation, pilots, implementation, licensing, advisory, and support work",
+  "inheritance": "TRANSITIVE",
+  "material_scope_change_requires_reunderwriting": true,
+  "obsolete_baseline_state": "STALE_PENDING_REUNDERWRITING",
+  "automatic_grandfathering": false,
+  "punitive_pricing_allowed": false,
+  "override_allowed": false,
+  "fail_mode": "CLOSED",
+  "decision_on_failure": "REJECT"
+}
