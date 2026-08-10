@@ -1,0 +1,11 @@
+{
+  "standard_id": "JPV-GOV-COST-INTEGRITY-001",
+  "status": "INHERITED_NORMATIVE",
+  "authority": "JayPVentures LLC / Founder / JPV-OS",
+  "canonical_repository": "JayPVentures-LLC/jpv-governance",
+  "canonical_path": "governance/standards/cost-integrity-invariant.json",
+  "principle": "Every outcome has a cost. Evaluate outcome quality together with process cost; make material cost legible; minimize unnecessary cost; deliberately allocate unavoidable cost; prevent hidden externalization; never use eventual value to retroactively justify avoidable process harm.",
+  "inheritance": ["upward", "downward", "lateral", "cross-entity", "cross-environment", "historical-review", "future-default"],
+  "local_requirement": "This repository may strengthen but may not weaken, omit, invert, or silently bypass JPV-GOV-COST-INTEGRITY-001.",
+  "failure_on_drift": true
+}
