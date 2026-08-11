@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "JPV-GOV-006-DOWNSTREAM",
+  "status": "ACTIVE",
+  "runtimeSurface": "JayPVentures-LLC/jayventures-labs",
+  "authority": {
+    "repository": "jaypVLabs/JPV-OS",
+    "commit": "6e3587451e55dccaf5443f57b5363757f974beed",
+    "standard": "governance/policies/PROVENANCE-RECONCILIATION-AND-FORWARD-PROPAGATION-STANDARD.md",
+    "standardBlobSha": "41db39df99670ab9a7bb37967eb162986ab6141c"
+  },
+  "invariant": "A reopened record is not closure. A validated finding must propagate forward until the mechanism that produced the cost has either been corrected, constrained, replaced, or explicitly accepted as residual risk by legitimate authority. Time does not erase provenance.",
+  "defaultDisposition": "BLOCK",
+  "enforcement": {
+    "reopenedWithoutReconciliation": "BLOCK",
+    "provenanceNotPreserved": "BLOCK",
+    "validatedFindingPropagationIncomplete": "BLOCK",
+    "invalidMechanismDisposition": "BLOCK",
+    "incompleteResidualRiskAcceptance": "BLOCK"
+  }
+}
