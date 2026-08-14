@@ -29,8 +29,18 @@ jobs:
       - name: Audit root dependency graph
         run: npm audit --audit-level=moderate
 
+      - name: Regenerate enforcement lockfile for security repair
+        run: npm --prefix operations/jpv_os_enforcement install --package-lock-only --ignore-scripts
+
       - name: Audit enforcement dependency graph
         run: npm --prefix operations/jpv_os_enforcement audit --audit-level=moderate
+
+      - name: Upload regenerated enforcement lockfile
+        uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808
+        with:
+          name: jpv-enforcement-package-lock
+          path: operations/jpv_os_enforcement/package-lock.json
+          if-no-files-found: error
 
       - name: Run tests
         run: npm test
