@@ -23,6 +23,6 @@ jobs:
           $ErrorActionPreference='Stop'
           $headers=@{Authorization="Bearer $env:GITHUB_TOKEN";Accept='application/vnd.github+json';'X-GitHub-Api-Version'='2022-11-28'}
           $run=Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$env:GITHUB_REPOSITORY/actions/runs/$env:GITHUB_RUN_ID"
-          if(-not $run.id -or $run.head_sha -ne $env:GITHUB_SHA){throw 'JPV_SECURITY_VISIBILITY_GAP: current security execution is not observable'}
+          if([string]$run.id -ne [string]$env:GITHUB_RUN_ID -or $run.repository.full_name -ne $env:GITHUB_REPOSITORY){throw 'JPV_SECURITY_VISIBILITY_GAP: current security execution identity is not observable'}
         env:
           GITHUB_TOKEN: ${{ github.token }}
