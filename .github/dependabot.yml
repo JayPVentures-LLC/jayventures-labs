@@ -22,3 +22,25 @@ updates:
         update-types:
           - "minor"
           - "patch"
+
+  - package-ecosystem: "npm"
+    directory: "/operations/jpv_os_enforcement"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:15"
+      timezone: "America/New_York"
+    target-branch: "main"
+    open-pull-requests-limit: 5
+    rebase-strategy: "auto"
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "security"
+    groups:
+      npm-patch-minor:
+        update-types:
+          - "minor"
+          - "patch"
