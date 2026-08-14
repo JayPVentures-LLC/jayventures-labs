@@ -19,12 +19,28 @@ jobs:
           $path = '.jpv/governance-inheritance.json'
           if (-not (Test-Path $path)) { throw 'Missing canonical governance inheritance manifest.' }
           $m = Get-Content $path -Raw | ConvertFrom-Json
+          if ($m.schema_version -ne '1.2') { throw 'Governance inheritance schema drift detected.' }
           if ($m.authority_repository -ne 'JayPVentures-LLC/jpv-governance') { throw 'Invalid governance authority repository.' }
-          if ($m.authority_commit -ne '585c35463d5f5bb23a8785bf5f4b6796d68ee693') { throw 'Governance authority commit drift detected.' }
-          if ($m.policy -ne 'policies/AUTHORITY-ACCOUNTABILITY-COUPLING.md') { throw 'Authority-accountability policy inheritance missing.' }
+          if ($m.authority_commit -ne 'e733f9cf2742750a3b7c27b48af169bf7860ed94') { throw 'Governance authority commit drift detected.' }
+          if ('policies/AUTHORITY-ACCOUNTABILITY-COUPLING.md' -notin @($m.policies)) { throw 'Authority-accountability policy inheritance missing.' }
+          if ($m.runtime_authority_repository -ne 'jaypVLabs/JPV-OS') { throw 'Invalid runtime authority repository.' }
+          if ($m.runtime_authority_commit -ne '128319f98e064ea160f309e8decca0a7ab19c941') { throw 'Runtime authority commit drift detected.' }
+          if ('governance/standards/INVESTIGATIVE-EVIDENCE-PIPELINE-INVARIANT.md' -notin @($m.runtime_policies)) { throw 'Investigative evidence standard inheritance missing.' }
+          if ('governance/contracts/investigative-evidence-pipeline.v1.json' -notin @($m.runtime_policies)) { throw 'Investigative evidence contract inheritance missing.' }
           if ($m.required -ne $true -or $m.failure_mode -ne 'block') { throw 'Governance inheritance is not blocking.' }
+          if ($m.invariants.entity_resolution_precedes_association -ne $true) { throw 'Entity resolution ordering invariant missing.' }
+          if ($m.invariants.inference_distinct_from_fact -ne $true) { throw 'Inference/fact separation invariant missing.' }
+          if ($m.invariants.uncertain_or_high_materiality_requires_review -ne $true) { throw 'Review routing invariant missing.' }
+          if ($m.invariants.investigative_records_append_only -ne $true) { throw 'Append-only investigative record invariant missing.' }
           New-Item -ItemType Directory -Force receipts | Out-Null
-          @{ gate='authority-accountability-inheritance'; result='passed'; authority_commit=$m.authority_commit; verified_at=[DateTimeOffset]::UtcNow.ToString('o') } | ConvertTo-Json | Set-Content receipts/authority-accountability-inheritance.json
+          @{
+            gate='authority-accountability-inheritance'
+            result='passed'
+            authority_commit=$m.authority_commit
+            runtime_authority_commit=$m.runtime_authority_commit
+            investigative_contract='governance/contracts/investigative-evidence-pipeline.v1.json'
+            verified_at=[DateTimeOffset]::UtcNow.ToString('o')
+          } | ConvertTo-Json | Set-Content receipts/authority-accountability-inheritance.json
       - uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808
         with:
           name: authority-accountability-inheritance-receipt
