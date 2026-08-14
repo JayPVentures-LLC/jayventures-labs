@@ -1,0 +1,23 @@
+{
+  "schema_version": "jpv.policy-inheritance.v1",
+  "status": "ENFORCED",
+  "effective_date": "2026-08-14",
+  "repository": "JayPVentures-LLC/jayventures-labs",
+  "surface_role": "LABS_RESEARCH_VALIDATION_EXPERIMENTATION",
+  "canonical_policy": {
+    "repository": "jaypVLabs/JPV-OS",
+    "path": "governance/policies/systemic-access-hygiene.v1.json",
+    "baseline_commit": "6212c25165285812051ff601d6385facb898bf71"
+  },
+  "requirements": {
+    "systemic_only": true,
+    "person_targeting_permitted": false,
+    "least_privilege_required": true,
+    "runtime_enforcement_required_where_access_is_mutable": true,
+    "verified_invalid_state_required_for_destructive_action": true,
+    "uncertain_or_high_impact_requires_review": true,
+    "founder_break_glass_generic_mutation_permitted": false,
+    "missing_or_weakened_policy_decision": "BLOCK"
+  },
+  "violation_class": "ACCESS_INTEGRITY_DEFECT"
+}
