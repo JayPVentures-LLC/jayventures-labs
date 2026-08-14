@@ -21,7 +21,7 @@ jobs:
           $m = Get-Content $path -Raw | ConvertFrom-Json
           if ($m.schema_version -ne '1.3') { throw 'Governance inheritance schema drift detected.' }
           if ($m.authority_repository -ne 'JayPVentures-LLC/jpv-governance') { throw 'Invalid governance authority repository.' }
-          if ($m.authority_commit -ne 'e733f9cf2742750a3b7c27b48af169bf7860ed94') { throw 'Governance authority commit drift detected.' }
+          if ($m.authority_commit -ne 'a00f75cece93d14dfe126afb8698856b6aee1f58') { throw 'Governance authority commit drift detected.' }
           if ('policies/AUTHORITY-ACCOUNTABILITY-COUPLING.md' -notin @($m.policies)) { throw 'Authority-accountability policy inheritance missing.' }
           if ($m.runtime_authority_repository -ne 'jaypVLabs/JPV-OS') { throw 'Invalid runtime authority repository.' }
           if ($m.runtime_authority_commit -ne '6212c25165285812051ff601d6385facb898bf71') { throw 'Runtime authority commit drift detected.' }
