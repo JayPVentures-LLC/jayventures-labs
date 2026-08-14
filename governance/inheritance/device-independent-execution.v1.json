@@ -1,0 +1,22 @@
+{
+  "schema_version": "jpv.policy-inheritance.v1",
+  "status": "ENFORCED",
+  "effective_date": "2026-08-14",
+  "repository": "JayPVentures-LLC/jayventures-labs",
+  "canonical_policy": {
+    "repository": "jaypVLabs/JPV-OS",
+    "path": "governance/policies/device-independent-execution.v1.json",
+    "baseline_commit": "0a7dc88b1404c0991c0dda13d27a9643f45aaff6"
+  },
+  "requirements": {
+    "cloud_and_production_execution_device_independent": true,
+    "founder_laptop_dependency_permitted": false,
+    "founder_checkout_dependency_permitted": false,
+    "manual_founder_recovery_fallback_permitted": false,
+    "local_machine_cloud_fallback_permitted": false,
+    "hosted_failure_behavior": "SELF_RECOVER_OR_FAIL_CLOSED",
+    "local_execution_exception": "EXPLICIT_DEVICE_BOUND_CAPABILITY_ONLY",
+    "canonical_completion_authority_on_local_device_permitted": false
+  },
+  "violation_class": "PRODUCTION_EXECUTION_DEFECT"
+}
