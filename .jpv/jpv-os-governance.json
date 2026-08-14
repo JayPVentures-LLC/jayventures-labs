@@ -1,9 +1,32 @@
 {
-  "schemaVersion": "1.0",
+  "schemaVersion": "1.1",
   "authorityRepository": "jaypVLabs/JPV-OS",
   "authorityRef": "main",
-  "requiredStandards": ["governance/GOVERNING-INTENT-EQUILIBRIUM-STANDARD.md","governance/SYSTEM-CONSISTENCY-INTEGRITY-STANDARD.md","governance/ARTIFACT-CONTEXT-CURATION-STANDARD.md"],
-  "requiredContracts": ["governance/contracts/governing-intent-equilibrium.v1.json","governance/contracts/system-consistency-integrity.v1.json","governance/contracts/artifact-success-gate.v1.json"],
-  "rules": {"governingOutcomeOverridesLocalOptimization":true,"semanticIntentDeterminesToolRouting":true,"establishedCorrectionsApplyBeforeExecution":true,"repeatedFailureEscalatesToPathBlock":true,"mutationSuccessIsNotCompletion":true,"founderRediscoveryRequired":false,"downstreamRulesMayNotWeakenAuthority":true},
+  "requiredStandards": [
+    "governance/GOVERNING-INTENT-EQUILIBRIUM-STANDARD.md",
+    "governance/SYSTEM-CONSISTENCY-INTEGRITY-STANDARD.md",
+    "governance/ARTIFACT-CONTEXT-CURATION-STANDARD.md",
+    "governance/standards/INVESTIGATIVE-EVIDENCE-PIPELINE-INVARIANT.md"
+  ],
+  "requiredContracts": [
+    "governance/contracts/governing-intent-equilibrium.v1.json",
+    "governance/contracts/system-consistency-integrity.v1.json",
+    "governance/contracts/artifact-success-gate.v1.json",
+    "governance/contracts/investigative-evidence-pipeline.v1.json"
+  ],
+  "rules": {
+    "governingOutcomeOverridesLocalOptimization": true,
+    "semanticIntentDeterminesToolRouting": true,
+    "establishedCorrectionsApplyBeforeExecution": true,
+    "repeatedFailureEscalatesToPathBlock": true,
+    "mutationSuccessIsNotCompletion": true,
+    "founderRediscoveryRequired": false,
+    "downstreamRulesMayNotWeakenAuthority": true,
+    "investigativeEvidencePipelineRequired": true,
+    "entityResolutionPrecedesAssociation": true,
+    "inferenceMustRemainDistinctFromFact": true,
+    "uncertainOrHighMaterialityRequiresReview": true,
+    "investigativeRecordsAreAppendOnly": true
+  },
   "enforcement": "fail_closed"
 }

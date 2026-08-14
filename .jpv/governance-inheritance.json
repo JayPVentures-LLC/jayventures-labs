@@ -1,17 +1,19 @@
 {
-  "schema_version": "1.1",
+  "schema_version": "1.2",
   "authority_repository": "JayPVentures-LLC/jpv-governance",
-  "authority_commit": "44052ebbd98b895a98194204218b1dae187f40e3",
+  "authority_commit": "e733f9cf2742750a3b7c27b48af169bf7860ed94",
   "policies": [
     "policies/AUTHORITY-ACCOUNTABILITY-COUPLING.md",
     "policies/DETECTION-ATTRIBUTION-EVIDENCE-INVARIANT.md",
     "policies/detection-attribution-evidence-invariant.v1.json"
   ],
   "runtime_authority_repository": "jaypVLabs/JPV-OS",
-  "runtime_authority_commit": "2e7b218bfac3216c32182028acbe68f719b5d7ac",
+  "runtime_authority_commit": "128319f98e064ea160f309e8decca0a7ab19c941",
   "runtime_policies": [
     "governance/standards/DETECTION-ATTRIBUTION-EVIDENCE-INVARIANT.md",
-    ".jpv/governance/detection-attribution-evidence-invariant.json"
+    ".jpv/governance/detection-attribution-evidence-invariant.json",
+    "governance/standards/INVESTIGATIVE-EVIDENCE-PIPELINE-INVARIANT.md",
+    "governance/contracts/investigative-evidence-pipeline.v1.json"
   ],
   "decision_record_schema": "governance/schemas/material-decision-record.schema.json",
   "validator": "scripts/validate-material-decision-record.ps1",
@@ -21,7 +23,11 @@
     "detection_distinct_from_attribution": true,
     "unsupported_motive_intent_coordination_causation_forbidden": true,
     "unknown_cause_is_valid_state": true,
-    "downstream_may_strengthen_not_weaken": true
+    "downstream_may_strengthen_not_weaken": true,
+    "entity_resolution_precedes_association": true,
+    "inference_distinct_from_fact": true,
+    "uncertain_or_high_materiality_requires_review": true,
+    "investigative_records_append_only": true
   },
-  "inherited_at": "2026-08-11T16:14:00Z"
+  "inherited_at": "2026-08-14T15:05:00Z"
 }
