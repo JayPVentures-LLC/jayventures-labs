@@ -1,0 +1,9 @@
+{
+  "schema_version":"jpv.security-inheritance.v1",
+  "status":"MANDATORY",
+  "operating_mode":"fail_closed",
+  "canonical_source":"JayPVentures-LLC/jpv-governance@75c2ca69a01aca4aaacdbe6bd168e94fe0f4bd84:governance/security/JPV-SECURITY-AGENT-FLEET.json",
+  "repository":"JayPVentures-LLC/jayventures-labs",
+  "agents":["JPV-SENTINEL","JPV-AEGIS","JPV-CIPHER","JPV-WARD","JPV-ORACLE","JPV-GATEKEEPER","JPV-FORENSIC"],
+  "requirements":{"security_state_observable":true,"local_secret_scan":true,"least_privilege":true,"security_receipt_required":true,"unverifiable_state_fails_closed":true,"native_or_equivalent_security_evidence":true}
+}
