@@ -1,0 +1,14 @@
+{
+  "schema_version": "jpv.institutional-inheritance.v1",
+  "authority": "JayPVentures LLC / JPV-OS",
+  "canonical_repository": "jaypVLabs/JPV-OS",
+  "canonical_standard": "governance/standards/JPV-INSTITUTIONAL-PRODUCTION-BASELINE.md",
+  "effective_date": "2026-08-14",
+  "status": "REQUIRED",
+  "local_overrides_may_weaken_baseline": false,
+  "required_launch_audits": 2,
+  "required_run_classes": ["machine", "chat", "stream", "repository", "deployment", "governance"],
+  "missing_terminal_receipt_blocks_launch": true,
+  "unresolved_critical_or_high_blocks_launch": true,
+  "provenance_break_blocks_launch": true
+}
