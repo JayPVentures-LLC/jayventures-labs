@@ -8,13 +8,20 @@ on:
   pull_request:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   verify:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout PR branch for bounded lock repair
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && github.head_ref == 'chore/inherit-investigative-evidence-pipeline-v1'
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          ref: chore/inherit-investigative-evidence-pipeline-v1
+
       - name: Checkout
+        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'chore/inherit-investigative-evidence-pipeline-v1'
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
 
       - name: Setup Node
@@ -35,12 +42,19 @@ jobs:
       - name: Audit enforcement dependency graph
         run: npm --prefix operations/jpv_os_enforcement audit --audit-level=moderate
 
-      - name: Upload regenerated enforcement lockfile
-        uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808
-        with:
-          name: jpv-enforcement-package-lock
-          path: operations/jpv_os_enforcement/package-lock.json
-          if-no-files-found: error
+      - name: Commit regenerated enforcement lockfile
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && github.head_ref == 'chore/inherit-investigative-evidence-pipeline-v1'
+        shell: bash
+        run: |
+          if git diff --quiet -- operations/jpv_os_enforcement/package-lock.json; then
+            echo 'Enforcement lockfile already converged.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add operations/jpv_os_enforcement/package-lock.json
+          git commit -m 'fix(security): refresh enforcement lockfile'
+          git push origin HEAD:chore/inherit-investigative-evidence-pipeline-v1
 
       - name: Run tests
         run: npm test
