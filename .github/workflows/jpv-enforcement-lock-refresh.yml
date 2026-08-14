@@ -1,0 +1,31 @@
+name: JPV Enforcement Lock Refresh
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  refresh-lock:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: 22
+          cache: npm
+      - name: Regenerate enforcement lockfile
+        working-directory: operations/jpv_os_enforcement
+        run: npm install --package-lock-only --ignore-scripts
+      - name: Verify enforcement dependency audit
+        working-directory: operations/jpv_os_enforcement
+        run: npm audit --audit-level=moderate
+      - name: Upload regenerated lockfile
+        uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808
+        with:
+          name: jpv-enforcement-package-lock
+          path: operations/jpv_os_enforcement/package-lock.json
+          if-no-files-found: error
