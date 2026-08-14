@@ -1,14 +1,30 @@
 {
-  "schema_version": "jpv.institutional-inheritance.v1",
+  "schema_version": "jpv.institutional-inheritance.v1.1",
   "authority": "JayPVentures LLC / JPV-OS",
   "canonical_repository": "jaypVLabs/JPV-OS",
   "canonical_standard": "governance/standards/JPV-INSTITUTIONAL-PRODUCTION-BASELINE.md",
+  "canonical_completion_bounded_work_session_standard": "governance/standards/COMPLETION-BOUNDED-WORK-SESSION-INVARIANT.json",
+  "canonical_governance_source": "JayPVentures-LLC/jpv-governance@35d5d82271012071a69b2e8886d5988562ca071e",
   "effective_date": "2026-08-14",
   "status": "REQUIRED",
   "local_overrides_may_weaken_baseline": false,
+  "completion_bounded_work_sessions_required": true,
+  "settled_corrections_inherit_as_operating_state": true,
+  "status_only_completion_forbidden": true,
+  "duplicate_founder_escalation_forbidden": true,
+  "protected_off_time_requires_explicit_work_admission": true,
+  "recurring_settled_failure_routes_to_regression_remediation": true,
+  "required_terminal_states": [
+    "COMPLETED_RESULT",
+    "VERIFIED_BLOCKER",
+    "SINGLE_NECESSARY_FOUNDER_DECISION",
+    "HARD_TOOL_OR_AUTHORITY_BOUNDARY",
+    "EXPLICIT_FOUNDER_PAUSE"
+  ],
   "required_launch_audits": 2,
   "required_run_classes": ["machine", "chat", "stream", "repository", "deployment", "governance"],
   "missing_terminal_receipt_blocks_launch": true,
   "unresolved_critical_or_high_blocks_launch": true,
-  "provenance_break_blocks_launch": true
+  "provenance_break_blocks_launch": true,
+  "completion_bounded_execution_drift_blocks_launch": true
 }
