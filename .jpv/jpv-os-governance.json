@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "1.1",
+  "schemaVersion": "1.2",
   "authorityRepository": "jaypVLabs/JPV-OS",
   "authorityRef": "main",
   "requiredStandards": [
@@ -14,6 +14,12 @@
     "governance/contracts/artifact-success-gate.v1.json",
     "governance/contracts/investigative-evidence-pipeline.v1.json"
   ],
+  "requiredPolicies": [
+    "governance/policies/systemic-access-hygiene.v1.json"
+  ],
+  "requiredInheritance": [
+    ".jpv/governance/systemic-access-hygiene-inheritance.v1.json"
+  ],
   "rules": {
     "governingOutcomeOverridesLocalOptimization": true,
     "semanticIntentDeterminesToolRouting": true,
@@ -26,7 +32,10 @@
     "entityResolutionPrecedesAssociation": true,
     "inferenceMustRemainDistinctFromFact": true,
     "uncertainOrHighMaterialityRequiresReview": true,
-    "investigativeRecordsAreAppendOnly": true
+    "investigativeRecordsAreAppendOnly": true,
+    "systemicAccessHygieneRequired": true,
+    "personTargetingPermitted": false,
+    "runtimeAccessEnforcementRequiredWhereMutable": true
   },
   "enforcement": "fail_closed"
 }
