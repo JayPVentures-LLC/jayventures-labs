@@ -13,6 +13,10 @@ if (-not (Test-Path -LiteralPath $path -PathType Leaf)) { throw 'JPV_COMPLETION_
 $cfg = Get-Content -LiteralPath $path -Raw | ConvertFrom-Json
 
 $requiredTrue = @(
+    'canonical_authority_hierarchy_required',
+    'desired_state_must_be_preserved',
+    'observed_state_must_remain_separate',
+    'authority_hierarchy_drift_blocks_launch',
     'completion_bounded_work_sessions_required',
     'settled_corrections_inherit_as_operating_state',
     'status_only_completion_forbidden',
@@ -25,11 +29,14 @@ foreach ($name in $requiredTrue) {
     if ($cfg.$name -ne $true) { throw "JPV_COMPLETION_BOUNDED_INHERITANCE_FAILURE: $name must be true" }
 }
 if ($cfg.local_overrides_may_weaken_baseline -ne $false) { throw 'JPV_COMPLETION_BOUNDED_INHERITANCE_FAILURE: local overrides may not weaken baseline' }
-if ($cfg.canonical_governance_source -ne 'JayPVentures-LLC/jpv-governance@35d5d82271012071a69b2e8886d5988562ca071e') { throw 'JPV_COMPLETION_BOUNDED_INHERITANCE_FAILURE: canonical source drift' }
+if ($cfg.subordinate_surfaces_may_supersede_canonical_state -ne $false) { throw 'JPV_AUTHORITY_HIERARCHY_VIOLATION: subordinate surfaces may not supersede canonical state' }
+if ($cfg.execution_failure_may_rewrite_desired_state -ne $false) { throw 'JPV_AUTHORITY_HIERARCHY_VIOLATION: execution failure may not rewrite desired state' }
+if ($cfg.canonical_governance_source -ne 'JayPVentures-LLC/jpv-governance@7c3389b2469a4d39a07d880595dc4affc934af39') { throw 'JPV_AUTHORITY_HIERARCHY_VIOLATION: canonical governance source drift' }
+if ($cfg.canonical_authority_runtime_source -ne 'jaypVLabs/JPV-OS@852f129c8bb24d8071c988b67bb10f4cc6272afd') { throw 'JPV_AUTHORITY_HIERARCHY_VIOLATION: canonical runtime source drift' }
 
 $requiredStates = @('COMPLETED_RESULT','VERIFIED_BLOCKER','SINGLE_NECESSARY_FOUNDER_DECISION','HARD_TOOL_OR_AUTHORITY_BOUNDARY','EXPLICIT_FOUNDER_PAUSE')
 foreach ($state in $requiredStates) {
     if ($state -notin $cfg.required_terminal_states) { throw "JPV_COMPLETION_BOUNDED_INHERITANCE_FAILURE: missing terminal state $state" }
 }
 
-[ordered]@{ status='PASS'; control_id='JPV-COMPLETION-BOUNDED-INHERITANCE-001'; validated_at_utc=[DateTime]::UtcNow.ToString('o') } | ConvertTo-Json
+[ordered]@{ status='PASS'; control_id='JPV-AUTHORITY-INHERITANCE-001'; validated_at_utc=[DateTime]::UtcNow.ToString('o') } | ConvertTo-Json
