@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "authority": "JayPVentures-LLC/jpv-governance",
+  "canonical_policy": "governance/policies/CANONICAL-DOCTRINE-INHERITANCE.md",
+  "rule": "inherit_by_default",
+  "stable_declaration": "This artifact inherits `governance/policies/CANONICAL-DOCTRINE-INHERITANCE.md` by reference. Conflicting local language is invalid.",
+  "exemption": {
+    "allowed": true,
+    "default": false,
+    "required_fields": ["decision_receipt_id", "scope", "approving_authority", "expires"],
+    "requirements": ["evidence_based", "narrow_scope", "authorized", "time_bounded", "reviewable", "restoration_path_to_inheritance"],
+    "invalid_forms": ["wildcard", "indefinite", "expired", "undocumented", "convenience_based"]
+  },
+  "failure_mode": "fail_closed",
+  "propagation": "labs_experiment_validation_governance_and_promotion_surfaces"
+}
