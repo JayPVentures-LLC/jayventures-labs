@@ -2,6 +2,9 @@ name: deploy-website
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
 
 concurrency:
   group: deploy-website-${{ github.ref }}
