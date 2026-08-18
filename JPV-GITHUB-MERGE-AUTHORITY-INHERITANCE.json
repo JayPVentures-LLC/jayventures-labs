@@ -1,0 +1,13 @@
+{
+  "contract_id":"JPV-GITHUB-MERGE-AUTHORITY-V1",
+  "contract_version":"1.0.0",
+  "consumer_repository":"JayPVentures-LLC/jayventures-labs",
+  "status":"MANDATORY",
+  "fail_mode":"CLOSED",
+  "machine_eligible_classes":["DETERMINISTIC_TEST_OR_FIXTURE","LOW_RISK_INTERNAL_IMPLEMENTATION","GENERATED_VERIFIED_RECEIPT","POLICY_PERMITTED_DEPENDENCY_UPDATE","NON_AUTHORITY_DOCUMENTATION"],
+  "human_required_classes":["BRANCH_RULESET","SECURITY_TRUST_ROOT","FINANCIAL_AUTHORITY","LEGAL_COMMITMENT","HUMAN_RIGHTS_OR_PRIVACY","IRREVERSIBLE_RECORD_DELETION","VERIFICATION_WEAKENING","EMERGENCY_BYPASS"],
+  "required_status_checks":["ci","Completion-Bounded Governance Inheritance","JPV Security Inheritance Enforcement"],
+  "same_person_role_multiplicity_counts_as_independence":false,
+  "machine_authorization_requires_exact_sha":true,
+  "ruleset_activation_verified":false
+}
