@@ -18,6 +18,6 @@
   "enforceable_statuses": ["KNOWN"],
   "analyzable_statuses": ["UNKNOWN", "INFERRED", "DISPUTED", "KNOWN"],
   "consumer_gate": "operations/governance/claim-truth-consumer.mjs",
-  "regression_tests": ["tests/claim-truth-consumer.test.mjs", "tests/disclosure-authorization-consumer.test.mjs"],
+  "regression_tests": ["tests/claim-truth-consumer.test.mjs", "tests/disclosure-authorization-consumer.test.ts"],
   "fail_mode": "CLOSED"
 }
