@@ -13,10 +13,12 @@ if($m.canonical_source-ne'JayPVentures-LLC/jpv-governance@75c2ca69a01aca4aaacdbe
 $agents=@('JPV-SENTINEL','JPV-AEGIS','JPV-CIPHER','JPV-WARD','JPV-ORACLE','JPV-GATEKEEPER','JPV-FORENSIC')
 foreach($a in $agents){if($a-notin$m.agents){Fail "missing security agent: $a"}}
 foreach($r in @('security_state_observable','local_secret_scan','least_privilege','security_receipt_required','unverifiable_state_fails_closed','native_or_equivalent_security_evidence')){if($m.requirements.$r-ne$true){Fail "required security invariant disabled: $r"}}
+$begin='-----BEGIN '
+$end=' PRIVATE KEY-----'
 $patterns=[ordered]@{
-'PRIVATE_KEY_LEGACY'='-----BEGIN (RSA|OPENSSH|EC|DSA) PRIVATE KEY-----'
-'PRIVATE_KEY_PKCS8'='-----BEGIN PRIVATE KEY-----'
-'PRIVATE_KEY_ENCRYPTED'='-----BEGIN ENCRYPTED PRIVATE KEY-----'
+'PRIVATE_KEY_LEGACY'=$begin+'(RSA|OPENSSH|EC|DSA)'+$end
+'PRIVATE_KEY_PKCS8'=$begin+$end.TrimStart()
+'PRIVATE_KEY_ENCRYPTED'=$begin+'ENCRYPTED'+$end
 'GITHUB_CLASSIC_TOKEN'='gh[pousr]_[A-Za-z0-9]{36,}'
 'GITHUB_FINE_GRAINED_TOKEN'='github_pat_[A-Za-z0-9_]{50,}'
 'AWS_ACCESS_KEY'='AKIA[0-9A-Z]{16}'
@@ -28,7 +30,7 @@ $patterns=[ordered]@{
 'DATABASE_URL_WITH_PASSWORD'='(?i)(postgres(?:ql)?|mysql|mongodb(?:\+srv)?):\/\/[^\s:@\/]+:[^\s@\/]+@'
 'BASIC_AUTH_URL'='(?i)https?:\/\/[^\s:@\/]+:[^\s@\/]+@'
 'PASSWORD_LITERAL'='(?i)\b(password|passwd|pwd)\b\s*[:=]\s*["''][^"'']{8,}["'']'
-'SERVICE_ACCOUNT_PRIVATE_KEY'='(?i)"private_key"\s*:\s*"-----BEGIN (?:ENCRYPTED )?PRIVATE KEY-----'
+'SERVICE_ACCOUNT_PRIVATE_KEY'='(?i)"private_key"\s*:\s*"'+$begin+'(?:ENCRYPTED )?'+$end.TrimStart()
 }
 $exclude='scripts/Test-JPVSecurityInheritance.ps1'
 $hits=New-Object System.Collections.Generic.List[string]
