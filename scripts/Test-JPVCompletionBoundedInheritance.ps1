@@ -43,7 +43,7 @@ $truthFiles = @(
     'JPV-CLAIM-TRUTH-CONSUMER-INHERITANCE.json',
     'operations/governance/claim-truth-consumer.mjs',
     'tests/claim-truth-consumer.test.mjs',
-    'tests/disclosure-authorization-consumer.test.mjs'
+    'tests/disclosure-authorization-consumer.test.ts'
 )
 foreach ($relative in $truthFiles) {
     if (-not (Test-Path -LiteralPath (Join-Path $RepositoryRoot $relative) -PathType Leaf)) {
