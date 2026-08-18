@@ -39,4 +39,23 @@ foreach ($state in $requiredStates) {
     if ($state -notin $cfg.required_terminal_states) { throw "JPV_COMPLETION_BOUNDED_INHERITANCE_FAILURE: missing terminal state $state" }
 }
 
-[ordered]@{ status='PASS'; control_id='JPV-AUTHORITY-INHERITANCE-001'; validated_at_utc=[DateTime]::UtcNow.ToString('o') } | ConvertTo-Json
+$truthFiles = @(
+    'JPV-CLAIM-TRUTH-CONSUMER-INHERITANCE.json',
+    'operations/governance/claim-truth-consumer.mjs',
+    'tests/claim-truth-consumer.test.mjs'
+)
+foreach ($relative in $truthFiles) {
+    if (-not (Test-Path -LiteralPath (Join-Path $RepositoryRoot $relative) -PathType Leaf)) {
+        throw "JPV_CLAIM_TRUTH_INHERITANCE_FAILURE: missing $relative"
+    }
+}
+$truth = Get-Content -LiteralPath (Join-Path $RepositoryRoot 'JPV-CLAIM-TRUTH-CONSUMER-INHERITANCE.json') -Raw | ConvertFrom-Json
+if ($truth.contract_id -ne 'JPV-CLAIM-TRUTH-PROVENANCE-GATE-V1') { throw 'JPV_CLAIM_TRUTH_INHERITANCE_FAILURE: contract id drift' }
+if ($truth.fail_mode -ne 'CLOSED') { throw 'JPV_CLAIM_TRUTH_INHERITANCE_FAILURE: fail mode must be CLOSED' }
+if ($truth.may_promote_status -ne $false) { throw 'JPV_CLAIM_TRUTH_INHERITANCE_FAILURE: status promotion must remain forbidden' }
+foreach ($flag in @('preserve_status','preserve_provenance','preserve_contradictions','preserve_corrections')) {
+    if ($truth.$flag -ne $true) { throw "JPV_CLAIM_TRUTH_INHERITANCE_FAILURE: $flag must be true" }
+}
+if (@($truth.enforceable_statuses).Count -ne 1 -or $truth.enforceable_statuses[0] -ne 'KNOWN') { throw 'JPV_CLAIM_TRUTH_INHERITANCE_FAILURE: only KNOWN may be enforceable' }
+
+[ordered]@{ status='PASS'; control_id='JPV-AUTHORITY-INHERITANCE-001'; claim_truth_consumer='BOUND'; validated_at_utc=[DateTime]::UtcNow.ToString('o') } | ConvertTo-Json
