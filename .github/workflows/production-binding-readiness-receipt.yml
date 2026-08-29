@@ -27,6 +27,7 @@ jobs:
           AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
           AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
         run: |
+          set -euo pipefail
           state="READY"
           missing=()
 
@@ -48,15 +49,23 @@ jobs:
             state="WAITING_EXTERNAL_BINDING"
           fi
 
+          missing_json=""
+          if [ "${#missing[@]}" -gt 0 ]; then
+            missing_json=$(printf '"%s",' "${missing[@]}")
+            missing_json="${missing_json%,}"
+          fi
+
           cat > production-binding-readiness.json <<EOF
-{
-  "system": "JPV-OS",
-  "gate": "production-binding-readiness",
-  "state": "$state",
-  "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
-  "missing_bindings": [$(printf '"%s",' "${missing[@]}" | sed 's/,$//')]
-}
-EOF
+          {
+            "system": "JPV-OS",
+            "gate": "production-binding-readiness",
+            "state": "$state",
+            "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+            "missing_bindings": [$missing_json]
+          }
+          EOF
+
+          cat production-binding-readiness.json
 
       - name: Upload readiness receipt
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
