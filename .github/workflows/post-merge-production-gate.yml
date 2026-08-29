@@ -35,7 +35,7 @@ jobs:
           cache: "npm"
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --legacy-peer-deps
 
       - name: Detect production secrets
         id: production_secrets
@@ -211,4 +211,3 @@ jobs:
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
