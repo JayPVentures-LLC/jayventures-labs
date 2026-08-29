@@ -21,7 +21,6 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          CLOUDFLARE_ENTITLEMENTS_KV_ID: ${{ secrets.CLOUDFLARE_ENTITLEMENTS_KV_ID }}
           MEMBERSTACK_JWT_PUBLIC_KEY: ${{ secrets.MEMBERSTACK_JWT_PUBLIC_KEY }}
           AZURE_KEY_VAULT_URL: ${{ secrets.AZURE_KEY_VAULT_URL }}
           AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
@@ -34,7 +33,6 @@ jobs:
           for name in \
             CLOUDFLARE_API_TOKEN \
             CLOUDFLARE_ACCOUNT_ID \
-            CLOUDFLARE_ENTITLEMENTS_KV_ID \
             MEMBERSTACK_JWT_PUBLIC_KEY \
             AZURE_KEY_VAULT_URL \
             AZURE_TENANT_ID \
@@ -47,6 +45,16 @@ jobs:
 
           if [ "${#missing[@]}" -gt 0 ]; then
             state="WAITING_EXTERNAL_BINDING"
+          else
+            namespaces=$(curl --fail-with-body -sS \
+              -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+              -H "Content-Type: application/json" \
+              "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/storage/kv/namespaces?per_page=100")
+            test "$(jq -r '.success' <<<"$namespaces")" = "true" || { jq . <<<"$namespaces"; exit 1; }
+            kv_count=$(jq '[.result[] | select(.title == "jpv-entitlements-kv" or (.title | test("entitlement"; "i")))] | length' <<<"$namespaces")
+            if [ "$kv_count" -gt 1 ]; then
+              state="AMBIGUOUS_PROVIDER_BINDING"
+            fi
           fi
 
           missing_json=""
@@ -61,7 +69,8 @@ jobs:
             "gate": "production-binding-readiness",
             "state": "$state",
             "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
-            "missing_bindings": [$missing_json]
+            "missing_bindings": [$missing_json],
+            "entitlements_kv_strategy": "resolve-existing-or-provision-canonical"
           }
           EOF
 

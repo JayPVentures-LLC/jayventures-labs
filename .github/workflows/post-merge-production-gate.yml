@@ -43,7 +43,6 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          CLOUDFLARE_ENTITLEMENTS_KV_ID: ${{ secrets.CLOUDFLARE_ENTITLEMENTS_KV_ID }}
           MEMBERSTACK_JWT_PUBLIC_KEY: ${{ secrets.MEMBERSTACK_JWT_PUBLIC_KEY }}
           AZURE_KEY_VAULT_URL: ${{ secrets.AZURE_KEY_VAULT_URL }}
           AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
@@ -58,11 +57,11 @@ jobs:
           RETRY_QUEUE_KV_PREVIEW_ID: ${{ secrets.RETRY_QUEUE_KV_PREVIEW_ID }}
           ENTITLEMENT_EVENTS_QUEUE: ${{ secrets.ENTITLEMENT_EVENTS_QUEUE }}
         run: |
+          set -euo pipefail
           missing=()
           for name in \
             CLOUDFLARE_API_TOKEN \
             CLOUDFLARE_ACCOUNT_ID \
-            CLOUDFLARE_ENTITLEMENTS_KV_ID \
             MEMBERSTACK_JWT_PUBLIC_KEY \
             AZURE_KEY_VAULT_URL \
             AZURE_TENANT_ID \
@@ -118,13 +117,47 @@ jobs:
           node scripts/jpv-policy-enforcement.cjs
           npm run jpv:enforce
 
+      - name: Resolve or provision flagship entitlement KV
+        id: entitlements_kv
+        if: steps.production_secrets.outputs.ready == 'true'
+        shell: bash
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CANONICAL_KV_TITLE: jpv-entitlements-kv
+        run: |
+          set -euo pipefail
+          auth=(-H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" -H "Content-Type: application/json")
+          list=$(curl --fail-with-body -sS "${auth[@]}" "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/storage/kv/namespaces?per_page=100")
+          test "$(jq -r '.success' <<<"$list")" = "true" || { jq . <<<"$list"; exit 1; }
+          id=$(jq -r --arg title "$CANONICAL_KV_TITLE" '.result[] | select(.title == $title) | .id' <<<"$list" | head -n1)
+          if [ -z "$id" ]; then
+            mapfile -t candidates < <(jq -r '.result[] | select(.title | test("entitlement"; "i")) | .id' <<<"$list")
+            if [ "${#candidates[@]}" -eq 1 ]; then
+              id="${candidates[0]}"
+            elif [ "${#candidates[@]}" -gt 1 ]; then
+              echo "Multiple entitlement-like KV namespaces exist; refusing ambiguous binding."
+              jq -r '.result[] | select(.title | test("entitlement"; "i")) | [.title,.id] | @tsv' <<<"$list"
+              exit 1
+            else
+              created=$(curl --fail-with-body -sS -X POST "${auth[@]}" \
+                "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/storage/kv/namespaces" \
+                --data "$(jq -nc --arg title "$CANONICAL_KV_TITLE" '{title:$title}')")
+              test "$(jq -r '.success' <<<"$created")" = "true" || { jq . <<<"$created"; exit 1; }
+              id=$(jq -r '.result.id' <<<"$created")
+            fi
+          fi
+          test -n "$id" && test "$id" != "null"
+          echo "id=$id" >> "$GITHUB_OUTPUT"
+
       - name: Inject flagship KV namespace
         if: steps.production_secrets.outputs.ready == 'true'
         shell: bash
         env:
-          CLOUDFLARE_ENTITLEMENTS_KV_ID: ${{ secrets.CLOUDFLARE_ENTITLEMENTS_KV_ID }}
+          CLOUDFLARE_ENTITLEMENTS_KV_ID: ${{ steps.entitlements_kv.outputs.id }}
         run: |
-          test -n "$CLOUDFLARE_ENTITLEMENTS_KV_ID" || (echo "Missing CLOUDFLARE_ENTITLEMENTS_KV_ID" && exit 1)
+          set -euo pipefail
+          test -n "$CLOUDFLARE_ENTITLEMENTS_KV_ID"
           perl -0pi -e 's/YOUR_KV_NAMESPACE_ID/$ENV{CLOUDFLARE_ENTITLEMENTS_KV_ID}/g' apps/flagship-site/wrangler.toml
 
       - name: Inject entitlement deployment bindings

@@ -38,48 +38,63 @@ jobs:
       - name: Check deployment freeze
         run: npm run governance:freeze-check
 
-      - name: Detect website production bindings
-        id: bindings
+      - name: Verify Cloudflare credentials
         shell: bash
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          CLOUDFLARE_ENTITLEMENTS_KV_ID: ${{ secrets.CLOUDFLARE_ENTITLEMENTS_KV_ID }}
         run: |
           set -euo pipefail
-          missing=()
-          for name in CLOUDFLARE_API_TOKEN CLOUDFLARE_ACCOUNT_ID CLOUDFLARE_ENTITLEMENTS_KV_ID; do
-            if [ -z "${!name}" ]; then
-              missing+=("$name")
-            fi
-          done
+          test -n "$CLOUDFLARE_API_TOKEN" || (echo "Missing CLOUDFLARE_API_TOKEN" && exit 1)
+          test -n "$CLOUDFLARE_ACCOUNT_ID" || (echo "Missing CLOUDFLARE_ACCOUNT_ID" && exit 1)
 
-          if [ "${#missing[@]}" -gt 0 ]; then
-            echo "ready=false" >> "$GITHUB_OUTPUT"
-            {
-              echo "### Website deployment: WAITING_EXTERNAL_BINDING"
-              echo ""
-              echo "Production deployment was not attempted because required provider bindings are absent."
-              echo ""
-              printf -- '- %s\n' "${missing[@]}"
-              echo ""
-              echo "Repository validation remains successful; a future run will deploy automatically once bindings are present."
-            } >> "$GITHUB_STEP_SUMMARY"
-          else
-            echo "ready=true" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Inject flagship KV namespace
-        if: steps.bindings.outputs.ready == 'true'
+      - name: Resolve or provision flagship entitlement KV
+        id: entitlements_kv
         shell: bash
         env:
-          CLOUDFLARE_ENTITLEMENTS_KV_ID: ${{ secrets.CLOUDFLARE_ENTITLEMENTS_KV_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CANONICAL_KV_TITLE: jpv-entitlements-kv
         run: |
-          test -n "$CLOUDFLARE_ENTITLEMENTS_KV_ID" || (echo "Missing CLOUDFLARE_ENTITLEMENTS_KV_ID" && exit 1)
+          set -euo pipefail
+          auth=(-H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" -H "Content-Type: application/json")
+          list=$(curl --fail-with-body -sS "${auth[@]}" "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/storage/kv/namespaces?per_page=100")
+          test "$(jq -r '.success' <<<"$list")" = "true" || { jq . <<<"$list"; exit 1; }
+
+          id=$(jq -r --arg title "$CANONICAL_KV_TITLE" '.result[] | select(.title == $title) | .id' <<<"$list" | head -n1)
+          if [ -z "$id" ]; then
+            mapfile -t candidates < <(jq -r '.result[] | select(.title | test("entitlement"; "i")) | .id' <<<"$list")
+            if [ "${#candidates[@]}" -eq 1 ]; then
+              id="${candidates[0]}"
+              echo "Reusing existing entitlement-like KV namespace."
+            elif [ "${#candidates[@]}" -gt 1 ]; then
+              echo "Multiple entitlement-like KV namespaces exist; refusing ambiguous binding."
+              jq -r '.result[] | select(.title | test("entitlement"; "i")) | [.title,.id] | @tsv' <<<"$list"
+              exit 1
+            else
+              created=$(curl --fail-with-body -sS -X POST "${auth[@]}" \
+                "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/storage/kv/namespaces" \
+                --data "$(jq -nc --arg title "$CANONICAL_KV_TITLE" '{title:$title}')")
+              test "$(jq -r '.success' <<<"$created")" = "true" || { jq . <<<"$created"; exit 1; }
+              id=$(jq -r '.result.id' <<<"$created")
+              echo "Provisioned canonical KV namespace: $CANONICAL_KV_TITLE"
+            fi
+          fi
+
+          test -n "$id" && test "$id" != "null"
+          echo "id=$id" >> "$GITHUB_OUTPUT"
+          echo "Resolved ENTITLEMENTS_KV namespace." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Inject flagship KV namespace
+        shell: bash
+        env:
+          CLOUDFLARE_ENTITLEMENTS_KV_ID: ${{ steps.entitlements_kv.outputs.id }}
+        run: |
+          set -euo pipefail
+          test -n "$CLOUDFLARE_ENTITLEMENTS_KV_ID"
           perl -0pi -e 's/YOUR_KV_NAMESPACE_ID/$ENV{CLOUDFLARE_ENTITLEMENTS_KV_ID}/g' apps/flagship-site/wrangler.toml
 
       - name: Verify KV namespace placeholder was replaced
-        if: steps.bindings.outputs.ready == 'true'
         shell: bash
         run: |
           if grep -q 'YOUR_KV_NAMESPACE_ID' apps/flagship-site/wrangler.toml; then
@@ -87,27 +102,11 @@ jobs:
             exit 1
           fi
 
-      - name: Verify Cloudflare secrets
-        if: steps.bindings.outputs.ready == 'true'
-        shell: bash
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: |
-          test -n "$CLOUDFLARE_API_TOKEN" || (echo "Missing CLOUDFLARE_API_TOKEN" && exit 1)
-          test -n "$CLOUDFLARE_ACCOUNT_ID" || (echo "Missing CLOUDFLARE_ACCOUNT_ID" && exit 1)
-
       - name: Validate website deploy config
-        if: steps.bindings.outputs.ready == 'true'
         run: npm run validate:deploy:website
 
       - name: Deploy flagship website
-        if: steps.bindings.outputs.ready == 'true'
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx wrangler deploy --config apps/flagship-site/wrangler.toml
-
-      - name: Waiting state receipt
-        if: steps.bindings.outputs.ready != 'true'
-        run: echo "WAITING_EXTERNAL_BINDING"
