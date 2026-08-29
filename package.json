@@ -22,6 +22,8 @@
     "market:integrity:test": "tsx operations/market-integrity/tests/market-integrity.test.ts",
     "market:environmental-responsibility:test": "tsx operations/market-integrity/tests/environmental-responsibility.test.ts",
     "market:integrity-alignment:test": "tsx operations/market-integrity/tests/integrity-alignment.test.ts",
+    "causal:registry:test": "node --test tests/causal-anomaly-registry.test.mjs",
+    "causal:registry:verify": "node research/causal-anomaly-registry/cli/verify-case.mjs research/causal-anomaly-registry/examples/example-case.json",
     "test": "vitest run",
     "test:run": "vitest run",
     "test:watch": "vitest"
