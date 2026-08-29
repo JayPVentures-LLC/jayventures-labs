@@ -17,6 +17,10 @@ updates:
     labels:
       - "dependencies"
       - "security"
+    ignore:
+      - dependency-name: "eslint"
+        update-types:
+          - "version-update:semver-major"
     groups:
       npm-patch-minor:
         update-types:
