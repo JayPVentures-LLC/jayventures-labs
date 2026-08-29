@@ -1,0 +1,13 @@
+{
+  "policy_id": "JPV-LABS-CAR-PROMOTION-V1",
+  "version": 1,
+  "statuses": ["CAR-0","CAR-1","CAR-2","CAR-3","CAR-4","CAR-5","CAR-6","CAR-7","CAR-8","CAR-9"],
+  "required_falsification_families": ["WITNESS","MEMORY","LEAKAGE","FRAUD","RECORD","TIMESTAMP","SOFTWARE","INSTRUMENTATION","STATISTICS","SOCIAL_CONTAMINATION","CONVENTIONAL_PHYSICS"],
+  "closed_falsification_statuses": ["FAILED_TO_EXPLAIN","NOT_APPLICABLE"],
+  "causal_signatures": ["RETRO","NONLOCAL","SURVIVAL","HISTORY_DIVERGENCE","TEMPORAL_DISPLACEMENT","CAUSAL_LOOP","STATE_INCONSISTENCY"],
+  "minimum_independent_pass_replications": 2,
+  "car6": {"minimum_evidence_quality": 0.8,"minimum_discriminatory_power": 0.8},
+  "car7": {"minimum_entropy_bits": 128,"minimum_timestamp_authorities": 2,"require_exact_match": true,"require_commitment_before_target": true},
+  "car8": {"mechanism_status": "REPRODUCIBLE","minimum_reproduced_by": 2},
+  "car9": {"minimum_independent_labs": 3,"require_theory_conflict_replicated": true,"require_scientific_consensus_basis": true,"require_governed_manual_review": true}
+}

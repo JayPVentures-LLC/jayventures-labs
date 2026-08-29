@@ -1,0 +1,12 @@
+protocol_id: JPV-LABS-CBP-001
+name: Consciousness Boundary Protocol
+purpose: Prospectively test reports of inaccessible information during documented periods of severe physiological impairment.
+requirements:
+  ethics_review: required
+  clinical_care_precedence: absolute
+  target_generation: automated and timestamped
+  target_visibility: inaccessible from ordinary patient position
+  clinical_interval_capture: synchronized
+  evaluator_blinding: required
+  misses_preserved: required
+interpretation: Correct inaccessible information would establish an information-access anomaly only after sensory leakage and timing alternatives are excluded.

@@ -1,0 +1,18 @@
+protocol_id: JPV-LABS-FIP-001
+name: Future Information Protocol
+purpose: Test whether specific high-entropy target information is available before target generation.
+requirements:
+  preregistration: required
+  commitment_before_target: required
+  minimum_entropy_bits: 128
+  minimum_independent_timestamp_authorities: 2
+  target_generation: independently audited random source
+  blinding: participant and evaluator blinded until target lock
+  exact_match_primary_endpoint: true
+  stopping_rule: fixed before first trial
+exclusions:
+  - information leakage
+  - mutable prediction records
+  - post-hoc target substitution
+  - adaptive stopping
+interpretation: A qualifying result is evidence of an information-order anomaly only after independent replication; it does not by itself establish time travel.
