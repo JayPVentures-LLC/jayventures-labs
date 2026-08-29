@@ -1,0 +1,20 @@
+protocol_id: JPV-LABS-SAN-001
+name: Independent State Anchor Network
+purpose: Preserve independently authenticated measurements so later state inconsistencies can be distinguished from ordinary record mutation.
+requirements:
+  minimum_independent_operators: 3
+  heterogeneous_media: required
+  cryptographic_hashing: SHA-256_or_stronger
+  independent_timestamping: required
+  append_only_history: required
+  cross_commitment: required
+  raw_measurement_retention: required_where_lawful
+  clock_calibration_records: required
+failure_analysis:
+  - key compromise
+  - clock error
+  - software defect
+  - storage corruption
+  - operator collusion
+  - conventional physical explanation
+interpretation: Incompatible authenticated anchors create a state-inconsistency investigation; they do not automatically prove retroactive history modification.

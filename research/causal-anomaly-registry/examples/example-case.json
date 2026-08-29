@@ -1,0 +1,23 @@
+{
+  "case_id": "CAR-DEMO-001",
+  "title": "Prospective high-entropy target demonstration",
+  "status": "CAR-0",
+  "phenomenon_classes": ["future_information"],
+  "causal_signatures": ["RETRO"],
+  "created_at": "2026-08-29T03:50:00Z",
+  "observed_at": null,
+  "location": null,
+  "claims": [],
+  "evidence": [],
+  "sources": [],
+  "assertions": [],
+  "experiments": [],
+  "predictions": [],
+  "replications": [],
+  "scores": {"prospective_capture":0,"specificity":0,"independence":0,"instrumentation":0,"replication":0,"conventional_resistance":0,"causal_relevance":5,"provenance_integrity":0,"evidence_quality":0.125,"discriminatory_power":0,"replication_strength":0,"extraordinary_mechanism_requirement":1},
+  "contamination": {"pathways": [], "estimated_score": 0},
+  "falsification": [],
+  "disposition": {"summary":"Demonstration record only; no anomaly asserted.","ordinary_explanation_status":"INCONCLUSIVE","preferred_hypothesis":null,"promotion_blockers":["No evidence","No experiment","No replication"]},
+  "mechanism": {"status":"NONE","manipulated_variables":[],"reproduced_by":[]},
+  "external_confirmation": {"independent_labs":0,"theory_conflict_replicated":false,"scientific_consensus_basis":null,"governed_manual_review":false}
+}

@@ -1,0 +1,13 @@
+protocol_id: JPV-LABS-HAPR-001
+name: Human Anomaly Prospective Registry
+purpose: Preserve spontaneous anomalous-memory or knowledge claims before target identification or investigative contamination.
+requirements:
+  first_capture: verbatim and timestamped
+  target_search_before_capture: prohibited
+  leading_questions: prohibited
+  misses_preserved: required
+  contact_graph: required
+  media_exposure_audit: required
+  independent_verification_team: required
+  human_subject_ethics_review: required_where_applicable
+interpretation: Matching claims establish evidentiary correspondence only; mechanism remains unresolved unless separately demonstrated.
