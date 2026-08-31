@@ -1,0 +1,11 @@
+event_id,observed_at_local,timezone,source_type,source_reference,number_form,primary_repeated_minute_hit,exactness,independence_note,semantic_note,evidence_role
+TP-2026-08-12-001,2026-08-12T12:35:00,EDT,reconstructed_conversation,prior-conversation-context,12:35,no,approximate,not_eligible_primary_inference,"One two three dig milestone; no repeated-minute hit",hypothesis_context
+TP-2026-08-12-002,2026-08-12T17:55:53,EDT,direct_milestone,jpv-governance#195,17:55:53,yes,exact,single_direct_record,"recurrence asserted; significance unassigned",primary_candidate
+GB-HIT-001,2026-08-12T13:55:26,EDT,github_commit,pre-CAR-100-commit-baseline,13:55:26,yes,exact,ordinary_activity_row,none,baseline
+GB-HIT-002,2026-08-11T15:44:25,EDT,github_commit,pre-CAR-100-commit-baseline,15:44:25,yes,exact,ordinary_activity_row,none,baseline
+GB-HIT-003,2026-08-09T18:11:24,EDT,github_commit,pre-CAR-100-commit-baseline,18:11:24,yes,exact,ordinary_activity_row,none,baseline
+GB-HIT-004,2026-08-09T17:22:49,EDT,github_commit,pre-CAR-100-commit-baseline,17:22:49,yes,exact,"same sub-minute episode as GB-HIT-005",none,baseline
+GB-HIT-005,2026-08-09T17:22:28,EDT,github_commit,pre-CAR-100-commit-baseline,17:22:28,yes,exact,"same sub-minute episode as GB-HIT-004",none,baseline
+GB-HIT-006,2026-08-09T16:55:48,EDT,github_commit,pre-CAR-100-commit-baseline,16:55:48,yes,exact,"same sub-minute episode as GB-HIT-007",none,baseline
+GB-HIT-007,2026-08-09T16:55:15,EDT,github_commit,pre-CAR-100-commit-baseline,16:55:15,yes,exact,"same sub-minute episode as GB-HIT-006",none,baseline
+PR-SEM-333,2026-07-19T13:15:16,EDT,github_pr_number,jaypVLabs/JPV-OS#333,333,not_applicable,exact,"sequential identifier; predecessor #332 fixed subject before assignment","holy trinity completion; ordinary adjacent-PR provenance",retrospective_semantic_candidate
