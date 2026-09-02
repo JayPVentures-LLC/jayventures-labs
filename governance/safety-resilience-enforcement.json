@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.0.0",
+  "policy_id": "JPV-SAFETY-RESILIENCE-ENFORCEMENT",
+  "status": "ENFORCED",
+  "scope": ["code", "automation", "agent", "workflow", "tooling", "integration", "deployment"],
+  "invariants": {
+    "fail_closed_on_uncertainty": true,
+    "silent_unsafe_execution_prohibited": true,
+    "alternate_surface_bypass_prohibited": true,
+    "self_approval_for_elevated_risk_prohibited": true,
+    "independent_review_required_for_high_impact": true,
+    "durable_audit_required_for_material_effects": true
+  },
+  "hazard_lifecycle": [
+    "IDENTIFY",
+    "ELIMINATE_OR_REDUCE",
+    "ENGINEER_SAFEGUARDS",
+    "VERIFY",
+    "DETECT_DEGRADATION",
+    "ENTER_SAFE_STATE_OR_ESCALATE",
+    "RESPOND",
+    "ROOT_CAUSE",
+    "CORRECT",
+    "INDEPENDENTLY_VERIFY_EFFECTIVENESS"
+  ],
+  "decision_contract": {
+    "required_fields": ["decision", "decision_reason", "appeal_path", "rollback_supported", "trace_id", "risk_tier"],
+    "decisions": ["ALLOW", "DENY", "ESCALATE", "DEFER"],
+    "risk_tiers": ["low", "medium", "high", "critical"]
+  },
+  "admission": {
+    "allow_requires": [
+      "hazards_assessed",
+      "required_safeguards_present",
+      "verification_passed",
+      "rollback_or_safe_state_defined",
+      "audit_path_available"
+    ],
+    "missing_evidence_decision": "DENY",
+    "high_or_critical_risk_requires_independent_review": true
+  },
+  "closure": {
+    "policy_written_is_not_completion": true,
+    "implementation_is_not_completion": true,
+    "verification_is_not_completion": true,
+    "terminal_requires_all": [
+      "authoritative_write_acknowledged",
+      "independent_persistence_readback",
+      "effectiveness_demonstrated"
+    ]
+  }
+}

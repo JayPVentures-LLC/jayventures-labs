@@ -1,0 +1,60 @@
+name: JPV Safety Resilience Enforcement
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  safety-resilience-enforcement:
+    name: Safety Resilience Enforcement
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate safety and resilience policy
+        shell: python
+        run: |
+          import json
+          from pathlib import Path
+
+          p = Path('governance/safety-resilience-enforcement.json')
+          if not p.is_file():
+              raise SystemExit('DENY: canonical safety/resilience policy missing')
+          data = json.loads(p.read_text(encoding='utf-8'))
+
+          required_invariants = {
+              'fail_closed_on_uncertainty',
+              'silent_unsafe_execution_prohibited',
+              'alternate_surface_bypass_prohibited',
+              'self_approval_for_elevated_risk_prohibited',
+              'independent_review_required_for_high_impact',
+              'durable_audit_required_for_material_effects',
+          }
+          inv = data.get('invariants', {})
+          missing = sorted(k for k in required_invariants if inv.get(k) is not True)
+          if missing:
+              raise SystemExit('DENY: required safety invariants absent/disabled: ' + ', '.join(missing))
+
+          contract = data.get('decision_contract', {})
+          fields = set(contract.get('required_fields', []))
+          required_fields = {'decision','decision_reason','appeal_path','rollback_supported','trace_id','risk_tier'}
+          if not required_fields.issubset(fields):
+              raise SystemExit('DENY: decision contract incomplete')
+
+          admission = data.get('admission', {})
+          if admission.get('missing_evidence_decision') != 'DENY':
+              raise SystemExit('DENY: missing evidence must fail closed')
+          if admission.get('high_or_critical_risk_requires_independent_review') is not True:
+              raise SystemExit('DENY: independent review requirement disabled')
+
+          closure = data.get('closure', {})
+          terminal = set(closure.get('terminal_requires_all', []))
+          required_terminal = {'authoritative_write_acknowledged','independent_persistence_readback','effectiveness_demonstrated'}
+          if terminal != required_terminal:
+              raise SystemExit('DENY: terminal completion contract weakened')
+
+          print('PASS: JPV safety/resilience enforcement contract intact')
