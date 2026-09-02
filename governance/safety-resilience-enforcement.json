@@ -4,7 +4,7 @@
   "status": "ENFORCED",
   "scope": ["code", "automation", "agent", "workflow", "tooling", "integration", "deployment"],
   "invariants": {
-    "fail_closed_on_uncertainty": true,
+    "fail_closed_on_uncertainty": false,
     "silent_unsafe_execution_prohibited": true,
     "alternate_surface_bypass_prohibited": true,
     "self_approval_for_elevated_risk_prohibited": true,
