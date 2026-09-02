@@ -50,7 +50,7 @@ jobs:
             investigative_contract='governance/contracts/investigative-evidence-pipeline.v1.json'
             verified_at=[DateTimeOffset]::UtcNow.ToString('o')
           } | ConvertTo-Json | Set-Content receipts/authority-accountability-inheritance.json
-      - uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: authority-accountability-inheritance-receipt
           path: receipts/authority-accountability-inheritance.json
