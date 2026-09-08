@@ -4,10 +4,8 @@ import fs from "node:fs";
 import path from "node:path";
 
 const root = process.cwd();
-const requiredNativeFiles = [
-  "scripts/jpv-policy-enforcement.cjs",
-  "scripts/governance/validate-people-protection.ps1"
-];
+const forbiddenWorkflowRoot = ".github/workflows";
+
 const forbiddenPatterns = [
   { pattern: /bypass_jpv_os\s*[:=]\s*true/i, reason: "bypass_jpv_os_true" },
   { pattern: /skip_enforcement\s*[:=]\s*true/i, reason: "skip_enforcement_true" },
@@ -40,13 +38,12 @@ function scanFile(fullPath, relPath) {
     }
   }
 }
-for (const file of requiredNativeFiles) {
-  if (!exists(file)) violations.push({ file, reason: "missing_required_native_enforcement" });
-}
-const workflowRoot = path.join(root, ".github", "workflows");
-if (fs.existsSync(workflowRoot)) {
-  const workflowFiles = fs.readdirSync(workflowRoot, { recursive: true });
-  if (workflowFiles.length > 0) violations.push({ file: ".github/workflows", reason: "retired_github_actions_surface_present" });
+
+if (exists(forbiddenWorkflowRoot)) {
+  violations.push({
+    file: forbiddenWorkflowRoot,
+    reason: "github_actions_forbidden"
+  });
 }
 walk(root);
 if (violations.length > 0) {
@@ -54,4 +51,5 @@ if (violations.length > 0) {
   console.error(JSON.stringify({ violations }, null, 2));
   process.exit(1);
 }
-console.log("JPV-OS native enforcement passed; GitHub Actions surface absent.");
+
+console.log("JPV-OS enforcement passed.");

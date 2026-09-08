@@ -1,28 +1,30 @@
-# GitHub Setup
+# GitHub Repository Setup
 
-This repository is ready for CI and manual Cloudflare deployments once the required GitHub Actions secrets are configured.
+GitHub is the repository, review, and security-results surface for `JayPVentures-LLC/jayventures-labs`. It is not the JPV execution or deployment plane.
 
-## Required Repository Secrets
+## Repository Invariants
+
+- `.github/workflows` must not exist.
+- GitHub Actions must not be used for CI, deployment, governance enforcement, approval, or verification.
+- Repository checks must not depend on GitHub-hosted workflow execution.
+- Production secrets must live in the owning provider or JPV-approved secret infrastructure, not GitHub workflow secrets or GitHub environments.
+- JPV-native execution must produce terminal verification and provider/canonical readback before a release is called operational.
+
+## Code Scanning
+
+GitHub CodeQL default setup is not compatible with the JPV no-Actions invariant because default setup executes CodeQL through GitHub Actions. Default setup must therefore remain disabled for this repository.
+
+CodeQL may still be used through the CodeQL CLI on an approved external or JPV-native runner. SARIF results may be uploaded to GitHub code scanning after analysis so GitHub remains a results surface without becoming the execution plane.
+
+## Provider Credentials
 
 ### Cloudflare
+Store Cloudflare credentials in Cloudflare or JPV-approved secret infrastructure and inject them only into the execution environment that needs them:
 - `CLOUDFLARE_API_TOKEN`
 - `CLOUDFLARE_ACCOUNT_ID`
 
-### Azure (Wrangler secrets for bookings and entitlement workers)
-
-Azure values are set directly as Wrangler Worker secrets — they are not committed to `wrangler.toml`:
-
-```
-npx wrangler secret put AZURE_KEY_VAULT_URL --config wix/bookings/wrangler.toml
-npx wrangler secret put AZURE_TENANT_ID --config wix/bookings/wrangler.toml
-npx wrangler secret put AZURE_CLIENT_ID --config wix/bookings/wrangler.toml
-npx wrangler secret put AZURE_CLIENT_SECRET --config wix/bookings/wrangler.toml
-npx wrangler secret put APPINSIGHTS_CONNECTION_STRING --config wix/bookings/wrangler.toml
-npx wrangler secret put AZURE_ARCHIVE_ENDPOINT --config wix/bookings/wrangler.toml
-npx wrangler secret put AZURE_ARCHIVE_TOKEN --config wix/bookings/wrangler.toml
-```
-
-The following GitHub Actions secrets are still required for the entitlement worker and CI pipelines that inject Azure config at deploy time:
+### Azure
+Azure values belong in Azure Key Vault, managed identity, or JPV-approved secret infrastructure. Runtime Worker secrets are set through Wrangler or the owning provider as applicable:
 - `AZURE_KEY_VAULT_URL`
 - `AZURE_TENANT_ID`
 - `AZURE_CLIENT_ID`
@@ -33,7 +35,7 @@ The following GitHub Actions secrets are still required for the entitlement work
 
 ### Stripe
 - `STRIPE_WEBHOOK_SECRET`
-- `STRIPE_SECRET_KEY` if administrative Stripe API calls are added later
+- `STRIPE_SECRET_KEY` only where an administrative Stripe integration explicitly requires it
 
 ### Discord
 - `DISCORD_BOT_TOKEN`
@@ -46,56 +48,26 @@ The following GitHub Actions secrets are still required for the entitlement work
 
 ## Required Cloudflare Resource Values
 
-Patch these placeholder values in the Wrangler files before using deployment workflows:
+The Wrangler files must contain valid provider bindings before production promotion:
+- `apps/flagship-site/wrangler.toml`
+- `operations/entitlement-system/wrangler.toml`
+- `wix/bookings/wrangler.toml`
 
-### apps/flagship-site/wrangler.toml
-- `SITE_ORIGIN` if deploying to a non-production hostname
-- `MICROSOFT_BOOKINGS_URL` if the consultation calendar changes
-- Optional overrides for `STRIPE_ALL_VENTURES_*` and `*_PORTAL_URL` only when live checkout and gated destinations are ready
+Deployment validation is performed through the JPV execution plane with provider readback after mutation.
 
-### operations/entitlement-system/wrangler.toml
-- `ENTITLEMENT_KV`
-- `IDEMPOTENCY_KV`
-- `RETRY_QUEUE_KV`
-- `WORKER_EVENTS_QUEUE`
-
-### wix/bookings/wrangler.toml
-
-KV namespace and queue bindings are configured with live Cloudflare IDs. No further wrangler.toml edits are required. Azure configuration must be set via `wrangler secret put` (see Azure section above).
-
-## GitHub Actions Workflows
-
-- `ci.yml`
-  - Runs on push and pull request
-  - Installs dependencies
-  - Runs tests and typecheck
-  - Verifies the flagship site and both Cloudflare workers package cleanly with dry-run deploys
-
-- `deploy-workers.yml`
-  - Manual workflow dispatch
-  - Uses the `cloudflare-production` GitHub environment
-  - Validates Wrangler configs before deploying
-  - Deploys one or both Workers to Cloudflare
-  - Requires valid Cloudflare secrets and real Wrangler bindings
-
-- `deploy-website.yml`
-  - Manual workflow dispatch
-  - Uses the `cloudflare-production` GitHub environment
-  - Validates the flagship site Wrangler config before deploying
-  - Deploys the public flagship site to Cloudflare
-  - Works with the internal routing defaults in `apps/flagship-site/wrangler.toml`, but production secrets and Cloudflare access still need to be configured
-
-## Recommended Branch Protection
+## Branch Protection
 
 Protect the default branch with:
-- required status check: `verify`
-- pull request review required
-- dismiss stale approvals on new commits
-- block force pushes
+- pull requests required for changes
+- accountable review where an operable independent reviewer route exists
+- conversation resolution where applicable
+- signed commits where required
+- no force pushes
+- no branch deletion
+- only status checks that have a real non-Actions producer
 
-## GitHub App / Integrations
+Do not require a check whose only implementation path is a deleted or prohibited GitHub workflow.
 
-Repository remote currently points to:
-- `https://github.com/jaypventuresllc/jayventures-labs.git`
+## Repository Integrations
 
-If you want automated release or issue triage later, add GitHub environments and environment-scoped secrets after the first successful deployment.
+Any integration added later must be provider-neutral or explicitly subordinate to JPV governance. Integration availability must not create a mandatory founder fallback or a deployment deadlock.

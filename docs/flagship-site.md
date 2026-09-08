@@ -62,21 +62,19 @@ The site Worker uses these variables in `apps/flagship-site/wrangler.toml`:
 - `CREATOR_PORTAL_URL`
 - `INNER_CIRCLE_PORTAL_URL`
 
-The site now ships with publish-safe defaults for membership and portal routing. Override those values only when live checkout and gated destinations are ready to replace the internal contact and access routes.
+The site ships with publish-safe defaults for membership and portal routing. Override those values only when live checkout and gated destinations are ready to replace the internal contact and access routes.
 
 ## Commands
 - Local dev: `npm run dev:website`
 - Dry-run packaging: `npm run deploy:dryrun:website`
 - Deploy validation: `npm run validate:deploy:website`
 
-## JPV-native verification and deployment
-- Repository verification is performed by JPV-native scripts and receipts, not GitHub workflow execution.
-- Website packaging and deploy validation run through the repository commands above and the canonical JPV execution plane.
-- Production deployment targets remain provider-direct and must produce authoritative provider readback before completion is claimed.
-- GitHub Actions is a retired surface and `.github/workflows` must remain absent.
+## Execution and Release
+
+Website validation and deployment are invoked through the JPV execution plane. This repository does not use `.github/workflows` or GitHub Actions for CI, deployment, governance, or verification. Production runtime remains Cloudflare-backed where configured, with provider credentials held in the owning provider or JPV-approved secret infrastructure rather than GitHub workflow secrets.
 
 ## Canva Handoff
-The repo now contains the structural system for the flagship site. The downstream Canva deliverables should be produced from this system, not the other way around.
+The repo contains the structural system for the flagship site. Downstream Canva deliverables should be produced from this system, not the other way around.
 
 Recommended Canva outputs:
 - dual-brand master deck

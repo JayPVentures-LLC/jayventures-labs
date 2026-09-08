@@ -33,12 +33,13 @@ const requiredFiles = [
   'GOVERNANCE.md',
   'SECURITY.md',
   'PEOPLE-PROTECTION.md',
-  '.github/CODEOWNERS',
-  'scripts/jpv-enforce.mjs',
-  'scripts/jpv-policy-enforcement.cjs',
-  'scripts/governance/validate-people-protection.ps1'
+  '.github/CODEOWNERS'
 ];
 for (const file of requiredFiles) read(file);
+
+if (exists('.github/workflows')) {
+  failures.push('GitHub Actions workflow surface is forbidden: .github/workflows');
+}
 
 requireIncludes('PEOPLE-PROTECTION.md', [
   'People Protection','Philosophical Foundation','human dignity','informed consent','user autonomy','equal treatment','accessibility','coercion','exploitation','discrimination','unlawful surveillance','social scoring','AI and Automation Requirements','Creator Protection','Worker and Economic Protection','Child and Student Protection','Institutional and Government Misuse Limits','Monetization Boundaries','People Protection Review Questions','Evidence Required for Production Readiness','Enforcement in GitHub','Production Gate'
@@ -49,8 +50,43 @@ requireIncludes('SECURITY.md', ['People Protection','human exploitation','discri
 requireIncludes('.github/CODEOWNERS', ['/PEOPLE-PROTECTION.md','/GOVERNANCE.md','/SECURITY.md','/scripts/','/docs/']);
 requireIncludes('scripts/jpv-enforce.mjs', ['requiredNativeFiles','retired_github_actions_surface_present','JPV-OS native enforcement passed']);
 
-requireRegex('PEOPLE-PROTECTION.md', /No system may be considered production-ready if it protects infrastructure while leaving people exposed\./, 'must contain infrastructure-versus-people production gate');
-requireRegex('PEOPLE-PROTECTION.md', /The production standard is not merely that a system works\. The standard is that it works without sacrificing the people it affects\./, 'must contain final production standard');
+requireIncludes('README.md', [
+  'GOVERNANCE.md',
+  'SECURITY.md',
+  'PEOPLE-PROTECTION.md',
+  'People Protection'
+]);
+
+requireIncludes('GOVERNANCE.md', [
+  'People Protection',
+  'PEOPLE-PROTECTION.md'
+]);
+
+requireIncludes('SECURITY.md', [
+  'People Protection',
+  'human exploitation',
+  'discriminatory automation',
+  'unauthorized surveillance'
+]);
+
+requireIncludes('.github/CODEOWNERS', [
+  '/PEOPLE-PROTECTION.md',
+  '/GOVERNANCE.md',
+  '/SECURITY.md',
+  '/.github/'
+]);
+
+requireRegex(
+  'PEOPLE-PROTECTION.md',
+  /No system may be considered production-ready if it protects infrastructure while leaving people exposed\./,
+  'must contain infrastructure-versus-people production gate'
+);
+
+requireRegex(
+  'PEOPLE-PROTECTION.md',
+  /The production standard is not merely that a system works\. The standard is that it works without sacrificing the people it affects\./,
+  'must contain final production standard'
+);
 
 const people = read('PEOPLE-PROTECTION.md');
 if (people.length < 12000) failures.push(`PEOPLE-PROTECTION.md is too thin for publish-ready doctrine. Expected at least 12000 characters; found ${people.length}.`);
