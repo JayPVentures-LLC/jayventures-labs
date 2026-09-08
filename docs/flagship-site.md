@@ -69,10 +69,11 @@ The site now ships with publish-safe defaults for membership and portal routing.
 - Dry-run packaging: `npm run deploy:dryrun:website`
 - Deploy validation: `npm run validate:deploy:website`
 
-## GitHub Actions
-- CI validates the website packaging in `.github/workflows/ci.yml`
-- Manual deploy flow lives in `.github/workflows/deploy-website.yml`
-- Production environment remains `cloudflare-production`
+## JPV-native verification and deployment
+- Repository verification is performed by JPV-native scripts and receipts, not GitHub workflow execution.
+- Website packaging and deploy validation run through the repository commands above and the canonical JPV execution plane.
+- Production deployment targets remain provider-direct and must produce authoritative provider readback before completion is claimed.
+- GitHub Actions is a retired surface and `.github/workflows` must remain absent.
 
 ## Canva Handoff
 The repo now contains the structural system for the flagship site. The downstream Canva deliverables should be produced from this system, not the other way around.
