@@ -4,10 +4,7 @@ import fs from "node:fs";
 import path from "node:path";
 
 const root = process.cwd();
-
-const requiredWorkflowFiles = [
-  ".github/workflows/jpv-os-enforcement.yml"
-];
+const forbiddenWorkflowRoot = ".github/workflows";
 
 const forbiddenPatterns = [
   {
@@ -102,13 +99,11 @@ function scanFile(fullPath, relPath) {
   }
 }
 
-for (const file of requiredWorkflowFiles) {
-  if (!exists(file)) {
-    violations.push({
-      file,
-      reason: "missing_required_workflow"
-    });
-  }
+if (exists(forbiddenWorkflowRoot)) {
+  violations.push({
+    file: forbiddenWorkflowRoot,
+    reason: "github_actions_forbidden"
+  });
 }
 
 walk(root);
@@ -120,4 +115,3 @@ if (violations.length > 0) {
 }
 
 console.log("JPV-OS enforcement passed.");
-
