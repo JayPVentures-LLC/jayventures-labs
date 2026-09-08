@@ -40,11 +40,14 @@ const requiredFiles = [
   'GOVERNANCE.md',
   'SECURITY.md',
   'PEOPLE-PROTECTION.md',
-  '.github/CODEOWNERS',
-  '.github/workflows/jpv-policy-enforcement.yml'
+  '.github/CODEOWNERS'
 ];
 
 for (const file of requiredFiles) read(file);
+
+if (exists('.github/workflows')) {
+  failures.push('GitHub Actions workflow surface is forbidden: .github/workflows');
+}
 
 requireIncludes('PEOPLE-PROTECTION.md', [
   'People Protection',
@@ -94,13 +97,7 @@ requireIncludes('.github/CODEOWNERS', [
   '/PEOPLE-PROTECTION.md',
   '/GOVERNANCE.md',
   '/SECURITY.md',
-  '/.github/workflows/'
-]);
-
-requireIncludes('.github/workflows/jpv-policy-enforcement.yml', [
-  'jpv-policy-enforcement',
-  'Verify Governance, Security, and People Protection',
-  'node scripts/jpv-policy-enforcement.cjs'
+  '/.github/'
 ]);
 
 requireRegex(
