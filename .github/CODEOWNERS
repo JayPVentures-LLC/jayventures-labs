@@ -11,9 +11,9 @@
 /.github/CODEOWNERS @jaypventures
 
 /.github/ @jaypventures
-/.github/workflows/ @jaypventures
 /scripts/ @jaypventures
 /docs/ @jaypventures
+/governance/ @jaypventures
 
 /apps/flagship-site/ @jaypventures
 /operations/entitlement-system/ @jaypventures
