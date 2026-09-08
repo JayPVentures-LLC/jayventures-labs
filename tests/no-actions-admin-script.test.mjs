@@ -17,8 +17,8 @@ test('canonical GitHub admin script disables CodeQL default setup and repository
 
   assert.ok(codeqlMutation >= 0, 'CodeQL default-setup endpoint missing');
   assert.ok(actionsMutation > codeqlMutation, 'Actions mutation must follow CodeQL default-setup retirement');
-  assert.match(script, /"state"\s*:\s*"not-configured"/);
-  assert.match(script, /"enabled"\s*:\s*false/);
+  assert.match(script, /["']state["']\s*=\s*["']not-configured["']/);
+  assert.match(script, /["']enabled["']\s*=\s*\$false/);
   assert.match(script, /verified_at/);
   assert.match(script, /CODEQL_DEFAULT_SETUP_NOT_RETIRED/);
   assert.match(script, /GITHUB_ACTIONS_STILL_ENABLED/);
