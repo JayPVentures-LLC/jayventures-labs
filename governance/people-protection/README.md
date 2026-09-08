@@ -10,8 +10,11 @@ This package contains the active People Protection governance layer for the ecos
 - `PARTNER-PROTECTION-STANDARD.md` defines vendor and partner review.
 - `PUBLIC-TRUST-PAGE.md` provides public-facing trust copy.
 - `PEOPLE-PROTECTION-LAUNCH-CHECKLIST.md` provides pre-launch review steps.
-- `scripts/governance/validate-people-protection.ps1` validates required artifacts.
-- `.github/workflows/people-protection-enforcement.yml` runs validation in CI.
+- `scripts/governance/validate-people-protection.ps1` validates required artifacts through the JPV execution plane.
+
+## Execution Invariant
+
+People Protection validation must not depend on `.github/workflows` or GitHub Actions. Repository enforcement and deployment orchestration remain JPV-native.
 
 ## Status
 

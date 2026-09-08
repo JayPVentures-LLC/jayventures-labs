@@ -1,7 +1,7 @@
 {
   "scripts": {
     "jpv:enforce": "node ./scripts/jpv-enforce.mjs",
-    "jpv:enforce:test": "node ./scripts/jpv-enforce.mjs --test",
+    "jpv:enforce:test": "node --test ./tests/github-actions-retirement.test.mjs ./tests/no-actions-admin-script.test.mjs",
     "enforce:brand": "ts-node operations/jpv_os_enforcement/cli.ts jaypventures_llc --file",
     "dev": "next dev",
     "build": "next build",
