@@ -1,15 +1,17 @@
 {
-  "schema_version": "1.0",
-  "authority": "JayPVentures-LLC/jpv-governance",
-  "canonical_policy": "governance/policies/CANONICAL-DOCTRINE-INHERITANCE.md",
+  "schema_version": "1.1",
+  "authority": "jaypVLabs/JPV-OS",
+  "canonical_registry": "governance/registry/governance-authority-registry.json",
+  "precedence_authority": "governance/architecture/runtime/governance-precedence.json#JPV-GOV-PRECEDENCE-001",
+  "enterprise_projection": "JayPVentures-LLC/jpv-governance",
   "rule": "inherit_by_default",
-  "stable_declaration": "This artifact inherits `governance/policies/CANONICAL-DOCTRINE-INHERITANCE.md` by reference. Conflicting local language is invalid.",
+  "stable_declaration": "This repository inherits canonical JPV governance from the JPV-OS authority registry and JPV-GOV-PRECEDENCE-001. Enterprise governance may project or strengthen applicable requirements but conflicting local language is invalid and no local repository creates an independent top-level authority plane.",
   "exemption": {
     "allowed": true,
     "default": false,
     "required_fields": ["decision_receipt_id", "scope", "approving_authority", "expires"],
-    "requirements": ["evidence_based", "narrow_scope", "authorized", "time_bounded", "reviewable", "restoration_path_to_inheritance"],
-    "invalid_forms": ["wildcard", "indefinite", "expired", "undocumented", "convenience_based"]
+    "requirements": ["evidence_based", "narrow_scope", "authorized", "time_bounded", "reviewable", "restoration_path_to_inheritance", "compatible_with_higher_authority"],
+    "invalid_forms": ["wildcard", "indefinite", "expired", "undocumented", "convenience_based", "weakens_higher_authority"]
   },
   "failure_mode": "fail_closed",
   "propagation": "labs_experiment_validation_governance_and_promotion_surfaces"
