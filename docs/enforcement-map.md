@@ -2,7 +2,7 @@
 
 This map identifies how governance, security, and People Protection requirements are enforced before merge or deployment.
 
-## Automated Gates
+## Native Gates
 
 | Gate | Enforcement point | Required evidence |
 | --- | --- | --- |
@@ -26,6 +26,8 @@ This map identifies how governance, security, and People Protection requirements
 Automation can block missing or weakened policy safeguards, but it does not replace accountable review. A passing automated gate means the required policy surfaces are present and have not obviously been weakened. It does not mean production approval is complete.
 
 Production approval still requires documented review evidence, identified owners, rollback and remediation paths, passing JPV-native validation, completed People Protection/governance/security review, and no unresolved critical risk to human dignity, user autonomy, accessibility, equal treatment, or safety.
+
+GitHub Actions and GitHub Issues are retired JPV surfaces. Their absence is compliant and must not be treated as missing verification.
 
 ## Failure Handling
 

@@ -19,3 +19,4 @@ People Protection validation must not depend on `.github/workflows` or GitHub Ac
 ## Status
 
 Created: 2026-05-23 16:17:39
+Updated: 2026-09-08
