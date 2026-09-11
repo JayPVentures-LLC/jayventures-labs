@@ -1,0 +1,16 @@
+{
+  "case_id":"CAR-LINGUISTIC-NEGATIVE-001",
+  "title":"Retrospective linguistic coincidence negative control",
+  "status":"CAR-0",
+  "phenomenon_classes":["linguistic_coincidence"],
+  "created_at":"2026-09-11T00:00:00Z",
+  "claims":[],"evidence":[],"sources":[],"assertions":[],"experiments":[],"predictions":[],"replications":[],"falsification":[],
+  "scores":{"prospective_capture":0,"specificity":1,"independence":2,"instrumentation":0,"replication":0,"conventional_resistance":1,"causal_relevance":0,"provenance_integrity":4,"evidence_quality":0,"discriminatory_power":0,"replication_strength":0,"extraordinary_mechanism_requirement":0},
+  "contamination":{"pathways":[],"estimated_score":0},
+  "provenance":{"securely_dated":true,"independent_date_anchors":2,"editable_after_date":false,"independent_pre_event_attestations":1,"translation_stable":false,"provenance_confidence":0.8},
+  "information_anomaly":{"future_exclusivity":0,"specificity":1,"entropy_bits":0,"preregistered":false,"independent_pre_event_attestations":1,"repeatability":0,"null_model_id":"RETROSPECTIVE-PHRASE"},
+  "null_model":{"model_id":"RETROSPECTIVE-PHRASE","trial_count":1,"per_trial_probability":1,"familywise_probability":1,"multiplicity_method":"UNQUANTIFIED_CORPUS","assumptions":["Search-space size not fixed prospectively"]},
+  "disposition":{"summary":"Negative control for exact-looking retrospective phrase matches.","ordinary_explanation_status":"SUFFICIENT","preferred_hypothesis":"linguistic collision","promotion_blockers":["Low specificity","No future-exclusive content"]},
+  "mechanism":{"status":"NONE","manipulated_variables":[],"reproduced_by":[]},
+  "external_confirmation":{"independent_labs":0,"theory_conflict_replicated":false,"scientific_consensus_basis":null,"governed_manual_review":false}
+}

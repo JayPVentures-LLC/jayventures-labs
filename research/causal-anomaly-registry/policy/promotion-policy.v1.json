@@ -1,11 +1,19 @@
 {
   "policy_id": "JPV-LABS-CAR-PROMOTION-V1",
-  "version": 1,
+  "version": 2,
   "statuses": ["CAR-0","CAR-1","CAR-2","CAR-3","CAR-4","CAR-5","CAR-6","CAR-7","CAR-8","CAR-9"],
-  "required_falsification_families": ["WITNESS","MEMORY","LEAKAGE","FRAUD","RECORD","TIMESTAMP","SOFTWARE","INSTRUMENTATION","STATISTICS","SOCIAL_CONTAMINATION","CONVENTIONAL_PHYSICS"],
+  "required_falsification_families": ["WITNESS","MEMORY","LEAKAGE","FRAUD","RECORD","TIMESTAMP","SOFTWARE","INSTRUMENTATION","STATISTICS","SOCIAL_CONTAMINATION","CONVENTIONAL_PHYSICS","LOST_KNOWLEDGE","UNDOCUMENTED_TRANSMISSION","INDEPENDENT_DISCOVERY","LINGUISTIC_COLLISION","MULTIPLE_COMPARISONS"],
   "closed_falsification_statuses": ["FAILED_TO_EXPLAIN","NOT_APPLICABLE"],
   "causal_signatures": ["RETRO","NONLOCAL","SURVIVAL","HISTORY_DIVERGENCE","TEMPORAL_DISPLACEMENT","CAUSAL_LOOP","STATE_INCONSISTENCY"],
   "minimum_independent_pass_replications": 2,
+  "evidence_levels": {
+    "E0": {"description":"anecdote or derivative claim"},
+    "E1": {"minimum_provenance_confidence":0.4},
+    "E2": {"require_secure_date":true,"minimum_date_anchors":1,"require_noneditable":true,"minimum_provenance_confidence":0.7},
+    "E3": {"minimum_future_exclusivity":1,"minimum_specificity":2},
+    "E4": {"minimum_future_exclusivity":2,"minimum_specificity":2,"minimum_entropy_bits":64,"minimum_pre_event_attestations":2,"minimum_provenance_confidence":0.85},
+    "E5": {"require_preregistered":true,"minimum_entropy_bits":128,"minimum_repeatability":2,"minimum_pre_event_attestations":2,"maximum_familywise_probability":1e-9}
+  },
   "car6": {"minimum_evidence_quality": 0.8,"minimum_discriminatory_power": 0.8},
   "car7": {"minimum_entropy_bits": 128,"minimum_timestamp_authorities": 2,"require_exact_match": true,"require_commitment_before_target": true},
   "car8": {"mechanism_status": "REPRODUCIBLE","minimum_reproduced_by": 2},
