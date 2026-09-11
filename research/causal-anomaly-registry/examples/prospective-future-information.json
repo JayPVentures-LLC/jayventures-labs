@@ -1,0 +1,17 @@
+{
+  "case_id":"CAR-FUTURE-BENCHMARK-001",
+  "title":"Prospective future-information benchmark",
+  "status":"CAR-0",
+  "phenomenon_classes":["future_information"],
+  "causal_signatures":["RETRO"],
+  "created_at":"2026-09-11T00:00:00Z",
+  "claims":[],"evidence":[],"sources":[],"assertions":[],"experiments":[],"predictions":[],"replications":[],"falsification":[],
+  "scores":{"prospective_capture":5,"specificity":5,"independence":5,"instrumentation":5,"replication":5,"conventional_resistance":5,"causal_relevance":5,"provenance_integrity":5,"evidence_quality":1,"discriminatory_power":1,"replication_strength":1,"extraordinary_mechanism_requirement":1},
+  "contamination":{"pathways":[],"estimated_score":0},
+  "provenance":{"securely_dated":true,"independent_date_anchors":3,"editable_after_date":false,"independent_pre_event_attestations":3,"translation_stable":true,"provenance_confidence":0.99},
+  "information_anomaly":{"future_exclusivity":3,"specificity":3,"entropy_bits":256,"preregistered":true,"independent_pre_event_attestations":3,"repeatability":3,"null_model_id":"EXACT-256","multiplicity_adjusted_probability":5.527147875260445e-76},
+  "null_model":{"model_id":"EXACT-256","trial_count":64,"per_trial_probability":8.636168555094445e-78,"familywise_probability":5.527147875260445e-76,"multiplicity_method":"FAMILY_WISE_EXACT","assumptions":["Independent uniform 256-bit targets","Predictions fixed before target generation"]},
+  "disposition":{"summary":"Contract benchmark only; classification demonstrates evidence requirements and is not a scientific finding.","ordinary_explanation_status":"INCONCLUSIVE","preferred_hypothesis":null,"promotion_blockers":["No preserved evidence in benchmark fixture"]},
+  "mechanism":{"status":"NONE","manipulated_variables":[],"reproduced_by":[]},
+  "external_confirmation":{"independent_labs":0,"theory_conflict_replicated":false,"scientific_consensus_basis":null,"governed_manual_review":false}
+}
