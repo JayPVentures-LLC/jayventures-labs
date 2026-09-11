@@ -5,6 +5,8 @@ const CASE_ID_RE = /^CAR-[A-Z0-9-]+$/;
 const SHA256_RE = /^[a-fA-F0-9]{64}$/;
 
 function isDateTime(value) { return typeof value === 'string' && !Number.isNaN(Date.parse(value)); }
+function isIntegerInRange(value, min, max = Number.MAX_SAFE_INTEGER) { return Number.isInteger(value) && value >= min && value <= max; }
+function isProbability(value) { return typeof value === 'number' && Number.isFinite(value) && value >= 0 && value <= 1; }
 
 export function validateCase(record) {
   const errors = [];
@@ -30,6 +32,37 @@ export function validateCase(record) {
   }
   if (!record.disposition || typeof record.disposition !== 'object') errors.push('disposition must be an object');
   else if (!['SUFFICIENT','INSUFFICIENT','INCONCLUSIVE'].includes(record.disposition.ordinary_explanation_status)) errors.push('disposition.ordinary_explanation_status is invalid');
+  if (record.provenance) {
+    const p = record.provenance;
+    if (typeof p !== 'object' || Array.isArray(p)) errors.push('provenance must be an object');
+    else {
+      if ('securely_dated' in p && typeof p.securely_dated !== 'boolean') errors.push('provenance.securely_dated must be boolean');
+      if ('independent_date_anchors' in p && !isIntegerInRange(p.independent_date_anchors, 0)) errors.push('provenance.independent_date_anchors must be a non-negative integer');
+      if ('editable_after_date' in p && p.editable_after_date !== null && typeof p.editable_after_date !== 'boolean') errors.push('provenance.editable_after_date must be boolean or null');
+      if ('independent_pre_event_attestations' in p && !isIntegerInRange(p.independent_pre_event_attestations, 0)) errors.push('provenance.independent_pre_event_attestations must be a non-negative integer');
+      if ('translation_stable' in p && p.translation_stable !== null && typeof p.translation_stable !== 'boolean') errors.push('provenance.translation_stable must be boolean or null');
+      if ('provenance_confidence' in p && !isProbability(p.provenance_confidence)) errors.push('provenance.provenance_confidence must be 0..1');
+    }
+  }
+  if (record.information_anomaly) {
+    const a = record.information_anomaly;
+    if (typeof a !== 'object' || Array.isArray(a)) errors.push('information_anomaly must be an object');
+    else {
+      for (const key of ['future_exclusivity','specificity','repeatability']) if (key in a && !isIntegerInRange(a[key], 0, 3)) errors.push(`information_anomaly.${key} must be an integer 0..3`);
+      if ('entropy_bits' in a && !isIntegerInRange(a.entropy_bits, 0)) errors.push('information_anomaly.entropy_bits must be a non-negative integer');
+      if ('preregistered' in a && typeof a.preregistered !== 'boolean') errors.push('information_anomaly.preregistered must be boolean');
+      if ('independent_pre_event_attestations' in a && !isIntegerInRange(a.independent_pre_event_attestations, 0)) errors.push('information_anomaly.independent_pre_event_attestations must be a non-negative integer');
+      if ('multiplicity_adjusted_probability' in a && !isProbability(a.multiplicity_adjusted_probability)) errors.push('information_anomaly.multiplicity_adjusted_probability must be 0..1');
+    }
+  }
+  if (record.null_model) {
+    const n = record.null_model;
+    if (typeof n !== 'object' || Array.isArray(n)) errors.push('null_model must be an object');
+    else {
+      if ('trial_count' in n && !isIntegerInRange(n.trial_count, 1)) errors.push('null_model.trial_count must be a positive integer');
+      for (const key of ['per_trial_probability','familywise_probability']) if (key in n && !isProbability(n[key])) errors.push(`null_model.${key} must be 0..1`);
+    }
+  }
   return { valid: errors.length === 0, errors };
 }
 
@@ -47,6 +80,51 @@ export function computeContamination(pathwayProbabilities) {
     survival *= (1 - value);
   }
   return 1 - survival;
+}
+
+export function computeFamilywiseExactMatchProbability(trials, entropyBits) {
+  if (!isIntegerInRange(trials, 1)) throw new TypeError('trials must be a positive integer');
+  if (!isIntegerInRange(entropyBits, 1, 1024)) throw new TypeError('entropyBits must be an integer 1..1024');
+  const perTrial = 2 ** (-entropyBits);
+  if (perTrial === 0) return 0;
+  return -Math.expm1(trials * Math.log1p(-perTrial));
+}
+
+export function classifyEvidenceLevel(record, policy) {
+  const levels = policy?.evidence_levels;
+  if (!levels) throw new TypeError('policy.evidence_levels is required');
+  const provenance = record?.provenance ?? {};
+  const info = record?.information_anomaly ?? {};
+  const nullModel = record?.null_model ?? {};
+  const confidence = provenance.provenance_confidence ?? 0;
+  let level = 'E0';
+  if (confidence >= (levels.E1?.minimum_provenance_confidence ?? 1)) level = 'E1';
+  const e2 = provenance.securely_dated === true
+    && (provenance.independent_date_anchors ?? 0) >= (levels.E2?.minimum_date_anchors ?? Infinity)
+    && (!levels.E2?.require_noneditable || provenance.editable_after_date === false)
+    && confidence >= (levels.E2?.minimum_provenance_confidence ?? 1);
+  if (e2) level = 'E2';
+  const e3 = e2
+    && (info.future_exclusivity ?? 0) >= (levels.E3?.minimum_future_exclusivity ?? Infinity)
+    && (info.specificity ?? 0) >= (levels.E3?.minimum_specificity ?? Infinity);
+  if (e3) level = 'E3';
+  const attestations = Math.max(provenance.independent_pre_event_attestations ?? 0, info.independent_pre_event_attestations ?? 0);
+  const e4 = e2
+    && (info.future_exclusivity ?? 0) >= (levels.E4?.minimum_future_exclusivity ?? Infinity)
+    && (info.specificity ?? 0) >= (levels.E4?.minimum_specificity ?? Infinity)
+    && (info.entropy_bits ?? 0) >= (levels.E4?.minimum_entropy_bits ?? Infinity)
+    && attestations >= (levels.E4?.minimum_pre_event_attestations ?? Infinity)
+    && confidence >= (levels.E4?.minimum_provenance_confidence ?? 1);
+  if (e4) level = 'E4';
+  const e5 = e4
+    && (!levels.E5?.require_preregistered || info.preregistered === true)
+    && (info.entropy_bits ?? 0) >= (levels.E5?.minimum_entropy_bits ?? Infinity)
+    && (info.repeatability ?? 0) >= (levels.E5?.minimum_repeatability ?? Infinity)
+    && attestations >= (levels.E5?.minimum_pre_event_attestations ?? Infinity)
+    && isProbability(nullModel.familywise_probability)
+    && nullModel.familywise_probability <= (levels.E5?.maximum_familywise_probability ?? -1);
+  if (e5) level = 'E5';
+  return level;
 }
 
 function gate(ok, blockers = []) { return { eligible: ok, blockers: ok ? [] : blockers }; }
