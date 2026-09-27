@@ -7,7 +7,7 @@ import { planIntegrations } from "../core/router";
 import { buildCrmRecord } from "../core/crm";
 import { getOrCreateInnerCircleMemberFromRecord } from "../core/innerCircleMembers";
 import { getIntakeSecret } from "../utils/runtimeSecrets";
-import { enqueueArchive, sendTelemetry } from "../core/azure/observability";
+import { enqueueArchive, sendTelemetry } from "../core/observability";
 
 import { normalizeBookingsEvent } from "../core/normalize/bookings";
 import { normalizeStripeEvent } from "../core/normalize/stripe";
