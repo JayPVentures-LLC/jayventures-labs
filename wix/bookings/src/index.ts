@@ -326,7 +326,7 @@ import { handleIntake } from "./routes/intake";
 import { getMetricsSnapshot } from "./core/metrics";
 import { handleInnerCircleBackfill, handleInnerCircleMetrics, handleInnerCirclePortal } from "./routes/innerCircle";
 import { handleCreatorMetrics, handleCreatorPortal, handleCreatorUpload } from "./routes/creatorPortal";
-import { archiveEvent, sendTelemetry, type WorkerEventMessage } from "./core/azure/observability";
+import { archiveEvent, sendTelemetry, type WorkerEventMessage } from "./core/observability";
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
@@ -656,7 +656,7 @@ export default {
           continue;
         }
 
-        await archiveEvent(env, message.body as import("./core/azure/observability").WorkerEventMessage);
+        await archiveEvent(env, message.body as import("./core/observability").WorkerEventMessage);
         await sendTelemetry(env, `${body.payload.source}_${body.payload.event}`, body.payload.data);
         message.ack();
       } catch (error) {
