@@ -31,14 +31,6 @@ export interface Env {
   IDEMPOTENCY_KV: KVNamespace;
   RETRY_QUEUE_KV?: KVNamespace;
   WORKER_EVENTS_QUEUE?: Queue<unknown>;
-  AZURE_KEY_VAULT_URL?: string;
-  AZURE_TENANT_ID?: string;
-  AZURE_CLIENT_ID?: string;
-  AZURE_CLIENT_SECRET?: string;
-  APPINSIGHTS_CONNECTION_STRING?: string;
-  AZURE_ARCHIVE_ENDPOINT?: string;
-  AZURE_ARCHIVE_TOKEN?: string;
-  AZURE_ARCHIVE_TOKEN_SECRET_NAME?: string;
   LOG_LEVEL?: string;
 }
 
@@ -85,14 +77,7 @@ export function getEnv(env: Record<string, unknown>): Env {
     IDEMPOTENCY_KV: assertKv(env.IDEMPOTENCY_KV, "IDEMPOTENCY_KV"),
     RETRY_QUEUE_KV: env.RETRY_QUEUE_KV as KVNamespace | undefined,
     WORKER_EVENTS_QUEUE: env.WORKER_EVENTS_QUEUE as Queue<unknown> | undefined,
-    AZURE_KEY_VAULT_URL: optionalString(env.AZURE_KEY_VAULT_URL),
-    AZURE_TENANT_ID: optionalString(env.AZURE_TENANT_ID),
-    AZURE_CLIENT_ID: optionalString(env.AZURE_CLIENT_ID),
-    AZURE_CLIENT_SECRET: optionalString(env.AZURE_CLIENT_SECRET),
-    APPINSIGHTS_CONNECTION_STRING: optionalString(env.APPINSIGHTS_CONNECTION_STRING),
-    AZURE_ARCHIVE_ENDPOINT: optionalString(env.AZURE_ARCHIVE_ENDPOINT),
-    AZURE_ARCHIVE_TOKEN: optionalString(env.AZURE_ARCHIVE_TOKEN),
-    AZURE_ARCHIVE_TOKEN_SECRET_NAME: optionalString(env.AZURE_ARCHIVE_TOKEN_SECRET_NAME),
+
     LOG_LEVEL: optionalString(env.LOG_LEVEL),
   };
 }

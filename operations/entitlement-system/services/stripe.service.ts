@@ -6,7 +6,7 @@ import { getRoleIdsForBrandTier } from "./discordRoleMapping.service";
 import { syncDiscordRoles } from "./discordSync.service";
 import { upsertBrandEntitlement } from "./entitlement.service";
 import { logger } from "../utils/logger";
-import { enqueueWorkerEvent, sendTelemetry } from "./azure/observability.service";
+import { enqueueWorkerEvent, sendTelemetry } from "./observability.service";
 
 function normalizeBrand(value: string | undefined): Brand | null {
   if (!value) return null;

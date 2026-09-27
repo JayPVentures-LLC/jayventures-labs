@@ -37,14 +37,5 @@ export interface Env {
   DISCORD_COMMUNITY_ROLE_ID?: string;
   DISCORD_VIP_ROLE_ID?: string;
   DISCORD_INNER_CIRCLE_ROLE_ID?: string;
-
-  AZURE_KEY_VAULT_URL?: string;
-  AZURE_TENANT_ID?: string;
-  AZURE_CLIENT_ID?: string;
-  AZURE_CLIENT_SECRET?: string;
-  APPINSIGHTS_CONNECTION_STRING?: string;
-  AZURE_ARCHIVE_ENDPOINT?: string;
-  AZURE_ARCHIVE_TOKEN?: string;
-  AZURE_ARCHIVE_TOKEN_SECRET_NAME?: string;
 }
 

@@ -1,8 +1,8 @@
 import type { Env } from "../config/env";
 import type { RetryTask } from "../types/discord.types";
 import { logger } from "./logger";
-import type { WorkerEventMessage } from "../services/azure/observability.service";
-import { enqueueWorkerEvent } from "../services/azure/observability.service";
+import type { WorkerEventMessage } from "../services/observability.service";
+import { enqueueWorkerEvent } from "../services/observability.service";
 
 function keyFor(taskId: string): string {
   return `retry:${taskId}`;

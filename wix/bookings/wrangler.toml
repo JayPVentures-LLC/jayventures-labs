@@ -5,11 +5,6 @@ account_id = "56d1a7bef4dabbd308f8846ee620dd19"
 
 [vars]
 ENVIRONMENT = "dev"
-# Azure bindings (AZURE_KEY_VAULT_URL, AZURE_TENANT_ID, AZURE_CLIENT_ID,
-# APPINSIGHTS_CONNECTION_STRING, AZURE_ARCHIVE_ENDPOINT, AZURE_CLIENT_SECRET)
-# must be set as Wrangler secrets:
-#   npx wrangler secret put AZURE_KEY_VAULT_URL --config wix/bookings/wrangler.toml
-# These are intentionally absent from [vars] to avoid committing sensitive values.
 
 [[kv_namespaces]]
 binding = "IDEMPOTENCY_KV"

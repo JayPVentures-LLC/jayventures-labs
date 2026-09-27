@@ -2,7 +2,7 @@ import { getEnv } from "../config/env";
 import { handleAdminOverride } from "../admin/override";
 import { handleDiscordSync } from "../routes/discord-sync.route";
 import { handleStripeWebhook } from "../routes/webhook.route";
-import { archiveEvent, sendTelemetry, type WorkerEventMessage } from "../services/azure/observability.service";
+import { archiveEvent, sendTelemetry, type WorkerEventMessage } from "../services/observability.service";
 import { getEntitlement } from "../services/entitlement.service";
 import { syncDiscordRoles } from "../services/discordSync.service";
 
